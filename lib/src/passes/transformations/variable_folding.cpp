@@ -80,6 +80,15 @@ std::string lvalue_base_name(AST::Node::Ptr var)
     return std::string();
 }
 
+/// Temporary block accumulating the unrolled statements. Its inner list is
+/// replaced whenever an executed statement folds (Block::replace and
+/// pickup_statements allocate fresh lists), so the list must be re-fetched from
+/// the block, never cached across an execute call.
+AST::Block::Ptr make_unroll_block()
+{
+    return std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
+}
+
 } // namespace
 
 VariableFolding::VariableFolding(const FunctionMap &function_map) : m_function_map(function_map) {}
@@ -145,11 +154,10 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
             return execute_in_childs(node);
 
         case AST::NodeType::Var:
-            return execute_variable_decl(AST::cast_to<AST::Var>(node), parent);
+            return execute_variable_decl(AST::cast_to<AST::Var>(node));
 
         case AST::NodeType::BlockingSubstitution:
-            return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node),
-                                                 parent);
+            return execute_blocking_substitution(AST::cast_to<AST::BlockingSubstitution>(node));
 
         case AST::NodeType::IfStatement:
             return execute_if(AST::cast_to<AST::IfStatement>(node), parent);
@@ -157,7 +165,7 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
         // Jump statements (§12.8): raise the matching control-flow signal, which
         // the enclosing block / loop then acts on.
         case AST::NodeType::Return:
-            return execute_return(AST::cast_to<AST::Return>(node), parent);
+            return execute_return(AST::cast_to<AST::Return>(node));
 
         case AST::NodeType::Break:
             m_flow = Flow::Broke;
@@ -182,7 +190,7 @@ int VariableFolding::execute(AST::Node::Ptr node, AST::Node::Ptr parent)
         case AST::NodeType::FunctionCall:
         case AST::NodeType::TaskCall:
         case AST::NodeType::SystemCall:
-            return execute_call(node, parent);
+            return execute_call(node);
 
         // Declarations without a runtime value effect.
         case AST::NodeType::Port:
@@ -218,7 +226,7 @@ int VariableFolding::execute_in_childs(AST::Node::Ptr node)
     return ret;
 }
 
-int VariableFolding::execute_variable_decl(AST::Var::Ptr var, AST::Node::Ptr parent)
+int VariableFolding::execute_variable_decl(AST::Var::Ptr var)
 {
     if(!var->get_init()) {
         return 0;
@@ -235,21 +243,21 @@ int VariableFolding::execute_variable_decl(AST::Var::Ptr var, AST::Node::Ptr par
     subst->set_left(lvalue);
     subst->set_right(AST::cast_to<AST::Rvalue>(var->get_init()->clone()));
 
-    return execute_blocking_substitution(subst, parent);
+    return execute_blocking_substitution(subst);
 }
 
-int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst,
-                                                   AST::Node::Ptr parent)
+int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst)
 {
-    std::string lvalue_before = Generators::VerilogGenerator().render(subst->get_left());
-    std::string rvalue_before = Generators::VerilogGenerator().render(subst->get_right());
+    // Streamed operands are only evaluated when the record passes the log filter,
+    // and the original text must be captured before the analysis rewrites it.
+    LOG_DEBUG_N(subst) << "folding [" << Generators::VerilogGenerator().render(subst->get_left())
+                       << " = " << Generators::VerilogGenerator().render(subst->get_right()) << "]";
 
-    std::string lvalue_str = analyze_lvalue(subst->get_left());
-    AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
+    const std::string lvalue_str = fold_lvalue_indices(subst->get_left());
+    const AST::Node::Ptr const_node = analyze_rvalue(subst->get_right());
 
     if(const_node) {
-        LOG_DEBUG_N(subst) << "[" << lvalue_before << " = " << rvalue_before << "] evaluated to ["
-                           << lvalue_str << " = "
+        LOG_DEBUG_N(subst) << "evaluated to [" << lvalue_str << " = "
                            << Generators::VerilogGenerator().render(const_node) << "]";
         subst->get_right()->set_var(const_node);
     }
@@ -307,7 +315,7 @@ int VariableFolding::execute_if(AST::IfStatement::Ptr ifstmt, AST::Node::Ptr par
     return ret;
 }
 
-int VariableFolding::execute_return(AST::Return::Ptr node, AST::Node::Ptr parent)
+int VariableFolding::execute_return(AST::Return::Ptr node)
 {
     // `return expr;` sets the function result (the function-name variable, §13.4);
     // `return;` (task / void function) only signals the exit.
@@ -326,7 +334,7 @@ int VariableFolding::execute_return(AST::Return::Ptr node, AST::Node::Ptr parent
         subst->set_left(lvalue);
         subst->set_right(rvalue);
 
-        execute_blocking_substitution(subst, parent);
+        execute_blocking_substitution(subst);
     }
 
     m_flow = Flow::Returned;
@@ -418,6 +426,29 @@ void VariableFolding::give_up()
     m_flow = Flow::Normal;
 }
 
+bool VariableFolding::loop_cap_reached(unsigned long iteration, const AST::Node::Ptr &node)
+{
+    if(iteration < s_max_unroll_iterations) {
+        return false;
+    }
+    LOG_WARNING_N(node) << "loop exceeded the unroll limit (non-terminating?); leaving it intact";
+    give_up();
+    return true;
+}
+
+AST::IntConstN::Ptr VariableFolding::analyze_loop_constant(const AST::Node::Ptr &expr,
+                                                           const AST::Node::Ptr &node,
+                                                           const char *what)
+{
+    const auto &folded = expr ? analyze_expression(expr) : nullptr;
+    if(folded && folded->is_node_type(AST::NodeType::IntConstN)) {
+        return AST::cast_to<AST::IntConstN>(folded);
+    }
+    LOG_WARNING_N(node) << what << " cannot be evaluated during loop unrolling";
+    give_up();
+    return nullptr;
+}
+
 int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr parent)
 {
     int ret = 0;
@@ -426,46 +457,29 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
         return ret;
     }
 
-    // We create a temporary block to hold a temporary
-    // unrolled result.
-    //
-    // We must pay attention that the list within the block
-    // can be replaced! A new list can be created when the
-    // "replace" or the "pickup_statements" methods are
-    // called.
-    auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
+    const auto &block = make_unroll_block();
 
-    // Pre condition.
-    auto pre = node->get_pre();
-    if(pre) {
-        ret += execute(pre, node);
+    if(node->get_pre()) {
+        ret += execute(node->get_pre(), node);
     }
 
     for(unsigned long iteration = 0;; ++iteration) {
-        if(iteration >= s_max_unroll_iterations) {
-            LOG_WARNING_N(node) << "for loop exceeded the unroll limit (non-terminating?); "
-                                   "leaving it intact";
-            give_up();
+        if(loop_cap_reached(iteration, node)) {
             return ret;
         }
-
-        auto cloned = AST::cast_to<AST::ForStatement>(node->clone());
 
         // The condition is tested before every iteration, including the first: a
         // zero-trip loop executes nothing.
-        auto cond = analyze_expression(cloned->get_cond());
-        if(cond && cond->is_node_type(AST::NodeType::IntConstN)) {
-            if(AST::cast_to<AST::IntConstN>(cond)->get_value() == 0) {
-                break;
-            }
-        } else {
-            LOG_WARNING_N(node) << "condition cannot be evaluated during for loop unrolling";
-            give_up();
+        const auto &cond = analyze_loop_constant(
+            node->get_cond() ? node->get_cond()->clone() : nullptr, node, "for loop condition");
+        if(!cond) {
             return ret;
         }
+        if(cond->get_value() == 0) {
+            break;
+        }
 
-        // Statements within for.
-        ret += execute_loop_body(cloned->get_statement(), block);
+        ret += execute_loop_body(node->get_statement()->clone(), block);
 
         // A jump ends this iteration; `break`/`return` also end the loop, while
         // `continue` still runs the post-update and re-tests the condition.
@@ -473,17 +487,12 @@ int VariableFolding::execute_for(AST::ForStatement::Ptr node, AST::Node::Ptr par
             break;
         }
 
-        // Post update.
-        auto post = cloned->get_post();
-        if(post) {
-            ret += execute(post, cloned);
+        if(node->get_post()) {
+            ret += execute(node->get_post()->clone(), node);
         }
     }
 
-    // Commit the unrolled block, unless an unresolved break/continue forces us to
-    // leave the loop for later lowering (ADR-0005 §3.2).
     finalize_unrolled_loop(node, parent, block);
-
     return ret;
 }
 
@@ -495,57 +504,32 @@ int VariableFolding::execute_while(AST::WhileStatement::Ptr node, AST::Node::Ptr
         return ret;
     }
 
-    auto expr = analyze_expression(node->get_cond()->clone());
+    const auto &block = make_unroll_block();
 
-    if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
-        auto cond = AST::cast_to<AST::IntConstN>(expr);
-
-        // We create a temporary block to hold a temporary
-        // unrolled result.
-        //
-        // We must pay attention that the list within the block
-        // can be replaced! A new list can be created when the
-        // "replace" or the "pickup_statements" methods are
-        // called.
-        auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
-
-        unsigned long iteration = 0;
-        while(cond->get_value() != 0) {
-            if(iteration++ >= s_max_unroll_iterations) {
-                LOG_WARNING_N(node) << "while loop exceeded the unroll limit (only a runtime "
-                                       "break exits?); leaving it intact";
-                give_up();
-                return ret;
-            }
-
-            // We clone the statement to analyze
-            auto current = node->get_statement()->clone();
-            ret += execute_loop_body(current, block);
-
-            // `break`/`return` end the loop; `continue` just re-tests the condition.
-            if(stop_after_iteration()) {
-                break;
-            }
-
-            // We clone the condition and we evaluate it.
-            expr = analyze_expression(node->get_cond()->clone());
-            if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
-                cond = AST::cast_to<AST::IntConstN>(expr);
-            } else {
-                LOG_WARNING_N(node) << "condition cannot be evaluated during while loop unrolling";
-                give_up();
-                return ret;
-            }
+    for(unsigned long iteration = 0;; ++iteration) {
+        if(loop_cap_reached(iteration, node)) {
+            return ret;
         }
 
-        // Commit the unrolled block, unless an unresolved break/continue forces us
-        // to leave the loop for later lowering (ADR-0005 §3.2).
-        finalize_unrolled_loop(node, parent, block);
-    } else {
-        LOG_WARNING_N(node) << "condition cannot be evaluated during while loop unrolling";
-        give_up();
+        // The condition is tested before every iteration, including the first.
+        const auto &cond = analyze_loop_constant(
+            node->get_cond() ? node->get_cond()->clone() : nullptr, node, "while loop condition");
+        if(!cond) {
+            return ret;
+        }
+        if(cond->get_value() == 0) {
+            break;
+        }
+
+        ret += execute_loop_body(node->get_statement()->clone(), block);
+
+        // `break`/`return` end the loop; `continue` just re-tests the condition.
+        if(stop_after_iteration()) {
+            break;
+        }
     }
 
+    finalize_unrolled_loop(node, parent, block);
     return ret;
 }
 
@@ -553,40 +537,33 @@ int VariableFolding::execute_repeat(AST::RepeatStatement::Ptr node, AST::Node::P
 {
     int ret = 0;
 
-    auto expr = analyze_expression(node->get_times());
-
-    if(expr && expr->is_node_type(AST::NodeType::IntConstN)) {
-        // Create a temporary block to hold unrolled statements.
-        //
-        // We must pay attention that the list within the block
-        // can be replaced! A new list can be created when the
-        // "replace" or the "pickup_statements" methods are
-        // called.
-        auto block = std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "");
-
-        auto times = AST::cast_to<AST::IntConstN>(expr);
-        for(mpz_class i = 0; i < times->get_value(); i++) {
-            auto current = node->get_statement()->clone();
-            ret += execute_loop_body(current, block);
-
-            // `break`/`return` end the loop; `continue` moves to the next count.
-            if(stop_after_iteration()) {
-                break;
-            }
-        }
-
-        // Commit the unrolled block, unless an unresolved break/continue forces us
-        // to leave the loop for later lowering (ADR-0005 §3.2).
-        finalize_unrolled_loop(node, parent, block);
-    } else {
-        LOG_WARNING_N(node) << "repeat count cannot be evaluated during unrolling";
-        give_up();
+    if(!node) {
+        return ret;
     }
 
+    // The count is folded in place, so a repeat left intact keeps the folded
+    // expression.
+    const auto &times = analyze_loop_constant(node->get_times(), node, "repeat count");
+    if(!times) {
+        return ret;
+    }
+
+    const auto &block = make_unroll_block();
+
+    for(mpz_class i = 0; i < times->get_value(); i++) {
+        ret += execute_loop_body(node->get_statement()->clone(), block);
+
+        // `break`/`return` end the loop; `continue` moves to the next count.
+        if(stop_after_iteration()) {
+            break;
+        }
+    }
+
+    finalize_unrolled_loop(node, parent, block);
     return ret;
 }
 
-int VariableFolding::execute_call(AST::Node::Ptr node, AST::Node::Ptr parent)
+int VariableFolding::execute_call(AST::Node::Ptr node)
 {
     AST::Node::ListPtr args;
 
@@ -629,7 +606,7 @@ AST::Node::Ptr VariableFolding::analyze_rvalue(AST::Rvalue::Ptr rvalue)
     return expr;
 }
 
-std::string VariableFolding::analyze_lvalue(AST::Lvalue::Ptr lvalue)
+std::string VariableFolding::fold_lvalue_indices(AST::Lvalue::Ptr lvalue)
 {
     const auto &var = lvalue->get_var();
 

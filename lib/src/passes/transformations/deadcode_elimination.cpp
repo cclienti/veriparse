@@ -18,7 +18,7 @@
 namespace
 {
 
-// Workaround
+/// Render a set for diagnostics (the log stream cannot format std::set directly).
 template <class T> std::string print_set(const std::set<T> &set)
 {
     std::stringstream ss;
@@ -45,24 +45,6 @@ namespace Passes
 {
 namespace Transformations
 {
-
-// boost::log::formatting_ostream& operator<<(boost::log::formatting_ostream& os,
-//                                            const DeadcodeElimination::DSet &set)
-// {
-// 	auto it = set.cbegin();
-// 	auto it_end = set.cend();
-// 	if (it == it_end) {
-// 		return os;
-// 	}
-// 	while (1) {
-// 		os << *it;
-// 		if(++it != it_end)
-// 			os << ", ";
-// 		else
-// 			break;
-// 	}
-// 	return os;
-// }
 
 void DeadcodeElimination::remove_after_jump(AST::Node::Ptr node)
 {
