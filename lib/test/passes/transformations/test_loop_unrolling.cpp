@@ -60,6 +60,10 @@ TEST(PassesTransformation_LoopUnrolling, loop_unrolling3) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat0) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat3) { TEST_CORE; }
+// A for loop nested inside a repeat: the inner unroll replaces the iteration
+// block's statement list, and the repeat must splice the replaced list — not a
+// stale pre-recursion pointer that still holds the un-unrolled loop.
+TEST(PassesTransformation_LoopUnrolling, loop_unrolling_repeat_nested0) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, scope0) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, scope1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, scope2) { TEST_CORE; }
