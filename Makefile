@@ -44,6 +44,9 @@ NUM_CORES            = $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/nul
 CTEST_PARALLEL_LEVEL ?= $(NUM_CORES)
 MAMBA                = micromamba
 DEV_BUILD_DIR        = build
+COVERAGE_BUILD_DIR   = build-coverage
+# ctest -L filter used by the coverage target
+COVERAGE_CTEST_LABELS ?= unittest
 REPO_ROOT            = $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # CTest label filter for dev-test (unittest, cosim, or regex)
@@ -66,6 +69,7 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  grep -vE '# *\[(win|build_platform.startswith\("win-"\))\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
 	@echo "  - verilator"             >> conda/environment.yml
+	@echo "  - gcovr"                 >> conda/environment.yml
 
 dev-env: dev-env-file
 	set -e; \
@@ -96,6 +100,24 @@ dev-test-cosim: dev-build
 	$(DEV_RUN) env CTEST_PARALLEL_LEVEL=$(CTEST_PARALLEL_LEVEL) VERIPARSE_SOURCE_ROOT=$(REPO_ROOT) \
 	  ctest --test-dir $(DEV_BUILD_DIR) -L 'cosim'
 
+# Coverage uses its own build directory (separate CMAKE_BUILD_TYPE=Coverage
+# config: -O0 + --coverage, no -Werror/-O3) so it never clobbers build/.
+dev-cmake-coverage:
+	$(DEV_RUN) cmake -G Ninja \
+	      -S $(REPO_ROOT) -B $(COVERAGE_BUILD_DIR) \
+	      -DCMAKE_PREFIX_PATH=$(CONDA_DEV_ENV_PATH) \
+	      -DCMAKE_BUILD_TYPE=Coverage \
+	      -DCOVERAGE_CTEST_LABELS=$(COVERAGE_CTEST_LABELS) \
+	      -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
+	      -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
+	      -DCMAKE_INSTALL_PREFIX=$(HOME)/veriparse
+
+# Builds + runs `ctest -L $(COVERAGE_CTEST_LABELS)` + emits a gcovr HTML
+# report and terminal summary under $(COVERAGE_BUILD_DIR)/coverage/.
+dev-coverage: dev-cmake-coverage
+	$(DEV_RUN) cmake --build $(COVERAGE_BUILD_DIR)
+	$(DEV_RUN) cmake --build $(COVERAGE_BUILD_DIR) --target coverage
+
 # Paths that astgen.py (re)writes from lib/tools/ASTGen/verilog_ast.yaml.
 AST_GEN_PATHS = lib/include/veriparse/AST lib/src/AST \
                 lib/include/veriparse/generators lib/src/generators \
@@ -117,7 +139,7 @@ ast-check: ast-gen
 
 dev-clean:
 	-$(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
-	rm -rf $(DEV_BUILD_DIR)
+	rm -rf $(DEV_BUILD_DIR) $(COVERAGE_BUILD_DIR)
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -168,6 +190,8 @@ help:
 	@echo "  dev-build    Build the project in the dev environment"
 	@echo "  dev-test              Run unittest tests (override with CTEST_LABELS=...)"
 	@echo "  dev-test-cosim        Run verilator-based cosim tests"
+	@echo "  dev-coverage          Build+run tests and generate a gcovr coverage report"
+	@echo "                        (override with COVERAGE_CTEST_LABELS=..., default unittest)"
 	@echo "  ast-gen               Regenerate the C++ AST from verilog_ast.yaml (clang-format)"
 	@echo "  ast-check             Fail if the committed generated AST is stale vs the yaml"
 	@echo "  dev-clean             Remove build directory and dev conda environment"
