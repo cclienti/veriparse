@@ -94,15 +94,14 @@ private:
      *
      * @return zero on success
      */
-    virtual int execute_variable_decl(AST::Var::Ptr var, AST::Node::Ptr parent);
+    virtual int execute_variable_decl(AST::Var::Ptr var);
 
     /**
      * @brief Walk through a blocking substitution.
      *
      * @return zero on success
      */
-    virtual int execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst,
-                                              AST::Node::Ptr parent);
+    virtual int execute_blocking_substitution(AST::BlockingSubstitution::Ptr subst);
 
     /**
      * @brief Walk through a if statement.
@@ -118,7 +117,7 @@ private:
      *
      * @return zero on success
      */
-    virtual int execute_return(AST::Return::Ptr node, AST::Node::Ptr parent);
+    virtual int execute_return(AST::Return::Ptr node);
 
     /**
      * @brief Execute one unrolled loop iteration's body into @p block, appending
@@ -159,6 +158,24 @@ private:
     bool stop_after_iteration();
 
     /**
+     * @brief Check the unroll cap before an iteration; past it the interpreter
+     * gives up (§3.1.1) so the loop is left intact.
+     *
+     * @return true if the cap is reached and the loop must be abandoned
+     */
+    bool loop_cap_reached(unsigned long iteration, const AST::Node::Ptr &node);
+
+    /**
+     * @brief Fold a loop-control expression (condition or repeat count) to a
+     * constant. When it does not fold, the interpreter gives up (§3.1.1) — @p what
+     * names the expression in the diagnostic.
+     *
+     * @return the constant, or nullptr when the expression did not fold
+     */
+    AST::IntConstN::Ptr analyze_loop_constant(const AST::Node::Ptr &expr,
+                                              const AST::Node::Ptr &node, const char *what);
+
+    /**
      * @brief Walk through a for statement.
      *
      * @return zero on success
@@ -180,11 +197,13 @@ private:
     virtual int execute_repeat(AST::RepeatStatement::Ptr repeatstmt, AST::Node::Ptr parent);
 
     /**
-     * @brief Walk through a repeat statement.
+     * @brief Walk through a call statement: fold its arguments, and give up
+     * (§3.1.1) on a task or parse-time-unresolved call, whose side effects are not
+     * modeled.
      *
      * @return zero on success
      */
-    virtual int execute_call(AST::Node::Ptr call, AST::Node::Ptr parent);
+    virtual int execute_call(AST::Node::Ptr call);
 
     /**
      * @brief Resolve the rvalue using the variables
@@ -196,12 +215,12 @@ private:
     virtual AST::Node::Ptr analyze_rvalue(AST::Rvalue::Ptr rvalue);
 
     /**
-     * @brief Return the lvalue string, if there is a verilog pointer, try to resolve it
-     * using the current variables states.
+     * @brief Resolve in place the indices of a pointer/part-select lvalue using
+     * the current variable states, then constant-fold them.
      *
-     * @return lvalue string
+     * @return the rendered lvalue (diagnostics only)
      */
-    virtual std::string analyze_lvalue(AST::Lvalue::Ptr lvalue);
+    virtual std::string fold_lvalue_indices(AST::Lvalue::Ptr lvalue);
 
     /**
      * @brief Resolve the expression using the variables
