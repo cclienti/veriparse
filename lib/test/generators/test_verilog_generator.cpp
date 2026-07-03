@@ -264,6 +264,8 @@ TEST(VerilogGeneratorTest, sv_interface_lifetime0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_interface_empty0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_modport0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_modport1) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface_port0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface_port1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import_header0) { TEST_CORE_SV; }
