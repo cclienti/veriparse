@@ -249,6 +249,26 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"interface"   {
+                  if(m_sv_mode) return token::TK_INTERFACE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"endinterface" {
+                  if(m_sv_mode) return token::TK_ENDINTERFACE;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"modport"     {
+                  if(m_sv_mode) return token::TK_MODPORT;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
+"virtual"     {
+                  if(m_sv_mode) return token::TK_VIRTUAL;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 
 
 	/**************************************************
