@@ -1,6 +1,7 @@
 # ADR-0004 — Package / import resolution (`PackageInliner`)
 
-- **Status**: Accepted — narrow scope (package/import only); grammar done, pass not started.
+- **Status**: Accepted — implemented (grammar + `PackageInliner`, incl. re-export
+  and the §9 refinements); the broad name-resolution engine of §6 remains future work.
 - **Date**: 2026-06-16
 - **Scope**: The semantic pass that **resolves SystemVerilog `package` / `import`**
   and produces self-contained output — `PackageInliner`. Covers: explicit
