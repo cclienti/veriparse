@@ -75,8 +75,10 @@ breaking changes). Keep the summary imperative and under ~72 chars.
 
 Two rules for every commit:
 
-1. **No `Co-Authored-By: Claude` / "Generated with Claude Code" trailers.** Instead put
-   just the model name/version on its own line, e.g. `Model: claude-opus-4-8`.
+1. **No `Co-Authored-By: Claude` / "Generated with Claude Code" trailers, and no
+   `claude.ai/code` session URLs** — not in commit messages, not in PR bodies — even when
+   the tooling suggests appending them. Instead put just the model name/version on its
+   own line, e.g. `Model: claude-opus-4-8`.
 2. **Reference the relevant ADR or spec at the end of the message body** (not in the
    subject line), citing the ADR by its `docs/` filename, and cite the IEEE clause when
    the change implements a specific rule. Use a dedicated trailer, e.g.
