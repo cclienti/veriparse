@@ -1,0 +1,137 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface_port1.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface_port1.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_interface_port1.sv
+          line: 1
+          name: sv_interface_port1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port1.sv
+              line: 1
+              name: hs0
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 1
+                  is_var: false
+                  direction: NONE
+                  name: hs0
+                  default_value: null
+                  type:
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 1
+                      name: handshake_if
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port1.sv
+              line: 1
+              name: hs1
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 1
+                  is_var: false
+                  direction: NONE
+                  name: hs1
+                  default_value: null
+                  type:
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 1
+                      name: handshake_if
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port1.sv
+              line: 1
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 1
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port1.sv
+              line: 1
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 1
+                      signing: NONE
+              expr: null
+          items:
+          - Assign:
+              filename: ../../test/parser/testcases/sv_interface_port1.sv
+              line: 3
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 3
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 3
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_interface_port1.sv
+                  line: 3
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_interface_port1.sv
+                      line: 3
+                      name: clk
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

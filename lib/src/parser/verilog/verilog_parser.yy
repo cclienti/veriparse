@@ -138,6 +138,7 @@ struct port_info_t {
 	 std::string name;
 	 std::string type_name;    // user-defined type name (typedef); empty if built-in
 	 std::string type_package; // package scope of the type (pkg::); empty if local
+	 std::string modport;      // modport suffix of an interface port (my_if.mp); empty if none
 	 location loc;
 	 bool has_data_type = false; // true when the port type is a data_type below
 	 data_type_t data_type{};    // bit/atom/non-integer/struct/union/enum port type
@@ -275,6 +276,13 @@ AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, s
 AST::Port::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
                                          const std::string &type_package, const std::string &name,
                                          const std::string &filename="", uint32_t line=0);
+
+// Directionless named-type port (`my_if i`, `my_if.mp i`, ADR-0002): a Port with
+// no direction wrapping an Arg. With a modport the type is decisive
+// (InterfaceType); bare it stays a NamedType promoted by the resolution pass.
+AST::Port::Ptr create_interface_port(const std::string &type_name, const std::string &type_package,
+                                     const std::string &modport, const std::string &name,
+                                     const std::string &filename="", uint32_t line=0);
 
 AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
                                      const std::string &name,
@@ -1274,6 +1282,21 @@ portname:       TK_IDENTIFIER
                     $$.name = $3;
                     $$.type_name = $2;
                     $$.type_package = $1;
+                }
+
+        |       TK_IDENTIFIER TK_DOT TK_IDENTIFIER TK_IDENTIFIER
+                {
+                    // modport-qualified interface port: `my_if.mp name`. The
+                    // `.modport` suffix is interface-only syntax, so this form is
+                    // decisive at parse time (ADR-0002) and yields an
+                    // InterfaceType directly.
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::NONE;
+                    $$.widths = nullptr;
+                    $$.name = $4;
+                    $$.type_name = $1;
+                    $$.modport = $3;
                 }
         ;
 
@@ -6016,6 +6039,29 @@ namespace Veriparse {
                 return port;
             }
 
+            AST::Port::Ptr create_interface_port(const std::string &type_name,
+                                                 const std::string &type_package,
+                                                 const std::string &modport,
+                                                 const std::string &name,
+                                                 const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(AST::Port::DirectionEnum::NONE);
+                auto arg = std::make_shared<AST::Arg>(filename, line);
+                arg->set_name(name);
+                arg->set_direction(AST::Arg::DirectionEnum::NONE);
+                if(!modport.empty()) {
+                    auto type = std::make_shared<AST::InterfaceType>(filename, line);
+                    type->set_name(type_name);
+                    type->set_modport(modport);
+                    arg->set_type(type);
+                } else {
+                    arg->set_type(make_named_type(type_name, type_package, filename, line));
+                }
+                port->set_decl(arg);
+                return port;
+            }
+
             AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
                                                  const std::string &name,
                                                  const std::string &filename, uint32_t line) {
@@ -6083,6 +6129,7 @@ namespace Veriparse {
                 AST::Dimension::ListPtr last_widths(nullptr);
                 std::string last_type_name;
                 std::string last_type_package;
+                std::string last_modport;
                 bool last_has_data_type = false;
                 data_type_t last_data_type{};
 
@@ -6092,7 +6139,8 @@ namespace Veriparse {
                     return node_list;
                 }
 
-                if (port_list.front().direction == direction_t::NONE) {
+                if (port_list.front().direction == direction_t::NONE &&
+                    port_list.front().type_name.empty()) {
                     // name-only ports (non-ANSI header references)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
@@ -6116,12 +6164,28 @@ namespace Veriparse {
                         signing_t signing;
                         std::string type_name;
                         std::string type_package;
+                        std::string modport;
                         bool has_data_type;
                         data_type_t data_type;
 
-                        if (pinfo.direction == direction_t::NONE) {
+                        if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty()) {
+                            // Directionless named-type port (`my_if i`,
+                            // `my_if.mp i`): an interface port, or a named-type
+                            // port left for the resolution pass (ADR-0002/
+                            // ADR-0003 §4.4). Starts a fresh inheritance group.
+                            dir = direction_t::NONE;
+                            net_type = net_type_t::NONE;
+                            widths = nullptr;
+                            signing = signing_t::NONE;
+                            type_name = pinfo.type_name;
+                            type_package = pinfo.type_package;
+                            modport = pinfo.modport;
+                            has_data_type = false;
+                            data_type = data_type_t{};
+                        }
+                        else if (pinfo.direction == direction_t::NONE) {
                             if ((pinfo.net_type != net_type_t::NONE) || (pinfo.signing != signing_t::NONE) ||
-                                (pinfo.widths) || (!pinfo.type_name.empty()) || (pinfo.has_data_type)) {
+                                (pinfo.widths) || (pinfo.has_data_type)) {
                                 loc = pinfo.loc;
                                 error_message = std::string("missing port direction qualifier");
                                 return nullptr;
@@ -6132,6 +6196,7 @@ namespace Veriparse {
                             signing = last_signing;
                             type_name = last_type_name;
                             type_package = last_type_package;
+                            modport = last_modport;
                             has_data_type = last_has_data_type;
                             data_type = last_data_type;
                         }
@@ -6142,6 +6207,7 @@ namespace Veriparse {
                             signing = pinfo.signing;
                             type_name = pinfo.type_name;
                             type_package = pinfo.type_package;
+                            modport = pinfo.modport;
                             has_data_type = pinfo.has_data_type;
                             data_type = pinfo.data_type;
                         }
@@ -6149,7 +6215,11 @@ namespace Veriparse {
                         if (widths) widths = AST::Dimension::clone_list(widths);
 
                         AST::Port::Ptr iop;
-                        if (has_data_type && net_type != net_type_t::NONE) {
+                        if (dir == direction_t::NONE && !type_name.empty()) {
+                            iop = create_interface_port(type_name, type_package, modport, pinfo.name,
+                                                        filename, pinfo.loc.begin.line);
+                        }
+                        else if (has_data_type && net_type != net_type_t::NONE) {
                             iop = create_net_data_type_port(dir, net_type, data_type, pinfo.name,
                                                             filename, pinfo.loc.begin.line);
                         }
@@ -6172,6 +6242,7 @@ namespace Veriparse {
                         last_signing = signing;
                         last_type_name = type_name;
                         last_type_package = type_package;
+                        last_modport = modport;
                         last_has_data_type = has_data_type;
                         last_data_type = data_type;
                     }
