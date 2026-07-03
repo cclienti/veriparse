@@ -1,0 +1,77 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_interface0.sv
+          line: 1
+          name: sv_interface0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: valid
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface0.sv
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ready
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface0.sv
+                  line: 4
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface0.sv
+                  line: 5
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface0.sv
+                      line: 5
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0

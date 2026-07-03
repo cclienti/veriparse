@@ -1,0 +1,14 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface_empty0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface_empty0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_interface_empty0.sv
+          line: 1
+          name: sv_interface_empty0
+          lifetime: NONE
+          default_nettype: WIRE

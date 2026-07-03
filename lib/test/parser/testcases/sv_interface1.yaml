@@ -1,0 +1,194 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface1.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface1.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_interface1.sv
+          line: 1
+          name: sv_interface1
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 2
+              is_local: false
+              name: WIDTH
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 2
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 2
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 2
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 3
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 3
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 3
+              name: rst_n
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: rst_n
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 3
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 5
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 5
+                      left:
+                        Minus:
+                          filename: ../../test/parser/testcases/sv_interface1.sv
+                          line: 5
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_interface1.sv
+                              line: 5
+                              name: WIDTH
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_interface1.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface1.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: valid
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 6
+                  signing: NONE
+          - Assign:
+              filename: ../../test/parser/testcases/sv_interface1.sv
+              line: 8
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 8
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 8
+                      name: data
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_interface1.sv
+                  line: 8
+                  var:
+                    Repeat:
+                      filename: ../../test/parser/testcases/sv_interface1.sv
+                      line: 8
+                      value:
+                        Concat:
+                          filename: ../../test/parser/testcases/sv_interface1.sv
+                          line: 8
+                          list:
+                          - Identifier:
+                              filename: ../../test/parser/testcases/sv_interface1.sv
+                              line: 8
+                              name: valid
+                              hier:
+                                HierName: null
+                      times:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_interface1.sv
+                          line: 8
+                          name: WIDTH
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
