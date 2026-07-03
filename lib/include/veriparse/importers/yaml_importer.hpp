@@ -30,6 +30,9 @@ private:
     AST::Node::Ptr convert_pragma(const YAML::Node node) const;
     AST::Node::Ptr convert_module(const YAML::Node node) const;
     AST::Node::Ptr convert_port(const YAML::Node node) const;
+    AST::Node::Ptr convert_interface(const YAML::Node node) const;
+    AST::Node::Ptr convert_modport(const YAML::Node node) const;
+    AST::Node::Ptr convert_modportport(const YAML::Node node) const;
     AST::Node::Ptr convert_package(const YAML::Node node) const;
     AST::Node::Ptr convert_import(const YAML::Node node) const;
     AST::Node::Ptr convert_export(const YAML::Node node) const;
@@ -66,6 +69,7 @@ private:
     AST::Node::Ptr convert_enumitem(const YAML::Node node) const;
     AST::Node::Ptr convert_typeopexpr(const YAML::Node node) const;
     AST::Node::Ptr convert_typeoptype(const YAML::Node node) const;
+    AST::Node::Ptr convert_interfacetype(const YAML::Node node) const;
     AST::Node::Ptr convert_dimension(const YAML::Node node) const;
     AST::Node::Ptr convert_rangedim(const YAML::Node node) const;
     AST::Node::Ptr convert_sizedim(const YAML::Node node) const;
@@ -183,6 +187,7 @@ private:
     AST::Node::Ptr convert_delaystatement(const YAML::Node node) const;
     AST::Node::Ptr convert_instancelist(const YAML::Node node) const;
     AST::Node::Ptr convert_instance(const YAML::Node node) const;
+    AST::Node::Ptr convert_interfaceinstance(const YAML::Node node) const;
     AST::Node::Ptr convert_paramarg(const YAML::Node node) const;
     AST::Node::Ptr convert_portarg(const YAML::Node node) const;
     AST::Node::Ptr convert_function(const YAML::Node node) const;

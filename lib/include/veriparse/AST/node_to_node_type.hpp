@@ -20,6 +20,9 @@ template <> constexpr NodeType get_node_type<Pragmalist>() { return NodeType::Pr
 template <> constexpr NodeType get_node_type<Pragma>() { return NodeType::Pragma; }
 template <> constexpr NodeType get_node_type<Module>() { return NodeType::Module; }
 template <> constexpr NodeType get_node_type<Port>() { return NodeType::Port; }
+template <> constexpr NodeType get_node_type<Interface>() { return NodeType::Interface; }
+template <> constexpr NodeType get_node_type<Modport>() { return NodeType::Modport; }
+template <> constexpr NodeType get_node_type<ModportPort>() { return NodeType::ModportPort; }
 template <> constexpr NodeType get_node_type<Package>() { return NodeType::Package; }
 template <> constexpr NodeType get_node_type<Import>() { return NodeType::Import; }
 template <> constexpr NodeType get_node_type<Export>() { return NodeType::Export; }
@@ -56,6 +59,7 @@ template <> constexpr NodeType get_node_type<EnumType>() { return NodeType::Enum
 template <> constexpr NodeType get_node_type<EnumItem>() { return NodeType::EnumItem; }
 template <> constexpr NodeType get_node_type<TypeOpExpr>() { return NodeType::TypeOpExpr; }
 template <> constexpr NodeType get_node_type<TypeOpType>() { return NodeType::TypeOpType; }
+template <> constexpr NodeType get_node_type<InterfaceType>() { return NodeType::InterfaceType; }
 template <> constexpr NodeType get_node_type<Dimension>() { return NodeType::Dimension; }
 template <> constexpr NodeType get_node_type<RangeDim>() { return NodeType::RangeDim; }
 template <> constexpr NodeType get_node_type<SizeDim>() { return NodeType::SizeDim; }
@@ -206,6 +210,10 @@ template <> constexpr NodeType get_node_type<ForeverStatement>()
 template <> constexpr NodeType get_node_type<DelayStatement>() { return NodeType::DelayStatement; }
 template <> constexpr NodeType get_node_type<Instancelist>() { return NodeType::Instancelist; }
 template <> constexpr NodeType get_node_type<Instance>() { return NodeType::Instance; }
+template <> constexpr NodeType get_node_type<InterfaceInstance>()
+{
+    return NodeType::InterfaceInstance;
+}
 template <> constexpr NodeType get_node_type<ParamArg>() { return NodeType::ParamArg; }
 template <> constexpr NodeType get_node_type<PortArg>() { return NodeType::PortArg; }
 template <> constexpr NodeType get_node_type<Function>() { return NodeType::Function; }

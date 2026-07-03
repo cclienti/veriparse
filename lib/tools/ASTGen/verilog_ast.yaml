@@ -19,10 +19,11 @@
 # fabricated Logic). A resolution pass turns ImplicitType/NamedType into a
 # concrete type.
 #
-# NOTE (phased, ADR-0001 §10): module-like definitions (Interface/Class/Program),
-# their DataType variants (InterfaceType/ClassType/CovergroupType), Modport and
-# Constraint are part of the model but are added when their grammar is wired up —
-# additively, no redesign. `NetTypeDecl` (user-defined nettype) is realized now in
+# NOTE (phased, ADR-0001 §10): module-like definitions (Class/Program), their
+# DataType variants (ClassType/CovergroupType) and Constraint are part of the
+# model but are added when their grammar is wired up — additively, no redesign.
+# The interface family (Interface/Modport/ModportPort/InterfaceType/
+# InterfaceInstance) is realized per ADR-0002. `NetTypeDecl` (user-defined nettype) is realized now in
 # this schema (ADR-0001 §8/§10); only its grammar is wired up later. The value-side
 # scope migration is DONE: Identifier — and Call/FunctionCall/TaskCall, which now
 # inherit it — carry `scope: list(ScopeName)` for the SV `::` axis and `hier` for
@@ -86,6 +87,41 @@ Port:
   children:
     decl: Declaration
     expr: Node
+
+# An interface definition (`interface … endinterface`, IEEE 1800-2017 §25) —
+# module-like (ADR-0002 §2.1): params, header ports and a body of items, same
+# shape as Module so body-walking passes traverse interfaces unchanged. Modport
+# nodes live in `items` (a modport is a body item, §25.5).
+Interface:
+  properties:
+    name: "std::string"
+    # Interface default lifetime (`interface automatic i;`). NONE = unspecified (static).
+    lifetime: enum(NONE, AUTOMATIC, STATIC)
+    # `default_nettype directive in effect (interfaces may declare nets).
+    default_nettype: enum(WIRE, TRI, TRI0, TRI1, TRIAND, TRIOR, TRIREG, WAND, WOR, UWIRE, SUPPLY0, SUPPLY1, NONE)
+  children:
+    # #(...) parameter ports: Param | TypeParam (both Declaration).
+    params: list(Declaration)
+    ports: list(Port)
+    items: list(Node)
+
+# A named direction view inside an interface (`modport mp(input a, output b);`,
+# §25.5) — ADR-0002 §2.2. Core = simple modport ports only; modport expressions
+# (§25.5.4) and import/export of subroutines (§25.5/§25.7) are deferred,
+# additively (ADR-0002 §7).
+Modport:
+  properties:
+    name: "std::string"
+  children:
+    ports: list(ModportPort)
+
+# One `direction name` entry of a modport: `name` is a signal declared in the
+# enclosing interface.
+ModportPort:
+  properties:
+    name: "std::string"
+    direction: enum(INPUT, OUTPUT, INOUT, REF)
+  children:
 
 Package:
   properties:
@@ -286,6 +322,22 @@ TypeOpType:
   inherit: DataType
   children:
     type: DataType
+
+# "of interface `name`" — the type form of an interface (ADR-0002 §2.3;
+# §25.4/§25.9): a modport-qualified port (`module m(my_if.mp i)`), a virtual
+# interface variable (`virtual my_if v;`), optionally parameterized
+# (`virtual my_if#(8) v;` — `params` is the #(...) value assignment). Emitted by
+# the parser ONLY where the syntax is decisive (a `.modport` suffix or the
+# `virtual` keyword); a bare `module m(my_if i)` port parses as NamedType and is
+# promoted by the interface-resolution pass (ADR-0003 §4.4).
+InterfaceType:
+  inherit: DataType
+  properties:
+    name: "std::string"
+    modport: "std::string" # restricting modport, "" if none
+    is_virtual: bool       # the `virtual` keyword (§25.9)
+  children:
+    params: list(ParamArg)
 
 #####################################################################
 # Dimensions (node per form) — ADR-0001 §3.8. Replaces Width / Length.
@@ -774,6 +826,14 @@ Instance:
     array: Dimension # instance-array range (was Length)
     parameterlist: list(ParamArg)
     portlist: list(PortArg)
+
+# An instance whose target is KNOWN to be an interface (ADR-0002 §2.4). IEEE
+# §25.3 gives interface instantiation the same module_instantiation syntax as a
+# module, so the parser always emits the neutral Instance; the
+# interface-resolution pass re-tags it to InterfaceInstance (a pure tag, like
+# FunctionCall/TaskCall over Call — rendering is identical, so it round-trips).
+InterfaceInstance:
+  inherit: Instance
 
 ParamArg:
   properties:

@@ -10,6 +10,9 @@
 #include <veriparse/AST/pragma.hpp>
 #include <veriparse/AST/module.hpp>
 #include <veriparse/AST/port.hpp>
+#include <veriparse/AST/interface.hpp>
+#include <veriparse/AST/modport.hpp>
+#include <veriparse/AST/modportport.hpp>
 #include <veriparse/AST/package.hpp>
 #include <veriparse/AST/import.hpp>
 #include <veriparse/AST/export.hpp>
@@ -46,6 +49,7 @@
 #include <veriparse/AST/enumitem.hpp>
 #include <veriparse/AST/typeopexpr.hpp>
 #include <veriparse/AST/typeoptype.hpp>
+#include <veriparse/AST/interfacetype.hpp>
 #include <veriparse/AST/dimension.hpp>
 #include <veriparse/AST/rangedim.hpp>
 #include <veriparse/AST/sizedim.hpp>
@@ -163,6 +167,7 @@
 #include <veriparse/AST/delaystatement.hpp>
 #include <veriparse/AST/instancelist.hpp>
 #include <veriparse/AST/instance.hpp>
+#include <veriparse/AST/interfaceinstance.hpp>
 #include <veriparse/AST/paramarg.hpp>
 #include <veriparse/AST/portarg.hpp>
 #include <veriparse/AST/function.hpp>

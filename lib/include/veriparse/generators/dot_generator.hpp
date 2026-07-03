@@ -23,6 +23,9 @@ private:
     virtual std::string render_pragma(const AST::Pragma::Ptr node) const;
     virtual std::string render_module(const AST::Module::Ptr node) const;
     virtual std::string render_port(const AST::Port::Ptr node) const;
+    virtual std::string render_interface(const AST::Interface::Ptr node) const;
+    virtual std::string render_modport(const AST::Modport::Ptr node) const;
+    virtual std::string render_modportport(const AST::ModportPort::Ptr node) const;
     virtual std::string render_package(const AST::Package::Ptr node) const;
     virtual std::string render_import(const AST::Import::Ptr node) const;
     virtual std::string render_export(const AST::Export::Ptr node) const;
@@ -59,6 +62,7 @@ private:
     virtual std::string render_enumitem(const AST::EnumItem::Ptr node) const;
     virtual std::string render_typeopexpr(const AST::TypeOpExpr::Ptr node) const;
     virtual std::string render_typeoptype(const AST::TypeOpType::Ptr node) const;
+    virtual std::string render_interfacetype(const AST::InterfaceType::Ptr node) const;
     virtual std::string render_dimension(const AST::Dimension::Ptr node) const;
     virtual std::string render_rangedim(const AST::RangeDim::Ptr node) const;
     virtual std::string render_sizedim(const AST::SizeDim::Ptr node) const;
@@ -181,6 +185,7 @@ private:
     virtual std::string render_delaystatement(const AST::DelayStatement::Ptr node) const;
     virtual std::string render_instancelist(const AST::Instancelist::Ptr node) const;
     virtual std::string render_instance(const AST::Instance::Ptr node) const;
+    virtual std::string render_interfaceinstance(const AST::InterfaceInstance::Ptr node) const;
     virtual std::string render_paramarg(const AST::ParamArg::Ptr node) const;
     virtual std::string render_portarg(const AST::PortArg::Ptr node) const;
     virtual std::string render_function(const AST::Function::Ptr node) const;

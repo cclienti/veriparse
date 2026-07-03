@@ -29,6 +29,15 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
     case NodeType::Port:
         os << static_cast<const AST::Port &>(p);
         break;
+    case NodeType::Interface:
+        os << static_cast<const AST::Interface &>(p);
+        break;
+    case NodeType::Modport:
+        os << static_cast<const AST::Modport &>(p);
+        break;
+    case NodeType::ModportPort:
+        os << static_cast<const AST::ModportPort &>(p);
+        break;
     case NodeType::Package:
         os << static_cast<const AST::Package &>(p);
         break;
@@ -136,6 +145,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
         break;
     case NodeType::TypeOpType:
         os << static_cast<const AST::TypeOpType &>(p);
+        break;
+    case NodeType::InterfaceType:
+        os << static_cast<const AST::InterfaceType &>(p);
         break;
     case NodeType::Dimension:
         os << static_cast<const AST::Dimension &>(p);
@@ -487,6 +499,9 @@ std::ostream &operator<<(std::ostream &os, const Node &p)
         break;
     case NodeType::Instance:
         os << static_cast<const AST::Instance &>(p);
+        break;
+    case NodeType::InterfaceInstance:
+        os << static_cast<const AST::InterfaceInstance &>(p);
         break;
     case NodeType::ParamArg:
         os << static_cast<const AST::ParamArg &>(p);

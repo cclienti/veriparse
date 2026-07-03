@@ -200,6 +200,80 @@ TEST(YAMLImporter, Port)
                 AST::Port::DirectionEnum::INOUT);
 }
 
+TEST(YAMLImporter, Interface)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Interface.log");
+    Logger::add_stderr_sink();
+    std::string str("Interface:\n"
+                    "  filename: interface.v\n"
+                    "  line: 9\n"
+                    "  params:\n"
+                    "  ports:\n"
+                    "  items:\n"
+                    "  name: mynbiqpmzj\n"
+                    "  lifetime: AUTOMATIC\n"
+                    "  default_nettype: TRIOR\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Interface"]);
+    ASSERT_TRUE(yaml["Interface"]["filename"].as<std::string>() == "interface.v");
+    ASSERT_TRUE(yaml["Interface"]["line"].as<int>() == 9);
+    ASSERT_TRUE(yaml["Interface"]["params"]);
+    ASSERT_TRUE(yaml["Interface"]["ports"]);
+    ASSERT_TRUE(yaml["Interface"]["items"]);
+    ASSERT_TRUE(yaml["Interface"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["Interface"]["lifetime"].as<AST::Interface::LifetimeEnum>() ==
+                AST::Interface::LifetimeEnum::AUTOMATIC);
+    ASSERT_TRUE(yaml["Interface"]["default_nettype"].as<AST::Interface::Default_nettypeEnum>() ==
+                AST::Interface::Default_nettypeEnum::TRIOR);
+}
+
+TEST(YAMLImporter, Modport)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.Modport.log");
+    Logger::add_stderr_sink();
+    std::string str("Modport:\n"
+                    "  filename: modport.v\n"
+                    "  line: 7\n"
+                    "  ports:\n"
+                    "  name: mynbiqpmzj\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["Modport"]);
+    ASSERT_TRUE(yaml["Modport"]["filename"].as<std::string>() == "modport.v");
+    ASSERT_TRUE(yaml["Modport"]["line"].as<int>() == 7);
+    ASSERT_TRUE(yaml["Modport"]["ports"]);
+    ASSERT_TRUE(yaml["Modport"]["name"].as<std::string>() == "mynbiqpmzj");
+}
+
+TEST(YAMLImporter, ModportPort)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.ModportPort.log");
+    Logger::add_stderr_sink();
+    std::string str("ModportPort:\n"
+                    "  filename: modportport.v\n"
+                    "  line: 11\n"
+                    "  name: mynbiqpmzj\n"
+                    "  direction: REF\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["ModportPort"]);
+    ASSERT_TRUE(yaml["ModportPort"]["filename"].as<std::string>() == "modportport.v");
+    ASSERT_TRUE(yaml["ModportPort"]["line"].as<int>() == 11);
+    ASSERT_TRUE(yaml["ModportPort"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["ModportPort"]["direction"].as<AST::ModportPort::DirectionEnum>() ==
+                AST::ModportPort::DirectionEnum::REF);
+}
+
 TEST(YAMLImporter, Package)
 {
     Logger::remove_all_sinks();
@@ -1005,6 +1079,36 @@ TEST(YAMLImporter, TypeOpType)
     ASSERT_TRUE(yaml["TypeOpType"]["packed_dims"]);
     ASSERT_TRUE(yaml["TypeOpType"]["signing"].as<AST::DataType::SigningEnum>() ==
                 AST::DataType::SigningEnum::SIGNED);
+}
+
+TEST(YAMLImporter, InterfaceType)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.InterfaceType.log");
+    Logger::add_stderr_sink();
+    std::string str("InterfaceType:\n"
+                    "  filename: interfacetype.v\n"
+                    "  line: 13\n"
+                    "  params:\n"
+                    "  packed_dims:\n"
+                    "  name: mynbiqpmzj\n"
+                    "  modport: plsgqejeyd\n"
+                    "  is_virtual: false\n"
+                    "  signing: UNSIGNED\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["InterfaceType"]);
+    ASSERT_TRUE(yaml["InterfaceType"]["filename"].as<std::string>() == "interfacetype.v");
+    ASSERT_TRUE(yaml["InterfaceType"]["line"].as<int>() == 13);
+    ASSERT_TRUE(yaml["InterfaceType"]["params"]);
+    ASSERT_TRUE(yaml["InterfaceType"]["packed_dims"]);
+    ASSERT_TRUE(yaml["InterfaceType"]["name"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["InterfaceType"]["modport"].as<std::string>() == "plsgqejeyd");
+    ASSERT_TRUE(yaml["InterfaceType"]["is_virtual"].as<bool>() == false);
+    ASSERT_TRUE(yaml["InterfaceType"]["signing"].as<AST::DataType::SigningEnum>() ==
+                AST::DataType::SigningEnum::UNSIGNED);
 }
 
 TEST(YAMLImporter, Dimension)
@@ -3705,6 +3809,33 @@ TEST(YAMLImporter, Instance)
     ASSERT_TRUE(yaml["Instance"]["portlist"]);
     ASSERT_TRUE(yaml["Instance"]["module"].as<std::string>() == "mynbiqpmzj");
     ASSERT_TRUE(yaml["Instance"]["name"].as<std::string>() == "plsgqejeyd");
+}
+
+TEST(YAMLImporter, InterfaceInstance)
+{
+    Logger::remove_all_sinks();
+    Logger::add_text_sink("YAMLImporter.InterfaceInstance.log");
+    Logger::add_stderr_sink();
+    std::string str("InterfaceInstance:\n"
+                    "  filename: interfaceinstance.v\n"
+                    "  line: 17\n"
+                    "  array:\n"
+                    "  parameterlist:\n"
+                    "  portlist:\n"
+                    "  module: mynbiqpmzj\n"
+                    "  name: plsgqejeyd\n");
+
+    AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
+    YAML::Node yaml = Generators::YAMLGenerator().render(ast);
+
+    ASSERT_TRUE(yaml["InterfaceInstance"]);
+    ASSERT_TRUE(yaml["InterfaceInstance"]["filename"].as<std::string>() == "interfaceinstance.v");
+    ASSERT_TRUE(yaml["InterfaceInstance"]["line"].as<int>() == 17);
+    ASSERT_TRUE(yaml["InterfaceInstance"]["array"]);
+    ASSERT_TRUE(yaml["InterfaceInstance"]["parameterlist"]);
+    ASSERT_TRUE(yaml["InterfaceInstance"]["portlist"]);
+    ASSERT_TRUE(yaml["InterfaceInstance"]["module"].as<std::string>() == "mynbiqpmzj");
+    ASSERT_TRUE(yaml["InterfaceInstance"]["name"].as<std::string>() == "plsgqejeyd");
 }
 
 TEST(YAMLImporter, ParamArg)

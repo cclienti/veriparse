@@ -73,6 +73,15 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         if(node["Port"]) {
             return convert_port(node["Port"]);
         }
+        if(node["Interface"]) {
+            return convert_interface(node["Interface"]);
+        }
+        if(node["Modport"]) {
+            return convert_modport(node["Modport"]);
+        }
+        if(node["ModportPort"]) {
+            return convert_modportport(node["ModportPort"]);
+        }
         if(node["Package"]) {
             return convert_package(node["Package"]);
         }
@@ -180,6 +189,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         }
         if(node["TypeOpType"]) {
             return convert_typeoptype(node["TypeOpType"]);
+        }
+        if(node["InterfaceType"]) {
+            return convert_interfacetype(node["InterfaceType"]);
         }
         if(node["Dimension"]) {
             return convert_dimension(node["Dimension"]);
@@ -531,6 +543,9 @@ AST::Node::Ptr YAMLImporter::convert(const YAML::Node node) const
         }
         if(node["Instance"]) {
             return convert_instance(node["Instance"]);
+        }
+        if(node["InterfaceInstance"]) {
+            return convert_interfaceinstance(node["InterfaceInstance"]);
         }
         if(node["ParamArg"]) {
             return convert_paramarg(node["ParamArg"]);
@@ -1025,6 +1040,255 @@ AST::Node::Ptr YAMLImporter::convert_port(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Port>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_interface(const YAML::Node node) const
+{
+    AST::Interface::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Interface>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Interface>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Interface>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+        // Manage property lifetime
+        if(node["lifetime"]) {
+            if(node["lifetime"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Interface>();
+                }
+                result->set_lifetime(node["lifetime"].as<AST::Interface::LifetimeEnum>());
+            }
+        }
+        // Manage property default_nettype
+        if(node["default_nettype"]) {
+            if(node["default_nettype"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Interface>();
+                }
+                result->set_default_nettype(
+                    node["default_nettype"].as<AST::Interface::Default_nettypeEnum>());
+            }
+        }
+
+        // Manage Child params
+        if(node["params"]) {
+            const YAML::Node node_params = node["params"];
+            // Fill the list of children
+            AST::Declaration::ListPtr params_list(new AST::Declaration::List);
+            if(node_params.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_params.begin(); it != node_params.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Declaration::Ptr child_cast = AST::cast_to<AST::Declaration>(child);
+                        params_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_params);
+                if(child) {
+                    AST::Declaration::Ptr child_cast = AST::cast_to<AST::Declaration>(child);
+                    params_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Interface>();
+            }
+            result->set_params(params_list);
+        }
+
+        // Manage Child ports
+        if(node["ports"]) {
+            const YAML::Node node_ports = node["ports"];
+            // Fill the list of children
+            AST::Port::ListPtr ports_list(new AST::Port::List);
+            if(node_ports.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_ports.begin(); it != node_ports.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Port::Ptr child_cast = AST::cast_to<AST::Port>(child);
+                        ports_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_ports);
+                if(child) {
+                    AST::Port::Ptr child_cast = AST::cast_to<AST::Port>(child);
+                    ports_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Interface>();
+            }
+            result->set_ports(ports_list);
+        }
+
+        // Manage Child items
+        if(node["items"]) {
+            const YAML::Node node_items = node["items"];
+            // Fill the list of children
+            AST::Node::ListPtr items_list(new AST::Node::List);
+            if(node_items.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_items.begin(); it != node_items.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        items_list->push_back(child);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_items);
+                if(child) {
+                    items_list->push_back(child);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Interface>();
+            }
+            result->set_items(items_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Interface>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_modport(const YAML::Node node) const
+{
+    AST::Modport::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Modport>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::Modport>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::Modport>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child ports
+        if(node["ports"]) {
+            const YAML::Node node_ports = node["ports"];
+            // Fill the list of children
+            AST::ModportPort::ListPtr ports_list(new AST::ModportPort::List);
+            if(node_ports.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_ports.begin(); it != node_ports.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ModportPort::Ptr child_cast = AST::cast_to<AST::ModportPort>(child);
+                        ports_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_ports);
+                if(child) {
+                    AST::ModportPort::Ptr child_cast = AST::cast_to<AST::ModportPort>(child);
+                    ports_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Modport>();
+            }
+            result->set_ports(ports_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::Modport>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_modportport(const YAML::Node node) const
+{
+    AST::ModportPort::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::ModportPort>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::ModportPort>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::ModportPort>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+        // Manage property direction
+        if(node["direction"]) {
+            if(node["direction"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::ModportPort>();
+                }
+                result->set_direction(node["direction"].as<AST::ModportPort::DirectionEnum>());
+            }
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::ModportPort>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_package(const YAML::Node node) const
@@ -3453,6 +3717,129 @@ AST::Node::Ptr YAMLImporter::convert_typeoptype(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::TypeOpType>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_interfacetype(const YAML::Node node) const
+{
+    AST::InterfaceType::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+        // Manage property modport
+        if(node["modport"]) {
+            if(node["modport"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_modport(node["modport"].as<std::string>());
+            }
+        }
+        // Manage property is_virtual
+        if(node["is_virtual"]) {
+            if(node["is_virtual"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_is_virtual(node["is_virtual"].as<bool>());
+            }
+        }
+        // Manage property signing
+        if(node["signing"]) {
+            if(node["signing"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceType>();
+                }
+                result->set_signing(node["signing"].as<AST::DataType::SigningEnum>());
+            }
+        }
+
+        // Manage Child params
+        if(node["params"]) {
+            const YAML::Node node_params = node["params"];
+            // Fill the list of children
+            AST::ParamArg::ListPtr params_list(new AST::ParamArg::List);
+            if(node_params.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_params.begin(); it != node_params.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
+                        params_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_params);
+                if(child) {
+                    AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
+                    params_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::InterfaceType>();
+            }
+            result->set_params(params_list);
+        }
+
+        // Manage Child packed_dims
+        if(node["packed_dims"]) {
+            const YAML::Node node_packed_dims = node["packed_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr packed_dims_list(new AST::Dimension::List);
+            if(node_packed_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_packed_dims.begin();
+                    it != node_packed_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        packed_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_packed_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    packed_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::InterfaceType>();
+            }
+            result->set_packed_dims(packed_dims_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::InterfaceType>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_dimension(const YAML::Node node) const
@@ -11500,6 +11887,124 @@ AST::Node::Ptr YAMLImporter::convert_instance(const YAML::Node node) const
 
     // Return the result
     return AST::cast_to<AST::Instance>(result);
+}
+
+AST::Node::Ptr YAMLImporter::convert_interfaceinstance(const YAML::Node node) const
+{
+    AST::InterfaceInstance::Ptr result;
+    if(node.IsMap()) {
+        if(node["filename"]) {
+            if(node["filename"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceInstance>();
+                }
+                result->set_filename(node["filename"].as<std::string>());
+            }
+        }
+        if(node["line"]) {
+            if(node["line"].IsScalar()) {
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceInstance>();
+                }
+                result->set_line(node["line"].as<int>());
+            }
+        }
+        // Manage property module
+        if(node["module"]) {
+            if(node["module"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceInstance>();
+                }
+                result->set_module(node["module"].as<std::string>());
+            }
+        }
+        // Manage property name
+        if(node["name"]) {
+            if(node["name"].IsScalar()) {
+
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceInstance>();
+                }
+                result->set_name(node["name"].as<std::string>());
+            }
+        }
+
+        // Manage Child array
+        if(node["array"]) {
+            const YAML::Node node_array = node["array"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_array);
+            if(child) {
+                AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                if(!result) {
+                    result = std::make_shared<AST::InterfaceInstance>();
+                }
+                result->set_array(child_cast);
+            }
+        }
+
+        // Manage Child parameterlist
+        if(node["parameterlist"]) {
+            const YAML::Node node_parameterlist = node["parameterlist"];
+            // Fill the list of children
+            AST::ParamArg::ListPtr parameterlist_list(new AST::ParamArg::List);
+            if(node_parameterlist.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_parameterlist.begin();
+                    it != node_parameterlist.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
+                        parameterlist_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_parameterlist);
+                if(child) {
+                    AST::ParamArg::Ptr child_cast = AST::cast_to<AST::ParamArg>(child);
+                    parameterlist_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::InterfaceInstance>();
+            }
+            result->set_parameterlist(parameterlist_list);
+        }
+
+        // Manage Child portlist
+        if(node["portlist"]) {
+            const YAML::Node node_portlist = node["portlist"];
+            // Fill the list of children
+            AST::PortArg::ListPtr portlist_list(new AST::PortArg::List);
+            if(node_portlist.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_portlist.begin(); it != node_portlist.end();
+                    ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::PortArg::Ptr child_cast = AST::cast_to<AST::PortArg>(child);
+                        portlist_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_portlist);
+                if(child) {
+                    AST::PortArg::Ptr child_cast = AST::cast_to<AST::PortArg>(child);
+                    portlist_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::InterfaceInstance>();
+            }
+            result->set_portlist(portlist_list);
+        }
+    }
+
+    // Return the result
+    return AST::cast_to<AST::InterfaceInstance>(result);
 }
 
 AST::Node::Ptr YAMLImporter::convert_paramarg(const YAML::Node node) const
