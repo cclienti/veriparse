@@ -224,6 +224,10 @@ AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
 // Upcast a Param list to a Declaration list (Module.params child).
 AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in);
 
+// Map the scanner's `default_nettype (an AST::Module enum) onto the identical
+// AST::Interface enum.
+AST::Interface::Default_nettypeEnum to_interface_nettype(AST::Module::Default_nettypeEnum nt);
+
 // Build a net declaration node (WireNet/TriNet/Supply0Net/Supply1Net) carrying
 // the given data type, name, unpacked dims, continuous assign and delays.
 AST::Net::Ptr create_net_type(const decl_name_t &decl, net_type_t nt, AST::DataType::Ptr type,
@@ -488,6 +492,8 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 definitions
 %type   <AST::Node::Ptr>                     definition
 %type   <AST::Module::Ptr>                   moduledef
+%type   <AST::Interface::Ptr>                interfacedef
+%type   <AST::Interface::LifetimeEnum>       interface_lifetime
 %type   <AST::Package::Ptr>                  packagedef
 %type   <AST::Node::ListPtr>                 module_imports
 %type   <AST::Node::ListPtr>                 import_decl import_list export_decl
@@ -714,6 +720,11 @@ definition:     moduledef
                 }
 
         |       packagedef
+                {
+                    $$ = AST::to_node($1);
+                }
+
+        |       interfacedef
                 {
                     $$ = AST::to_node($1);
                 }
@@ -952,6 +963,84 @@ modulename:     TK_IDENTIFIER
                 }
 
         |       TK_SENS_OR { $$ = "or"; }
+        ;
+
+
+        // Interface definition (IEEE 1800-2017 §25.3) — module-like: same
+        // header shape (imports, #(params), ports) and the module item grammar
+        // for the body, so an interface body is traversed exactly like a module
+        // body. Modports are body items (§25.5).
+interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports params_block ports_block items endinterface_tail
+                {
+                    $7->splice($7->begin(), *$4);
+                    $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
+                    $$->set_name($3);
+                    $$->set_lifetime($2);
+                    $$->set_params(ParserHelpers::to_decl_list($5));
+                    $$->set_ports($6);
+                    $$->set_items($7);
+                }
+
+        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports ports_block items endinterface_tail
+                {
+                    $6->splice($6->begin(), *$4);
+                    $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
+                    $$->set_name($3);
+                    $$->set_lifetime($2);
+                    $$->set_ports($5);
+                    $$->set_items($6);
+                }
+
+        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports params_block ports_block endinterface_tail
+                {
+                    $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
+                    $$->set_name($3);
+                    $$->set_lifetime($2);
+                    $$->set_params(ParserHelpers::to_decl_list($5));
+                    $$->set_ports($6);
+                    if (!$4->empty()) $$->set_items($4);
+                }
+
+        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports ports_block endinterface_tail
+                {
+                    $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
+                    $$->set_name($3);
+                    $$->set_lifetime($2);
+                    $$->set_ports($5);
+                    if (!$4->empty()) $$->set_items($4);
+                }
+        ;
+
+
+// Optional interface lifetime, same model as package_lifetime: NONE
+// (unspecified, i.e. static), AUTOMATIC or STATIC; stored so it round-trips.
+interface_lifetime:
+                %empty
+                {
+                    $$ = AST::Interface::LifetimeEnum::NONE;
+                }
+
+        |       TK_AUTOMATIC
+                {
+                    $$ = AST::Interface::LifetimeEnum::AUTOMATIC;
+                }
+
+        |       TK_STATIC
+                {
+                    $$ = AST::Interface::LifetimeEnum::STATIC;
+                }
+        ;
+
+
+// The optional `endinterface : name` end label is accepted and dropped (same
+// treatment as the package end label).
+endinterface_tail:
+                TK_ENDINTERFACE
+        |       TK_ENDINTERFACE TK_COLON TK_IDENTIFIER
         ;
 
 
@@ -5616,6 +5705,28 @@ namespace Veriparse {
                 auto out = std::make_shared<AST::Declaration::List>();
                 for(const AST::Param::Ptr &p : *in) out->push_back(p);
                 return out;
+            }
+
+            AST::Interface::Default_nettypeEnum
+            to_interface_nettype(AST::Module::Default_nettypeEnum nt) {
+                using M = AST::Module::Default_nettypeEnum;
+                using I = AST::Interface::Default_nettypeEnum;
+                switch(nt) {
+                case M::WIRE:    return I::WIRE;
+                case M::TRI:     return I::TRI;
+                case M::TRI0:    return I::TRI0;
+                case M::TRI1:    return I::TRI1;
+                case M::TRIAND:  return I::TRIAND;
+                case M::TRIOR:   return I::TRIOR;
+                case M::TRIREG:  return I::TRIREG;
+                case M::WAND:    return I::WAND;
+                case M::WOR:     return I::WOR;
+                case M::UWIRE:   return I::UWIRE;
+                case M::SUPPLY0: return I::SUPPLY0;
+                case M::SUPPLY1: return I::SUPPLY1;
+                case M::NONE:    return I::NONE;
+                }
+                return I::NONE;
             }
 
             AST::NamedType::Ptr make_named_type(const std::string &name, const std::string &package,

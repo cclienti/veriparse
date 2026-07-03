@@ -1,0 +1,2 @@
+interface sv_interface_empty0;
+endinterface

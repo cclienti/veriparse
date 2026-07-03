@@ -258,6 +258,10 @@ TEST(VerilogGeneratorTest, sv_data_type_multiname0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_lifetime0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_package_empty0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface1) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface_lifetime0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_interface_empty0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import1) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_import_header0) { TEST_CORE_SV; }
