@@ -25,6 +25,12 @@ const char *NodeTypeToString(NodeType node_type)
         return "Module";
     case NodeType::Port:
         return "Port";
+    case NodeType::Interface:
+        return "Interface";
+    case NodeType::Modport:
+        return "Modport";
+    case NodeType::ModportPort:
+        return "ModportPort";
     case NodeType::Package:
         return "Package";
     case NodeType::Import:
@@ -97,6 +103,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "TypeOpExpr";
     case NodeType::TypeOpType:
         return "TypeOpType";
+    case NodeType::InterfaceType:
+        return "InterfaceType";
     case NodeType::Dimension:
         return "Dimension";
     case NodeType::RangeDim:
@@ -331,6 +339,8 @@ const char *NodeTypeToString(NodeType node_type)
         return "Instancelist";
     case NodeType::Instance:
         return "Instance";
+    case NodeType::InterfaceInstance:
+        return "InterfaceInstance";
     case NodeType::ParamArg:
         return "ParamArg";
     case NodeType::PortArg:

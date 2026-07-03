@@ -60,6 +60,15 @@ public:
             case AST::NodeType::Port:
                 return render_port(AST::cast_to<AST::Port>(node));
 
+            case AST::NodeType::Interface:
+                return render_interface(AST::cast_to<AST::Interface>(node));
+
+            case AST::NodeType::Modport:
+                return render_modport(AST::cast_to<AST::Modport>(node));
+
+            case AST::NodeType::ModportPort:
+                return render_modportport(AST::cast_to<AST::ModportPort>(node));
+
             case AST::NodeType::Package:
                 return render_package(AST::cast_to<AST::Package>(node));
 
@@ -167,6 +176,9 @@ public:
 
             case AST::NodeType::TypeOpType:
                 return render_typeoptype(AST::cast_to<AST::TypeOpType>(node));
+
+            case AST::NodeType::InterfaceType:
+                return render_interfacetype(AST::cast_to<AST::InterfaceType>(node));
 
             case AST::NodeType::Dimension:
                 return render_dimension(AST::cast_to<AST::Dimension>(node));
@@ -521,6 +533,9 @@ public:
             case AST::NodeType::Instance:
                 return render_instance(AST::cast_to<AST::Instance>(node));
 
+            case AST::NodeType::InterfaceInstance:
+                return render_interfaceinstance(AST::cast_to<AST::InterfaceInstance>(node));
+
             case AST::NodeType::ParamArg:
                 return render_paramarg(AST::cast_to<AST::ParamArg>(node));
 
@@ -624,6 +639,30 @@ public:
      * @see GeneratorBase::render_port(const AST::Port::Ptr &node)
      */
     T render(const AST::Port::Ptr node) const { return render_port(node); }
+
+    /**
+     * Main rendering method for the Interface node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_interface(const AST::Interface::Ptr &node)
+     */
+    T render(const AST::Interface::Ptr node) const { return render_interface(node); }
+
+    /**
+     * Main rendering method for the Modport node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_modport(const AST::Modport::Ptr &node)
+     */
+    T render(const AST::Modport::Ptr node) const { return render_modport(node); }
+
+    /**
+     * Main rendering method for the ModportPort node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_modportport(const AST::ModportPort::Ptr &node)
+     */
+    T render(const AST::ModportPort::Ptr node) const { return render_modportport(node); }
 
     /**
      * Main rendering method for the Package node, we
@@ -912,6 +951,14 @@ public:
      * @see GeneratorBase::render_typeoptype(const AST::TypeOpType::Ptr &node)
      */
     T render(const AST::TypeOpType::Ptr node) const { return render_typeoptype(node); }
+
+    /**
+     * Main rendering method for the InterfaceType node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_interfacetype(const AST::InterfaceType::Ptr &node)
+     */
+    T render(const AST::InterfaceType::Ptr node) const { return render_interfacetype(node); }
 
     /**
      * Main rendering method for the Dimension node, we
@@ -1876,6 +1923,17 @@ public:
     T render(const AST::Instance::Ptr node) const { return render_instance(node); }
 
     /**
+     * Main rendering method for the InterfaceInstance node, we
+     * dispatch directly to the right rendering method.
+     *
+     * @see GeneratorBase::render_interfaceinstance(const AST::InterfaceInstance::Ptr &node)
+     */
+    T render(const AST::InterfaceInstance::Ptr node) const
+    {
+        return render_interfaceinstance(node);
+    }
+
+    /**
      * Main rendering method for the ParamArg node, we
      * dispatch directly to the right rendering method.
      *
@@ -2048,6 +2106,24 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_port(const AST::Port::Ptr node) const { return T(); }
+
+    /**
+     * Render the Interface node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_interface(const AST::Interface::Ptr node) const { return T(); }
+
+    /**
+     * Render the Modport node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_modport(const AST::Modport::Ptr node) const { return T(); }
+
+    /**
+     * Render the ModportPort node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_modportport(const AST::ModportPort::Ptr node) const { return T(); }
 
     /**
      * Render the Package node. This method must be
@@ -2264,6 +2340,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_typeoptype(const AST::TypeOpType::Ptr node) const { return T(); }
+
+    /**
+     * Render the InterfaceType node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_interfacetype(const AST::InterfaceType::Ptr node) const { return T(); }
 
     /**
      * Render the Dimension node. This method must be
@@ -2984,6 +3066,12 @@ protected:
      * overloaded in a derived class to your needs.
      */
     virtual T render_instance(const AST::Instance::Ptr node) const { return T(); }
+
+    /**
+     * Render the InterfaceInstance node. This method must be
+     * overloaded in a derived class to your needs.
+     */
+    virtual T render_interfaceinstance(const AST::InterfaceInstance::Ptr node) const { return T(); }
 
     /**
      * Render the ParamArg node. This method must be

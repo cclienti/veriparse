@@ -214,6 +214,197 @@ template <> struct convert<Veriparse::AST::Port::DirectionEnum>
         return false;
     }
 };
+template <> struct convert<Veriparse::AST::Interface::LifetimeEnum>
+{
+    static Node encode(const Veriparse::AST::Interface::LifetimeEnum &rhs)
+    {
+        switch(rhs) {
+        case Veriparse::AST::Interface::LifetimeEnum::NONE:
+            return Node("NONE");
+        case Veriparse::AST::Interface::LifetimeEnum::AUTOMATIC:
+            return Node("AUTOMATIC");
+        default:
+            return Node("STATIC");
+        }
+    }
+
+    static bool decode(const Node &node, Veriparse::AST::Interface::LifetimeEnum &rhs)
+    {
+        if(!node.IsScalar()) {
+            return false;
+        }
+
+        if(node.as<std::string>() == "NONE") {
+            rhs = Veriparse::AST::Interface::LifetimeEnum::NONE;
+            return true;
+        }
+
+        if(node.as<std::string>() == "AUTOMATIC") {
+            rhs = Veriparse::AST::Interface::LifetimeEnum::AUTOMATIC;
+            return true;
+        }
+
+        if(node.as<std::string>() == "STATIC") {
+            rhs = Veriparse::AST::Interface::LifetimeEnum::STATIC;
+            return true;
+        }
+
+        return false;
+    }
+};
+template <> struct convert<Veriparse::AST::Interface::Default_nettypeEnum>
+{
+    static Node encode(const Veriparse::AST::Interface::Default_nettypeEnum &rhs)
+    {
+        switch(rhs) {
+        case Veriparse::AST::Interface::Default_nettypeEnum::WIRE:
+            return Node("WIRE");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI:
+            return Node("TRI");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI0:
+            return Node("TRI0");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI1:
+            return Node("TRI1");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIAND:
+            return Node("TRIAND");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIOR:
+            return Node("TRIOR");
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIREG:
+            return Node("TRIREG");
+        case Veriparse::AST::Interface::Default_nettypeEnum::WAND:
+            return Node("WAND");
+        case Veriparse::AST::Interface::Default_nettypeEnum::WOR:
+            return Node("WOR");
+        case Veriparse::AST::Interface::Default_nettypeEnum::UWIRE:
+            return Node("UWIRE");
+        case Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY0:
+            return Node("SUPPLY0");
+        case Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY1:
+            return Node("SUPPLY1");
+        default:
+            return Node("NONE");
+        }
+    }
+
+    static bool decode(const Node &node, Veriparse::AST::Interface::Default_nettypeEnum &rhs)
+    {
+        if(!node.IsScalar()) {
+            return false;
+        }
+
+        if(node.as<std::string>() == "WIRE") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::WIRE;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRI") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRI;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRI0") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRI0;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRI1") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRI1;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRIAND") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRIAND;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRIOR") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRIOR;
+            return true;
+        }
+
+        if(node.as<std::string>() == "TRIREG") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::TRIREG;
+            return true;
+        }
+
+        if(node.as<std::string>() == "WAND") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::WAND;
+            return true;
+        }
+
+        if(node.as<std::string>() == "WOR") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::WOR;
+            return true;
+        }
+
+        if(node.as<std::string>() == "UWIRE") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::UWIRE;
+            return true;
+        }
+
+        if(node.as<std::string>() == "SUPPLY0") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY0;
+            return true;
+        }
+
+        if(node.as<std::string>() == "SUPPLY1") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY1;
+            return true;
+        }
+
+        if(node.as<std::string>() == "NONE") {
+            rhs = Veriparse::AST::Interface::Default_nettypeEnum::NONE;
+            return true;
+        }
+
+        return false;
+    }
+};
+template <> struct convert<Veriparse::AST::ModportPort::DirectionEnum>
+{
+    static Node encode(const Veriparse::AST::ModportPort::DirectionEnum &rhs)
+    {
+        switch(rhs) {
+        case Veriparse::AST::ModportPort::DirectionEnum::INPUT:
+            return Node("INPUT");
+        case Veriparse::AST::ModportPort::DirectionEnum::OUTPUT:
+            return Node("OUTPUT");
+        case Veriparse::AST::ModportPort::DirectionEnum::INOUT:
+            return Node("INOUT");
+        default:
+            return Node("REF");
+        }
+    }
+
+    static bool decode(const Node &node, Veriparse::AST::ModportPort::DirectionEnum &rhs)
+    {
+        if(!node.IsScalar()) {
+            return false;
+        }
+
+        if(node.as<std::string>() == "INPUT") {
+            rhs = Veriparse::AST::ModportPort::DirectionEnum::INPUT;
+            return true;
+        }
+
+        if(node.as<std::string>() == "OUTPUT") {
+            rhs = Veriparse::AST::ModportPort::DirectionEnum::OUTPUT;
+            return true;
+        }
+
+        if(node.as<std::string>() == "INOUT") {
+            rhs = Veriparse::AST::ModportPort::DirectionEnum::INOUT;
+            return true;
+        }
+
+        if(node.as<std::string>() == "REF") {
+            rhs = Veriparse::AST::ModportPort::DirectionEnum::REF;
+            return true;
+        }
+
+        return false;
+    }
+};
 template <> struct convert<Veriparse::AST::Package::LifetimeEnum>
 {
     static Node encode(const Veriparse::AST::Package::LifetimeEnum &rhs)

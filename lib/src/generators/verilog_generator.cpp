@@ -145,6 +145,96 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::render_interface(const AST::Interface::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "interface ";
+        switch(node->get_lifetime()) {
+        case AST::Interface::LifetimeEnum::AUTOMATIC:
+            result += "automatic ";
+            break;
+        case AST::Interface::LifetimeEnum::STATIC:
+            result += "static ";
+            break;
+        default:
+            break;
+        }
+        result += StringUtils::escape(node->get_name());
+
+        int length = result.size();
+        const std::string params_str = parameters_list_to_string(node->get_params(), length + 1);
+        const std::string ports_str = ports_list_to_string(node->get_ports(), length + 1);
+
+        if(params_str.size() != 0) {
+            result += " ";
+            result.append(params_str);
+            if(ports_str.size() != 0) {
+                result += "\n" + std::string(length, ' ');
+            }
+        }
+
+        if(ports_str.size() != 0) {
+            result += " ";
+            result.append(ports_str);
+        }
+
+        result += ";\n\n";
+
+        const AST::Node::ListPtr items = node->get_items();
+        if(items) {
+            for(const AST::Node::Ptr &item : *items) {
+                if(item) {
+                    result.append(indent(render(item)) + "\n");
+                }
+            }
+        }
+
+        result += "\nendinterface\n";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_modport(const AST::Modport::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        result = "modport " + StringUtils::escape(node->get_name()) + " (";
+        const AST::ModportPort::ListPtr ports = node->get_ports();
+        if(ports) {
+            auto func = [&](const AST::ModportPort::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::ModportPort::Ptr n) { return render(n); };
+            result += StringUtils::join<AST::ModportPort::List, AST::ModportPort::Ptr>(*ports, func,
+                                                                                       func_last);
+        }
+        result += ");";
+    }
+    return result;
+}
+
+std::string VerilogGenerator::render_modportport(const AST::ModportPort::Ptr node) const
+{
+    std::string result;
+    if(node) {
+        switch(node->get_direction()) {
+        case AST::ModportPort::DirectionEnum::INPUT:
+            result = "input ";
+            break;
+        case AST::ModportPort::DirectionEnum::OUTPUT:
+            result = "output ";
+            break;
+        case AST::ModportPort::DirectionEnum::INOUT:
+            result = "inout ";
+            break;
+        case AST::ModportPort::DirectionEnum::REF:
+            result = "ref ";
+            break;
+        }
+        result += StringUtils::escape(node->get_name());
+    }
+    return result;
+}
+
 std::string VerilogGenerator::render_package(const AST::Package::Ptr node) const
 {
     std::string result;
@@ -487,6 +577,27 @@ std::string VerilogGenerator::data_type_to_string(const AST::DataType::Ptr type)
         result =
             "type(" + data_type_to_string(AST::cast_to<AST::TypeOpType>(type)->get_type()) + ")";
         break;
+    case AST::NodeType::InterfaceType: {
+        const auto t = AST::cast_to<AST::InterfaceType>(type);
+        if(t->get_is_virtual()) {
+            result = "virtual ";
+        }
+        result += StringUtils::escape(t->get_name());
+        const AST::ParamArg::ListPtr params = t->get_params();
+        if(params && !params->empty()) {
+            auto func = [&](const AST::ParamArg::Ptr n) { return render(n) + ", "; };
+            auto func_last = [&](const AST::ParamArg::Ptr n) { return render(n); };
+            result += "#(" +
+                      StringUtils::join<AST::ParamArg::List, AST::ParamArg::Ptr>(*params, func,
+                                                                                 func_last) +
+                      ")";
+        }
+        const std::string modport = t->get_modport();
+        if(!modport.empty()) {
+            result += "." + StringUtils::escape(modport);
+        }
+        break;
+    }
     default:
         break;
     }
@@ -588,6 +699,10 @@ std::string VerilogGenerator::render_typeopexpr(const AST::TypeOpExpr::Ptr node)
     return data_type_to_string(node);
 }
 std::string VerilogGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) const
+{
+    return data_type_to_string(node);
+}
+std::string VerilogGenerator::render_interfacetype(const AST::InterfaceType::Ptr node) const
 {
     return data_type_to_string(node);
 }
@@ -2068,6 +2183,13 @@ std::string VerilogGenerator::render_instance(const AST::Instance::Ptr node) con
         result += ")";
     }
     return result;
+}
+
+std::string VerilogGenerator::render_interfaceinstance(const AST::InterfaceInstance::Ptr node) const
+{
+    // A pure tag over Instance (ADR-0002 §2.4): rendering is identical, so the
+    // resolution-pass rewrite round-trips.
+    return render_instance(node);
 }
 
 std::string VerilogGenerator::render_paramarg(const AST::ParamArg::Ptr node) const

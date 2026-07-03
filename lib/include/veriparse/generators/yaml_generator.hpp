@@ -20,6 +20,9 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_pragma(const AST::Pragma::Ptr node) const;
     virtual YAML::Node render_module(const AST::Module::Ptr node) const;
     virtual YAML::Node render_port(const AST::Port::Ptr node) const;
+    virtual YAML::Node render_interface(const AST::Interface::Ptr node) const;
+    virtual YAML::Node render_modport(const AST::Modport::Ptr node) const;
+    virtual YAML::Node render_modportport(const AST::ModportPort::Ptr node) const;
     virtual YAML::Node render_package(const AST::Package::Ptr node) const;
     virtual YAML::Node render_import(const AST::Import::Ptr node) const;
     virtual YAML::Node render_export(const AST::Export::Ptr node) const;
@@ -56,6 +59,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_enumitem(const AST::EnumItem::Ptr node) const;
     virtual YAML::Node render_typeopexpr(const AST::TypeOpExpr::Ptr node) const;
     virtual YAML::Node render_typeoptype(const AST::TypeOpType::Ptr node) const;
+    virtual YAML::Node render_interfacetype(const AST::InterfaceType::Ptr node) const;
     virtual YAML::Node render_dimension(const AST::Dimension::Ptr node) const;
     virtual YAML::Node render_rangedim(const AST::RangeDim::Ptr node) const;
     virtual YAML::Node render_sizedim(const AST::SizeDim::Ptr node) const;
@@ -177,6 +181,7 @@ class YAMLGenerator : public GeneratorBase<YAML::Node>
     virtual YAML::Node render_delaystatement(const AST::DelayStatement::Ptr node) const;
     virtual YAML::Node render_instancelist(const AST::Instancelist::Ptr node) const;
     virtual YAML::Node render_instance(const AST::Instance::Ptr node) const;
+    virtual YAML::Node render_interfaceinstance(const AST::InterfaceInstance::Ptr node) const;
     virtual YAML::Node render_paramarg(const AST::ParamArg::Ptr node) const;
     virtual YAML::Node render_portarg(const AST::PortArg::Ptr node) const;
     virtual YAML::Node render_function(const AST::Function::Ptr node) const;

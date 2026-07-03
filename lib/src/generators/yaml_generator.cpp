@@ -244,6 +244,154 @@ YAML::Node YAMLGenerator::render_port(const AST::Port::Ptr node) const
     return node_port;
 }
 
+YAML::Node YAMLGenerator::render_interface(const AST::Interface::Ptr node) const
+{
+    YAML::Node node_interface;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Interface) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+        switch(node->get_lifetime()) {
+        case Veriparse::AST::Interface::LifetimeEnum::NONE:
+            content["lifetime"] = "NONE";
+            break;
+        case Veriparse::AST::Interface::LifetimeEnum::AUTOMATIC:
+            content["lifetime"] = "AUTOMATIC";
+            break;
+        default:
+            content["lifetime"] = "STATIC";
+        }
+        switch(node->get_default_nettype()) {
+        case Veriparse::AST::Interface::Default_nettypeEnum::WIRE:
+            content["default_nettype"] = "WIRE";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI:
+            content["default_nettype"] = "TRI";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI0:
+            content["default_nettype"] = "TRI0";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRI1:
+            content["default_nettype"] = "TRI1";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIAND:
+            content["default_nettype"] = "TRIAND";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIOR:
+            content["default_nettype"] = "TRIOR";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::TRIREG:
+            content["default_nettype"] = "TRIREG";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::WAND:
+            content["default_nettype"] = "WAND";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::WOR:
+            content["default_nettype"] = "WOR";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::UWIRE:
+            content["default_nettype"] = "UWIRE";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY0:
+            content["default_nettype"] = "SUPPLY0";
+            break;
+        case Veriparse::AST::Interface::Default_nettypeEnum::SUPPLY1:
+            content["default_nettype"] = "SUPPLY1";
+            break;
+        default:
+            content["default_nettype"] = "NONE";
+        }
+
+        if(node->get_params()) {
+            content["params"] = YAML::Load("[]");
+            for(const AST::Declaration::Ptr &n : *node->get_params()) {
+                content["params"].push_back(render(n));
+            }
+        }
+
+        if(node->get_ports()) {
+            content["ports"] = YAML::Load("[]");
+            for(const AST::Port::Ptr &n : *node->get_ports()) {
+                content["ports"].push_back(render(n));
+            }
+        }
+
+        if(node->get_items()) {
+            content["items"] = YAML::Load("[]");
+            for(const AST::Node::Ptr &n : *node->get_items()) {
+                content["items"].push_back(render(n));
+            }
+        }
+    }
+
+    node_interface["Interface"] = content;
+    return node_interface;
+}
+
+YAML::Node YAMLGenerator::render_modport(const AST::Modport::Ptr node) const
+{
+    YAML::Node node_modport;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::Modport) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+
+        if(node->get_ports()) {
+            content["ports"] = YAML::Load("[]");
+            for(const AST::ModportPort::Ptr &n : *node->get_ports()) {
+                content["ports"].push_back(render(n));
+            }
+        }
+    }
+
+    node_modport["Modport"] = content;
+    return node_modport;
+}
+
+YAML::Node YAMLGenerator::render_modportport(const AST::ModportPort::Ptr node) const
+{
+    YAML::Node node_modportport;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::ModportPort) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+        switch(node->get_direction()) {
+        case Veriparse::AST::ModportPort::DirectionEnum::INPUT:
+            content["direction"] = "INPUT";
+            break;
+        case Veriparse::AST::ModportPort::DirectionEnum::OUTPUT:
+            content["direction"] = "OUTPUT";
+            break;
+        case Veriparse::AST::ModportPort::DirectionEnum::INOUT:
+            content["direction"] = "INOUT";
+            break;
+        default:
+            content["direction"] = "REF";
+        }
+    }
+
+    node_modportport["ModportPort"] = content;
+    return node_modportport;
+}
+
 YAML::Node YAMLGenerator::render_package(const AST::Package::Ptr node) const
 {
     YAML::Node node_package;
@@ -1405,6 +1553,51 @@ YAML::Node YAMLGenerator::render_typeoptype(const AST::TypeOpType::Ptr node) con
 
     node_typeoptype["TypeOpType"] = content;
     return node_typeoptype;
+}
+
+YAML::Node YAMLGenerator::render_interfacetype(const AST::InterfaceType::Ptr node) const
+{
+    YAML::Node node_interfacetype;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::InterfaceType) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["name"] = node->get_name();
+        content["modport"] = node->get_modport();
+        content["is_virtual"] = node->get_is_virtual();
+        switch(node->get_signing()) {
+        case Veriparse::AST::InterfaceType::DataType::SigningEnum::NONE:
+            content["signing"] = "NONE";
+            break;
+        case Veriparse::AST::InterfaceType::DataType::SigningEnum::SIGNED:
+            content["signing"] = "SIGNED";
+            break;
+        default:
+            content["signing"] = "UNSIGNED";
+        }
+
+        if(node->get_params()) {
+            content["params"] = YAML::Load("[]");
+            for(const AST::ParamArg::Ptr &n : *node->get_params()) {
+                content["params"].push_back(render(n));
+            }
+        }
+
+        if(node->get_packed_dims()) {
+            content["packed_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_packed_dims()) {
+                content["packed_dims"].push_back(render(n));
+            }
+        }
+    }
+
+    node_interfacetype["InterfaceType"] = content;
+    return node_interfacetype;
 }
 
 YAML::Node YAMLGenerator::render_dimension(const AST::Dimension::Ptr node) const
@@ -4426,6 +4619,42 @@ YAML::Node YAMLGenerator::render_instance(const AST::Instance::Ptr node) const
 
     node_instance["Instance"] = content;
     return node_instance;
+}
+
+YAML::Node YAMLGenerator::render_interfaceinstance(const AST::InterfaceInstance::Ptr node) const
+{
+    YAML::Node node_interfaceinstance;
+    YAML::Node content;
+
+    if(node) {
+        if(node->get_node_type() != AST::NodeType::InterfaceInstance) {
+            return render(AST::cast_to<AST::Node>(node));
+        }
+
+        content["filename"] = node->get_filename();
+        content["line"] = node->get_line();
+        content["module"] = node->get_module();
+        content["name"] = node->get_name();
+
+        content["array"] = render(node->get_array());
+
+        if(node->get_parameterlist()) {
+            content["parameterlist"] = YAML::Load("[]");
+            for(const AST::ParamArg::Ptr &n : *node->get_parameterlist()) {
+                content["parameterlist"].push_back(render(n));
+            }
+        }
+
+        if(node->get_portlist()) {
+            content["portlist"] = YAML::Load("[]");
+            for(const AST::PortArg::Ptr &n : *node->get_portlist()) {
+                content["portlist"].push_back(render(n));
+            }
+        }
+    }
+
+    node_interfaceinstance["InterfaceInstance"] = content;
+    return node_interfaceinstance;
 }
 
 YAML::Node YAMLGenerator::render_paramarg(const AST::ParamArg::Ptr node) const
