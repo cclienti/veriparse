@@ -1,0 +1,236 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+          line: 1
+          name: bus_if
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 1
+              is_local: false
+              name: W
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 1
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 1
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 1
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 1
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 1
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 3
+                      left:
+                        Minus:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 3
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                              line: 3
+                              name: W
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+      - Module:
+          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+          line: 7
+          name: sv_interface_inst0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 7
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 7
+                      signing: NONE
+              expr: null
+          items:
+          - Instancelist:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 9
+              module: bus_if
+              parameterlist:
+              - ParamArg:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 9
+                  name: W
+                  value:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 9
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 16
+              instances:
+              - Instance:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 9
+                  module: bus_if
+                  name: u_bus
+                  array:
+                    Dimension: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 9
+                      name: W
+                      value:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 16
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 9
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 9
+                          name: clk
+                          hier:
+                            HierName: null
+          - Instancelist:
+              filename: ../../test/parser/testcases/sv_interface_inst0.sv
+              line: 10
+              module: bus_if
+              instances:
+              - Instance:
+                  filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                  line: 10
+                  module: bus_if
+                  name: u_arr
+                  array:
+                    RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 10
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  portlist:
+                  - PortArg:
+                      filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                      line: 10
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_interface_inst0.sv
+                          line: 10
+                          name: clk
+                          hier:
+                            HierName: null

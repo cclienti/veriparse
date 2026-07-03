@@ -1,6 +1,10 @@
 # ADR-0002 — SystemVerilog interfaces (definition, ports, modports, virtual)
 
-- **Status**: Accepted — core interface model; grammar phased (per ADR-0001 §8/§10).
+- **Status**: Accepted — **implemented** (nodes + scanner + the full §6 grammar
+  phasing, with parser/generator round-trip golden tests). The two deferred
+  resolutions (§3: instance kind, bare interface port) await the
+  interface-resolution pass (§5 / roadmap step 4), and the §7 features remain
+  out of scope.
 - **Date**: 2026-06-16
 - **Scope**: The **core** interface feature set — interface *definition*, interface
   *ports* on modules, *modports* (simple direction views), *modport-qualified*
