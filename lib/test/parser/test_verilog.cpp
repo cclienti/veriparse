@@ -283,6 +283,7 @@ TEST(VerilogParserTest, sv_modport0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_modport1) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_interface_port0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_interface_port1) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_virtual_iface0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_import0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_import1) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_import_header0) { TEST_CORE_SV; }
