@@ -228,6 +228,10 @@ AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in);
 // AST::Interface enum.
 AST::Interface::Default_nettypeEnum to_interface_nettype(AST::Module::Default_nettypeEnum nt);
 
+// Map a parsed port direction onto the ModportPort enum (a modport simple port
+// always carries an explicit keyword, so NONE cannot occur).
+AST::ModportPort::DirectionEnum to_modport_dir(direction_t d);
+
 // Build a net declaration node (WireNet/TriNet/Supply0Net/Supply1Net) carrying
 // the given data type, name, unpacked dims, continuous assign and delays.
 AST::Net::Ptr create_net_type(const decl_name_t &decl, net_type_t nt, AST::DataType::Ptr type,
@@ -494,6 +498,9 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Module::Ptr>                   moduledef
 %type   <AST::Interface::Ptr>                interfacedef
 %type   <AST::Interface::LifetimeEnum>       interface_lifetime
+%type   <AST::Node::ListPtr>                 modport_decl modport_items
+%type   <AST::Modport::Ptr>                  modport_item
+%type   <AST::ModportPort::ListPtr>          modport_port_list
 %type   <AST::Package::Ptr>                  packagedef
 %type   <AST::Node::ListPtr>                 module_imports
 %type   <AST::Node::ListPtr>                 import_decl import_list export_decl
@@ -1041,6 +1048,72 @@ interface_lifetime:
 endinterface_tail:
                 TK_ENDINTERFACE
         |       TK_ENDINTERFACE TK_COLON TK_IDENTIFIER
+        ;
+
+
+        // Modport declaration (IEEE 1800-2017 §25.5) — simple direction views
+        // only; modport expressions (§25.5.4) and subroutine import/export
+        // (§25.5/§25.7) are not parsed. `modport a (...), b (...);` declares
+        // one Modport per item.
+modport_decl:   TK_MODPORT modport_items TK_SEMICOLON
+                {
+                    $$ = $2;
+                }
+        ;
+
+
+modport_items:  modport_item
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       modport_items TK_COMMA modport_item
+                {
+                    $$ = $1;
+                    $$->push_back(AST::to_node($3));
+                }
+        ;
+
+
+modport_item:   TK_IDENTIFIER TK_LPARENTHESIS modport_port_list TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Modport>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_ports($3);
+                }
+        ;
+
+
+        // A direction distributes over the names that follow it
+        // (`input a, b, output c` -> a,b INPUT; c OUTPUT).
+modport_port_list:
+                portdir TK_IDENTIFIER
+                {
+                    auto port = std::make_shared<AST::ModportPort>(scanner.get_filename(), @2.begin.line);
+                    port->set_name($2);
+                    port->set_direction(ParserHelpers::to_modport_dir($1));
+                    $$ = std::make_shared<AST::ModportPort::List>();
+                    $$->push_back(port);
+                }
+
+        |       modport_port_list TK_COMMA portdir TK_IDENTIFIER
+                {
+                    auto port = std::make_shared<AST::ModportPort>(scanner.get_filename(), @4.begin.line);
+                    port->set_name($4);
+                    port->set_direction(ParserHelpers::to_modport_dir($3));
+                    $$ = $1;
+                    $$->push_back(port);
+                }
+
+        |       modport_port_list TK_COMMA TK_IDENTIFIER
+                {
+                    auto port = std::make_shared<AST::ModportPort>(scanner.get_filename(), @3.begin.line);
+                    port->set_name($3);
+                    port->set_direction($1->back()->get_direction());
+                    $$ = $1;
+                    $$->push_back(port);
+                }
         ;
 
 
@@ -1601,6 +1674,14 @@ standard_item_base:
 
         |       export_decl
                 {
+                    $$ = $1;
+                }
+
+        |       modport_decl
+                {
+                    // Only meaningful inside an interface body (§25.5); the
+                    // shared items grammar stays permissive and a modport in a
+                    // module body is a semantic check, not a parse error.
                     $$ = $1;
                 }
         ;
@@ -5705,6 +5786,14 @@ namespace Veriparse {
                 auto out = std::make_shared<AST::Declaration::List>();
                 for(const AST::Param::Ptr &p : *in) out->push_back(p);
                 return out;
+            }
+
+            AST::ModportPort::DirectionEnum to_modport_dir(direction_t d) {
+                switch(d) {
+                case direction_t::OUTPUT: return AST::ModportPort::DirectionEnum::OUTPUT;
+                case direction_t::INOUT:  return AST::ModportPort::DirectionEnum::INOUT;
+                default:                  return AST::ModportPort::DirectionEnum::INPUT;
+                }
             }
 
             AST::Interface::Default_nettypeEnum

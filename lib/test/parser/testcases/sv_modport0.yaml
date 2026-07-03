@@ -1,0 +1,117 @@
+Source:
+  filename: ../../test/parser/testcases/sv_modport0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_modport0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_modport0.sv
+          line: 1
+          name: sv_modport0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_modport0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: req
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 3
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_modport0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ack
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 4
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_modport0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 5
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_modport0.sv
+                      line: 5
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_modport0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_modport0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Modport:
+              filename: ../../test/parser/testcases/sv_modport0.sv
+              line: 7
+              name: master
+              ports:
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 7
+                  name: req
+                  direction: OUTPUT
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 7
+                  name: data
+                  direction: OUTPUT
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 7
+                  name: ack
+                  direction: INPUT
+          - Modport:
+              filename: ../../test/parser/testcases/sv_modport0.sv
+              line: 8
+              name: slave
+              ports:
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 8
+                  name: req
+                  direction: INPUT
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 8
+                  name: data
+                  direction: INPUT
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_modport0.sv
+                  line: 8
+                  name: ack
+                  direction: OUTPUT
