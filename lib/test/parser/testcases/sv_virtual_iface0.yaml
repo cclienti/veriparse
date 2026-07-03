@@ -1,0 +1,126 @@
+Source:
+  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+          line: 1
+          name: sv_virtual_iface0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v0
+              init:
+                Rvalue: null
+              type:
+                InterfaceType:
+                  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                  line: 3
+                  name: handshake_if
+                  modport: ''
+                  is_virtual: true
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v1
+              init:
+                Rvalue: null
+              type:
+                InterfaceType:
+                  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                  line: 4
+                  name: handshake_if
+                  modport: ''
+                  is_virtual: true
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v2
+              init:
+                Rvalue: null
+              type:
+                InterfaceType:
+                  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                  line: 5
+                  name: handshake_if
+                  modport: ''
+                  is_virtual: true
+                  signing: NONE
+                  params:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                      line: 5
+                      name: WIDTH
+                      value:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 8
+          - Var:
+              filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v3
+              init:
+                Rvalue: null
+              type:
+                InterfaceType:
+                  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                  line: 6
+                  name: handshake_if
+                  modport: master
+                  is_virtual: true
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: v4
+              init:
+                Rvalue: null
+              type:
+                InterfaceType:
+                  filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                  line: 7
+                  name: handshake_if
+                  modport: slave
+                  is_virtual: true
+                  signing: NONE
+                  params:
+                  - ParamArg:
+                      filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                      line: 7
+                      name: ''
+                      value:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_virtual_iface0.sv
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 8

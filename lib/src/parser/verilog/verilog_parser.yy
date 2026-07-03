@@ -53,7 +53,8 @@ enum class net_type_t {
 enum class data_type_kind_t {
 	 BIT, LOGIC, REG, BYTE, SHORTINT, INT, LONGINT, INTEGER,
 	 REAL, SHORTREAL, REALTIME, STRUCT, UNION, ENUM, NAMED,
-	 TYPEOP  // type(expr) / type(data_type): the prebuilt node lives in inline_def
+	 TYPEOP, // type(expr) / type(data_type): the prebuilt node lives in inline_def
+	 IFACE   // virtual interface type (§25.9): prebuilt InterfaceType in inline_def
 };
 
 // Explicit signing of a data_type (`signed`/`unsigned`/absent). Kept tri-state
@@ -509,6 +510,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 modport_decl modport_items
 %type   <AST::Modport::Ptr>                  modport_item
 %type   <AST::ModportPort::ListPtr>          modport_port_list
+%type   <std::string>                        virtual_iface_modport
 %type   <AST::Package::Ptr>                  packagedef
 %type   <AST::Node::ListPtr>                 module_imports
 %type   <AST::Node::ListPtr>                 import_decl import_list export_decl
@@ -2136,6 +2138,51 @@ data_type:      integer_vector_type signing packed_dimensions
                     auto t = std::make_shared<AST::TypeOpType>(scanner.get_filename(), @1.begin.line);
                     t->set_type(ParserHelpers::make_data_type($3, scanner.get_filename(), @1.begin.line));
                     $$ = data_type_t{data_type_kind_t::TYPEOP, signing_t::NONE, nullptr, nullptr, t};
+                }
+
+        |       TK_VIRTUAL virtual_iface_kw TK_IDENTIFIER virtual_iface_modport
+                {
+                    // virtual interface type (§25.9): `virtual` is interface-only
+                    // syntax, so the InterfaceType is decisive at parse time
+                    // (ADR-0002).
+                    auto t = std::make_shared<AST::InterfaceType>(scanner.get_filename(), @1.begin.line);
+                    t->set_name($3);
+                    t->set_is_virtual(true);
+                    t->set_modport($4);
+                    $$ = data_type_t{data_type_kind_t::IFACE, signing_t::NONE, nullptr, nullptr, t};
+                }
+
+        |       TK_VIRTUAL virtual_iface_kw TK_IDENTIFIER parameterlist virtual_iface_modport
+                {
+                    // parameterized virtual interface: `virtual my_if#(8) v;`.
+                    auto t = std::make_shared<AST::InterfaceType>(scanner.get_filename(), @1.begin.line);
+                    t->set_name($3);
+                    t->set_is_virtual(true);
+                    t->set_params($4);
+                    t->set_modport($5);
+                    $$ = data_type_t{data_type_kind_t::IFACE, signing_t::NONE, nullptr, nullptr, t};
+                }
+        ;
+
+
+// The optional `interface` keyword of a virtual interface type
+// (`virtual [ interface ] interface_identifier`, §25.9). Accepted and dropped.
+virtual_iface_kw:
+                %empty
+        |       TK_INTERFACE
+        ;
+
+
+// Optional restricting modport of a virtual interface type ("" if none).
+virtual_iface_modport:
+                %empty
+                {
+                    $$ = std::string();
+                }
+
+        |       TK_DOT TK_IDENTIFIER
+                {
+                    $$ = $2;
                 }
         ;
 
@@ -5885,6 +5932,7 @@ namespace Veriparse {
                 case data_type_kind_t::UNION:
                 case data_type_kind_t::ENUM:
                 case data_type_kind_t::TYPEOP:
+                case data_type_kind_t::IFACE:
                     type = dt.inline_def ? AST::cast_to<AST::DataType>(dt.inline_def->clone()) : nullptr;
                     break;
                 }
