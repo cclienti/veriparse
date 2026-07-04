@@ -1,7 +1,7 @@
 # ADR-0006 — Broad name-resolution pass (`NameResolution`)
 
-- **Status**: Accepted — design for roadmap step 4 (reviewed; implementation
-  phased per §7).
+- **Status**: Accepted — **implemented** (all §7 phases; the §8 items stay
+  deferred with their named future homes).
 - **Date**: 2026-07-04
 - **Scope**: The symbol-aware pass that resolves the parser deferrals catalogued in
   [ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md) by generalizing the
