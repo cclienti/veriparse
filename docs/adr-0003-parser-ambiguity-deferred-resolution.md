@@ -206,18 +206,14 @@ re-types it. Listed here so it is not mistaken for an open ambiguity.
 
 ---
 
-## 6. Known gap (statement calls)
+## 6. Known gap (statement calls) — CLOSED by ADR-0006
 
-The schema's design intent (§3.1) is that a **bare statement call is the neutral
-`Call`**. The grammar today still emits **`TaskCall`** in statement position
-(`task_call` rule). Consequences and the fix are local:
-
-- The neutral `AST::Call` node is currently **never constructed** by the parser.
-- A statement call to a *function* is mis-tagged `TaskCall` until a semantic pass
-  exists to correct it.
-- **Intended follow-up**: have the statement-call reduction build a neutral `Call`,
-  and let the symbol-aware pass promote `Call` → `TaskCall`/`FunctionCall`. Tracked
-  as part of the (not-yet-built) resolution pass.
+The schema's design intent (§3.1) — a **bare statement call is the neutral
+`Call`** — is now the grammar's behavior: every `task_call` production builds
+`Call`, and `NameResolution` (ADR-0006 §4.1) promotes it to
+`TaskCall`/`FunctionCall` from the callee's declared kind. Kept for the record:
+before the fix the grammar fabricated `TaskCall` in statement position, so a
+statement call to a function was silently mis-tagged.
 
 ---
 
@@ -225,15 +221,15 @@ The schema's design intent (§3.1) is that a **bare statement call is the neutra
 
 | # | Ambiguous source | Neutral / base node emitted | Resolves to | Why not syntactic | Resolving pass (status) | Refs |
 |---|---|---|---|---|---|---|
-| 3.1 | `f(args)` call | `Call` *(intended)* / `TaskCall` *(today, stmt pos)* | `FunctionCall` / `TaskCall` | task-vs-fn = declared kind, §13.4.1 | symbol-aware analysis *(TODO)* | `yaml:122-131`, `yy:5044-5071,5326-5366` |
-| 3.2 | `WIDTH'(x)` | `TypeCast{ NamedType }` | `SizeCast` | const-vs-type of `WIDTH` | identifier classifier *(TODO)* | `yaml:507-521`, `yy:3107-3123` |
-| 3.3 | `type(my_t)` | `TypeOpExpr` | `TypeOpType` | type-vs-expr of operand, §6.23 | symbol-aware analysis *(TODO)* | `yaml:269-277`, `yy:1911-1927` |
-| 3.4 | `my_if u(...)` instance | `Instance` (neutral) | `InterfaceInstance` | module-vs-iface = declared kind, §25.3 | interface-resolution *(TODO)* | ADR-0002 §2.4 |
+| 3.1 | `f(args)` call | `Call` | `FunctionCall` / `TaskCall` | task-vs-fn = declared kind, §13.4.1 | `NameResolution` *(done, ADR-0006 §4.1)* | `yaml:122-131` |
+| 3.2 | `WIDTH'(x)` | `TypeCast{ NamedType }` | `SizeCast` | const-vs-type of `WIDTH` | `NameResolution` *(done, ADR-0006 §4.4)* | `yaml:507-521` |
+| 3.3 | `type(my_t)` | `TypeOpExpr` | `TypeOpType` | type-vs-expr of operand, §6.23 | `NameResolution` *(done, ADR-0006 §4.5)* | `yaml:269-277` |
+| 3.4 | `my_if u(...)` instance | `Instance` (neutral) | `InterfaceInstance` | module-vs-iface = declared kind, §25.3 | `NameResolution` *(done, ADR-0006 §4.2)* | ADR-0002 §2.4 |
 | 4.1 | `var a` (no type kw) | `ImplicitType` | concrete `DataType` | context default, §6.8 | default resolution *(TODO)* | `yaml:203`, `yy:975-993` |
 | 4.2 | net, no net kw | `ImplicitNet` | concrete `Net` | `` `default_nettype `` | default resolution *(TODO)* | `yaml:382` |
-| 4.3 | `pkg::T`, `top.u1.sig` | `NamedType`/`Identifier` + `scope`/`hier` | bound type / signal | needs symbol table / elaboration | `PackageInliner` + elaboration *(TODO)* | `yaml:107-118,214-219`, `yy:2927-2935` |
-| 4.4 | `module m(my_if i)` port | `NamedType{my_if}` | `InterfaceType` | iface-vs-typedef = declared kind, §25.4 | interface-resolution *(TODO)* | ADR-0002 §2.3 |
-| 4.5 | unqualified `x` under `import pkg::*` | `Identifier{scope:[]}` | bound `pkg::x` | local-vs-import precedence, §26.4–26.6 | `PackageInliner` *(TODO)* | ADR-0004 |
+| 4.3 | `pkg::T`, `top.u1.sig` | `NamedType`/`Identifier` + `scope`/`hier` | bound type / signal | needs symbol table / elaboration | `::` `PackageInliner` *(done)*; `.` flatten-time (ADR-0006 §8) | `yaml:107-118,214-219` |
+| 4.4 | `module m(my_if i)` port | `NamedType{my_if}` | `InterfaceType` | iface-vs-typedef = declared kind, §25.4 | `NameResolution` *(done, ADR-0006 §4.2)* | ADR-0002 §2.3 |
+| 4.5 | unqualified `x` under `import pkg::*` | `Identifier{scope:[]}` | bound `pkg::x` | local-vs-import precedence, §26.4–26.6 | `PackageInliner` *(done)* | ADR-0004 |
 | 5 | `a[i]` / `a[m:l]` | `Pointer` / `Partselect` *(syntactic, no split)* | — | bit-vs-array is type-only, not an AST split | — | `yaml:535-557` |
 
 > **Principle restated**: the parser's job is to record *syntax faithfully*,
