@@ -66,6 +66,17 @@ Interface:
 `Modport` nodes live in `items` (a modport is a body item, §25.5). Same shape as
 `Module` so every pass that walks module bodies walks interface bodies unchanged.
 
+> **astgen limitation — the duplicated `default_nettype` enum.** astgen generates
+> enums **per node** (`AST::Module::Default_nettypeEnum`,
+> `AST::Interface::Default_nettypeEnum`); it has no shared/free-standing enum
+> support. So `Interface.default_nettype` re-declares the identical 13-value
+> net-type list, and the parser bridges the two with a hand-written switch
+> (`ParserHelpers::to_interface_nettype`). The three copies (Module schema,
+> Interface schema, bridge) must be kept in sync: a value added to only one
+> falls through the bridge to `NONE`. Low risk in practice — the IEEE net-type
+> keyword set is closed — but the honest fix is shared-enum support in astgen,
+> not a third workaround site.
+
 ### 2.2 `Modport` — a named direction view (§25.5)
 
 ADR-0001 §10: "a `name` + list of `(port, direction)`". Core = **simple** modport
@@ -151,6 +162,28 @@ here.)
 
 The two **deferred** rows are exactly the new ADR-0003 entries (§4 there).
 
+### 3.1 Bare-port deferral vs §23.2.2.3 direction inheritance (implemented nuance)
+
+The bare row above holds only where no ANSI direction is inheritable. IEEE
+1800-2017 §23.2.2.3 says a subsequent ANSI port with a data type but **no
+direction inherits the previous port's direction** — so in
+`module m(input logic a, my_t b)` the port `b` is a legal *directed* named-type
+port (`input my_t b`), and emitting the directionless `Arg` form there would
+silently drop the direction. `create_ports_decls` therefore splits on context:
+
+- **`.modport` written** → decisive `InterfaceType` port, always (interface
+  ports take no direction; the suffix cannot be a typedef port).
+- **Bare named type, no preceding direction** (first port, or following another
+  directionless typed port) → the deferred `Arg{ NamedType }` form of the table;
+  a bare name after such a port inherits the same form (`my_if i0, i1`).
+- **Bare named type after a directional port** → a normal named-type port with
+  the **inherited direction** (`Port{ dir, decl: ImplicitNet{ NamedType } }`).
+  If the name later resolves to an interface, the resolution pass rewrites it —
+  the `NamedType` is preserved, so no information is lost; this is the
+  conservative reading because the §23.2.2.3 inheritance rule is the
+  standard-mandated interpretation of the *typed-port* syntax, while the
+  interface reading remains recoverable.
+
 ---
 
 ## 4. Why the deferrals are unavoidable (not laziness)
@@ -183,6 +216,19 @@ go straight to `InterfaceType`.
   the `Interface` body shape = `Module` body shape (§2.1) so they require **no
   interface-specific code** to traverse an interface; only elaboration/flattening
   that *connects through* an interface needs new logic (out of scope here).
+
+### 5.1 Known permissiveness — modport placement is not enforced (deferred)
+
+Because the interface body reuses the shared module item grammar (§2.1), the
+grammar accepts a `modport` in **any** body that uses those items — including a
+plain `module`, where §25.5 forbids it (previously a parse error, since
+`modport` was not a keyword). This is the project's standard permissive-parser
+stance (cf. ADR-0005 §2.2/§3.6: placement rules are semantic checks, not
+grammar): rejecting it would mean forking the item grammar per container for
+one construct. **Deferred**: the §25.5 placement check ("modport only inside an
+interface") belongs to the future validation / interface-resolution pass
+(roadmap step 4), which must reject a `Modport` whose enclosing definition is
+not an `Interface`.
 
 ---
 
