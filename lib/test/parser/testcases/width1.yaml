@@ -443,7 +443,7 @@ Source:
                       line: 19
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../../test/parser/testcases/width1.v
                           line: 19
                           name: word

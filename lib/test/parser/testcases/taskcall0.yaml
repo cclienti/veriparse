@@ -342,7 +342,7 @@ Source:
                   line: 10
                   scope: ''
                   statement:
-                    TaskCall:
+                    Call:
                       filename: ../../test/parser/testcases/taskcall0.v
                       line: 10
                       name: mytask

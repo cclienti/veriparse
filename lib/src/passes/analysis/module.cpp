@@ -235,18 +235,18 @@ std::vector<std::string> Module::get_task_names(AST::Node::Ptr node)
         tasks, [](AST::Task::Ptr n) { return n->get_name(); });
 }
 
-AST::TaskCall::ListPtr Module::get_taskcall_nodes(AST::Node::Ptr node)
+AST::Call::ListPtr Module::get_call_nodes(AST::Node::Ptr node)
 {
-    AST::TaskCall::ListPtr list = std::make_shared<AST::TaskCall::List>();
-    get_node_list<AST::TaskCall>(node, AST::NodeType::TaskCall, list);
+    AST::Call::ListPtr list = std::make_shared<AST::Call::List>();
+    get_node_list_by_category<AST::Call>(node, AST::NodeType::Call, list);
     return list;
 }
 
-std::vector<std::string> Module::get_taskcall_names(AST::Node::Ptr node)
+std::vector<std::string> Module::get_call_names(AST::Node::Ptr node)
 {
-    AST::TaskCall::ListPtr taskcalls = get_taskcall_nodes(node);
-    return get_property_in_list<std::string, AST::TaskCall>(
-        taskcalls, [](AST::TaskCall::Ptr n) { return n->get_name(); });
+    AST::Call::ListPtr calls = get_call_nodes(node);
+    return get_property_in_list<std::string, AST::Call>(
+        calls, [](AST::Call::Ptr n) { return n->get_name(); });
 }
 
 AST::SystemCall::ListPtr Module::get_systemcall_nodes(AST::Node::Ptr node)

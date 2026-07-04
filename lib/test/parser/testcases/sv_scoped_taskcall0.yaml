@@ -27,7 +27,7 @@ Source:
                       line: 4
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                           line: 4
                           name: do_it
@@ -60,7 +60,7 @@ Source:
                       line: 5
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                           line: 5
                           name: reset
@@ -78,7 +78,7 @@ Source:
                       line: 6
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../../test/parser/testcases/sv_scoped_taskcall0.sv
                           line: 6
                           name: tick

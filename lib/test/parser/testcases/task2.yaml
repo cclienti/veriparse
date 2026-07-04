@@ -149,7 +149,7 @@ Source:
                               line: 8
                               scope: ''
                               statement:
-                                TaskCall:
+                                Call:
                                   filename: ../../test/parser/testcases/task2.v
                                   line: 8
                                   name: clogb2

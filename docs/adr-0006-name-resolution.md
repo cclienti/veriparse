@@ -118,9 +118,9 @@ concern.
 
 **Grammar change (part of this step):** the statement-position `task_call` rule
 (`verilog_parser.yy:5585`, used at `:5756`) stops fabricating `TaskCall` and
-builds the **neutral `Call`** the schema always intended — in **all five**
-productions (bare `t;`, `t(args);`, and the three `package_scope`-prefixed
-forms), not just the unscoped ones. Expression position keeps emitting
+builds the **neutral `Call`** the schema always intended — in **all six**
+productions (bare `t;`, `t();`, `t(args);`, and their three
+`package_scope`-prefixed forms), not just the unscoped ones. Expression position keeps emitting
 `FunctionCall` (a task cannot be an operand — still decisive).
 
 **Pass re-tag** for a statement `Call` — skipped if `hier` **or `scope`** is

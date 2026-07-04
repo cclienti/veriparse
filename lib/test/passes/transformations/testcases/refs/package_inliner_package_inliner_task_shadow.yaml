@@ -150,7 +150,7 @@ Source:
                       line: 19
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/package_inliner_task_shadow.sv
                           line: 19
                           name: t

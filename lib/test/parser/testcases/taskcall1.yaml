@@ -53,7 +53,7 @@ Source:
                       line: 9
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../../test/parser/testcases/taskcall1.v
                           line: 9
                           name: empty

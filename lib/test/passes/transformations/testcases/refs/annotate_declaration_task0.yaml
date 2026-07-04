@@ -470,7 +470,7 @@ Source:
                       line: 22
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/task0.v
                           line: 22
                           name: prefix_clogb2_suffix

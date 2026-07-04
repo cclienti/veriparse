@@ -660,7 +660,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <std::list<port_info_t>>             task_portinfo_list
 %type   <port_info_t>                        task_ioport task_portinfo
 %type   <direction_t>                        task_portdir
-%type   <AST::TaskCall::Ptr>                 task_call
+%type   <AST::Call::Ptr>                     task_call
 %type   <AST::Node::ListPtr>                 task_args
 %type   <AST::Arg::ListPtr>                  task_ports_block task_ports
 %type   <AST::Node::ListPtr>                 task_statement task_statements
@@ -5582,28 +5582,32 @@ task_calc:      blocking_assignment
         ;
 
 
+        // A statement call is task-OR-function (tf_call, IEEE 1800-2017
+        // §13.4.1), so every production builds the NEUTRAL Call; the
+        // name-resolution pass re-tags it to TaskCall/FunctionCall from the
+        // declared kind of the callee (ADR-0006 §4.1, closing ADR-0003 §6).
 task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                     $$->set_args($3);
                 }
 
         |       TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                 }
 
         |       TK_IDENTIFIER
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($1);
                 }
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
                     $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                     $$->set_args($4);
@@ -5611,14 +5615,14 @@ task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
 
         |       package_scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
                     $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }
 
         |       package_scope TK_IDENTIFIER
                 {
-                    $$ = std::make_shared<AST::TaskCall>(scanner.get_filename(), @1.begin.line);
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
                     $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }

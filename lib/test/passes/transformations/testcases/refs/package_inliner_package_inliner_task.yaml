@@ -150,7 +150,7 @@ Source:
                       line: 18
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/package_inliner_task.sv
                           line: 18
                           name: clearit

@@ -483,7 +483,7 @@ Source:
                       line: 21
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/deadcode2.v
                           line: 21
                           name: print_value

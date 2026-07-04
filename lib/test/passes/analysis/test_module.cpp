@@ -257,13 +257,13 @@ TEST(PassesAnalysis_Module, width1)
     AST::Node::Ptr source = verilog.get_source();
     ASSERT_TRUE(source != nullptr);
 
-    AST::TaskCall::ListPtr nodes;
-    nodes = Passes::Analysis::Module::get_taskcall_nodes(source);
+    AST::Call::ListPtr nodes;
+    nodes = Passes::Analysis::Module::get_call_nodes(source);
     ASSERT_EQ(1u, nodes->size());
 
     std::vector<std::string> names;
     std::vector<std::string> ref_names{"word"};
-    names = Passes::Analysis::Module::get_taskcall_names(source);
+    names = Passes::Analysis::Module::get_call_names(source);
     ASSERT_EQ(1u, names.size());
     ASSERT_EQ(ref_names, names);
 }
