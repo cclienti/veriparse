@@ -99,6 +99,14 @@ private:
     /// `virtual` — hard error.
     int check_interface_as_data_type(const AST::Declaration::Ptr &decl);
 
+    /// ADR-0006 §4.4: `N'(x)` parsed as TypeCast{NamedType{N}} becomes a
+    /// SizeCast when N binds a value; stays a TypeCast when N is a type.
+    void retag_typecast(const AST::TypeCast::Ptr &cast, const AST::Node::Ptr &parent);
+
+    /// ADR-0006 §4.5: `type(N)` parsed as TypeOpExpr becomes TypeOpType when
+    /// the bare identifier N binds a type.
+    void retag_typeop(const AST::TypeOpExpr::Ptr &typeop, const AST::Node::Ptr &parent);
+
     /// RAII-less scope helpers around walk() recursion.
     int walk_in_scope(const ScopeTable &table, const AST::Node::Ptr &node);
 
