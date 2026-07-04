@@ -46,6 +46,7 @@ PREFIX_TO_SUITE = {
     "module_instance_normalizer": "PassesTransformation_ModuleInstanceNormalizer",
     "module_io_normalizer": "PassesTransformation_ModuleIONormalizer",
     "module_obfuscator": "PassesTransformation_ModuleObfuscator",
+    "name_resolution": "PassesTransformation_NameResolution",
     "package_inliner": "PassesTransformation_PackageInliner",
     "parameter_inliner": "PassesTransformation_ParameterInliner",
     "resolve_module": "PassesTransformation_ResolveModule",
