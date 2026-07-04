@@ -102,45 +102,54 @@ std::string VerilogGenerator::render_pragma(const AST::Pragma::Ptr node) const
     return result;
 }
 
+std::string VerilogGenerator::module_like_to_string(const std::string &header,
+                                                    const AST::Declaration::ListPtr params,
+                                                    const AST::Port::ListPtr ports,
+                                                    const AST::Node::ListPtr items,
+                                                    const char *end_keyword) const
+{
+    std::string result = header;
+
+    int length = result.size();
+    const std::string params_str = parameters_list_to_string(params, length + 1);
+    const std::string ports_str = ports_list_to_string(ports, length + 1);
+
+    if(params_str.size() != 0) {
+        result += " ";
+        result.append(params_str);
+        if(ports_str.size() != 0) {
+            result += "\n" + std::string(length, ' ');
+        }
+    }
+
+    if(ports_str.size() != 0) {
+        result += " ";
+        result.append(ports_str);
+    }
+
+    result += ";\n\n";
+
+    if(items) {
+        for(const AST::Node::Ptr &item : *items) {
+            if(item) {
+                result.append(indent(render(item)) + "\n");
+            }
+        }
+    }
+
+    result += "\n";
+    result += end_keyword;
+    result += "\n";
+    return result;
+}
+
 std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const
 {
     std::string result;
     if(node) {
-        std::string modname = node->get_name();
-        const AST::Declaration::ListPtr params = node->get_params();
-        const AST::Port::ListPtr ports = node->get_ports();
-        const AST::Node::ListPtr items = node->get_items();
-
-        result = "module " + StringUtils::escape(modname);
-
-        int length = result.size();
-        const std::string params_str = parameters_list_to_string(params, length + 1);
-        const std::string ports_str = ports_list_to_string(ports, length + 1);
-
-        if(params_str.size() != 0) {
-            result += " ";
-            result.append(params_str);
-            if(ports_str.size() != 0) {
-                result += "\n" + std::string(length, ' ');
-            }
-        }
-
-        if(ports_str.size() != 0) {
-            result += " ";
-            result.append(ports_str);
-        }
-
-        result += ";\n\n";
-
-        if(items) {
-            for(const AST::Node::Ptr &item : *items) {
-                if(item) {
-                    result.append(indent(render(item)) + "\n");
-                }
-            }
-        }
-
-        result += "\nendmodule\n";
+        result = module_like_to_string("module " + StringUtils::escape(node->get_name()),
+                                       node->get_params(), node->get_ports(), node->get_items(),
+                                       "endmodule");
     }
     return result;
 }
@@ -149,48 +158,20 @@ std::string VerilogGenerator::render_interface(const AST::Interface::Ptr node) c
 {
     std::string result;
     if(node) {
-        result = "interface ";
+        std::string header = "interface ";
         switch(node->get_lifetime()) {
         case AST::Interface::LifetimeEnum::AUTOMATIC:
-            result += "automatic ";
+            header += "automatic ";
             break;
         case AST::Interface::LifetimeEnum::STATIC:
-            result += "static ";
+            header += "static ";
             break;
         default:
             break;
         }
-        result += StringUtils::escape(node->get_name());
-
-        int length = result.size();
-        const std::string params_str = parameters_list_to_string(node->get_params(), length + 1);
-        const std::string ports_str = ports_list_to_string(node->get_ports(), length + 1);
-
-        if(params_str.size() != 0) {
-            result += " ";
-            result.append(params_str);
-            if(ports_str.size() != 0) {
-                result += "\n" + std::string(length, ' ');
-            }
-        }
-
-        if(ports_str.size() != 0) {
-            result += " ";
-            result.append(ports_str);
-        }
-
-        result += ";\n\n";
-
-        const AST::Node::ListPtr items = node->get_items();
-        if(items) {
-            for(const AST::Node::Ptr &item : *items) {
-                if(item) {
-                    result.append(indent(render(item)) + "\n");
-                }
-            }
-        }
-
-        result += "\nendinterface\n";
+        header += StringUtils::escape(node->get_name());
+        result = module_like_to_string(header, node->get_params(), node->get_ports(),
+                                       node->get_items(), "endinterface");
     }
     return result;
 }
