@@ -139,7 +139,7 @@ Source:
                       line: 13
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/vf_task_arg0.v
                           line: 13
                           name: mytask

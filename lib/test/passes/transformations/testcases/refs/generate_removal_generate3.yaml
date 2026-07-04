@@ -470,7 +470,7 @@ Source:
                       line: 24
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/generate3.v
                           line: 24
                           name: clogb2

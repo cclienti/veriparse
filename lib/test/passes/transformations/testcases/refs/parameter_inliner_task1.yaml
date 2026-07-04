@@ -427,7 +427,7 @@ Source:
                       line: 22
                       scope: ''
                       statement:
-                        TaskCall:
+                        Call:
                           filename: ../test/passes/transformations/testcases/task1.v
                           line: 22
                           name: clogb2

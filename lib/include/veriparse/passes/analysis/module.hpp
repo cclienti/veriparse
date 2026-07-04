@@ -136,14 +136,15 @@ public:
     static std::vector<std::string> get_task_names(AST::Node::Ptr node);
 
     /**
-     * @brief Return all task call nodes.
+     * @brief Return all subroutine call nodes — the Call category: the neutral
+     * statement Call plus its FunctionCall/TaskCall refinements.
      */
-    static AST::TaskCall::ListPtr get_taskcall_nodes(AST::Node::Ptr node);
+    static AST::Call::ListPtr get_call_nodes(AST::Node::Ptr node);
 
     /**
-     * @brief Return all task call names.
+     * @brief Return all subroutine call names (Call category).
      */
-    static std::vector<std::string> get_taskcall_names(AST::Node::Ptr node);
+    static std::vector<std::string> get_call_names(AST::Node::Ptr node);
 
     /**
      * @brief Return all system call nodes.
