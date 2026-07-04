@@ -1,0 +1,449 @@
+Source:
+  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+          line: 1
+          name: nr2_if
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 1
+              is_local: false
+              name: W
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 1
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 1
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 1
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 1
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 1
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 3
+                      left:
+                        Minus:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 3
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                              line: 3
+                              name: W
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: valid
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 4
+                  signing: NONE
+          - Modport:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 6
+              name: consumer
+              ports:
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 6
+                  name: data
+                  direction: INPUT
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 6
+                  name: valid
+                  direction: INPUT
+      - Module:
+          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+          line: 10
+          name: name_resolution2
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 10
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 10
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 10
+                      name: nr2_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 10
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 10
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 10
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 10
+              name: inherited
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 10
+                  is_var: false
+                  direction: NONE
+                  name: inherited
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 10
+                      name: nr2_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          items:
+          - Typedef:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 12
+              fwd_kind: NONE
+              name: nib_t
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 12
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 12
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 14
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: local_var
+              init:
+                Rvalue: null
+              type:
+                NamedType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 14
+                  name: nib_t
+                  signing: NONE
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 16
+              module: nr2_if
+              parameterlist:
+              - ParamArg:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 16
+                  name: W
+                  value:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 16
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 16
+              instances:
+              - InterfaceInstance:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 16
+                  module: nr2_if
+                  name: u_bus
+                  array:
+                    Dimension: null
+                  parameterlist:
+                  - ParamArg:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 16
+                      name: W
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 16
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 16
+                  portlist:
+                  - PortArg:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 16
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 16
+                          name: clk
+                          hier:
+                            HierName: null
+          - Instancelist:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 17
+              module: nr2_if
+              instances:
+              - InterfaceInstance:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 17
+                  module: nr2_if
+                  name: u_arr
+                  array:
+                    RangeDim:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 17
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 17
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 17
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  portlist:
+                  - PortArg:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 17
+                      name: clk
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 17
+                          name: clk
+                          hier:
+                            HierName: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 19
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 19
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 19
+                      name: local_var
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 19
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 19
+                      base: 16
+                      size: 4
+                      sign: false
+                      value: 0
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+          line: 23
+          name: name_resolution2b
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 23
+              name: x
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 23
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    NamedType:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 23
+                      name: nr2b_t
+                      signing: NONE
+              expr: null
+          items:
+          - Typedef:
+              filename: ../test/passes/transformations/testcases/name_resolution2.sv
+              line: 25
+              fwd_kind: NONE
+              name: nr2b_t
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                  line: 25
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                      line: 25
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 25
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/name_resolution2.sv
+                          line: 25
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0

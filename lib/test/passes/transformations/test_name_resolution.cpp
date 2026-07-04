@@ -39,5 +39,21 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
+// Illegal-input cases: the pass must reject the source (non-zero), no golden.
+#define TEST_ERROR_SV                                                                              \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    Passes::Transformations::NameResolution resolution;                                            \
+    ASSERT_NE(0, resolution.run(source))
+
 TEST(PassesTransformation_NameResolution, name_resolution0) { TEST_CORE_SV; }
 TEST(PassesTransformation_NameResolution, name_resolution1) { TEST_CORE_SV; }
+TEST(PassesTransformation_NameResolution, name_resolution2) { TEST_CORE_SV; }
+TEST(PassesTransformation_NameResolution, name_resolution3) { TEST_ERROR_SV; }
+TEST(PassesTransformation_NameResolution, name_resolution4) { TEST_ERROR_SV; }

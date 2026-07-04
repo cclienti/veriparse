@@ -435,7 +435,7 @@ std::vector<std::string> Module::get_variable_names_within_module(AST::Node::Ptr
 AST::Instance::ListPtr Module::get_instance_nodes(AST::Node::Ptr node)
 {
     AST::Instance::ListPtr list = std::make_shared<AST::Instance::List>();
-    get_node_list<AST::Instance>(node, AST::NodeType::Instance, list);
+    get_node_list_by_category<AST::Instance>(node, AST::NodeType::Instance, list);
     return list;
 }
 
