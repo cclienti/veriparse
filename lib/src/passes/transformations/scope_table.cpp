@@ -11,21 +11,53 @@ namespace Passes
 namespace Transformations
 {
 
+ScopeTable::SymbolKind ScopeTable::classify(const AST::Node::Ptr &decl)
+{
+    if(!decl) {
+        return SymbolKind::UNKNOWN;
+    }
+
+    switch(decl->get_node_type()) {
+    case AST::NodeType::Typedef:
+    case AST::NodeType::TypeParam:
+        return SymbolKind::TYPE;
+    case AST::NodeType::Function:
+        return SymbolKind::FUNCTION;
+    case AST::NodeType::Task:
+        return SymbolKind::TASK;
+    case AST::NodeType::Module:
+        return SymbolKind::MODULE;
+    case AST::NodeType::Interface:
+        return SymbolKind::INTERFACE;
+    case AST::NodeType::Genvar:   // compile-time value, deliberately not a Declaration
+    case AST::NodeType::EnumItem: // an enumerator is a constant in scope (§6.19)
+        return SymbolKind::VALUE;
+    default:
+        // Var, the Net family, Param, Arg, Member, … — every remaining
+        // Declaration binds a name to a value.
+        if(decl->is_node_category(AST::NodeType::Declaration)) {
+            return SymbolKind::VALUE;
+        }
+        return SymbolKind::UNKNOWN;
+    }
+}
+
 void ScopeTable::add_local(const std::string &name, AST::Node::Ptr decl)
 {
-    m_local[name] = Binding{decl, "", Origin::Local, ""};
+    m_local[name] = Binding{decl, "", Origin::Local, "", classify(decl)};
 }
 
 void ScopeTable::add_explicit_import(const std::string &name, const std::string &package,
                                      AST::Node::Ptr decl)
 {
-    m_explicit[name] = Binding{decl, package, Origin::ExplicitImport, package};
+    m_explicit[name] = Binding{decl, package, Origin::ExplicitImport, package, classify(decl)};
 }
 
 void ScopeTable::add_wildcard_import(const std::string &name, const std::string &package,
                                      AST::Node::Ptr decl, const std::string &defining_package)
 {
-    m_wildcard[name].push_back(Binding{decl, package, Origin::WildcardImport, defining_package});
+    m_wildcard[name].push_back(
+        Binding{decl, package, Origin::WildcardImport, defining_package, classify(decl)});
 }
 
 const ScopeTable::Binding *ScopeTable::lookup(const std::string &name, bool *ambiguous) const
