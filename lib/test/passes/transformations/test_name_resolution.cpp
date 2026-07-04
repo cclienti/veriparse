@@ -57,3 +57,4 @@ TEST(PassesTransformation_NameResolution, name_resolution1) { TEST_CORE_SV; }
 TEST(PassesTransformation_NameResolution, name_resolution2) { TEST_CORE_SV; }
 TEST(PassesTransformation_NameResolution, name_resolution3) { TEST_ERROR_SV; }
 TEST(PassesTransformation_NameResolution, name_resolution4) { TEST_ERROR_SV; }
+TEST(PassesTransformation_NameResolution, name_resolution5) { TEST_CORE_SV; }

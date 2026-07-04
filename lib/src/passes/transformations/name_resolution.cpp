@@ -294,6 +294,28 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
         return ret;
     }
 
+    case AST::NodeType::TypeCast: {
+        // Children first: the re-tag replaces this node in `parent`, which
+        // must not happen under a child still being walked.
+        int ret = 0;
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
+        retag_typecast(AST::cast_to<AST::TypeCast>(node), parent);
+        return ret;
+    }
+
+    case AST::NodeType::TypeOpExpr: {
+        int ret = 0;
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
+        retag_typeop(AST::cast_to<AST::TypeOpExpr>(node), parent);
+        return ret;
+    }
+
     default: {
         int ret = 0;
         const AST::Node::ListPtr children = node->get_children();
@@ -435,6 +457,85 @@ int NameResolution::resolve_port(const AST::Port::Ptr &port)
     }
 
     return 0;
+}
+
+void NameResolution::retag_typecast(const AST::TypeCast::Ptr &cast, const AST::Node::Ptr &parent)
+{
+    const AST::DataType::Ptr target = cast->get_target();
+    if(!target || !target->is_node_type(AST::NodeType::NamedType) || !parent) {
+        return;
+    }
+    const auto &named = AST::cast_to<AST::NamedType>(target);
+
+    if(named->get_scope() && !named->get_scope()->empty()) {
+        LOG_WARNING_N(cast) << "scoped cast target '" << named->get_name()
+                            << "' left unresolved (package scopes are resolved by the "
+                               "package inliner)";
+        return;
+    }
+
+    // A dimensioned named type (`my_t [3:0]'(x)`) can only be a type cast.
+    if(named->get_packed_dims() && !named->get_packed_dims()->empty()) {
+        return;
+    }
+
+    const ScopeTable::Binding *binding = lookup(named->get_name());
+    if(!binding) {
+        LOG_WARNING_N(cast) << "cast target '" << named->get_name()
+                            << "' is unresolved (type or size)";
+        return;
+    }
+
+    switch(binding->kind) {
+    case ScopeTable::SymbolKind::VALUE: {
+        // `WIDTH'(x)` with WIDTH a value: a size cast, not a type cast.
+        auto sizecast = std::make_shared<AST::SizeCast>(cast->get_filename(), cast->get_line());
+        auto size = std::make_shared<AST::Identifier>(named->get_filename(), named->get_line());
+        size->set_name(named->get_name());
+        sizecast->set_size(size);
+        sizecast->set_expr(cast->get_expr());
+        parent->replace(cast, sizecast);
+        return;
+    }
+
+    case ScopeTable::SymbolKind::TYPE:
+        return;
+
+    default:
+        LOG_WARNING_N(cast) << "cast target '" << named->get_name()
+                            << "' names neither a type nor a value; left unresolved";
+        return;
+    }
+}
+
+void NameResolution::retag_typeop(const AST::TypeOpExpr::Ptr &typeop, const AST::Node::Ptr &parent)
+{
+    const AST::Node::Ptr expr = typeop->get_expr();
+    if(!expr || !expr->is_node_type(AST::NodeType::Identifier) || !parent) {
+        return;
+    }
+    const auto &identifier = AST::cast_to<AST::Identifier>(expr);
+    if(identifier->get_hier() || (identifier->get_scope() && !identifier->get_scope()->empty())) {
+        return;
+    }
+
+    const ScopeTable::Binding *binding = lookup(identifier->get_name());
+    if(!binding) {
+        LOG_WARNING_N(typeop) << "type() operand '" << identifier->get_name()
+                              << "' is unresolved (type or expression)";
+        return;
+    }
+
+    if(binding->kind == ScopeTable::SymbolKind::TYPE) {
+        // `type(my_t)`: the operand is a type name, not an expression.
+        auto typeoptype =
+            std::make_shared<AST::TypeOpType>(typeop->get_filename(), typeop->get_line());
+        auto named =
+            std::make_shared<AST::NamedType>(identifier->get_filename(), identifier->get_line());
+        named->set_name(identifier->get_name());
+        typeoptype->set_type(named);
+        parent->replace(typeop, typeoptype);
+    }
 }
 
 int NameResolution::check_interface_as_data_type(const AST::Declaration::Ptr &decl)
