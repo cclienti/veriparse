@@ -63,6 +63,7 @@ Two structural choices follow:
 
 ```cpp
 enum class SymbolKind {
+    UNKNOWN,    // not a symbol-declaring node — callers treat as unbound
     VALUE,      // Var, Net, Param (value), Arg, Genvar, EnumItem — a name with a value
     TYPE,       // Typedef, TypeParam — a name that denotes a data type
     FUNCTION,   // Function declaration

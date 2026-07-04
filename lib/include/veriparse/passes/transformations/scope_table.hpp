@@ -30,9 +30,9 @@ namespace Transformations
  * becomes a hard error only when that name is actually referenced — hence
  * lookup() reports the ambiguity on use rather than at build time.
  *
- * This is the reusable seam of ADR-0004: PackageInliner is its first client. A
- * future broad name-resolution pass generalizes it to every scope kind and asks
- * a binding's *kind* instead of copying its declaration.
+ * This is the reusable seam of ADR-0004: PackageInliner is its first client;
+ * the broad name-resolution pass (ADR-0006) asks a binding's *kind* instead of
+ * copying its declaration.
  */
 class ScopeTable
 {
@@ -44,6 +44,22 @@ public:
         WildcardImport
     };
 
+    /**
+     * @brief What a bound name declares (ADR-0006 §2). Classification is
+     * syntactic on the declaration node — the node type fully determines the
+     * kind; no inference, no type-checking.
+     */
+    enum class SymbolKind
+    {
+        UNKNOWN,   ///< not a symbol-declaring node — callers treat as unbound
+        VALUE,     ///< Var, Net, Param (value), Arg, Member, Genvar, EnumItem
+        TYPE,      ///< Typedef, TypeParam — a name that denotes a data type
+        FUNCTION,  ///< Function declaration
+        TASK,      ///< Task declaration
+        MODULE,    ///< design-level Module definition
+        INTERFACE, ///< design-level Interface definition
+    };
+
     struct Binding
     {
         AST::Node::Ptr decl;          ///< the bound declaration (Param/Var/Typedef/…)
@@ -53,7 +69,14 @@ public:
                                       ///< same for a symbol reached via a re-export, so
                                       ///< two same-origin wildcard paths do not conflict
                                       ///< (IEEE 1800-2017 §26.6)
+        SymbolKind kind;              ///< what the declaration declares (from classify())
     };
+
+    /**
+     * @brief The SymbolKind a declaration node declares, from its node type
+     * alone. UNKNOWN for a null or non-declaring node.
+     */
+    static SymbolKind classify(const AST::Node::Ptr &decl);
 
     /**
      * @brief Register a name declared in the scope itself. A local shadows any
