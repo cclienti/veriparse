@@ -243,6 +243,15 @@ class VerilogGenerator : public GeneratorBase<std::string>
 
     virtual std::string parameters_list_to_string(const AST::Declaration::ListPtr parameters,
                                                   int length = 0) const;
+
+    // Shared module-like definition renderer (Module and Interface have the
+    // same header + body shape): `header [#(params)] [(ports)]; items
+    // end_keyword`, with params/ports aligned under the end of the header.
+    virtual std::string module_like_to_string(const std::string &header,
+                                              const AST::Declaration::ListPtr params,
+                                              const AST::Port::ListPtr ports,
+                                              const AST::Node::ListPtr items,
+                                              const char *end_keyword) const;
 };
 
 } // namespace Generators
