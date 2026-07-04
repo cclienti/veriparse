@@ -6216,11 +6216,16 @@ namespace Veriparse {
                         bool has_data_type;
                         data_type_t data_type;
 
-                        if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty()) {
-                            // Directionless named-type port (`my_if i`,
-                            // `my_if.mp i`): an interface port, or a named-type
-                            // port left for the resolution pass (ADR-0002/
-                            // ADR-0003 §4.4). Starts a fresh inheritance group.
+                        if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty() &&
+                            (!pinfo.modport.empty() || last_dir == direction_t::NONE)) {
+                            // Directionless named-type port that cannot be a
+                            // direction-inheriting typed port: either the
+                            // `.modport` suffix makes it a decisive interface
+                            // port, or there is no preceding direction to
+                            // inherit (first port / after another such port).
+                            // Bare -> NamedType left for the resolution pass
+                            // (ADR-0002 / ADR-0003 §4.4). Starts a fresh
+                            // inheritance group.
                             dir = direction_t::NONE;
                             net_type = net_type_t::NONE;
                             widths = nullptr;
@@ -6228,6 +6233,23 @@ namespace Veriparse {
                             type_name = pinfo.type_name;
                             type_package = pinfo.type_package;
                             modport = pinfo.modport;
+                            has_data_type = false;
+                            data_type = data_type_t{};
+                        }
+                        else if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty()) {
+                            // Bare named-type port after a directional port: the
+                            // direction is omitted but a data type is present,
+                            // so ONLY the direction is inherited (IEEE 1800-2017
+                            // §23.2.2.3) — a normal named-type port. If the name
+                            // proves to be an interface, the resolution pass
+                            // rewrites it (the NamedType is preserved).
+                            dir = last_dir;
+                            net_type = net_type_t::NONE;
+                            widths = nullptr;
+                            signing = signing_t::NONE;
+                            type_name = pinfo.type_name;
+                            type_package = pinfo.type_package;
+                            modport.clear();
                             has_data_type = false;
                             data_type = data_type_t{};
                         }
