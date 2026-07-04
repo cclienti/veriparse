@@ -80,11 +80,31 @@ private:
     /// (ADR-0006 §4.1). Never fails; unresolvable calls stay neutral.
     void retag_call(const AST::Call::Ptr &call, const AST::Node::Ptr &parent);
 
+    /// Design-index entry for a name, or nullptr. The lexical stack is
+    /// consulted first (ADR-0006 §4.2): a local binding shadows a design-level
+    /// name, so a shadowed name never reaches the index.
+    const DesignEntry *design_lookup_unshadowed(const std::string &name) const;
+
+    /// Re-tag every Instance of a list whose target names an interface
+    /// (ADR-0002 §2.4). Instantiation targets are design-element references,
+    /// never lexically shadowed.
+    void retag_instances(const AST::Instancelist::Ptr &instancelist);
+
+    /// Resolve a deferred module port (ADR-0006 §4.2): promote the bare
+    /// Arg{NamedType} form to an interface or typed-net port, and undo the
+    /// inherited direction of a port that proves to be an interface.
+    int resolve_port(const AST::Port::Ptr &port);
+
+    /// §25.9: an interface used as a data type outside a port requires
+    /// `virtual` — hard error.
+    int check_interface_as_data_type(const AST::Declaration::Ptr &decl);
+
     /// RAII-less scope helpers around walk() recursion.
     int walk_in_scope(const ScopeTable &table, const AST::Node::Ptr &node);
 
     std::map<std::string, DesignEntry> m_design;
     std::vector<ScopeTable> m_scopes;
+    int m_interface_depth = 0;
 };
 
 } // namespace Transformations

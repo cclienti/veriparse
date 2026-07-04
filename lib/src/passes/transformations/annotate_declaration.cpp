@@ -70,7 +70,7 @@ int AnnotateDeclaration::get_declaration_names(const AST::Node::Ptr node, Replac
         name = AST::cast_to<AST::Declaration>(node)->get_name();
     } else if(node->is_node_type(AST::NodeType::Genvar)) {
         name = AST::cast_to<AST::Genvar>(node)->get_name();
-    } else if(node->is_node_type(AST::NodeType::Instance)) {
+    } else if(node->is_node_category(AST::NodeType::Instance)) {
         const auto &instance = AST::cast_to<AST::Instance>(node);
         name = instance->get_name();
     } else if(node->is_node_type(AST::NodeType::Task)) {
@@ -145,7 +145,7 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
         }
     }
 
-    else if(node->is_node_type(AST::NodeType::Instance)) {
+    else if(node->is_node_category(AST::NodeType::Instance)) {
         const auto &instance = AST::cast_to<AST::Instance>(node);
         const std::string &name = instance->get_name();
         if(replace_dict.count(name)) {

@@ -50,7 +50,7 @@ int UniqueDeclaration::analyze(const AST::Node::Ptr &node, IdentifierSet &id_set
         id_set.emplace(AST::cast_to<AST::Task>(node)->get_name());
     } else if(node->is_node_type(AST::NodeType::Function)) {
         id_set.emplace(AST::cast_to<AST::Function>(node)->get_name());
-    } else if(node->is_node_type(AST::NodeType::Instance)) {
+    } else if(node->is_node_category(AST::NodeType::Instance)) {
         id_set.emplace(AST::cast_to<AST::Instance>(node)->get_name());
         id_set.emplace(AST::cast_to<AST::Instance>(node)->get_module());
     } else if(node->is_node_category(AST::NodeType::Param)) {

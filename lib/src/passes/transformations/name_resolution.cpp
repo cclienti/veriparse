@@ -204,7 +204,10 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
             }
         }
         add_scope_items(table, interface->get_items());
-        return walk_in_scope(table, node);
+        ++m_interface_depth;
+        const int ret = walk_in_scope(table, node);
+        --m_interface_depth;
+        return ret;
     }
 
     case AST::NodeType::Package: {
@@ -252,6 +255,45 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
         retag_call(AST::cast_to<AST::Call>(node), parent);
         return 0;
 
+    case AST::NodeType::Modport:
+        // §25.5: a modport is only legal inside an interface body.
+        if(m_interface_depth == 0) {
+            LOG_ERROR_N(node) << "modport '" << AST::cast_to<AST::Modport>(node)->get_name()
+                              << "' outside an interface (IEEE 1800-2017 25.5)";
+            return 1;
+        }
+        return 0;
+
+    case AST::NodeType::Instancelist: {
+        retag_instances(AST::cast_to<AST::Instancelist>(node));
+        int ret = 0;
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
+        return ret;
+    }
+
+    case AST::NodeType::Port: {
+        int ret = resolve_port(AST::cast_to<AST::Port>(node));
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
+        return ret;
+    }
+
+    case AST::NodeType::Var:
+    case AST::NodeType::Typedef:
+    case AST::NodeType::Arg: {
+        int ret = check_interface_as_data_type(AST::cast_to<AST::Declaration>(node));
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
+        return ret;
+    }
+
     default: {
         int ret = 0;
         const AST::Node::ListPtr children = node->get_children();
@@ -261,6 +303,153 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
         return ret;
     }
     }
+}
+
+namespace
+{
+// The NamedType forms this pass may reinterpret: unscoped (a scoped name
+// belongs to the package inliner).
+bool is_bare_named_type(const AST::DataType::Ptr &type)
+{
+    if(!type || !type->is_node_type(AST::NodeType::NamedType)) {
+        return false;
+    }
+    const auto &scope = AST::cast_to<AST::NamedType>(type)->get_scope();
+    return !scope || scope->empty();
+}
+
+AST::InterfaceType::Ptr make_interface_type(const AST::NamedType::Ptr &named)
+{
+    auto type = std::make_shared<AST::InterfaceType>(named->get_filename(), named->get_line());
+    type->set_name(named->get_name());
+    return type;
+}
+} // namespace
+
+const NameResolution::DesignEntry *
+NameResolution::design_lookup_unshadowed(const std::string &name) const
+{
+    if(lookup(name)) {
+        return nullptr;
+    }
+    const auto it = m_design.find(name);
+    return (it == m_design.end()) ? nullptr : &it->second;
+}
+
+void NameResolution::retag_instances(const AST::Instancelist::Ptr &instancelist)
+{
+    const auto it = m_design.find(instancelist->get_module());
+    if(it == m_design.end() || it->second.kind != ScopeTable::SymbolKind::INTERFACE) {
+        return;
+    }
+
+    const AST::Instance::ListPtr instances = instancelist->get_instances();
+    if(!instances) {
+        return;
+    }
+
+    for(AST::Instance::Ptr &slot : *instances) {
+        if(!slot || !slot->is_node_type(AST::NodeType::Instance)) {
+            continue;
+        }
+        auto tagged =
+            std::make_shared<AST::InterfaceInstance>(slot->get_filename(), slot->get_line());
+        tagged->set_module(slot->get_module());
+        tagged->set_name(slot->get_name());
+        tagged->set_array(slot->get_array());
+        tagged->set_parameterlist(slot->get_parameterlist());
+        tagged->set_portlist(slot->get_portlist());
+        slot = tagged;
+    }
+}
+
+int NameResolution::resolve_port(const AST::Port::Ptr &port)
+{
+    const AST::Declaration::Ptr decl = port->get_decl();
+    if(!decl) {
+        return 0;
+    }
+
+    // Deferred bare form: Port{ decl: Arg{ type: NamedType } } (ADR-0003 §4.4).
+    if(decl->is_node_type(AST::NodeType::Arg) && is_bare_named_type(decl->get_type())) {
+        const auto &arg = AST::cast_to<AST::Arg>(decl);
+        const auto &named = AST::cast_to<AST::NamedType>(decl->get_type());
+        const std::string &name = named->get_name();
+
+        const ScopeTable::Binding *binding = lookup(name);
+        if(binding) {
+            if(binding->kind == ScopeTable::SymbolKind::TYPE) {
+                // The other side of the ambiguity: a typed net port whose
+                // omitted direction stays unresolved (the §23.2.2.3
+                // default/inheritance is not fabricated).
+                auto net =
+                    std::make_shared<AST::ImplicitNet>(decl->get_filename(), decl->get_line());
+                net->set_name(arg->get_name());
+                net->set_unpacked_dims(arg->get_unpacked_dims());
+                net->set_type(arg->get_type());
+                port->set_decl(net);
+                LOG_WARNING_N(port) << "typed port '" << arg->get_name()
+                                    << "' has no direction; the IEEE 1800-2017 23.2.2.3 "
+                                       "default is left to a later pass";
+                return 0;
+            }
+            LOG_WARNING_N(port) << "port type '" << name
+                                << "' does not name a type or an interface; left unresolved";
+            return 0;
+        }
+
+        const DesignEntry *entry = design_lookup_unshadowed(name);
+        if(entry && entry->kind == ScopeTable::SymbolKind::INTERFACE) {
+            if(named->get_packed_dims() && !named->get_packed_dims()->empty()) {
+                LOG_ERROR_N(port) << "an interface port type takes no packed dimensions";
+                return 1;
+            }
+            decl->set_type(make_interface_type(named));
+            return 0;
+        }
+
+        LOG_WARNING_N(port) << "port type '" << name << "' is unresolved";
+        return 0;
+    }
+
+    // Inherited-direction form that proves to be an interface (ADR-0002 §3.1):
+    // Port{ dir, decl: ImplicitNet{ NamedType } } — an interface port admits no
+    // direction (A.1.3), so the §23.2.2.3 inheritance is undone.
+    if(decl->is_node_type(AST::NodeType::ImplicitNet) && is_bare_named_type(decl->get_type())) {
+        const auto &named = AST::cast_to<AST::NamedType>(decl->get_type());
+        const DesignEntry *entry = design_lookup_unshadowed(named->get_name());
+        if(!entry || entry->kind != ScopeTable::SymbolKind::INTERFACE) {
+            return 0;
+        }
+        if(named->get_packed_dims() && !named->get_packed_dims()->empty()) {
+            LOG_ERROR_N(port) << "an interface port type takes no packed dimensions";
+            return 1;
+        }
+        auto arg = std::make_shared<AST::Arg>(decl->get_filename(), decl->get_line());
+        arg->set_name(decl->get_name());
+        arg->set_direction(AST::Arg::DirectionEnum::NONE);
+        arg->set_unpacked_dims(AST::cast_to<AST::Net>(decl)->get_unpacked_dims());
+        arg->set_type(make_interface_type(named));
+        port->set_direction(AST::Port::DirectionEnum::NONE);
+        port->set_decl(arg);
+    }
+
+    return 0;
+}
+
+int NameResolution::check_interface_as_data_type(const AST::Declaration::Ptr &decl)
+{
+    if(!is_bare_named_type(decl->get_type())) {
+        return 0;
+    }
+    const auto &named = AST::cast_to<AST::NamedType>(decl->get_type());
+    const DesignEntry *entry = design_lookup_unshadowed(named->get_name());
+    if(entry && entry->kind == ScopeTable::SymbolKind::INTERFACE) {
+        LOG_ERROR_N(decl) << "interface '" << named->get_name()
+                          << "' used as a data type requires 'virtual' (IEEE 1800-2017 25.9)";
+        return 1;
+    }
+    return 0;
 }
 
 void NameResolution::retag_call(const AST::Call::Ptr &call, const AST::Node::Ptr &parent)
