@@ -12,6 +12,7 @@
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/passes/transformations/package_inliner.hpp>
+#include <veriparse/passes/transformations/name_resolution.hpp>
 #include <veriparse/passes/transformations/wire_split.hpp>
 #include <veriparse/version.hpp>
 
@@ -180,6 +181,17 @@ static int veriflat(int argc, char *argv[])
 
     if(Veriparse::Passes::Transformations::PackageInliner().run_units(sources) != 0) {
         LOG_ERROR << "package/import resolution failed";
+        return 1;
+    }
+
+    //---------------------------------------------------------
+    // Resolve names across the self-contained design: re-tag the neutral
+    // nodes the parser deferred (statement calls, interface instances and
+    // ports, casts, type() operands) from what each name declares.
+    //---------------------------------------------------------
+
+    if(Veriparse::Passes::Transformations::NameResolution().run_design(sources) != 0) {
+        LOG_ERROR << "name resolution failed";
         return 1;
     }
 
