@@ -91,45 +91,10 @@ int NameResolution::resolve_source(const AST::Node::Ptr &source) { return walk(s
 
 void NameResolution::add_scope_item(ScopeTable &table, const AST::Node::Ptr &item)
 {
-    if(!item) {
-        return;
-    }
-
-    switch(item->get_node_type()) {
-    case AST::NodeType::Function:
-        table.add_local(AST::cast_to<AST::Function>(item)->get_name(), item);
-        return;
-
-    case AST::NodeType::Task:
-        table.add_local(AST::cast_to<AST::Task>(item)->get_name(), item);
-        return;
-
-    case AST::NodeType::Genvar:
-        table.add_local(AST::cast_to<AST::Genvar>(item)->get_name(), item);
-        return;
-
-    default:
-        break;
-    }
-
-    if(item->is_node_category(AST::NodeType::Declaration)) {
-        const auto &decl = AST::cast_to<AST::Declaration>(item);
-        if(!decl->get_name().empty()) {
-            table.add_local(decl->get_name(), item);
-        }
-
-        // An inline enum type also binds its enumerators in the enclosing
-        // scope (§6.19).
-        const auto &type = decl->get_type();
-        if(type && type->is_node_type(AST::NodeType::EnumType)) {
-            const auto &items = AST::cast_to<AST::EnumType>(type)->get_items();
-            if(items) {
-                for(const AST::EnumItem::Ptr &enum_item : *items) {
-                    table.add_local(enum_item->get_name(), enum_item);
-                }
-            }
-        }
-    }
+    ScopeTable::for_each_bound_name(
+        item, [&table](const std::string &name, const AST::Node::Ptr &denoted) {
+            table.add_local(name, denoted);
+        });
 }
 
 void NameResolution::add_scope_items(ScopeTable &table, const AST::Node::ListPtr &items)

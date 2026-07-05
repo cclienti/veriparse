@@ -42,6 +42,53 @@ ScopeTable::SymbolKind ScopeTable::classify(const AST::Node::Ptr &decl)
     }
 }
 
+void ScopeTable::for_each_bound_name(
+    const AST::Node::Ptr &item,
+    const std::function<void(const std::string &, const AST::Node::Ptr &)> &visit)
+{
+    if(!item) {
+        return;
+    }
+
+    switch(item->get_node_type()) {
+    case AST::NodeType::Function:
+        visit(AST::cast_to<AST::Function>(item)->get_name(), item);
+        return;
+
+    case AST::NodeType::Task:
+        visit(AST::cast_to<AST::Task>(item)->get_name(), item);
+        return;
+
+    case AST::NodeType::Genvar:
+        visit(AST::cast_to<AST::Genvar>(item)->get_name(), item);
+        return;
+
+    default:
+        break;
+    }
+
+    if(!item->is_node_category(AST::NodeType::Declaration)) {
+        return;
+    }
+
+    const auto &decl = AST::cast_to<AST::Declaration>(item);
+    if(!decl->get_name().empty()) {
+        visit(decl->get_name(), item);
+    }
+
+    // An inline enum type also binds its enumerators in the enclosing scope
+    // (§6.19).
+    const auto &type = decl->get_type();
+    if(type && type->is_node_type(AST::NodeType::EnumType)) {
+        const auto &items = AST::cast_to<AST::EnumType>(type)->get_items();
+        if(items) {
+            for(const AST::EnumItem::Ptr &enum_item : *items) {
+                visit(enum_item->get_name(), enum_item);
+            }
+        }
+    }
+}
+
 void ScopeTable::add_local(const std::string &name, AST::Node::Ptr decl)
 {
     m_local[name] = Binding{decl, "", Origin::Local, "", classify(decl)};
