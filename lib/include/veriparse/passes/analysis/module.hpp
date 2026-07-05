@@ -138,11 +138,19 @@ public:
     /**
      * @brief Return all subroutine call nodes — the Call category: the neutral
      * statement Call plus its FunctionCall/TaskCall refinements.
+     *
+     * NOTE: wider than the retired get_taskcall_nodes(), which returned
+     * statement task calls only. This includes every expression-position
+     * FunctionCall (RHS of assigns, port connections, nested call arguments).
+     * Statement-vs-expression position is not recoverable from the node type
+     * alone (IEEE 1800-2017 §13.4.1); callers needing statement calls only
+     * must filter by parent context.
      */
     static AST::Call::ListPtr get_call_nodes(AST::Node::Ptr node);
 
     /**
-     * @brief Return all subroutine call names (Call category).
+     * @brief Return all subroutine call names (Call category — see the
+     * get_call_nodes() note on scope).
      */
     static std::vector<std::string> get_call_names(AST::Node::Ptr node);
 

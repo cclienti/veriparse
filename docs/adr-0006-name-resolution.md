@@ -146,7 +146,11 @@ the `Identifier` category, which `Call` inherits). The remaining true ripple is
 **`Analysis::Module::get_taskcall_nodes` / `get_taskcall_names`**
 (`module.cpp:238–250`): they exact-match `NodeType::TaskCall` and would return
 empty for every statement call after the grammar change — re-point them at the
-`Call` category (and audit their callers and `test_taskcall`). Golden churn:
+`Call` category (and audit their callers and `test_taskcall`). Note the
+re-pointed API (`get_call_nodes`/`get_call_names`) is **wider** than the old
+one: it also returns expression-position `FunctionCall`s, because after
+re-tagging, statement-vs-expression position is no longer recoverable from the
+node type alone — the widening is documented on the API. Golden churn:
 every parser/pass golden holding a statement-position `TaskCall` regenerates to
 `Call` — mechanical, expected (rendering is identical, so no `.v` output
 changes).
