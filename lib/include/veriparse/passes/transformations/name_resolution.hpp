@@ -82,8 +82,11 @@ private:
 
     /// Design-index entry for a name, or nullptr. The lexical stack is
     /// consulted first (ADR-0006 §4.2): a local binding shadows a design-level
-    /// name, so a shadowed name never reaches the index.
-    const DesignEntry *design_lookup_unshadowed(const std::string &name) const;
+    /// name, so a shadowed name never reaches the index. `self` is the
+    /// declaration whose own header is being resolved — its own binding does
+    /// not shadow (`module m(my_if my_if)`).
+    const DesignEntry *design_lookup_unshadowed(const std::string &name,
+                                                const AST::Node *self = nullptr) const;
 
     /// Re-tag every Instance of a list whose target names an interface
     /// (ADR-0002 §2.4). Instantiation targets are design-element references,
@@ -107,8 +110,19 @@ private:
     /// the bare identifier N binds a type.
     void retag_typeop(const AST::TypeOpExpr::Ptr &typeop, const AST::Node::Ptr &parent);
 
-    /// RAII-less scope helpers around walk() recursion.
-    int walk_in_scope(const ScopeTable &table, const AST::Node::Ptr &node);
+    /// Push the table, walk the node's children, pop.
+    int walk_in_scope(ScopeTable table, const AST::Node::Ptr &node);
+
+    /// Scope table of a module-like definition (params + ports + items) — a
+    /// Package/Block passes only its items/statements.
+    ScopeTable build_definition_scope(const AST::Declaration::ListPtr &params,
+                                      const AST::Port::ListPtr &ports,
+                                      const AST::Node::ListPtr &items);
+
+    /// Scope table of a Function/Task body: its own name + args + local decls.
+    ScopeTable build_subroutine_scope(const std::string &name, const AST::Node::Ptr &self,
+                                      const AST::Arg::ListPtr &args,
+                                      const AST::Node::ListPtr &statements);
 
     std::map<std::string, DesignEntry> m_design;
     std::vector<ScopeTable> m_scopes;

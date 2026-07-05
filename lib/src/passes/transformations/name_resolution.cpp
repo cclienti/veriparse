@@ -152,9 +152,9 @@ const ScopeTable::Binding *NameResolution::lookup(const std::string &name) const
     return nullptr;
 }
 
-int NameResolution::walk_in_scope(const ScopeTable &table, const AST::Node::Ptr &node)
+int NameResolution::walk_in_scope(ScopeTable table, const AST::Node::Ptr &node)
 {
-    m_scopes.push_back(table);
+    m_scopes.push_back(std::move(table));
 
     int ret = 0;
     const AST::Node::ListPtr children = node->get_children();
@@ -166,6 +166,43 @@ int NameResolution::walk_in_scope(const ScopeTable &table, const AST::Node::Ptr 
     return ret;
 }
 
+ScopeTable NameResolution::build_definition_scope(const AST::Declaration::ListPtr &params,
+                                                  const AST::Port::ListPtr &ports,
+                                                  const AST::Node::ListPtr &items)
+{
+    ScopeTable table;
+    if(params) {
+        for(const AST::Declaration::Ptr &param : *params) {
+            add_scope_item(table, param);
+        }
+    }
+    if(ports) {
+        for(const AST::Port::Ptr &port : *ports) {
+            add_scope_item(table, port->get_decl());
+        }
+    }
+    add_scope_items(table, items);
+    return table;
+}
+
+ScopeTable NameResolution::build_subroutine_scope(const std::string &name,
+                                                  const AST::Node::Ptr &self,
+                                                  const AST::Arg::ListPtr &args,
+                                                  const AST::Node::ListPtr &statements)
+{
+    ScopeTable table;
+    // The subroutine's own name is bound inside its body (the legacy return
+    // variable of a function, and the callee of a recursive call).
+    table.add_local(name, self);
+    if(args) {
+        for(const AST::Arg::Ptr &arg : *args) {
+            add_scope_item(table, arg);
+        }
+    }
+    add_scope_items(table, statements);
+    return table;
+}
+
 int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &parent)
 {
     if(!node) {
@@ -175,85 +212,75 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
     switch(node->get_node_type()) {
     case AST::NodeType::Module: {
         const auto &module = AST::cast_to<AST::Module>(node);
-        ScopeTable table;
-        if(module->get_params()) {
-            for(const AST::Declaration::Ptr &param : *module->get_params()) {
-                add_scope_item(table, param);
-            }
-        }
-        if(module->get_ports()) {
-            for(const AST::Port::Ptr &port : *module->get_ports()) {
-                add_scope_item(table, port->get_decl());
-            }
-        }
-        add_scope_items(table, module->get_items());
-        return walk_in_scope(table, node);
+        return walk_in_scope(
+            build_definition_scope(module->get_params(), module->get_ports(), module->get_items()),
+            node);
     }
 
     case AST::NodeType::Interface: {
         const auto &interface = AST::cast_to<AST::Interface>(node);
-        ScopeTable table;
-        if(interface->get_params()) {
-            for(const AST::Declaration::Ptr &param : *interface->get_params()) {
-                add_scope_item(table, param);
-            }
-        }
-        if(interface->get_ports()) {
-            for(const AST::Port::Ptr &port : *interface->get_ports()) {
-                add_scope_item(table, port->get_decl());
-            }
-        }
-        add_scope_items(table, interface->get_items());
         ++m_interface_depth;
-        const int ret = walk_in_scope(table, node);
+        const int ret =
+            walk_in_scope(build_definition_scope(interface->get_params(), interface->get_ports(),
+                                                 interface->get_items()),
+                          node);
         --m_interface_depth;
         return ret;
     }
 
-    case AST::NodeType::Package: {
-        ScopeTable table;
-        add_scope_items(table, AST::cast_to<AST::Package>(node)->get_items());
-        return walk_in_scope(table, node);
-    }
+    case AST::NodeType::Package:
+        return walk_in_scope(
+            build_definition_scope(nullptr, nullptr, AST::cast_to<AST::Package>(node)->get_items()),
+            node);
 
     case AST::NodeType::Function: {
         const auto &function = AST::cast_to<AST::Function>(node);
-        ScopeTable table;
-        // The function's own name is bound inside its body (the legacy return
-        // variable, and the callee of a recursive call).
-        table.add_local(function->get_name(), node);
-        if(function->get_args()) {
-            for(const AST::Arg::Ptr &arg : *function->get_args()) {
-                add_scope_item(table, arg);
-            }
-        }
-        add_scope_items(table, function->get_statements());
-        return walk_in_scope(table, node);
+        return walk_in_scope(build_subroutine_scope(function->get_name(), node,
+                                                    function->get_args(),
+                                                    function->get_statements()),
+                             node);
     }
 
     case AST::NodeType::Task: {
         const auto &task = AST::cast_to<AST::Task>(node);
-        ScopeTable table;
-        table.add_local(task->get_name(), node);
-        if(task->get_args()) {
-            for(const AST::Arg::Ptr &arg : *task->get_args()) {
-                add_scope_item(table, arg);
-            }
-        }
-        add_scope_items(table, task->get_statements());
-        return walk_in_scope(table, node);
+        return walk_in_scope(build_subroutine_scope(task->get_name(), node, task->get_args(),
+                                                    task->get_statements()),
+                             node);
     }
 
     case AST::NodeType::Block: {
         ScopeTable table;
         add_scope_items(table, AST::cast_to<AST::Block>(node)->get_statements());
-        return walk_in_scope(table, node);
+        return walk_in_scope(std::move(table), node);
     }
 
-    case AST::NodeType::Call:
+    case AST::NodeType::ParallelBlock: {
+        // fork/join declares a scope exactly like a begin/end block.
+        ScopeTable table;
+        add_scope_items(table, AST::cast_to<AST::ParallelBlock>(node)->get_statements());
+        return walk_in_scope(std::move(table), node);
+    }
+
+    case AST::NodeType::GenerateStatement: {
+        // Items declared directly in a generate region (no begin/end) live in
+        // their own scope.
+        ScopeTable table;
+        add_scope_items(table, AST::cast_to<AST::GenerateStatement>(node)->get_items());
+        return walk_in_scope(std::move(table), node);
+    }
+
+    case AST::NodeType::Call: {
         // Exact type only: FunctionCall/TaskCall are already resolved forms.
+        // Arguments first (they may hold casts / type() operands to re-tag);
+        // the re-tag then replaces this node in `parent`.
+        int ret = 0;
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret += walk(child, node);
+        }
         retag_call(AST::cast_to<AST::Call>(node), parent);
-        return 0;
+        return ret;
+    }
 
     case AST::NodeType::Modport:
         // §25.5: a modport is only legal inside an interface body.
@@ -276,17 +303,6 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
 
     case AST::NodeType::Port: {
         int ret = resolve_port(AST::cast_to<AST::Port>(node));
-        const AST::Node::ListPtr children = node->get_children();
-        for(const AST::Node::Ptr &child : *children) {
-            ret += walk(child, node);
-        }
-        return ret;
-    }
-
-    case AST::NodeType::Var:
-    case AST::NodeType::Typedef:
-    case AST::NodeType::Arg: {
-        int ret = check_interface_as_data_type(AST::cast_to<AST::Declaration>(node));
         const AST::Node::ListPtr children = node->get_children();
         for(const AST::Node::Ptr &child : *children) {
             ret += walk(child, node);
@@ -318,6 +334,11 @@ int NameResolution::walk(const AST::Node::Ptr &node, const AST::Node::Ptr &paren
 
     default: {
         int ret = 0;
+        // §25.9 applies to every declaration role (Var, Net family, Arg,
+        // Param, Member, Typedef, …): an interface is not a data type.
+        if(node->is_node_category(AST::NodeType::Declaration)) {
+            ret += check_interface_as_data_type(AST::cast_to<AST::Declaration>(node));
+        }
         const AST::Node::ListPtr children = node->get_children();
         for(const AST::Node::Ptr &child : *children) {
             ret += walk(child, node);
@@ -349,9 +370,13 @@ AST::InterfaceType::Ptr make_interface_type(const AST::NamedType::Ptr &named)
 } // namespace
 
 const NameResolution::DesignEntry *
-NameResolution::design_lookup_unshadowed(const std::string &name) const
+NameResolution::design_lookup_unshadowed(const std::string &name, const AST::Node *self) const
 {
-    if(lookup(name)) {
+    // A declaration does not shadow the type reference of its OWN header
+    // (`module m(my_if my_if)`, `my_if my_if;`): only a binding to another
+    // node hides the design-level name.
+    const ScopeTable::Binding *binding = lookup(name);
+    if(binding && binding->decl.get() != self) {
         return nullptr;
     }
     const auto it = m_design.find(name);
@@ -399,6 +424,11 @@ int NameResolution::resolve_port(const AST::Port::Ptr &port)
         const std::string &name = named->get_name();
 
         const ScopeTable::Binding *binding = lookup(name);
+        if(binding && binding->decl.get() == static_cast<const AST::Node *>(decl.get())) {
+            // A port named like its own type (`module m(my_if my_if)`): the
+            // port's own binding is not a type reference.
+            binding = nullptr;
+        }
         if(binding) {
             if(binding->kind == ScopeTable::SymbolKind::TYPE) {
                 // The other side of the ambiguity: a typed net port whose
@@ -420,7 +450,7 @@ int NameResolution::resolve_port(const AST::Port::Ptr &port)
             return 0;
         }
 
-        const DesignEntry *entry = design_lookup_unshadowed(name);
+        const DesignEntry *entry = design_lookup_unshadowed(name, decl.get());
         if(entry && entry->kind == ScopeTable::SymbolKind::INTERFACE) {
             if(named->get_packed_dims() && !named->get_packed_dims()->empty()) {
                 LOG_ERROR_N(port) << "an interface port type takes no packed dimensions";
@@ -439,7 +469,7 @@ int NameResolution::resolve_port(const AST::Port::Ptr &port)
     // direction (A.1.3), so the §23.2.2.3 inheritance is undone.
     if(decl->is_node_type(AST::NodeType::ImplicitNet) && is_bare_named_type(decl->get_type())) {
         const auto &named = AST::cast_to<AST::NamedType>(decl->get_type());
-        const DesignEntry *entry = design_lookup_unshadowed(named->get_name());
+        const DesignEntry *entry = design_lookup_unshadowed(named->get_name(), decl.get());
         if(!entry || entry->kind != ScopeTable::SymbolKind::INTERFACE) {
             return 0;
         }
@@ -544,7 +574,7 @@ int NameResolution::check_interface_as_data_type(const AST::Declaration::Ptr &de
         return 0;
     }
     const auto &named = AST::cast_to<AST::NamedType>(decl->get_type());
-    const DesignEntry *entry = design_lookup_unshadowed(named->get_name());
+    const DesignEntry *entry = design_lookup_unshadowed(named->get_name(), decl.get());
     if(entry && entry->kind == ScopeTable::SymbolKind::INTERFACE) {
         LOG_ERROR_N(decl) << "interface '" << named->get_name()
                           << "' used as a data type requires 'virtual' (IEEE 1800-2017 25.9)";
@@ -590,10 +620,14 @@ void NameResolution::retag_call(const AST::Call::Ptr &call, const AST::Node::Ptr
     }
 
     case ScopeTable::SymbolKind::FUNCTION: {
-        // Legal as a statement, but the return value is discarded — the
-        // standard asks for a warning unless the call is void-cast (§13.4.1).
-        LOG_WARNING_N(call) << "function '" << call->get_name()
-                            << "' called as a statement; its return value is discarded";
+        // Legal as a statement; the §13.4.1 discarded-value warning applies
+        // only when there IS a value — a void function has none.
+        const auto &function = AST::cast_to<AST::Function>(binding->decl);
+        const AST::DataType::Ptr return_type = function->get_return_type();
+        if(!return_type || !return_type->is_node_type(AST::NodeType::VoidType)) {
+            LOG_WARNING_N(call) << "function '" << call->get_name()
+                                << "' called as a statement; its return value is discarded";
+        }
         auto functioncall =
             std::make_shared<AST::FunctionCall>(call->get_filename(), call->get_line());
         functioncall->set_name(call->get_name());

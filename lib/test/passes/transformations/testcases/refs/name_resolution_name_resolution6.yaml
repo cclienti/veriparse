@@ -1,0 +1,360 @@
+Source:
+  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+          line: 1
+          name: nr6_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: d
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 3
+                  signing: NONE
+      - Module:
+          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+          line: 7
+          name: name_resolution6
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 7
+              is_local: false
+              name: WIDTH
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 7
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 7
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 7
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 7
+              name: nr6_if
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 7
+                  is_var: false
+                  direction: NONE
+                  name: nr6_if
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 7
+                      name: nr6_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 7
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 7
+                      signing: NONE
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 9
+              name: t
+              lifetime: AUTOMATIC
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 9
+                  is_var: false
+                  direction: INPUT
+                  name: v
+                  default_value: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Var:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 10
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: unused
+                  init:
+                    Rvalue: null
+                  type:
+                    IntegerType:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 10
+                      signing: NONE
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 11
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 11
+                          name: unused
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 11
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 11
+                          name: v
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 14
+              name: update
+              lifetime: NONE
+              return_type:
+                VoidType:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 14
+                  signing: NONE
+              statements: []
+          - Initial:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 17
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 18
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 18
+                          name: t
+                          args:
+                          - SizeCast:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 18
+                              size:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 18
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              expr:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 18
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 19
+                      scope: ''
+                      statement:
+                        FunctionCall:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 19
+                          name: update
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - ParallelBlock:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 20
+                      scope: fk
+                      statements:
+                      - SingleStatement:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 21
+                          scope: ''
+                          statement:
+                            TaskCall:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 21
+                              name: t
+                              args:
+                              - IntConstN:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 21
+                                  base: 16
+                                  size: 8
+                                  sign: false
+                                  value: 1
+                              hier:
+                                HierName: null
+                          delay:
+                            DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+              line: 25
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                  line: 25
+                  scope: ''
+                  statements:
+                  - ParallelBlock:
+                      filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                      line: 26
+                      scope: fk2
+                      statements:
+                      - Var:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 27
+                          is_var: false
+                          is_const: false
+                          lifetime: NONE
+                          name: t
+                          init:
+                            Rvalue: null
+                          type:
+                            IntegerType:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 27
+                              signing: NONE
+                      - BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 28
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 28
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 28
+                                  name: t
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 28
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 28
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 2
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - SingleStatement:
+                          filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                          line: 29
+                          scope: ''
+                          statement:
+                            Call:
+                              filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                              line: 29
+                              name: t
+                              args:
+                              - IntConstN:
+                                  filename: ../test/passes/transformations/testcases/name_resolution6.sv
+                                  line: 29
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                              hier:
+                                HierName: null
+                          delay:
+                            DelayStatement: null
