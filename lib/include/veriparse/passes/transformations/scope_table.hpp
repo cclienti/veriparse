@@ -83,14 +83,23 @@ public:
      * @brief Visit every name a scope item binds: the item's own name (any
      * Declaration, a Function/Task, a Genvar) plus the enumerators of an
      * inline EnumType — enum members are declared in the enclosing scope
-     * (IEEE 1800-2017 §6.19). The visitor receives the bound name and the
-     * node it denotes: the EnumItem for an enumerator, the item itself
-     * otherwise. The ITEM stays the unit of declaration (an enumerator is
-     * copied/moved with its containing declaration).
+     * (IEEE 1800-2017 §6.19). A ranged enumerator (`V[N]`, `V[N:M]`) binds
+     * its GENERATED names (`V0`…, §6.19.2), never the bare base name. The
+     * visitor receives the bound name and the node it denotes: the EnumItem
+     * for an enumerator, the item itself otherwise. The ITEM stays the unit
+     * of declaration (an enumerator is copied/moved with its containing
+     * declaration).
      */
     static void for_each_bound_name(
         const AST::Node::Ptr &item,
         const std::function<void(const std::string &, const AST::Node::Ptr &)> &visit);
+
+    /**
+     * @brief Name-only convenience overload, for callers that key their own
+     * per-item state and do not need the denoted node.
+     */
+    static void for_each_bound_name(const AST::Node::Ptr &item,
+                                    const std::function<void(const std::string &)> &visit);
 
     /**
      * @brief Register a name declared in the scope itself. A local shadows any

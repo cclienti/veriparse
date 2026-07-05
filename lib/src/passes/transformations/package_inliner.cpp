@@ -102,21 +102,29 @@ void collect_unqualified_names(const AST::Node::Ptr &node, std::set<std::string>
     }
 }
 
+void collect_bound_names_rec(const AST::Node::Ptr &node,
+                             const std::function<void(const std::string &)> &visit)
+{
+    if(!node) {
+        return;
+    }
+    ScopeTable::for_each_bound_name(node, visit);
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        collect_bound_names_rec(child, visit);
+    }
+}
+
 /// Collect the names DECLARED inside `node` — its own name plus subroutine args,
 /// local variables, genvars, inline-enum enumerators (every bound name). A reference to
 /// such a name is bound within the declaration, so it is NOT a same-package
 /// dependency (a function arg may legitimately share a package symbol's name).
 void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    ScopeTable::for_each_bound_name(
-        node, [&names](const std::string &name, const AST::Node::Ptr &) { names.insert(name); });
-    AST::Node::ListPtr children = node->get_children();
-    for(const AST::Node::Ptr &child : *children) {
-        collect_bound_names(child, names);
-    }
+    const std::function<void(const std::string &)> visit = [&names](const std::string &name) {
+        names.insert(name);
+    };
+    collect_bound_names_rec(node, visit);
 }
 
 /// The compilation-unit definitions list (top-level scope), or null.
@@ -174,14 +182,27 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
         const auto &pkg = AST::cast_to<AST::Package>(p);
         PackageEntry entry;
         entry.package = pkg;
+        bool duplicate = false;
         if(pkg->get_items()) {
             for(const AST::Node::Ptr &item : *pkg->get_items()) {
                 ScopeTable::for_each_bound_name(
-                    item, [&entry, &pkg, &item](const std::string &name, const AST::Node::Ptr &) {
-                        entry.symbols[name] = item;
+                    item, [&entry, &pkg, &item, &duplicate](const std::string &name) {
+                        // Two package items binding one name is a duplicate
+                        // declaration in the package scope (§26.2) — diagnose,
+                        // never bind last-wins.
+                        const auto ins = entry.symbols.emplace(name, item);
+                        if(!ins.second && ins.first->second != item) {
+                            LOG_ERROR_N(item) << "duplicate declaration of '" << name
+                                              << "' in package '" << pkg->get_name() << "'";
+                            duplicate = true;
+                            return;
+                        }
                         entry.origin[name] = pkg->get_name(); // an own decl originates here
                     });
             }
+        }
+        if(duplicate) {
+            return 1;
         }
         // Before its body is resolved, a package's contents are just its own
         // declarations; resolve_packages() re-indexes after pulling deps in.
@@ -324,22 +345,32 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         }
         pit->second.contents.clear();
         for(const AST::Node::Ptr &item : *pkg->get_items()) {
-            ScopeTable::for_each_bound_name(
-                item, [&pit, &item](const std::string &name, const AST::Node::Ptr &) {
-                    pit->second.contents[name] = item;
-                });
+            ScopeTable::for_each_bound_name(item, [&pit, &item](const std::string &name) {
+                pit->second.contents[name] = item;
+            });
         }
 
         // Record the defining package of each IMPORTED content name (own decls
         // already have it from collect()), so a re-export — and a downstream
-        // multi-path import — sees the original origin (ADR-0004 §9.5).
-        for(const auto &kv : pit->second.contents) {
-            if(pit->second.origin.count(kv.first)) {
+        // multi-path import — sees the original origin (ADR-0004 §9.5). An
+        // explicitly imported declaration binds its sibling names too (an
+        // imported enum typedef brings its enumerators), so attribute every
+        // name the imported item binds, not only the imported one.
+        for(const auto &imp : explicit_imports) {
+            auto iit = pit->second.contents.find(imp.first);
+            if(iit == pit->second.contents.end()) {
                 continue;
             }
-            auto eit = explicit_imports.find(kv.first);
-            if(eit != explicit_imports.end()) {
-                pit->second.origin[kv.first] = defining_package_of(eit->second, kv.first);
+            const std::string &src_pkg = imp.second;
+            ScopeTable::for_each_bound_name(
+                iit->second, [this, &pit, &src_pkg](const std::string &name) {
+                    if(!pit->second.origin.count(name)) {
+                        pit->second.origin[name] = defining_package_of(src_pkg, name);
+                    }
+                });
+        }
+        for(const auto &kv : pit->second.contents) {
+            if(pit->second.origin.count(kv.first)) {
                 continue;
             }
             for(const std::string &q : wildcard_pkgs) {
@@ -444,10 +475,10 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
                 }
                 items->insert(items->begin(), forced.copies->begin(), forced.copies->end());
                 for(const AST::Node::Ptr &copied : *forced.copies) {
-                    ScopeTable::for_each_bound_name(
-                        copied, [&entry, &copied](const std::string &name, const AST::Node::Ptr &) {
-                            entry.contents[name] = copied;
-                        });
+                    ScopeTable::for_each_bound_name(copied,
+                                                    [&entry, &copied](const std::string &name) {
+                                                        entry.contents[name] = copied;
+                                                    });
                 }
                 entry.symbols[sym] = entry.contents[sym];
                 entry.origin[sym] = defining_package_of(pkgname, sym);
@@ -468,11 +499,13 @@ int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::No
     ScopeCopies copies;
     copies.copies = std::make_shared<AST::Node::List>();
 
-    // Local declarations shadow imports (§26.4–26.6).
+    // Local declarations shadow imports (§26.4–26.6). The table binds the
+    // DENOTED node (the EnumItem for an enumerator — its kind is VALUE, not
+    // its typedef's TYPE); the dedup map keeps the item, the unit of copy.
     for(const AST::Node::Ptr &item : *items) {
         ScopeTable::for_each_bound_name(
-            item, [&table, &copies, &item](const std::string &name, const AST::Node::Ptr &) {
-                table.add_local(name, item);
+            item, [&table, &copies, &item](const std::string &name, const AST::Node::Ptr &denoted) {
+                table.add_local(name, denoted);
                 copies.bound[name] = item;
             });
     }
@@ -652,9 +685,6 @@ int PackageInliner::materialize_imports(const std::list<AST::Node::Ptr> &imports
 int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &name,
                                 ScopeCopies &copies)
 {
-    if(copies.bound.count(name)) {
-        return 0; // a local shadow, or already copied for this scope
-    }
     auto pit = m_packages.find(pkgname);
     if(pit == m_packages.end()) {
         return 0; // package validated by the caller; defensive
@@ -663,6 +693,20 @@ int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &n
     if(cit == pit->second.contents.end()) {
         return 0; // symbol validated by the caller; defensive
     }
+    auto nit = copies.bound.find(name);
+    if(nit != copies.bound.end()) {
+        // Already bound: a local shadow (the caller resolved precedence), or
+        // already copied for this scope. But bound to a DIFFERENT declaration
+        // than the one requested (e.g. a sibling name of an earlier copy),
+        // skipping would silently rebind every reference — reject.
+        if(nit->second != cit->second && !nit->second->is_equal(*cit->second, false)) {
+            LOG_ERROR_N(cit->second)
+                << "importing '" << pkgname << "::" << name << "' collides with a different "
+                << "declaration named '" << name << "' already in scope (rename to disambiguate)";
+            return 1;
+        }
+        return 0;
+    }
 
     // Clone the declaration and bind EVERY name it declares first (dedup /
     // cycle guard — a later reference to the typedef behind an enumerator, or
@@ -670,11 +714,34 @@ int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &n
     // copy the same-package symbols it transitively depends on (ADR-0004
     // §9.3), and splice the dependencies BEFORE this declaration so the
     // output reads declared-before-use.
+    //
+    // A sibling bound name already bound to a DIFFERENT declaration (a local,
+    // or another import's copy) cannot be registered: splicing would emit a
+    // duplicate declaration, and skipping would silently rebind references to
+    // the wrong declaration — reject, as for a qualified-reference collision.
+    // A binding that is structurally EQUAL is the same declaration reached
+    // through another path (e.g. a clone of it) and stays as-is.
     const AST::Node::Ptr clone = cit->second->clone();
+    std::string collision;
     ScopeTable::for_each_bound_name(
-        cit->second, [&copies, &cit](const std::string &bound_name, const AST::Node::Ptr &) {
+        cit->second, [&copies, &cit, &collision](const std::string &bound_name) {
+            auto bit = copies.bound.find(bound_name);
+            if(bit != copies.bound.end() && bit->second != cit->second &&
+               !bit->second->is_equal(*cit->second, false)) {
+                if(collision.empty()) {
+                    collision = bound_name;
+                }
+                return;
+            }
             copies.bound[bound_name] = cit->second;
         });
+    if(!collision.empty()) {
+        LOG_ERROR_N(cit->second) << "importing '" << pkgname << "::" << name << "' also binds '"
+                                 << collision << "', which collides with a different declaration "
+                                 << "named '" << collision
+                                 << "' already in scope (rename to disambiguate)";
+        return 1;
+    }
 
     // Dependencies are the FREE same-package names: referenced, but not declared
     // within the clone (a subroutine arg/local shadows a same-named package symbol
@@ -684,11 +751,29 @@ int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &n
     collect_unqualified_names(clone, refs);
     collect_bound_names(clone, bound);
     for(const std::string &ref : refs) {
-        if(ref != name && !bound.count(ref) && pit->second.contents.count(ref) &&
-           !copies.bound.count(ref)) {
-            if(copy_symbol(pkgname, ref, copies) != 0) {
+        if(ref == name || bound.count(ref)) {
+            continue;
+        }
+        auto dit = pit->second.contents.find(ref);
+        if(dit == pit->second.contents.end()) {
+            continue; // not a same-package symbol
+        }
+        auto bit = copies.bound.find(ref);
+        if(bit != copies.bound.end()) {
+            // Already in scope. Fine when it IS this dependency (copied
+            // earlier, or an equal clone of it); a DIFFERENT declaration
+            // would silently rebind the copied reference — reject.
+            if(bit->second != dit->second && !bit->second->is_equal(*dit->second, false)) {
+                LOG_ERROR_N(clone) << "'" << pkgname << "::" << name << "' depends on '" << pkgname
+                                   << "::" << ref << "', which is shadowed by a different "
+                                   << "declaration named '" << ref
+                                   << "' in the importing scope (rename to disambiguate)";
                 return 1;
             }
+            continue;
+        }
+        if(copy_symbol(pkgname, ref, copies) != 0) {
+            return 1;
         }
     }
     copies.copies->push_back(clone);

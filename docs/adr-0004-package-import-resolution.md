@@ -254,6 +254,14 @@ chained re-exports), and `ScopeTable::lookup` treats multiple wildcard paths as 
 conflict only when their defining packages differ. Same origin → resolves; truly
 different declarations (`Pa::x` vs `Pb::x`) → still ambiguous on use.
 
+Origin recovery attributes **every name an imported item binds**, not only the
+imported name itself: an explicit `import Q::state_t` of an enum typedef also
+brings its enumerators into the package contents, and they originate from the
+same declaration in `Q`. Attributing only the imported key would leave the
+enumerators' origin to fall back to the importing package, wrongly rejecting a
+same-declaration diamond (`import P::*; import Q::*;` where P re-exports Q's
+typedef) as ambiguous on an enumerator while its typedef resolves.
+
 (A related deviation — re-exporting the *full* wildcard set rather than only the
 referenced names — was fixed by making wildcard imports lazy (§2.1): a package now
 imports, and therefore re-exports, only the names it references.)
@@ -273,3 +281,24 @@ scope's dedup map, so a later reference to the typedef itself or to a sibling
 enumerator does not clone the declaration twice. The same enumeration also
 registers genvars and enumerators as scope locals, so they now shadow imports
 per §26.4 like any other local declaration.
+
+A **ranged** enumerator (`V[N]`, `V[N:M]`, §6.19.2) binds its *generated* names
+(`V0`…`V(N-1)`, resp. `VN`…`VM` incrementing or decrementing) — never the bare
+base name. The bounds are integral literals by the BNF
+(`enum_name_declaration`); a non-literal bound generates nothing, so a
+reference to a would-be generated name fails loudly downstream.
+
+Because the containing declaration is the unit of copy, importing an enumerator
+can drag **sibling names** (the typedef, other enumerators) into the scope. A
+sibling — or the requested name itself, or a transitively required same-package
+dependency — that is already bound to a **different** declaration (a local, or
+another import's copy) is a hard error ("rename to disambiguate"): splicing
+would emit a duplicate declaration, and skipping would silently rebind
+references to the wrong declaration. A binding that is structurally *equal* is
+the same declaration reached through another path (a clone from a re-export
+fold) and is not a conflict. Note this is deliberately stricter than pure-SV
+visibility (where importing an enumerator does not import its typedef's name):
+the copy model trades those corner cases for declaration-level inlining, and it
+fails loudly, never silently. Two package items binding one name (a localparam
+vs. an enumerator) is likewise diagnosed at collect (§26.2), not bound
+last-wins.
