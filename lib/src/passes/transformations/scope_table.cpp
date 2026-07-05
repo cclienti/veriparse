@@ -2,7 +2,9 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/scope_table.hpp>
 
+#include <limits>
 #include <set>
+#include <string>
 
 namespace Veriparse
 {
@@ -10,6 +12,63 @@ namespace Passes
 {
 namespace Transformations
 {
+
+namespace
+{
+
+/// The value of a nonnegative integral literal, or false. Ranged-enumerator
+/// bounds are nonnegative integral numbers by the BNF (enum_name_declaration,
+/// §6.19.2) — anything else is not a legal bound.
+bool integral_literal(const AST::Node::Ptr &node, long &out)
+{
+    if(!node || !node->is_node_type(AST::NodeType::IntConstN)) {
+        return false;
+    }
+    const auto &value = AST::cast_to<AST::IntConstN>(node)->get_value();
+    if(value < 0 || value > std::numeric_limits<long>::max()) {
+        return false;
+    }
+    out = value.convert_to<long>();
+    return true;
+}
+
+/// Visit the names a ranged enumerator generates (§6.19.2): `V[N]` declares
+/// V0…V(N-1), `V[N:M]` declares VN…VM (incrementing or decrementing). An
+/// ill-formed bound generates nothing — the bare base name is never declared,
+/// so a reference to it (or to a would-be generated name) fails downstream.
+void visit_generated_enum_names(
+    const AST::EnumItem::Ptr &enum_item,
+    const std::function<void(const std::string &, const AST::Node::Ptr &)> &visit)
+{
+    const std::string &base = enum_item->get_name();
+    const AST::Dimension::Ptr &range = enum_item->get_range();
+
+    if(range->is_node_type(AST::NodeType::SizeDim)) {
+        long n = 0;
+        if(!integral_literal(AST::cast_to<AST::SizeDim>(range)->get_size(), n) || n <= 0) {
+            return;
+        }
+        for(long i = 0; i < n; ++i) {
+            visit(base + std::to_string(i), enum_item);
+        }
+        return;
+    }
+
+    if(range->is_node_type(AST::NodeType::RangeDim)) {
+        const auto &dim = AST::cast_to<AST::RangeDim>(range);
+        long left = 0;
+        long right = 0;
+        if(!integral_literal(dim->get_left(), left) || !integral_literal(dim->get_right(), right)) {
+            return;
+        }
+        const long step = (left <= right) ? 1 : -1;
+        for(long i = left; i != right + step; i += step) {
+            visit(base + std::to_string(i), enum_item);
+        }
+    }
+}
+
+} // namespace
 
 ScopeTable::SymbolKind ScopeTable::classify(const AST::Node::Ptr &decl)
 {
@@ -83,10 +142,21 @@ void ScopeTable::for_each_bound_name(
         const auto &items = AST::cast_to<AST::EnumType>(type)->get_items();
         if(items) {
             for(const AST::EnumItem::Ptr &enum_item : *items) {
-                visit(enum_item->get_name(), enum_item);
+                if(enum_item->get_range()) {
+                    visit_generated_enum_names(enum_item, visit);
+                } else {
+                    visit(enum_item->get_name(), enum_item);
+                }
             }
         }
     }
+}
+
+void ScopeTable::for_each_bound_name(const AST::Node::Ptr &item,
+                                     const std::function<void(const std::string &)> &visit)
+{
+    for_each_bound_name(item,
+                        [&visit](const std::string &name, const AST::Node::Ptr &) { visit(name); });
 }
 
 void ScopeTable::add_local(const std::string &name, AST::Node::Ptr decl)

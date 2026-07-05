@@ -14,6 +14,20 @@ using namespace Veriparse;
 
 static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 
+// Count the nodes of `type` reachable from `node`.
+static int count_nodes(const AST::Node::Ptr &node, AST::NodeType type)
+{
+    if(!node) {
+        return 0;
+    }
+    int n = node->is_node_type(type) ? 1 : 0;
+    AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        n += count_nodes(child, type);
+    }
+    return n;
+}
+
 // Count value/type references that still carry an unresolved `::` scope.
 static int count_scoped_refs(const AST::Node::Ptr &node)
 {
@@ -133,6 +147,63 @@ TEST(PassesTransformation_PackageInliner, package_inliner_enum0) { TEST_CORE_SV;
 // Qualified enumerator refs (pkg::A, pkg::B) plus the typedef itself: the
 // declaration is copied exactly once (every bound name deduped on copy).
 TEST(PassesTransformation_PackageInliner, package_inliner_enum1) { TEST_CORE_SV; }
+
+// Same-declaration diamond via an EXPLICIT typedef import re-exported by P:
+// importing P::* and Q::* and referencing an enumerator of that typedef is NOT
+// ambiguous — both paths reach Q's declaration (§26.6, ADR-0004 §9.5).
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_diamond)
+{
+    ENABLE_LOGGER;
+
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    verilog.parse(test_helpers.get_sv_filename(test_name));
+    AST::Node::Ptr source = verilog.get_source();
+    ASSERT_TRUE(source != nullptr);
+
+    ASSERT_EQ(Passes::Transformations::PackageInliner().run(source), 0);
+    ASSERT_AST_IS_TREE(source);
+    EXPECT_EQ(count_scoped_refs(source), 0); // PED_A bound, not left dangling
+}
+
+// Ranged enumerators (§6.19.2): `enum {V[3]}` declares V0..V2 and `{W[6:4]}`
+// declares W6..W4 in the enclosing scope — those generated names, not the bare
+// base name, are what an import binds.
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_ranged)
+{
+    ENABLE_LOGGER;
+
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    verilog.parse(test_helpers.get_sv_filename(test_name));
+    AST::Node::Ptr source = verilog.get_source();
+    ASSERT_TRUE(source != nullptr);
+
+    ASSERT_EQ(Passes::Transformations::PackageInliner().run(source), 0);
+    ASSERT_AST_IS_TREE(source);
+    EXPECT_EQ(count_scoped_refs(source), 0); // per_pkg::PER_W5 resolved
+
+    // Both referenced typedefs must be copied into the module (packages are
+    // stripped after resolution, so any remaining Typedef is a copied one).
+    EXPECT_EQ(count_nodes(source, AST::NodeType::Typedef), 2);
+}
+
+// A copied declaration's SIBLING bound name (the enum typedef name behind an
+// imported enumerator) collides with a module-local declaration: localizing
+// would splice a duplicate `e_t` — hard error, not a silent clobber.
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_sibling_shadow) { TEST_ERROR_SV; }
+// Same collision through two explicit imports: materializing P::PEEC_A binds
+// its typedef name `e_t`, which the later `import Q::e_t` must not silently
+// rebind to (nor be shadowed by) — hard error.
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_explicit_clobber) { TEST_ERROR_SV; }
+// A copied symbol's same-package dependency (an enumerator) is shadowed by a
+// module-local enumerator: inlining `localparam W = PEDS_A;` would rebind it to
+// the local's value — hard error, not a silent wrong constant.
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_dep_shadow) { TEST_ERROR_SV; }
+// Two package items binding the same name (a localparam and an enumerator) is a
+// duplicate declaration in the package scope (§6.19/§26.2) — diagnosed at
+// collect, not resolved last-wins.
+TEST(PassesTransformation_PackageInliner, package_inliner_enum_dup) { TEST_ERROR_SV; }
 
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
