@@ -1,0 +1,155 @@
+Source:
+  filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+          line: 7
+          name: package_inliner_enum0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+              line: 7
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Typedef:
+              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+              line: 3
+              fwd_kind: NONE
+              name: pie0_t
+              type:
+                EnumType:
+                  filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                  line: 3
+                  signing: NONE
+                  base:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 3
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                  items:
+                  - EnumItem:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 3
+                      name: PIE0_A
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                          line: 3
+                          base: 16
+                          size: 2
+                          sign: false
+                          value: 2
+                      range:
+                        Dimension: null
+                  - EnumItem:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 3
+                      name: PIE0_B
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                          line: 3
+                          base: 16
+                          size: 2
+                          sign: false
+                          value: 3
+                      range:
+                        Dimension: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 11
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/package_inliner_enum0.sv
+                      line: 11
+                      name: PIE0_A
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

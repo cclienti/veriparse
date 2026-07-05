@@ -257,3 +257,19 @@ different declarations (`Pa::x` vs `Pb::x`) → still ambiguous on use.
 (A related deviation — re-exporting the *full* wildcard set rather than only the
 referenced names — was fixed by making wildcard imports lazy (§2.1): a package now
 imports, and therefore re-exports, only the names it references.)
+
+### 9.6 Enum members are package symbols (implemented)
+
+An enum declared in a package binds its **enumerators** in the package scope
+(§6.19), so `import P::*` + a bare `S_A`, and the qualified `P::S_A`, must both
+resolve — previously the symbol index recorded only each item's *own* name, so
+the wildcard form silently left `S_A` dangling in the output and the qualified
+form hard-errored ("no synthesizable symbol"). Symbol indexing now enumerates
+**every name an item binds** via the shared `ScopeTable::for_each_bound_name`
+(the ADR-0006 classifier seam): an enumerator maps to its **containing
+declaration**, which stays the unit of copy — referencing `S_A` copies the whole
+typedef. On copy, *all* of the copied item's bound names are registered in the
+scope's dedup map, so a later reference to the typedef itself or to a sibling
+enumerator does not clone the declaration twice. The same enumeration also
+registers genvars and enumerators as scope locals, so they now shadow imports
+per §26.4 like any other local declaration.

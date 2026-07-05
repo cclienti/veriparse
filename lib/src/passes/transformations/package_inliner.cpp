@@ -29,25 +29,6 @@ bool is_scope_boundary(const AST::Node::Ptr &node)
     return node->is_node_type(AST::NodeType::Module) || node->is_node_type(AST::NodeType::Package);
 }
 
-/// Name a package item declares, when it is a synthesizable declaration
-/// (Param/Var/Net/Typedef via the Declaration category, or a Function/Task).
-bool node_decl_name(const AST::Node::Ptr &node, std::string &name)
-{
-    if(node->is_node_category(AST::NodeType::Declaration)) {
-        name = AST::cast_to<AST::Declaration>(node)->get_name();
-        return true;
-    }
-    if(node->is_node_type(AST::NodeType::Function)) {
-        name = AST::cast_to<AST::Function>(node)->get_name();
-        return true;
-    }
-    if(node->is_node_type(AST::NodeType::Task)) {
-        name = AST::cast_to<AST::Task>(node)->get_name();
-        return true;
-    }
-    return false;
-}
-
 /// A reference carrying a `::` scope is either a value ref (Identifier and its
 /// Call subtypes) or a type ref (NamedType). Both expose get_scope/get_name.
 bool is_reference(const AST::Node::Ptr &node)
@@ -122,7 +103,7 @@ void collect_unqualified_names(const AST::Node::Ptr &node, std::set<std::string>
 }
 
 /// Collect the names DECLARED inside `node` — its own name plus subroutine args,
-/// local variables, genvars (anything `node_decl_name` recognises). A reference to
+/// local variables, genvars, inline-enum enumerators (every bound name). A reference to
 /// such a name is bound within the declaration, so it is NOT a same-package
 /// dependency (a function arg may legitimately share a package symbol's name).
 void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &names)
@@ -130,10 +111,8 @@ void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &name
     if(!node) {
         return;
     }
-    std::string name;
-    if(node_decl_name(node, name)) {
-        names.insert(name);
-    }
+    ScopeTable::for_each_bound_name(
+        node, [&names](const std::string &name, const AST::Node::Ptr &) { names.insert(name); });
     AST::Node::ListPtr children = node->get_children();
     for(const AST::Node::Ptr &child : *children) {
         collect_bound_names(child, names);
@@ -197,11 +176,11 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
         entry.package = pkg;
         if(pkg->get_items()) {
             for(const AST::Node::Ptr &item : *pkg->get_items()) {
-                std::string name;
-                if(node_decl_name(item, name)) {
-                    entry.symbols[name] = item;
-                    entry.origin[name] = pkg->get_name(); // an own decl originates here
-                }
+                ScopeTable::for_each_bound_name(
+                    item, [&entry, &pkg, &item](const std::string &name, const AST::Node::Ptr &) {
+                        entry.symbols[name] = item;
+                        entry.origin[name] = pkg->get_name(); // an own decl originates here
+                    });
             }
         }
         // Before its body is resolved, a package's contents are just its own
@@ -345,10 +324,10 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         }
         pit->second.contents.clear();
         for(const AST::Node::Ptr &item : *pkg->get_items()) {
-            std::string name;
-            if(node_decl_name(item, name)) {
-                pit->second.contents[name] = item;
-            }
+            ScopeTable::for_each_bound_name(
+                item, [&pit, &item](const std::string &name, const AST::Node::Ptr &) {
+                    pit->second.contents[name] = item;
+                });
         }
 
         // Record the defining package of each IMPORTED content name (own decls
@@ -465,10 +444,10 @@ int PackageInliner::fold_exports(const AST::Node::Ptr &package, PackageEntry &en
                 }
                 items->insert(items->begin(), forced.copies->begin(), forced.copies->end());
                 for(const AST::Node::Ptr &copied : *forced.copies) {
-                    std::string name;
-                    if(node_decl_name(copied, name)) {
-                        entry.contents[name] = copied;
-                    }
+                    ScopeTable::for_each_bound_name(
+                        copied, [&entry, &copied](const std::string &name, const AST::Node::Ptr &) {
+                            entry.contents[name] = copied;
+                        });
                 }
                 entry.symbols[sym] = entry.contents[sym];
                 entry.origin[sym] = defining_package_of(pkgname, sym);
@@ -491,11 +470,11 @@ int PackageInliner::process_scope(const AST::Node::ListPtr &items, const AST::No
 
     // Local declarations shadow imports (§26.4–26.6).
     for(const AST::Node::Ptr &item : *items) {
-        std::string name;
-        if(node_decl_name(item, name)) {
-            table.add_local(name, item);
-            copies.bound[name] = item;
-        }
+        ScopeTable::for_each_bound_name(
+            item, [&table, &copies, &item](const std::string &name, const AST::Node::Ptr &) {
+                table.add_local(name, item);
+                copies.bound[name] = item;
+            });
     }
 
     // Imports visible in this scope: the scope's own, plus the compilation-unit
@@ -685,12 +664,17 @@ int PackageInliner::copy_symbol(const std::string &pkgname, const std::string &n
         return 0; // symbol validated by the caller; defensive
     }
 
-    // Clone the declaration and bind the name first (dedup / cycle guard), then
-    // copy the same-package symbols it transitively depends on (ADR-0004 §9.3),
-    // and splice the dependencies BEFORE this declaration so the output reads
-    // declared-before-use.
+    // Clone the declaration and bind EVERY name it declares first (dedup /
+    // cycle guard — a later reference to the typedef behind an enumerator, or
+    // to a sibling enumerator, must not clone the declaration again), then
+    // copy the same-package symbols it transitively depends on (ADR-0004
+    // §9.3), and splice the dependencies BEFORE this declaration so the
+    // output reads declared-before-use.
     const AST::Node::Ptr clone = cit->second->clone();
-    copies.bound[name] = cit->second;
+    ScopeTable::for_each_bound_name(
+        cit->second, [&copies, &cit](const std::string &bound_name, const AST::Node::Ptr &) {
+            copies.bound[bound_name] = cit->second;
+        });
 
     // Dependencies are the FREE same-package names: referenced, but not declared
     // within the clone (a subroutine arg/local shadows a same-named package symbol
