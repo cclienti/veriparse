@@ -126,6 +126,14 @@ TEST(PassesTransformation_PackageInliner, package_inliner_reexport_star_explicit
 // its origin carried transitively (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_chain) { TEST_CORE_SV; }
 
+// Enum members are package symbols (§6.19): a wildcard import binds an
+// enumerator referenced WITHOUT naming its typedef (the containing typedef is
+// the copied unit).
+TEST(PassesTransformation_PackageInliner, package_inliner_enum0) { TEST_CORE_SV; }
+// Qualified enumerator refs (pkg::A, pkg::B) plus the typedef itself: the
+// declaration is copied exactly once (every bound name deduped on copy).
+TEST(PassesTransformation_PackageInliner, package_inliner_enum1) { TEST_CORE_SV; }
+
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_pkg) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_undef_sym) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_ambiguous) { TEST_ERROR_SV; }
