@@ -8,6 +8,7 @@
 #include <veriparse/parser/verilog.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/passes/analysis/synthesizable_check.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
@@ -192,6 +193,18 @@ static int veriflat(int argc, char *argv[])
 
     if(Veriparse::Passes::Transformations::NameResolution().run_design(sources) != 0) {
         LOG_ERROR << "name resolution failed";
+        return 1;
+    }
+
+    //---------------------------------------------------------
+    // Reject constructs outside the synthesizable RTL subset (e.g. virtual
+    // interfaces, IEEE 1800-2017 §25.9) before flattening: the transformation
+    // passes below only model synthesizable RTL. Runs after name resolution so
+    // promoted interface types are visible.
+    //---------------------------------------------------------
+
+    if(Veriparse::Passes::Analysis::SynthesizableCheck::check(sources) != 0) {
+        LOG_ERROR << "design uses non-synthesizable constructs";
         return 1;
     }
 

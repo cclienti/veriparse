@@ -261,3 +261,14 @@ existing node" (ADR-0001 §10).
 > Principle (ADR-0001 §10 restated): interfaces are **module-like definitions +
 > a `DataType` variant + existing declaration roles**. Every deferred feature is
 > an additive node or field — the model is not redone to admit them.
+
+### 7.1 Virtual interfaces are parsed but not synthesizable
+
+A `virtual` interface type (§2.3/§6) is a decisive parse and round-trips, but a
+virtual interface (§25.9) is a **dynamic handle** — a class/testbench construct
+with no static hardware. It is therefore **rejected for synthesis** by the
+`SynthesizableCheck` pass (**ADR-0007**), not the parser: the front end stays
+permissive (ADR-0003 §1), and `veridump`/`veriobf` still round-trip it; only the
+RTL-flattening path (`veriflat`) rejects it. This is the same layering used for the
+§25.5 modport-placement check, which lives in name resolution rather than the
+grammar.
