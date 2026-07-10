@@ -9,9 +9,9 @@
   Covers: scalar interface instances, per-instance parameterization, interface
   header ports, modport-qualified and bare interface ports on modules, interface
   body logic (continuous assigns / always blocks), and **interface arrays**.
-  Explicitly **not supported** (§8): nested interface instances, tasks/functions
-  in interfaces, generic interface ports, modport expressions, modport direction
-  enforcement (visibility only in v1).
+  **Nested interface instances are supported** (§8.1). Explicitly **not
+  supported** (§8): tasks/functions in interfaces, generic interface ports,
+  modport expressions, modport direction enforcement (visibility only in v1).
 - **Normative reference** — IEEE 1800-2017, verified against `docs/1800-2017.pdf`:
   **§25.3** (interface syntax/instantiation; module-in-interface prohibition),
   **§25.3.2** (interface port access: vars `ref`, nets `inout` — reference, not
@@ -254,7 +254,7 @@ an interface.
 
 | Feature | Clause | v1 behavior | Future home |
 |---|---|---|---|
-| **Nested interface instances** | §25.3 | **hard error** at `prepare()`: "nested interfaces not supported" | fast-follow, falls out of the recursion (see below) |
+| Nested interface instance **arrays** in a port path (`p.ch[1].sig`) and multi-level nested actuals (`.c(p.tx.sub)`) | §25.3 | hard error at the rewrite / decode | index folding in the §8.1 walk |
 | **External** access to interface subroutines (`p.method()`, `bus.method()`; modport import/export) | §25.7 | **internal** `function`/`task` declarations in the body are *allowed* — they ride the module-body machinery (constant ones fold away via `FunctionEvaluation`; survivors splice legally as `bus_fname`); only *external* access through a port or instance is rejected (a subroutine name is not in the member set — §3 rewrite errors "not a member"); modport import/export entries not parsed (ADR-0002 §7) | member-set entry + call-label rewrite in `bind_interface_ports` |
 | Generic interface port (`module m(interface i)`) | §25.3.3 | not parsed (ADR-0002 §7) | resolve at connection, then §3 |
 | Modport expressions (`.a(expr)`) | §25.5.4 | not parsed (ADR-0002 §7) | substitution in the §3 rewrite |
@@ -262,32 +262,33 @@ an interface.
 | Non-identical array ranges in connection | §23.3.3.5 | range-mismatch error | index remapping |
 | Virtual interfaces | §25.9 | already rejected pre-flatten (ADR-0007) | — |
 
-### 8.1 Nested interfaces — deferred as a fast-follow, not a redesign
+### 8.1 Nested interfaces — implemented on the recursion
 
-The pseudo-module recursion (§2) is precisely what makes nesting tractable; it
-is deferred for scope, not difficulty. The cost decomposes as:
+The pseudo-module recursion (§2) is precisely what makes nesting tractable;
+the three parts landed as predicted:
 
 1. **Owner-side access** (`link.rx.data` where `link_if` instantiates
    `channel_if rx()`) — nearly free: a nested instance inside a pseudo-module
-   body is inlined by the same recursion, its subtree splices into the instance
-   tree, and `replace_scoped_identifiers`/`match_scope` already walk
-   multi-label paths (`u1.u2.sig` works today). Parameter chaining
-   (`channel_if #(W)` referencing the outer interface's param) folds before the
-   nested bind. Changes: `prepare()` admits `InterfaceInstance` body items
-   (still rejecting module instances, §25.3) and threads the deadcode-off flag.
-2. **Child-port rewrite** (`p.tx.valid` through a bare interface port) —
-   moderate: rewrite only the *first* hier label, keep the tail; the flat
-   member set becomes a structural table (members + nested-instance map) and
-   validation walks the labels.
-3. **Nested interface as an actual** (`mod u(.c(p.tx))`) — the trickiest:
-   actual decode for a one-label sub-interface path, and chaining that
-   substitutes one label with two.
+   body inlines through the same recursion, its subtree splices into the
+   instance tree, and the multi-label `replace_scoped_identifiers`/
+   `match_scope` walk resolves the path. `prepare()` admits `InterfaceInstance`
+   body items (still rejecting module instances, §25.3), records them in a
+   per-interface **nested-instance table**, and rejects a **cyclic**
+   nested-instantiation graph (elaboration would recurse forever).
+2. **Child-port references** (`p.tx.valid` through a bare interface port):
+   the rewrite replaces only the *first* hier label and validates the tail
+   structurally — intermediate labels descend the nested table, the leaf must
+   be a member of the final interface. A modport restricts the first level of
+   the port path (§25.10) and can never list a nested instance, so any nested
+   path through a modport-qualified port is rejected by that same rule.
+3. **Nested interface as an actual** (`.c(bus.tx)`, chained `.c(p.tx)`): the
+   actual's leaf is classified against the base's interface — a connection
+   modport (§25.5) or a nested element (whose extra path label is spliced
+   after the base during the rewrite); chaining composes because the enclosing
+   level's multi-label walk (point 2) resolves the spliced path.
 
-Modports need **no** extra work: §25.5 requires modport entries to be names
-declared by the same interface, so a nested member can never be modport-listed
-in our subset (that would need modport expressions, §25.5.4) — the existing
-"not in modport" error is already the correct behavior for nested paths through
-a modport-qualified port.
+v1 nested restrictions (§8 table): no nested instance **arrays** in a port
+path, and a nested actual descends exactly **one** level.
 
 ## 9. Pass placement & structure
 

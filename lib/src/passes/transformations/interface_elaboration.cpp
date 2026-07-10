@@ -131,6 +131,32 @@ int collect_modport(const AST::Modport::Ptr &modport, const std::string &interfa
     return 0;
 }
 
+/// Depth-first check that no interface reaches itself through nested
+/// instantiations — elaboration would recurse forever.
+int check_nested_acyclic(const std::string &name,
+                         const std::map<std::string, std::map<std::string, std::string>> &nested,
+                         std::set<std::string> &path, std::set<std::string> &done)
+{
+    if(done.count(name) != 0) {
+        return 0;
+    }
+    if(!path.insert(name).second) {
+        LOG_ERROR << "interface '" << name << "' instantiates itself through its nested interfaces";
+        return 1;
+    }
+    const auto it = nested.find(name);
+    if(it != nested.end()) {
+        for(const auto &sub : it->second) {
+            if(check_nested_acyclic(sub.second, nested, path, done)) {
+                return 1;
+            }
+        }
+    }
+    path.erase(name);
+    done.insert(name);
+    return 0;
+}
+
 } // namespace
 
 int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfaces, Design &design)
@@ -144,22 +170,22 @@ int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfa
         auto &members = design.members[name];
         collect_members(interface, members);
 
-        // An instantiation inside an interface body cannot be elaborated: a
-        // module is illegal there (§25.3), a nested interface is not
-        // supported yet (ADR-0008 §8), and an unknown target could be
-        // either.
+        // A nested interface instance elaborates through the pseudo-module
+        // recursion; its name is recorded so port-path references
+        // (p.tx.field) validate structurally (§8.1). A module instantiation
+        // stays illegal (§25.3), and so does an unknown target (it could be
+        // either).
+        auto &nested = design.nested[name];
         const auto &instances = Analysis::Module::get_instance_nodes(interface);
         for(const auto &instance : *instances) {
             if(interfaces.count(instance->get_module()) != 0) {
-                LOG_ERROR_N(instance)
-                    << "interface '" << instance->get_module() << "' instantiated in interface '"
-                    << name << "': nested interfaces are not supported";
+                nested.emplace(instance->get_name(), instance->get_module());
             } else {
                 LOG_ERROR_N(instance)
                     << "'" << instance->get_module() << "' instantiated in interface '" << name
                     << "': a module cannot be instantiated in an interface (IEEE 1800-2017 25.3)";
+                return 1;
             }
-            return 1;
         }
 
         // Extract and validate the modports; they are direction views, not
@@ -193,6 +219,14 @@ int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfa
         pseudo->set_items(interface->get_items());
 
         design.pseudo_modules.emplace(name, pseudo);
+    }
+
+    std::set<std::string> path;
+    std::set<std::string> done;
+    for(const auto &entry : interfaces) {
+        if(check_nested_acyclic(entry.first, design.nested, path, done)) {
+            return 1;
+        }
     }
 
     return 0;
@@ -246,6 +280,9 @@ struct PortRewrite
     /// Target label for a scalar or chained port; array-base prefix when the
     /// formal is arrayed and connected to a split instance array.
     std::string base;
+    /// Path labels spliced after the base when the actual is a nested
+    /// interface element (.c(bus.tx) → base bus, extra tx).
+    std::vector<std::string> extra_labels;
     std::string iface;
     const std::set<std::string> *visible{nullptr};
     std::string modport;
@@ -256,6 +293,8 @@ struct PortRewrite
     bool chained{false};
     /// Scope instances, for the per-index element checks (§23.3.3.5).
     const std::map<std::string, std::string> *instances{nullptr};
+    /// Interface knowledge, for the nested-path walk (§8.1).
+    const InterfaceElaboration::Design *design{nullptr};
 };
 
 /// Rewrite every `port.member` reference in the subtree onto the actual's
@@ -273,22 +312,64 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
         const auto &hier = identifier->get_hier();
         const auto &labels = hier ? hier->get_labellist() : nullptr;
         if(labels && !labels->empty() && labels->front()->get_name() == rw.port_name) {
-            if(labels->size() > 1) {
-                LOG_ERROR_N(node) << "nested interface path through port '" << rw.port_name
-                                  << "' is not supported";
+            // Walk the reference path (§8.1): intermediate labels descend the
+            // nested-instance table, the leaf must be a member of the final
+            // interface. A modport restricts the first level of the
+            // port-reference path (§25.10) and cannot list a nested instance,
+            // so any nested path through a modport-qualified port is
+            // rejected.
+            if(labels->size() > 1 && !rw.modport.empty()) {
+                LOG_ERROR_N(node) << "a nested interface path is not visible through modport '"
+                                  << rw.modport << "' of interface '" << rw.iface
+                                  << "' (IEEE 1800-2017 25.10)";
                 return 1;
             }
-            if(rw.visible->count(identifier->get_name()) == 0) {
-                if(rw.modport.empty()) {
-                    LOG_ERROR_N(node) << "interface '" << rw.iface << "' has no member '"
-                                      << identifier->get_name() << "'";
-                } else {
-                    LOG_ERROR_N(node)
-                        << "member '" << identifier->get_name() << "' is not visible through "
-                        << "modport '" << rw.modport << "' of interface '" << rw.iface
-                        << "' (IEEE 1800-2017 25.10)";
+
+            std::string leaf_iface = rw.iface;
+            for(auto lit = std::next(labels->begin()); lit != labels->end(); ++lit) {
+                const auto &tail = *lit;
+                if(tail->get_loop()) {
+                    LOG_ERROR_N(node) << "indexed nested interface path through port '"
+                                      << rw.port_name << "' is not supported";
+                    return 1;
                 }
-                return 1;
+                bool found = false;
+                const auto nested_it = rw.design->nested.find(leaf_iface);
+                if(nested_it != rw.design->nested.end()) {
+                    const auto sub_it = nested_it->second.find(tail->get_name());
+                    if(sub_it != nested_it->second.end()) {
+                        leaf_iface = sub_it->second;
+                        found = true;
+                    }
+                }
+                if(!found) {
+                    LOG_ERROR_N(node) << "'" << tail->get_name()
+                                      << "' is not a nested interface of '" << leaf_iface << "'";
+                    return 1;
+                }
+            }
+
+            if(labels->size() == 1) {
+                if(rw.visible->count(identifier->get_name()) == 0) {
+                    if(rw.modport.empty()) {
+                        LOG_ERROR_N(node) << "interface '" << rw.iface << "' has no member '"
+                                          << identifier->get_name() << "'";
+                    } else {
+                        LOG_ERROR_N(node)
+                            << "member '" << identifier->get_name() << "' is not visible through "
+                            << "modport '" << rw.modport << "' of interface '" << rw.iface
+                            << "' (IEEE 1800-2017 25.10)";
+                    }
+                    return 1;
+                }
+            } else {
+                const auto mem_it = rw.design->members.find(leaf_iface);
+                if(mem_it == rw.design->members.end() ||
+                   mem_it->second.count(identifier->get_name()) == 0) {
+                    LOG_ERROR_N(node) << "interface '" << leaf_iface << "' has no member '"
+                                      << identifier->get_name() << "'";
+                    return 1;
+                }
             }
 
             const auto &label = labels->front();
@@ -330,6 +411,18 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
                 }
                 label->set_name(element);
                 label->set_loop(nullptr);
+            }
+
+            // A nested actual splices its path after the base label
+            // (.c(bus.tx): c.field → bus.tx.field).
+            if(!rw.extra_labels.empty()) {
+                const auto insert_pos = std::next(labels->begin());
+                for(const std::string &extra : rw.extra_labels) {
+                    const auto &hier_label =
+                        std::make_shared<AST::HierLabel>(node->get_filename(), node->get_line());
+                    hier_label->set_name(extra);
+                    labels->insert(insert_pos, hier_label);
+                }
             }
         }
     }
@@ -429,15 +522,18 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
 
         // Decode the actual: a bare interface instance, an element of a
         // split instance array (v[k]), or an own interface port (chaining) —
-        // optionally restricted by a connection modport (base.mp).
+        // optionally restricted by a connection modport (base.mp), or naming
+        // a nested interface element (base.tx, §8.1).
         const auto &value = portarg->get_value();
         std::string base;
+        std::vector<std::string> extra_labels;
         std::string actual_iface;
         std::string actual_modport;
         bool chained = false;
+        bool array_base = false;
 
         std::string ref_name;
-        std::string conn_modport;
+        std::string leaf;
 
         if(value->is_node_type(AST::NodeType::Identifier)) {
             const auto &identifier = AST::cast_to<AST::Identifier>(value);
@@ -447,8 +543,10 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
             if(!labels) {
                 ref_name = identifier->get_name();
             } else if(labels->size() == 1) {
-                // base.mp or v[k].mp: the leaf is the connection modport.
-                conn_modport = identifier->get_name();
+                // base.X or v[k].X: the leaf X is a connection modport or a
+                // nested interface instance — classified once the base's
+                // interface is known.
+                leaf = identifier->get_name();
                 std::string index_str;
                 if(!labels->front()->get_loop()) {
                     ref_name = labels->front()->get_name();
@@ -472,13 +570,6 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
             std::string ref_modport;
             const auto inst_it = scope.instances.find(ref_name);
             if(inst_it != scope.instances.end()) {
-                if(arrayed) {
-                    LOG_ERROR_N(portarg)
-                        << "arrayed interface port '" << port_name << "' of '" << child->get_name()
-                        << "' cannot connect to the single instance '" << ref_name
-                        << "' (IEEE 1800-2017 23.3.3.5)";
-                    return 1;
-                }
                 actual_iface = inst_it->second;
             } else {
                 const auto port_ref_it = scope.ports.find(ref_name);
@@ -486,19 +577,38 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
                     actual_iface = port_ref_it->second.iface;
                     ref_modport = port_ref_it->second.modport;
                     chained = true;
-                } else if(arrayed) {
+                } else if(arrayed && leaf.empty()) {
                     // Assumed base of a split instance array; every element
                     // is checked per reference (§23.3.3.5).
                     actual_iface = iface;
+                    array_base = true;
                 }
             }
 
             if(!actual_iface.empty()) {
-                if(!conn_modport.empty()) {
+                std::string conn_modport;
+                if(!leaf.empty()) {
+                    // Classify the leaf against the base's interface: a
+                    // connection modport (§25.5) or a nested interface
+                    // element (§8.1).
                     const auto amp_it = design.modports.find(actual_iface);
-                    if(amp_it == design.modports.end() || amp_it->second.count(conn_modport) == 0) {
-                        LOG_ERROR_N(value) << "interface '" << actual_iface << "' has no modport '"
-                                           << conn_modport << "' (IEEE 1800-2017 25.5)";
+                    const auto nn_it = design.nested.find(actual_iface);
+                    if(amp_it != design.modports.end() && amp_it->second.count(leaf) != 0) {
+                        conn_modport = leaf;
+                    } else if(nn_it != design.nested.end() && nn_it->second.count(leaf) != 0) {
+                        if(!ref_modport.empty()) {
+                            LOG_ERROR_N(value)
+                                << "nested interface '" << leaf << "' is not visible through "
+                                << "modport '" << ref_modport << "' of port '" << ref_name
+                                << "' (IEEE 1800-2017 25.10)";
+                            return 1;
+                        }
+                        extra_labels.push_back(leaf);
+                        actual_iface = nn_it->second.at(leaf);
+                    } else {
+                        LOG_ERROR_N(value)
+                            << "interface '" << actual_iface << "' has no modport or nested "
+                            << "interface '" << leaf << "' (IEEE 1800-2017 25.5)";
                         return 1;
                     }
                 }
@@ -509,6 +619,16 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
                 }
                 base = ref_name;
             }
+        }
+
+        // A scalar actual — single instance or nested element — cannot drive
+        // an arrayed formal (§23.3.3.5).
+        if(arrayed && !base.empty() && !array_base && !chained) {
+            LOG_ERROR_N(portarg) << "arrayed interface port '" << port_name << "' of '"
+                                 << child->get_name()
+                                 << "' cannot connect to a single interface instance "
+                                 << "(IEEE 1800-2017 23.3.3.5)";
+            return 1;
         }
 
         if(base.empty()) {
@@ -538,12 +658,14 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
         PortRewrite rewrite;
         rewrite.port_name = port_name;
         rewrite.base = base;
+        rewrite.extra_labels = extra_labels;
         rewrite.iface = iface;
         rewrite.visible = &visible;
         rewrite.modport = effective;
         rewrite.arrayed = arrayed;
         rewrite.chained = chained;
         rewrite.instances = &scope.instances;
+        rewrite.design = &design;
 
         if(rewrite_port_refs(child, rewrite)) {
             return 1;
