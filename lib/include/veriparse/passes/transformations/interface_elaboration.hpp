@@ -57,6 +57,26 @@ public:
         bool is_interface(const std::string &name) const { return pseudo_modules.count(name) != 0; }
     };
 
+    /**
+     * @brief One scope's interface symbols: what an interface-port actual
+     * may legally name in the instantiating module.
+     */
+    struct ScopeSymbols
+    {
+        /** @brief Reference through an own interface port (chaining). */
+        struct PortRef
+        {
+            std::string iface;
+            std::string modport;
+        };
+
+        /** @brief Local interface instance name → interface name. */
+        std::map<std::string, std::string> instances;
+
+        /** @brief Own interface-typed port name → its type view. */
+        std::map<std::string, PortRef> ports;
+    };
+
     InterfaceElaboration() = delete;
 
     /**
@@ -71,6 +91,32 @@ public:
      * @return zero on success
      */
     static int prepare(const Analysis::Module::InterfacesMap &interfaces, Design &design);
+
+    /**
+     * @brief Record the module's interface instances and interface-typed
+     * ports — the names its children's interface ports may connect to.
+     *
+     * @return zero on success
+     */
+    static int collect_scope(const AST::Node::Ptr &module, const Design &design,
+                             ScopeSymbols &symbols);
+
+    /**
+     * @brief Dissolve the interface ports of an instantiated child.
+     *
+     * For each interface-typed port of the (already flattened and prefixed)
+     * child clone: decode and validate the connected actual (§23.3.3.4),
+     * merge the header and connection modports (§25.5), rewrite every
+     * child-body reference `port.member` onto the actual's base name with
+     * member-visibility checks (§25.10), then drop the port and its
+     * connection so the regular value-port binding never sees them —
+     * connection is aliasing, not a copy (§25.3.2).
+     *
+     * @return zero on success
+     */
+    static int bind_interface_ports(const AST::Instance::Ptr &instance,
+                                    const AST::Module::Ptr &child, const Design &design,
+                                    const ScopeSymbols &scope);
 };
 
 } // namespace Transformations

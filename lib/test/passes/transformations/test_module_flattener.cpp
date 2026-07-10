@@ -139,3 +139,19 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_module_in_iface0) { TEST_ER
 TEST(PassesTransformation_ModuleFlattener, iface_err_nested0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_top_port0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_bad_modport0) { TEST_ERROR_SV; }
+
+// Interface ports on children (ADR-0008 §3/§4): references through the port
+// alias the connected instance's flattened signals.
+TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_modport0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_modport1) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_chain0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_out0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_conn_modport0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_modport_mismatch0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_not_in_modport0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_no_member0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_unconnected0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_type_mismatch0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_nested_path0) { TEST_ERROR_SV; }

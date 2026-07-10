@@ -197,6 +197,268 @@ int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfa
     return 0;
 }
 
+namespace
+{
+
+/// The InterfaceType of an interface-typed port declaration, or nullptr.
+AST::InterfaceType::Ptr port_interface_type(const AST::Port::Ptr &port)
+{
+    const auto &decl = port->get_decl();
+    const auto &type = decl ? decl->get_type() : nullptr;
+    if(type && type->is_node_type(AST::NodeType::InterfaceType)) {
+        return AST::cast_to<AST::InterfaceType>(type);
+    }
+    return nullptr;
+}
+
+/// §25.5: a connection may name a modport in the port declaration, in the
+/// port connection, or both — in which case the two names shall be
+/// identical.
+int merge_modports(const std::string &header, const std::string &connection,
+                   const AST::Node::Ptr &where, std::string &effective)
+{
+    if(header.empty() || connection.empty() || header == connection) {
+        effective = header.empty() ? connection : header;
+        return 0;
+    }
+    LOG_ERROR_N(where) << "modport '" << connection << "' of the connection does not match "
+                       << "modport '" << header << "' of the port declaration "
+                       << "(IEEE 1800-2017 25.5)";
+    return 1;
+}
+
+/// Rewrite every `port.member` reference in the subtree onto the actual's
+/// base name, checking member existence and modport visibility (§25.10).
+/// Calls inherit Identifier, so an external subroutine access (p.method())
+/// fails the member check here (ADR-0008 §8).
+int rewrite_port_refs(const AST::Node::Ptr &node, const std::string &port_name,
+                      const std::string &base, const std::string &iface,
+                      const std::set<std::string> &visible, const std::string &modport)
+{
+    if(!node) {
+        return 0;
+    }
+
+    if(node->is_node_category(AST::NodeType::Identifier)) {
+        const auto &identifier = AST::cast_to<AST::Identifier>(node);
+        const auto &hier = identifier->get_hier();
+        const auto &labels = hier ? hier->get_labellist() : nullptr;
+        if(labels && !labels->empty() && labels->front()->get_name() == port_name) {
+            if(labels->size() > 1) {
+                LOG_ERROR_N(node) << "nested interface path through port '" << port_name
+                                  << "' is not supported";
+                return 1;
+            }
+            if(labels->front()->get_loop()) {
+                LOG_ERROR_N(node) << "indexed reference through scalar interface port '"
+                                  << port_name << "'";
+                return 1;
+            }
+            if(visible.count(identifier->get_name()) == 0) {
+                if(modport.empty()) {
+                    LOG_ERROR_N(node) << "interface '" << iface << "' has no member '"
+                                      << identifier->get_name() << "'";
+                } else {
+                    LOG_ERROR_N(node)
+                        << "member '" << identifier->get_name() << "' is not visible through "
+                        << "modport '" << modport << "' of interface '" << iface
+                        << "' (IEEE 1800-2017 25.10)";
+                }
+                return 1;
+            }
+            labels->front()->set_name(base);
+        }
+    }
+
+    int ret = 0;
+    const AST::Node::ListPtr children = node->get_children();
+    if(children) {
+        for(const AST::Node::Ptr &child : *children) {
+            ret |= rewrite_port_refs(child, port_name, base, iface, visible, modport);
+        }
+    }
+    return ret;
+}
+
+} // namespace
+
+int InterfaceElaboration::collect_scope(const AST::Node::Ptr &module, const Design &design,
+                                        ScopeSymbols &symbols)
+{
+    symbols.instances.clear();
+    symbols.ports.clear();
+
+    const auto &instances = Analysis::Module::get_instance_nodes(module);
+    for(const auto &instance : *instances) {
+        if(design.is_interface(instance->get_module())) {
+            symbols.instances.emplace(instance->get_name(), instance->get_module());
+        }
+    }
+
+    if(module->is_node_type(AST::NodeType::Module)) {
+        const auto &ports = AST::cast_to<AST::Module>(module)->get_ports();
+        if(ports) {
+            for(const AST::Port::Ptr &port : *ports) {
+                const auto &type = port_interface_type(port);
+                if(type) {
+                    symbols.ports.emplace(
+                        port->get_decl()->get_name(),
+                        ScopeSymbols::PortRef{type->get_name(), type->get_modport()});
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instance,
+                                               const AST::Module::Ptr &child, const Design &design,
+                                               const ScopeSymbols &scope)
+{
+    const auto &ports = child->get_ports();
+    if(!ports) {
+        return 0;
+    }
+
+    for(auto port_it = ports->begin(); port_it != ports->end();) {
+        const auto &port = *port_it;
+        const auto &type = port_interface_type(port);
+        if(!type) {
+            ++port_it;
+            continue;
+        }
+
+        const std::string &port_name = port->get_decl()->get_name();
+        const std::string &iface = type->get_name();
+
+        if(port->get_decl()->is_node_type(AST::NodeType::Arg) &&
+           AST::cast_to<AST::Arg>(port->get_decl())->get_unpacked_dims()) {
+            LOG_ERROR_N(port) << "arrayed interface port '" << port_name
+                              << "' is not supported yet";
+            return 1;
+        }
+
+        const auto modports_it = design.modports.find(iface);
+        if(!type->get_modport().empty() && (modports_it == design.modports.end() ||
+                                            modports_it->second.count(type->get_modport()) == 0)) {
+            LOG_ERROR_N(port) << "interface '" << iface << "' has no modport '"
+                              << type->get_modport() << "' (IEEE 1800-2017 25.5)";
+            return 1;
+        }
+
+        // Locate the connection. An interface port cannot be left
+        // unconnected (§23.3.3.4).
+        const auto &portargs = instance->get_portlist();
+        AST::PortArg::Ptr portarg;
+        if(portargs) {
+            for(const AST::PortArg::Ptr &arg : *portargs) {
+                if(arg->get_name() == port_name) {
+                    portarg = arg;
+                    break;
+                }
+            }
+        }
+        if(!portarg || !portarg->get_value()) {
+            LOG_ERROR_N(instance) << "interface port '" << port_name << "' of '"
+                                  << child->get_name()
+                                  << "' is not connected (IEEE 1800-2017 23.3.3.4)";
+            return 1;
+        }
+
+        // Decode the actual: a bare interface instance or own interface
+        // port, optionally restricted by a connection modport (base.mp).
+        const auto &value = portarg->get_value();
+        std::string base;
+        std::string actual_iface;
+        std::string actual_modport;
+
+        if(value->is_node_type(AST::NodeType::Identifier)) {
+            const auto &identifier = AST::cast_to<AST::Identifier>(value);
+            const auto &hier = identifier->get_hier();
+            const auto &labels = hier ? hier->get_labellist() : nullptr;
+
+            std::string ref_name;
+            std::string conn_modport;
+            if(!labels) {
+                ref_name = identifier->get_name();
+            } else if(labels->size() == 1 && !labels->front()->get_loop()) {
+                ref_name = labels->front()->get_name();
+                conn_modport = identifier->get_name();
+            }
+
+            if(!ref_name.empty()) {
+                std::string ref_modport;
+                const auto inst_it = scope.instances.find(ref_name);
+                if(inst_it != scope.instances.end()) {
+                    actual_iface = inst_it->second;
+                } else {
+                    const auto port_ref_it = scope.ports.find(ref_name);
+                    if(port_ref_it != scope.ports.end()) {
+                        actual_iface = port_ref_it->second.iface;
+                        ref_modport = port_ref_it->second.modport;
+                    }
+                }
+
+                if(!actual_iface.empty()) {
+                    if(!conn_modport.empty()) {
+                        const auto amp_it = design.modports.find(actual_iface);
+                        if(amp_it == design.modports.end() ||
+                           amp_it->second.count(conn_modport) == 0) {
+                            LOG_ERROR_N(value)
+                                << "interface '" << actual_iface << "' has no modport '"
+                                << conn_modport << "' (IEEE 1800-2017 25.5)";
+                            return 1;
+                        }
+                    }
+                    // A chained port may itself be modport-restricted; the
+                    // views must agree (§25.5).
+                    if(merge_modports(ref_modport, conn_modport, value, actual_modport)) {
+                        return 1;
+                    }
+                    base = ref_name;
+                }
+            }
+        }
+
+        if(base.empty()) {
+            LOG_ERROR_N(portarg) << "the actual of interface port '" << port_name << "' of '"
+                                 << child->get_name() << "' does not name an interface instance "
+                                 << "(IEEE 1800-2017 23.3.3.4)";
+            return 1;
+        }
+
+        if(actual_iface != iface) {
+            LOG_ERROR_N(portarg) << "interface port '" << port_name << "' of '" << child->get_name()
+                                 << "' has type '" << iface
+                                 << "' but is connected to an instance of '" << actual_iface
+                                 << "' (IEEE 1800-2017 23.3.3.4)";
+            return 1;
+        }
+
+        std::string effective;
+        if(merge_modports(type->get_modport(), actual_modport, portarg, effective)) {
+            return 1;
+        }
+
+        const auto members_it = design.members.find(iface);
+        const std::set<std::string> &visible =
+            effective.empty() ? members_it->second : modports_it->second.at(effective);
+
+        if(rewrite_port_refs(child, port_name, base, iface, visible, effective)) {
+            return 1;
+        }
+
+        // Drop the dissolved port and its connection: the value-port
+        // binding must never clone the interface Arg nor synthesize an
+        // assignment for it — connection is aliasing (§25.3.2).
+        portargs->remove(portarg);
+        port_it = ports->erase(port_it);
+    }
+
+    return 0;
+}
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse

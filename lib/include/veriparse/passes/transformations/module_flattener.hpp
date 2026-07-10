@@ -115,6 +115,7 @@ private:
     Analysis::Module::ModulesMap m_modules_map;
     Analysis::Module::InterfacesMap m_interfaces_map;
     std::shared_ptr<const InterfaceElaboration::Design> m_iface_design;
+    InterfaceElaboration::ScopeSymbols m_scope_symbols;
     const bool m_top{true};
     const bool m_deadcode_elimination;
     std::map<std::string, AST::NodeType> m_var_type_map;
