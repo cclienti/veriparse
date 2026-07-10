@@ -115,8 +115,19 @@ private:
 
 ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                                  const Analysis::Module::ModulesMap &modules_map,
+                                 bool deadcode_elimination,
+                                 const Analysis::Module::InterfacesMap &interfaces_map)
+    : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
+      m_interfaces_map(interfaces_map), m_deadcode_elimination(deadcode_elimination)
+{
+}
+
+ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
+                                 const Analysis::Module::ModulesMap &modules_map,
+                                 std::shared_ptr<const InterfaceElaboration::Design> iface_design,
                                  bool deadcode_elimination)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
+      m_iface_design(std::move(iface_design)), m_top(false),
       m_deadcode_elimination(deadcode_elimination)
 {
 }
@@ -134,6 +145,42 @@ ModuleFlattener::TreeNode::Ptr ModuleFlattener::get_instance_tree() const
 
 int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
+    // Prepare the interface design once, at the top-level instance: each
+    // interface transplants into a pseudo-module that joins the modules map,
+    // so interface instances flatten through the regular per-instance path.
+    if(m_top && !m_iface_design) {
+        const auto &design = std::make_shared<InterfaceElaboration::Design>();
+        if(InterfaceElaboration::prepare(m_interfaces_map, *design)) {
+            return 1;
+        }
+        for(const auto &pseudo : design->pseudo_modules) {
+            if(!m_modules_map.emplace(pseudo.first, pseudo.second).second) {
+                LOG_ERROR_N(pseudo.second)
+                    << "'" << pseudo.first << "' names both a module and an interface";
+                return 1;
+            }
+        }
+        m_iface_design = design;
+    }
+
+    // The top module cannot have interface ports: no enclosing level exists
+    // to own the connected interface instance.
+    if(m_top && node->is_node_type(AST::NodeType::Module)) {
+        const auto &ports = AST::cast_to<AST::Module>(node)->get_ports();
+        if(ports) {
+            for(const AST::Port::Ptr &port : *ports) {
+                const auto &decl = port->get_decl();
+                const auto &type = decl ? decl->get_type() : nullptr;
+                if(type && type->is_node_type(AST::NodeType::InterfaceType)) {
+                    LOG_ERROR_N(port) << "top module has an interface port '" << decl->get_name()
+                                      << "'; flatten an enclosing module that owns the "
+                                      << "interface instance";
+                    return 1;
+                }
+            }
+        }
+    }
+
     // Resolve the module
     ResolveModule resolver(m_paramlist_inst, m_modules_map, m_deadcode_elimination);
     if(resolver.run(node)) {
@@ -285,8 +332,12 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                 [](const AST::ParamArg::Ptr &p) { return p->get_value() == nullptr; });
         }
 
-        // Resolve the instantiated module
-        ModuleFlattener flattener(paramlist_inst, m_modules_map);
+        // Resolve the instantiated module. An interface pseudo-module keeps
+        // its dead code: its members have no readers inside the interface —
+        // the connected modules reference them only after splicing (the
+        // final dead-code pass prunes genuinely unused members).
+        const bool is_iface = m_iface_design && m_iface_design->is_interface(module_name);
+        ModuleFlattener flattener(paramlist_inst, m_modules_map, m_iface_design, !is_iface);
         if(flattener.run(module)) {
             LOG_ERROR_N(node) << "failed to flatten the module";
             return 1;
