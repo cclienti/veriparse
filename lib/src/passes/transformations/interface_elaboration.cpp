@@ -3,6 +3,7 @@
 #include <veriparse/passes/transformations/interface_elaboration.hpp>
 
 #include <veriparse/AST/node_cast.hpp>
+#include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/transformations/scope_table.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -227,13 +228,41 @@ int merge_modports(const std::string &header, const std::string &connection,
     return 1;
 }
 
+/// The decimal value of a constant index expression, or false.
+bool constant_index(const AST::Node::Ptr &node, std::string &index_str)
+{
+    mpz_class value;
+    if(!node || !ExpressionEvaluation().evaluate_node(node, value)) {
+        return false;
+    }
+    index_str = value.str();
+    return true;
+}
+
+/// How references through one dissolved interface port rewrite.
+struct PortRewrite
+{
+    std::string port_name;
+    /// Target label for a scalar or chained port; array-base prefix when the
+    /// formal is arrayed and connected to a split instance array.
+    std::string base;
+    std::string iface;
+    const std::set<std::string> *visible{nullptr};
+    std::string modport;
+    /// The formal carries unpacked dims: references must be indexed.
+    bool arrayed{false};
+    /// The base is an own (chained) port: the reference index is kept for
+    /// the enclosing level to resolve.
+    bool chained{false};
+    /// Scope instances, for the per-index element checks (§23.3.3.5).
+    const std::map<std::string, std::string> *instances{nullptr};
+};
+
 /// Rewrite every `port.member` reference in the subtree onto the actual's
 /// base name, checking member existence and modport visibility (§25.10).
 /// Calls inherit Identifier, so an external subroutine access (p.method())
 /// fails the member check here (ADR-0008 §8).
-int rewrite_port_refs(const AST::Node::Ptr &node, const std::string &port_name,
-                      const std::string &base, const std::string &iface,
-                      const std::set<std::string> &visible, const std::string &modport)
+int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
 {
     if(!node) {
         return 0;
@@ -243,30 +272,65 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const std::string &port_name,
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
         const auto &hier = identifier->get_hier();
         const auto &labels = hier ? hier->get_labellist() : nullptr;
-        if(labels && !labels->empty() && labels->front()->get_name() == port_name) {
+        if(labels && !labels->empty() && labels->front()->get_name() == rw.port_name) {
             if(labels->size() > 1) {
-                LOG_ERROR_N(node) << "nested interface path through port '" << port_name
+                LOG_ERROR_N(node) << "nested interface path through port '" << rw.port_name
                                   << "' is not supported";
                 return 1;
             }
-            if(labels->front()->get_loop()) {
-                LOG_ERROR_N(node) << "indexed reference through scalar interface port '"
-                                  << port_name << "'";
-                return 1;
-            }
-            if(visible.count(identifier->get_name()) == 0) {
-                if(modport.empty()) {
-                    LOG_ERROR_N(node) << "interface '" << iface << "' has no member '"
+            if(rw.visible->count(identifier->get_name()) == 0) {
+                if(rw.modport.empty()) {
+                    LOG_ERROR_N(node) << "interface '" << rw.iface << "' has no member '"
                                       << identifier->get_name() << "'";
                 } else {
                     LOG_ERROR_N(node)
                         << "member '" << identifier->get_name() << "' is not visible through "
-                        << "modport '" << modport << "' of interface '" << iface
+                        << "modport '" << rw.modport << "' of interface '" << rw.iface
                         << "' (IEEE 1800-2017 25.10)";
                 }
                 return 1;
             }
-            labels->front()->set_name(base);
+
+            const auto &label = labels->front();
+            if(!rw.arrayed) {
+                if(label->get_loop()) {
+                    LOG_ERROR_N(node) << "indexed reference through scalar interface port '"
+                                      << rw.port_name << "'";
+                    return 1;
+                }
+                label->set_name(rw.base);
+            } else if(rw.chained) {
+                // The index rides along: the level owning the array resolves
+                // it against its own split elements.
+                if(!label->get_loop()) {
+                    LOG_ERROR_N(node)
+                        << "arrayed interface port '" << rw.port_name << "' requires an index";
+                    return 1;
+                }
+                label->set_name(rw.base);
+            } else {
+                if(!label->get_loop()) {
+                    LOG_ERROR_N(node)
+                        << "arrayed interface port '" << rw.port_name << "' requires an index";
+                    return 1;
+                }
+                std::string index_str;
+                if(!constant_index(label->get_loop(), index_str)) {
+                    LOG_ERROR_N(node)
+                        << "non-constant index on arrayed interface port '" << rw.port_name << "'";
+                    return 1;
+                }
+                const std::string element = rw.base + index_str;
+                const auto element_it = rw.instances->find(element);
+                if(element_it == rw.instances->end() || element_it->second != rw.iface) {
+                    LOG_ERROR_N(node)
+                        << "'" << rw.base << "[" << index_str << "]' does not name an instance "
+                        << "of interface '" << rw.iface << "' (IEEE 1800-2017 23.3.3.5)";
+                    return 1;
+                }
+                label->set_name(element);
+                label->set_loop(nullptr);
+            }
         }
     }
 
@@ -274,7 +338,7 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const std::string &port_name,
     const AST::Node::ListPtr children = node->get_children();
     if(children) {
         for(const AST::Node::Ptr &child : *children) {
-            ret |= rewrite_port_refs(child, port_name, base, iface, visible, modport);
+            ret |= rewrite_port_refs(child, rw);
         }
     }
     return ret;
@@ -332,12 +396,9 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
         const std::string &port_name = port->get_decl()->get_name();
         const std::string &iface = type->get_name();
 
-        if(port->get_decl()->is_node_type(AST::NodeType::Arg) &&
-           AST::cast_to<AST::Arg>(port->get_decl())->get_unpacked_dims()) {
-            LOG_ERROR_N(port) << "arrayed interface port '" << port_name
-                              << "' is not supported yet";
-            return 1;
-        }
+        const bool arrayed =
+            port->get_decl()->is_node_type(AST::NodeType::Arg) &&
+            AST::cast_to<AST::Arg>(port->get_decl())->get_unpacked_dims() != nullptr;
 
         const auto modports_it = design.modports.find(iface);
         if(!type->get_modport().empty() && (modports_it == design.modports.end() ||
@@ -366,58 +427,87 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
             return 1;
         }
 
-        // Decode the actual: a bare interface instance or own interface
-        // port, optionally restricted by a connection modport (base.mp).
+        // Decode the actual: a bare interface instance, an element of a
+        // split instance array (v[k]), or an own interface port (chaining) —
+        // optionally restricted by a connection modport (base.mp).
         const auto &value = portarg->get_value();
         std::string base;
         std::string actual_iface;
         std::string actual_modport;
+        bool chained = false;
+
+        std::string ref_name;
+        std::string conn_modport;
 
         if(value->is_node_type(AST::NodeType::Identifier)) {
             const auto &identifier = AST::cast_to<AST::Identifier>(value);
             const auto &hier = identifier->get_hier();
             const auto &labels = hier ? hier->get_labellist() : nullptr;
 
-            std::string ref_name;
-            std::string conn_modport;
             if(!labels) {
                 ref_name = identifier->get_name();
-            } else if(labels->size() == 1 && !labels->front()->get_loop()) {
-                ref_name = labels->front()->get_name();
+            } else if(labels->size() == 1) {
+                // base.mp or v[k].mp: the leaf is the connection modport.
                 conn_modport = identifier->get_name();
+                std::string index_str;
+                if(!labels->front()->get_loop()) {
+                    ref_name = labels->front()->get_name();
+                } else if(constant_index(labels->front()->get_loop(), index_str)) {
+                    ref_name = labels->front()->get_name() + index_str;
+                }
+            }
+        } else if(value->is_node_type(AST::NodeType::Pointer)) {
+            // v[k]: an element of a split instance array.
+            const auto &pointer = AST::cast_to<AST::Pointer>(value);
+            const auto &var = pointer->get_var();
+            std::string index_str;
+            if(var && var->is_node_type(AST::NodeType::Identifier) &&
+               !AST::cast_to<AST::Identifier>(var)->get_hier() &&
+               constant_index(pointer->get_ptr(), index_str)) {
+                ref_name = AST::cast_to<AST::Identifier>(var)->get_name() + index_str;
+            }
+        }
+
+        if(!ref_name.empty()) {
+            std::string ref_modport;
+            const auto inst_it = scope.instances.find(ref_name);
+            if(inst_it != scope.instances.end()) {
+                if(arrayed) {
+                    LOG_ERROR_N(portarg)
+                        << "arrayed interface port '" << port_name << "' of '" << child->get_name()
+                        << "' cannot connect to the single instance '" << ref_name
+                        << "' (IEEE 1800-2017 23.3.3.5)";
+                    return 1;
+                }
+                actual_iface = inst_it->second;
+            } else {
+                const auto port_ref_it = scope.ports.find(ref_name);
+                if(port_ref_it != scope.ports.end()) {
+                    actual_iface = port_ref_it->second.iface;
+                    ref_modport = port_ref_it->second.modport;
+                    chained = true;
+                } else if(arrayed) {
+                    // Assumed base of a split instance array; every element
+                    // is checked per reference (§23.3.3.5).
+                    actual_iface = iface;
+                }
             }
 
-            if(!ref_name.empty()) {
-                std::string ref_modport;
-                const auto inst_it = scope.instances.find(ref_name);
-                if(inst_it != scope.instances.end()) {
-                    actual_iface = inst_it->second;
-                } else {
-                    const auto port_ref_it = scope.ports.find(ref_name);
-                    if(port_ref_it != scope.ports.end()) {
-                        actual_iface = port_ref_it->second.iface;
-                        ref_modport = port_ref_it->second.modport;
-                    }
-                }
-
-                if(!actual_iface.empty()) {
-                    if(!conn_modport.empty()) {
-                        const auto amp_it = design.modports.find(actual_iface);
-                        if(amp_it == design.modports.end() ||
-                           amp_it->second.count(conn_modport) == 0) {
-                            LOG_ERROR_N(value)
-                                << "interface '" << actual_iface << "' has no modport '"
-                                << conn_modport << "' (IEEE 1800-2017 25.5)";
-                            return 1;
-                        }
-                    }
-                    // A chained port may itself be modport-restricted; the
-                    // views must agree (§25.5).
-                    if(merge_modports(ref_modport, conn_modport, value, actual_modport)) {
+            if(!actual_iface.empty()) {
+                if(!conn_modport.empty()) {
+                    const auto amp_it = design.modports.find(actual_iface);
+                    if(amp_it == design.modports.end() || amp_it->second.count(conn_modport) == 0) {
+                        LOG_ERROR_N(value) << "interface '" << actual_iface << "' has no modport '"
+                                           << conn_modport << "' (IEEE 1800-2017 25.5)";
                         return 1;
                     }
-                    base = ref_name;
                 }
+                // A chained port may itself be modport-restricted; the
+                // views must agree (§25.5).
+                if(merge_modports(ref_modport, conn_modport, value, actual_modport)) {
+                    return 1;
+                }
+                base = ref_name;
             }
         }
 
@@ -445,7 +535,17 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
         const std::set<std::string> &visible =
             effective.empty() ? members_it->second : modports_it->second.at(effective);
 
-        if(rewrite_port_refs(child, port_name, base, iface, visible, effective)) {
+        PortRewrite rewrite;
+        rewrite.port_name = port_name;
+        rewrite.base = base;
+        rewrite.iface = iface;
+        rewrite.visible = &visible;
+        rewrite.modport = effective;
+        rewrite.arrayed = arrayed;
+        rewrite.chained = chained;
+        rewrite.instances = &scope.instances;
+
+        if(rewrite_port_refs(child, rewrite)) {
             return 1;
         }
 

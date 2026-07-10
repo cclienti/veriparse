@@ -136,6 +136,7 @@ struct port_info_t {
 	 net_type_t net_type;
 	 signing_t signing;          // tri-state, preserved (default resolved by a pass)
 	 AST::Dimension::ListPtr widths;
+	 AST::Dimension::ListPtr lengths; // unpacked dimensions of the port name (A.1.3)
 	 std::string name;
 	 std::string type_name;    // user-defined type name (typedef); empty if built-in
 	 std::string type_package; // package scope of the type (pkg::); empty if local
@@ -283,6 +284,7 @@ AST::Port::Ptr create_typed_ioport_decls(direction_t direction, const std::strin
 // (InterfaceType); bare it stays a NamedType promoted by the resolution pass.
 AST::Port::Ptr create_interface_port(const std::string &type_name, const std::string &type_package,
                                      const std::string &modport, const std::string &name,
+                                     const AST::Dimension::ListPtr &lengths,
                                      const std::string &filename="", uint32_t line=0);
 
 AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
@@ -1274,6 +1276,20 @@ portname:       TK_IDENTIFIER
                     $$.type_name = $1;
                 }
 
+        |       TK_IDENTIFIER TK_IDENTIFIER lengths
+                {
+                    // arrayed user-defined type or interface port:
+                    // `my_if name [3:0]` (A.1.3: ansi_port_declaration
+                    // carries { unpacked_dimension }).
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::NONE;
+                    $$.widths = nullptr;
+                    $$.lengths = $3;
+                    $$.name = $2;
+                    $$.type_name = $1;
+                }
+
         |       package_scope TK_IDENTIFIER TK_IDENTIFIER
                 {
                     // package-scoped type port: `pkg::T name`
@@ -1281,6 +1297,19 @@ portname:       TK_IDENTIFIER
                     $$.net_type = net_type_t::NONE;
                     $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
+                    $$.name = $3;
+                    $$.type_name = $2;
+                    $$.type_package = $1;
+                }
+
+        |       package_scope TK_IDENTIFIER TK_IDENTIFIER lengths
+                {
+                    // arrayed package-scoped type port: `pkg::T name [3:0]`
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::NONE;
+                    $$.widths = nullptr;
+                    $$.lengths = $4;
                     $$.name = $3;
                     $$.type_name = $2;
                     $$.type_package = $1;
@@ -1296,6 +1325,20 @@ portname:       TK_IDENTIFIER
                     $$.net_type = net_type_t::NONE;
                     $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
+                    $$.name = $4;
+                    $$.type_name = $1;
+                    $$.modport = $3;
+                }
+
+        |       TK_IDENTIFIER TK_DOT TK_IDENTIFIER TK_IDENTIFIER lengths
+                {
+                    // arrayed modport-qualified interface port:
+                    // `my_if.mp name [3:0]`.
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::NONE;
+                    $$.widths = nullptr;
+                    $$.lengths = $5;
                     $$.name = $4;
                     $$.type_name = $1;
                     $$.modport = $3;
@@ -6095,6 +6138,7 @@ namespace Veriparse {
                                                  const std::string &type_package,
                                                  const std::string &modport,
                                                  const std::string &name,
+                                                 const AST::Dimension::ListPtr &lengths,
                                                  const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
                 port->set_name(name);
@@ -6102,6 +6146,9 @@ namespace Veriparse {
                 auto arg = std::make_shared<AST::Arg>(filename, line);
                 arg->set_name(name);
                 arg->set_direction(AST::Arg::DirectionEnum::NONE);
+                if(lengths) {
+                    arg->set_unpacked_dims(AST::Dimension::clone_list(lengths));
+                }
                 if(!modport.empty()) {
                     auto type = std::make_shared<AST::InterfaceType>(filename, line);
                     type->set_name(type_name);
@@ -6152,6 +6199,11 @@ namespace Veriparse {
                     direction_t dir = (pinfo.direction != direction_t::NONE) ? pinfo.direction
                                                                             : last_dir;
                     uint32_t line = pinfo.loc.begin.line;
+                    if(pinfo.lengths) {
+                        // The shared portname grammar admits them; arrays of
+                        // task/function arguments are not modelled.
+                        return nullptr;
+                    }
                     auto arg = std::make_shared<AST::Arg>(filename, line);
                     arg->set_name(pinfo.name);
                     arg->set_direction(to_arg_dir(dir));
@@ -6291,7 +6343,17 @@ namespace Veriparse {
                         AST::Port::Ptr iop;
                         if (dir == direction_t::NONE && !type_name.empty()) {
                             iop = create_interface_port(type_name, type_package, modport, pinfo.name,
+                                                        pinfo.lengths,
                                                         filename, pinfo.loc.begin.line);
+                        }
+                        else if (pinfo.lengths) {
+                            // A.1.3 admits unpacked dims on any ANSI port, but
+                            // only the directionless named-type form (interface
+                            // or deferred typedef port) carries them today.
+                            loc = pinfo.loc;
+                            error_message = std::string("unpacked dimensions are only supported "
+                                                        "on interface ports");
+                            return nullptr;
                         }
                         else if (has_data_type && net_type != net_type_t::NONE) {
                             iop = create_net_data_type_port(dir, net_type, data_type, pinfo.name,
