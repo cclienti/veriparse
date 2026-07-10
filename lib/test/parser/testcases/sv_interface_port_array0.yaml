@@ -1,0 +1,154 @@
+Source:
+  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+          line: 1
+          name: pa_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: d
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                  line: 2
+                  signing: NONE
+          - Modport:
+              filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+              line: 3
+              name: mp
+              ports:
+              - ModportPort:
+                  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                  line: 3
+                  name: d
+                  direction: INPUT
+      - Module:
+          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+          line: 6
+          name: sv_interface_port_array0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+              line: 7
+              name: p
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                  line: 7
+                  is_var: false
+                  direction: NONE
+                  name: p
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                      line: 7
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  default_value: null
+                  type:
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                      line: 7
+                      name: pa_if
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+              line: 8
+              name: q
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                  line: 8
+                  is_var: false
+                  direction: NONE
+                  name: q
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                      line: 8
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                      line: 8
+                      name: pa_if
+                      modport: mp
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+              line: 9
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_interface_port_array0.sv
+                      line: 9
+                      signing: NONE
+              expr: null

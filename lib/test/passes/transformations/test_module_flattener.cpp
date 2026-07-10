@@ -159,3 +159,13 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_no_member0) { TEST_ERROR_SV
 TEST(PassesTransformation_ModuleFlattener, iface_err_unconnected0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_type_mismatch0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_nested_path0) { TEST_ERROR_SV; }
+
+// Interface arrays (ADR-0008 §5): element-wise, index-preserving connection.
+TEST(PassesTransformation_ModuleFlattener, iface_array0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_array1) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_array_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_elem0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_array_range0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_array_nonconst0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_array_noindex0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_member_actual0) { TEST_ERROR_SV; }

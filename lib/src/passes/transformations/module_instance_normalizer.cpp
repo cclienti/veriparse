@@ -17,6 +17,30 @@ namespace Passes
 namespace Transformations
 {
 
+namespace
+{
+
+/// True when the named formal of the module is interface-typed: such a port
+/// connects by aliasing (ADR-0008 §3) — its actual is never sliced nor
+/// buffered in an intermediate wire; the flattener dissolves it.
+bool is_interface_port(const AST::Module::Ptr &module_decl, const std::string &port_name)
+{
+    const auto &ports = module_decl->get_ports();
+    if(!ports) {
+        return false;
+    }
+    for(const AST::Port::Ptr &port : *ports) {
+        const auto &decl = port->get_decl();
+        if(decl && decl->get_name() == port_name) {
+            const auto &type = decl->get_type();
+            return type && type->is_node_type(AST::NodeType::InterfaceType);
+        }
+    }
+    return false;
+}
+
+} // namespace
+
 ModuleInstanceNormalizer::ModuleInstanceNormalizer(const Analysis::Module::ModulesMap &modules_map)
     : m_modules_map(modules_map)
 {
@@ -255,6 +279,21 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             // Check in the dimension in the module declaration for the
             // corresponding port.
             const auto &arg = port->get_name();
+
+            // An interface-typed formal is not sliced: a bare array actual
+            // distributes element-wise (IEEE 1800-2017 §23.3.3.5), indexed
+            // with the element's own array index; an already-indexed or
+            // modport-qualified actual is shared by every element as-is.
+            if(is_interface_port(module_decl, arg)) {
+                if(value->is_node_type(AST::NodeType::Identifier) &&
+                   !AST::cast_to<AST::Identifier>(value)->get_hier()) {
+                    auto index_node = std::make_shared<AST::IntConstN>(
+                        10, -1, true, Misc::Math::u64_to_mpz(new_name_index));
+                    port->set_value(std::make_shared<AST::Pointer>(index_node, port->get_value()));
+                }
+                continue;
+            }
+
             auto itarg = module_dim_map.find(arg);
             if(itarg == module_dim_map.end()) {
                 LOG_ERROR_N(port) << "cannot find port '" << arg << "' in module '" << module_name
@@ -831,6 +870,12 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
     for(const auto &port : *portlist) {
         const auto &port_value = port->get_value();
         if(!port_value) {
+            continue;
+        }
+
+        // An interface-typed formal keeps its direct actual: connection is
+        // aliasing, never an intermediate wire (ADR-0008 §3).
+        if(is_interface_port(module_decl, port->get_name())) {
             continue;
         }
 
