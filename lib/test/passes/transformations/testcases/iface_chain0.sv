@@ -6,11 +6,11 @@ module chain_leaf(c_if p, output logic o);
   assign o = p.d;
 endmodule
 
-module chain_mid(c_if p2, output wire o);
+module chain_mid(c_if p2, output logic o);
   chain_leaf u(.p(p2), .o(o));
 endmodule
 
-module iface_chain0(input logic v, output wire o);
+module iface_chain0(input logic v, output logic o);
 
   c_if bus();
 

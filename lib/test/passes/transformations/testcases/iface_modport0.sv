@@ -14,7 +14,7 @@ module hs2_slave(hs2_if.slave p, output logic seen);
   assign seen = p.ack;
 endmodule
 
-module iface_modport0(input logic go, output wire seen);
+module iface_modport0(input logic go, output logic seen);
 
   hs2_if bus();
 

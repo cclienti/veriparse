@@ -140,6 +140,10 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_nested0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_top_port0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_bad_modport0) { TEST_ERROR_SV; }
 
+// A SystemVerilog logic variable accepts a child-output connection
+// (continuous assignment to a variable, IEEE 1800-2017 §10.3.2).
+TEST(PassesTransformation_ModuleFlattener, logic_out0) { TEST_CORE_SV; }
+
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
 TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }

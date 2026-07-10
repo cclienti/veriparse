@@ -118,7 +118,7 @@ private:
     InterfaceElaboration::ScopeSymbols m_scope_symbols;
     const bool m_top{true};
     const bool m_deadcode_elimination;
-    std::map<std::string, AST::NodeType> m_var_type_map;
+    std::map<std::string, AST::Declaration::Ptr> m_var_type_map;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::unordered_multimap<std::string, AST::Defparamlist::Ptr> m_defparams;
     TreeNode::Ptr m_instance_tree;

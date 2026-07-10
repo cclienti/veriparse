@@ -11,7 +11,7 @@ module link_consumer(link_if p, output logic o);
   assign o = p.d;
 endmodule
 
-module iface_port0(input logic v, output wire o);
+module iface_port0(input logic v, output logic o);
 
   link_if bus();
 
