@@ -58,5 +58,6 @@ TEST(PassesTransformation_ModuleFlattener, instance8) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, defparam4) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, deadcode6) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, scoped0) { TEST_CORE; }
+TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, shmemif) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, alu_dsp) { TEST_CORE; }

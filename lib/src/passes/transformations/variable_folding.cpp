@@ -262,6 +262,20 @@ int VariableFolding::execute_blocking_substitution(AST::BlockingSubstitution::Pt
         subst->get_right()->set_var(const_node);
     }
 
+    // A hierarchical lvalue (u1.sig, p.field, p.field[3]) writes a signal in
+    // another scope: no local variable changes state, so the write is ignored
+    // rather than tracked — or given up on — against its leaf name.
+    {
+        AST::Node::Ptr base = subst->get_left()->get_var();
+        while(base && base->is_node_category(AST::NodeType::Indirect)) {
+            base = AST::cast_to<AST::Indirect>(base)->get_var();
+        }
+        if(base && base->is_node_category(AST::NodeType::Identifier) &&
+           AST::cast_to<AST::Identifier>(base)->get_hier()) {
+            return 0;
+        }
+    }
+
     const auto &lvar = subst->get_left()->get_var();
     if(lvar && lvar->is_node_category(AST::NodeType::Identifier)) {
         // Whole-variable write: track the new value, or forget the variable when
