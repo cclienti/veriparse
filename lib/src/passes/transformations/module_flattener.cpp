@@ -188,6 +188,13 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return 1;
     }
 
+    // Record the module's interface instances and interface-typed ports:
+    // the names its children's interface ports may connect to.
+    if(m_iface_design &&
+       InterfaceElaboration::collect_scope(node, *m_iface_design, m_scope_symbols)) {
+        return 1;
+    }
+
     // Collect all variable types
     const auto &vars = Analysis::Module::get_variable_nodes(node);
     for(const auto &var : *vars) {
@@ -383,8 +390,15 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
             return 1;
         }
 
-        // Bind module
+        // Dissolve the child's interface ports before the value-port bind:
+        // references through them alias the connected instance's flattened
+        // signals; the ports and their connections are dropped.
         const auto &mod_cast = AST::cast_to<AST::Module>(module);
+        if(m_iface_design && InterfaceElaboration::bind_interface_ports(
+                                 instance, mod_cast, *m_iface_design, m_scope_symbols)) {
+            return 1;
+        }
+
         auto binded_items = bind(instance, mod_cast);
         if(!binded_items) {
             LOG_ERROR_N(node) << "Could not bind " << instance_name << " (" << module_name << ")";
@@ -555,6 +569,12 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
     switch(node->get_node_type()) {
     case AST::NodeType::Identifier: {
         const auto &id = AST::cast_to<AST::Identifier>(node);
+        // A hierarchical target (an interface member actual, bus.d) is not a
+        // local declaration: it resolves after splicing, so the wire check
+        // is deferred to the consuming tools.
+        if(id->get_hier()) {
+            break;
+        }
         const auto it = m_var_type_map.find(id->get_name());
         if(it != m_var_type_map.end()) {
             if(it->second == AST::NodeType::WireNet) {
