@@ -177,6 +177,28 @@ if(NOT WIN32)
       HARNESS ${_hynoc_cosim}/test_hynoc_router_5p.cpp
       EXTRA_LINK_LIBS hynoc_noc_traffic
     )
+
+    # Interface-based valid/ready handshake (ADR-0008): interface elaboration
+    # through veriflat vs verilator's native interface support.
+    set(_iface_hs_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/iface_handshake/src/iface_handshake.sv)
+    set(_iface_hs_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/iface_handshake/cosim/test_iface_handshake.cpp)
+
+    add_cosim_test(
+      NAME test_cosim_iface_handshake_dut
+      TOP_MODULE iface_handshake
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_iface_hs_sources}
+      HARNESS ${_iface_hs_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_iface_handshake_flat
+      TOP_MODULE iface_handshake
+      VERIFLAT_ARGS --sv
+      VERILOG_SOURCES ${_iface_hs_sources}
+      HARNESS ${_iface_hs_harness}
+    )
   endif()
 
 endif()

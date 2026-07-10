@@ -1,6 +1,7 @@
 # ADR-0008 — Interface elaboration (`InterfaceElaboration`)
 
-- **Status**: Draft — under review; implementation not started (phases in §10).
+- **Status**: Accepted — **implemented** (all §10 phases, incl. the ANSI-port
+  unpacked-dimension grammar §5 required; dut-vs-flat cosim equivalence green).
 - **Date**: 2026-07-09
 - **Scope**: The elaboration step that **lowers SystemVerilog interfaces to plain
   synthesizable signals** during module flattening — the feature ADR-0006 §8
@@ -199,7 +200,13 @@ lowers to a multiple-driver conflict that Verilator/synthesis reports.
   range-mismatch error).
 - **Arrayed interface ports** `my_if p[3:0]` on a module: a reference
   `p[i].field` carries the index in `HierLabel.loop`; after unroll/folding the
-  loop is constant and the label folds to `v<idx>`.
+  loop is constant and the label folds to `v<idx>`. **Grammar note
+  (implemented here)**: no ANSI port form carried `{unpacked_dimension}`
+  before this ADR (ADR-0006 §4.2 had assumed the node model implied parse
+  support) — the `portname` productions (bare-typed, package-scoped and
+  modport-qualified) gained a dims variant per A.1.3 `ansi_port_declaration`,
+  carried on the `Arg`; other ANSI port forms and task/function arguments
+  reject the dims loudly rather than dropping them.
 - **Index-aware `match_scope`**: the flattener's hier matching is name-only
   today (ADR-0006 §8 known gap). The label key becomes
   `name + decimal(eval(loop))` via `ExpressionEvaluation`; a non-constant index
