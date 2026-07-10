@@ -198,7 +198,7 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // Collect all variable types
     const auto &vars = Analysis::Module::get_variable_nodes(node);
     for(const auto &var : *vars) {
-        m_var_type_map.emplace(var->get_name(), var->get_node_type());
+        m_var_type_map.emplace(var->get_name(), var);
     }
 
     // Analysis declarations
@@ -577,11 +577,26 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
         }
         const auto it = m_var_type_map.find(id->get_name());
         if(it != m_var_type_map.end()) {
-            if(it->second == AST::NodeType::WireNet) {
+            const auto &decl = it->second;
+            const auto &var_type = decl->get_type();
+            // A wire always accepts the assignment; so does a SystemVerilog
+            // logic/bit variable — a variable may be driven by one
+            // continuous assignment (IEEE 1800-2017 §10.3.2), and those
+            // keywords only parse in SV mode. The variable is a body Var or
+            // an ANSI port's ImplicitNet carrying the logic/bit type. A reg
+            // stays rejected: the source may be plain Verilog, where
+            // assigning a reg is illegal.
+            const bool is_sv_variable =
+                var_type && (var_type->is_node_type(AST::NodeType::LogicType) ||
+                             var_type->is_node_type(AST::NodeType::BitType));
+            if(decl->is_node_type(AST::NodeType::WireNet) ||
+               ((decl->is_node_type(AST::NodeType::Var) ||
+                 decl->is_node_type(AST::NodeType::ImplicitNet)) &&
+                is_sv_variable)) {
                 ret = true;
             } else {
                 LOG_ERROR_N(node) << "Identifier '" << id->get_name()
-                                  << "' is not declared as a wire";
+                                  << "' is not declared as a wire or a logic variable";
                 ret = false;
             }
         } else {
