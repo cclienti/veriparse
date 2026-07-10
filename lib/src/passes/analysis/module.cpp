@@ -45,6 +45,41 @@ int Module::get_module_dictionary(const AST::Node::Ptr &node, ModulesMap &module
     return 0;
 }
 
+int Module::get_interface_dictionary(const AST::Node::ListPtr &node_list,
+                                     InterfacesMap &interfaces_map)
+{
+    if(!node_list) {
+        return 1;
+    }
+
+    for(const auto &node : *node_list) {
+        if(get_interface_dictionary(node, interfaces_map)) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int Module::get_interface_dictionary(const AST::Node::Ptr &node, InterfacesMap &interfaces_map)
+{
+    if(!node) {
+        return 1;
+    }
+
+    const auto &interfaces = get_interface_nodes(node);
+    for(const auto &interface : *interfaces) {
+        if(interfaces_map.count(interface->get_name()) != 0) {
+            LOG_ERROR_N(interface) << "interface " << interface->get_name() << " already declared";
+            LOG_ERROR_N(interfaces_map[interface->get_name()])
+                << "interface " << interface->get_name() << " was firstly found here";
+            return 1;
+        }
+        interfaces_map.emplace(interface->get_name(), interface);
+    }
+    return 0;
+}
+
 AST::Node::ListPtr Module::get_port_nodes(AST::Node::Ptr node)
 {
     const auto &modules = get_module_nodes(node);
@@ -121,6 +156,13 @@ AST::Module::ListPtr Module::get_module_nodes(AST::Node::Ptr node)
 {
     AST::Module::ListPtr list = std::make_shared<AST::Module::List>();
     get_node_list<AST::Module>(node, AST::NodeType::Module, list);
+    return list;
+}
+
+AST::Interface::ListPtr Module::get_interface_nodes(AST::Node::Ptr node)
+{
+    AST::Interface::ListPtr list = std::make_shared<AST::Interface::List>();
+    get_node_list<AST::Interface>(node, AST::NodeType::Interface, list);
     return list;
 }
 

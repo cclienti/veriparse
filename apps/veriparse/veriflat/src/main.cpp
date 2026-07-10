@@ -213,11 +213,21 @@ static int veriflat(int argc, char *argv[])
     //---------------------------------------------------------
 
     Veriparse::Passes::Analysis::Module::ModulesMap modules_map;
+    Veriparse::Passes::Analysis::Module::InterfacesMap interfaces_map;
 
     for(const auto &source : sources) {
         if(Veriparse::Passes::Analysis::Module::get_module_dictionary(source, modules_map) != 0) {
             return 1;
         }
+        if(Veriparse::Passes::Analysis::Module::get_interface_dictionary(source, interfaces_map) !=
+           0) {
+            return 1;
+        }
+    }
+
+    if(interfaces_map.count(config.top_module) != 0) {
+        LOG_ERROR << "top module " << config.top_module << " is an interface";
+        return 1;
     }
 
     if(modules_map.count(config.top_module) == 0) {
@@ -242,9 +252,12 @@ static int veriflat(int argc, char *argv[])
     // Flatten the selected module
     //---------------------------------------------------------
 
-    Veriparse::Passes::Transformations::ModuleFlattener flattener(param_args, modules_map,
-                                                                  config.deadcode_during_flatten);
-    flattener.run(module);
+    Veriparse::Passes::Transformations::ModuleFlattener flattener(
+        param_args, modules_map, config.deadcode_during_flatten, interfaces_map);
+    if(flattener.run(module) != 0) {
+        LOG_ERROR << "flattening failed";
+        return 1;
+    }
 
     //---------------------------------------------------------
     // Extra deadcode elimination pass

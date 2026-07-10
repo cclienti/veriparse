@@ -5,10 +5,12 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
+#include <veriparse/passes/transformations/interface_elaboration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/misc/tree.hpp>
 
+#include <memory>
 #include <string>
 #include <map>
 #include <unordered_map>
@@ -31,7 +33,8 @@ public:
 
     ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                     const Analysis::Module::ModulesMap &modules_map,
-                    bool deadcode_elimination = true);
+                    bool deadcode_elimination = true,
+                    const Analysis::Module::InterfacesMap &interfaces_map = {});
 
     virtual ~ModuleFlattener();
 
@@ -45,6 +48,15 @@ public:
     TreeNode::Ptr get_instance_tree() const;
 
 private:
+    /**
+     * @brief Recursion constructor: the interface design is already
+     * prepared and merged into the modules map by the top-level instance.
+     */
+    ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
+                    const Analysis::Module::ModulesMap &modules_map,
+                    std::shared_ptr<const InterfaceElaboration::Design> iface_design,
+                    bool deadcode_elimination);
+
     /**
      * @return zero on success
      */
@@ -101,6 +113,9 @@ private:
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;
     Analysis::Module::ModulesMap m_modules_map;
+    Analysis::Module::InterfacesMap m_interfaces_map;
+    std::shared_ptr<const InterfaceElaboration::Design> m_iface_design;
+    const bool m_top{true};
     const bool m_deadcode_elimination;
     std::map<std::string, AST::NodeType> m_var_type_map;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;

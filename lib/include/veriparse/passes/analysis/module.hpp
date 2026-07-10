@@ -26,6 +26,7 @@ public:
     Module() = delete;
 
     using ModulesMap = std::map<std::string, AST::Module::Ptr>;
+    using InterfacesMap = std::map<std::string, AST::Interface::Ptr>;
     using FunctionMap = std::map<std::string, AST::Function::Ptr>;
 
     /**
@@ -55,6 +56,28 @@ public:
      * @brief Return all module names
      */
     static std::vector<std::string> get_module_names(AST::Node::Ptr node);
+
+    /**
+     * @brief Fill the map with all interfaces found in the node_list.
+     *
+     * The key will be the interface name string and the value the
+     * interface AST.
+     */
+    static int get_interface_dictionary(const AST::Node::ListPtr &node_list,
+                                        InterfacesMap &interfaces_map);
+
+    /**
+     * @brief Fill the map with all interfaces found in the node.
+     *
+     * The key will be the interface name string and the value the
+     * interface AST.
+     */
+    static int get_interface_dictionary(const AST::Node::Ptr &node, InterfacesMap &interfaces_map);
+
+    /**
+     * @brief Return all interface nodes
+     */
+    static AST::Interface::ListPtr get_interface_nodes(AST::Node::Ptr node);
 
     /**
      * @brief Return all parameters nodes.
