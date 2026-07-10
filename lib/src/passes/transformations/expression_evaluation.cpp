@@ -141,12 +141,21 @@ AST::Node::Ptr ExpressionEvaluation::evaluate_node(const AST::Node::Ptr node)
         } else if(node->is_node_type(AST::NodeType::FloatConst)) {
             return node->clone();
         } else if(node->is_node_type(AST::NodeType::Identifier)) {
-            std::string value = AST::cast_to<AST::Identifier>(node)->get_name();
-            ReplaceMap::const_iterator search = m_replace_map.find(value);
-            if(search != m_replace_map.cend()) {
-                return search->second->clone();
+            // A hierarchical reference (u1.sig, p.field) is not this scope's
+            // name: its leaf must not evaluate as a local value.
+            const auto &identifier = AST::cast_to<AST::Identifier>(node);
+            if(!identifier->get_hier()) {
+                ReplaceMap::const_iterator search = m_replace_map.find(identifier->get_name());
+                if(search != m_replace_map.cend()) {
+                    return search->second->clone();
+                }
             }
         } else if(node->is_node_type(AST::NodeType::FunctionCall)) {
+            // Same for a hierarchical call (u1.f()): the leaf does not name a
+            // local function.
+            if(AST::cast_to<AST::FunctionCall>(node)->get_hier()) {
+                return nullptr;
+            }
             if(!m_function_map.empty()) {
                 const auto &fcall = AST::cast_to<AST::FunctionCall>(node);
                 const auto &fcall_copy = AST::cast_to<AST::FunctionCall>(node->clone());

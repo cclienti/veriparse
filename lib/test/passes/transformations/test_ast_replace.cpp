@@ -40,3 +40,4 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 TEST(PassesTransformation_ASTReplace, module1) { TEST_CORE; }
+TEST(PassesTransformation_ASTReplace, hier_replace0) { TEST_CORE; }

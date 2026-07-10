@@ -4,6 +4,7 @@
 #include <veriparse/passes/transformations/resolve_module.hpp>
 #include <veriparse/passes/transformations/annotate_declaration.hpp>
 #include <veriparse/passes/transformations/annotate_scope.hpp>
+#include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/instance.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -51,9 +52,22 @@ public:
         for(auto labelit = labellist->cbegin(); labelit != labellist->cend();) {
             bool found = false;
 
+            // An indexed label (u[2].sig) names the scalar split off the
+            // instance array (u2): the effective label is name + constant
+            // index. A non-constant index cannot name a unique instance, so
+            // the reference stays hierarchical.
+            std::string labelscope = (*labelit)->get_name();
+            const AST::Node::Ptr &loop = (*labelit)->get_loop();
+            if(loop) {
+                mpz_class index;
+                if(!ExpressionEvaluation().evaluate_node(loop, index)) {
+                    return false;
+                }
+                labelscope += index.str();
+            }
+
             // Check each tree child if it matches with the scope
             for(const auto &child : node->get_children()) {
-                const auto &labelscope = (*labelit)->get_name();
                 if(child->get_value().second == labelscope) {
                     // We found the right instance that matches the scope
                     found = true;

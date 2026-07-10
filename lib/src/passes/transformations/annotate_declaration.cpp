@@ -127,11 +127,17 @@ int AnnotateDeclaration::annotate_names(AST::Node::Ptr node, ReplaceDict &replac
     }
 
     else if(node->is_node_type(AST::NodeType::Identifier)) {
+        // A hierarchical reference (u1.sig, p.field) names a signal in another
+        // scope: its leaf is not one of this scope's declarations, so only the
+        // leaf rename is skipped — the children (hier-label index expressions)
+        // still rename through the recursion below.
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
-        const std::string &name = identifier->get_name();
-        if(replace_dict.count(name)) {
-            const std::string &new_name = replace_dict[name];
-            identifier->set_name(new_name);
+        if(!identifier->get_hier()) {
+            const std::string &name = identifier->get_name();
+            if(replace_dict.count(name)) {
+                const std::string &new_name = replace_dict[name];
+                identifier->set_name(new_name);
+            }
         }
     }
 

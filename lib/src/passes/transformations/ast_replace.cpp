@@ -52,10 +52,17 @@ int ASTReplace::replace_identifier(AST::Node::Ptr node, const ReplaceMap &replac
     if(node) {
         switch(node->get_node_type()) {
         case AST::NodeType::Identifier: {
-            const std::string identifier_name = AST::cast_to<AST::Identifier>(node)->get_name();
-            ReplaceMap::const_iterator it = replace_map.find(identifier_name);
-            if(it != replace_map.cend()) {
-                parent->replace(node, it->second->clone());
+            // A hierarchical reference (u1.sig, p.field) names a signal in
+            // another scope: its leaf must not be substituted by this scope's
+            // values. Hier-label index expressions still substitute through
+            // the recursion.
+            const auto &identifier = AST::cast_to<AST::Identifier>(node);
+            if(!identifier->get_hier()) {
+                ReplaceMap::const_iterator it = replace_map.find(identifier->get_name());
+                if(it != replace_map.cend()) {
+                    parent->replace(node, it->second->clone());
+                    break;
+                }
             }
 
             // Recurse in scopes
