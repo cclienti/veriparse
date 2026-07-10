@@ -136,7 +136,6 @@ TEST(PassesTransformation_ModuleFlattener, iface_header0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_param0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_body0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_module_in_iface0) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ModuleFlattener, iface_err_nested0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_top_port0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_bad_modport0) { TEST_ERROR_SV; }
 
@@ -169,3 +168,12 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_array_range0) { TEST_ERROR_
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_nonconst0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_noindex0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_member_actual0) { TEST_ERROR_SV; }
+
+// Nested interfaces (ADR-0008 §8.1): recursive elaboration, structural
+// port-path validation, nested actuals.
+TEST(PassesTransformation_ModuleFlattener, iface_nested0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_nested_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_nested_actual0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_nested_cycle0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_nested_member0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_nested_modport0) { TEST_ERROR_SV; }

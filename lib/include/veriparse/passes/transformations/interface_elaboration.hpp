@@ -54,6 +54,13 @@ public:
          */
         std::map<std::string, std::set<std::string>> members;
 
+        /**
+         * @brief Interface name → nested interface instance name → the
+         * instantiated interface. Port-path references (p.tx.field) and
+         * nested actuals (.c(bus.tx)) resolve through this table.
+         */
+        std::map<std::string, std::map<std::string, std::string>> nested;
+
         bool is_interface(const std::string &name) const { return pseudo_modules.count(name) != 0; }
     };
 
