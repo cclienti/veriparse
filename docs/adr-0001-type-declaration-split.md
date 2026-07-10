@@ -845,6 +845,7 @@ Build top to bottom — each step is independently shippable and lands green.
 | 2 | **Package / import resolution** — `PackageInliner`, narrow; introduces the reusable `ScopeTable` (scope-build + name lookup) | [ADR-0004](adr-0004-package-import-resolution.md) | **done** | 1 |
 | 3 | **Interface grammar** — `interface`/`modport`/interface ports/`virtual`; decisive cases emit `InterfaceType`, bare ports ride the `NamedType` path | [ADR-0002](adr-0002-systemverilog-interfaces.md) | **done** | 1 |
 | 4 | **Broad name-resolution pass** — generalizes `ScopeTable` (step 2) to all scope kinds; resolves the deferrals catalogued in [ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md): `Call`→`Function/TaskCall`, `NamedType`→`InterfaceType`, `TypeCast`→`SizeCast`, `TypeOpExpr`→`TypeOpType` (`::`-scoped/imported names were resolved by step 2) | [ADR-0006](adr-0006-name-resolution.md) (catalogue: [ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md); seam: [ADR-0004 §6](adr-0004-package-import-resolution.md)) | **done** | 2 (seam), 3 (for interface-resolution) |
+| 5 | **Interface elaboration** — lowers interfaces to plain signals during flattening: pseudo-module transplant, hier-label aliasing for interface ports, modport visibility, interface arrays | [ADR-0008](adr-0008-interface-elaboration.md) | **done** | 3, 4 |
 
 Notes:
 - **[ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md)** is a *living

@@ -85,6 +85,14 @@ Collects all declared identifiers (I/O, variables, instances, tasks, functions) 
 
 ---
 
+### `SynthesizableCheck`
+Rejects constructs outside the synthesizable RTL subset before flattening
+(ADR-0007). Blacklist model; first entry: virtual interfaces (IEEE 1800-2017
+§25.9). Opt-in per tool: `veriflat` runs it, `veridump`/`veriobf` stay
+permissive.
+
+---
+
 ### `Search<blacklist...>` (template base)
 Internal template base for all analysis passes. Implements recursive AST walking with a configurable blacklist of node types to stop at. `StandardSearch` stops at `Function` and `Task`.
 
@@ -242,6 +250,38 @@ Normalizes module instantiations.
 
 ---
 
+### `PackageInliner`
+Resolves SystemVerilog `package`/`import` (ADR-0004): collect-then-resolve per
+compilation unit in command-line order (§26.3), lazy wildcard imports, eager
+explicit imports, re-export folding with origin dedup (§26.6), transitive
+same-package dependency copy. Output is package/import-free. Entry:
+`run_units(sources)`.
+
+---
+
+### `NameResolution`
+Symbol-aware resolution of the parser deferrals (ADR-0006): design index +
+lexical scope stack; re-tags `Call → Function/TaskCall`,
+`Instance → InterfaceInstance`, bare interface ports → `InterfaceType`,
+`TypeCast → SizeCast`, `TypeOpExpr → TypeOpType`; validates modport placement
+(§25.5) and interface-as-data-type (§25.9). Entry: `run_design(sources)`.
+
+---
+
+### `InterfaceElaboration`
+Lowers SystemVerilog interfaces to plain signals during flattening (ADR-0008).
+Each interface definition transplants into a pseudo-module (modports validated
+and stripped) that joins the flattener's modules map, so instances elaborate
+through the regular per-instance clone → parametrize → resolve → inline path —
+body logic once per instance, per-instance parameterization (§25.8). A child's
+interface port dissolves by hier-label aliasing: `port.member` references
+retarget onto the connected instance's flattened signals (never copies,
+§25.3.2) with modport-visibility checks (§25.10); interface arrays connect
+element-wise (§23.3.3.5). Invoked from `ModuleFlattener`; not a standalone
+pass.
+
+---
+
 ### `ModuleFlattener`
 Flattens a module hierarchy by inlining all sub-module instances.
 
@@ -249,8 +289,11 @@ Flattens a module hierarchy by inlining all sub-module instances.
 - For each instance: inlines parameter/localparam values, renames declarations to avoid collisions, replaces port connections with assignments.
 - Handles `defparam`.
 - Optionally runs dead-code elimination after flattening.
-- Builds an instance tree (`TreeNode`) recording the full hierarchy.
+- Builds an instance tree (`TreeNode`) recording the full hierarchy; the
+  hierarchical-reference matching is index-aware (`u[2].sig` → `u2_sig`).
 - Calls `ResolveModule` internally for each sub-module before inlining.
+- Elaborates interfaces through `InterfaceElaboration` (ADR-0008): interface
+  instances flatten as pseudo-modules, interface ports dissolve by aliasing.
 
 ---
 
@@ -315,8 +358,11 @@ Renames all local identifiers (variables, instances, named blocks, tasks, functi
 ## `veriflat` Top-Level Pipeline
 
 ```
-ModuleFlattener                    ← flattens hierarchy
-  └─ per sub-module: ResolveModule ← full resolution pipeline
+PackageInliner (run_units)         ← package/import resolution per unit
+NameResolution (run_design)        ← re-tags the parser deferrals
+SynthesizableCheck                 ← rejects non-synthesizable constructs
+ModuleFlattener                    ← flattens hierarchy (incl. interfaces
+  └─ per sub-module: ResolveModule    via InterfaceElaboration)
 DeadcodeElimination                ← optional (--deadcode-end)
 WireSplit                          ← post-flatten cleanup
 VerilogGenerator                   ← emit output file

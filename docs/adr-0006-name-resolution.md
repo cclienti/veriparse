@@ -320,11 +320,13 @@ is accepted.
   leaves `hier`-carrying nodes untouched (cf. §4.1: a call with `hier` set is
   skipped). Known gaps of the flatten-time mechanism, recorded here as
   deferrals, not silent behavior: the leaf signal name is appended without
-  existence-checking; label matching is name-only, ignoring a `HierLabel`
-  index (`u[2].sig` into instance arrays / generate loops); matching is
-  top-relative only (a hierarchical ref written *inside* a child module, and
-  upward/`$root` references, are unsupported). Fixing those is
-  `ModuleFlattener` work, out of scope here.
+  existence-checking; matching is top-relative only (a hierarchical ref
+  written *inside* a child module, and upward/`$root` references, are
+  unsupported). Fixing those is `ModuleFlattener` work, out of scope here.
+  (The third gap once listed here — name-only label matching that ignored a
+  `HierLabel` index — was closed by ADR-0008: `match_scope` folds a constant
+  index into the label key, so `u[2].sig` resolves into split instance
+  arrays.)
 - **Interface elaboration** (flattening a design *through* an interface) — a
   `ModuleFlattener`-side feature that consumes this pass's tags; own ADR when
   tackled. Its shape is already known and non-trivial: the flattener will
