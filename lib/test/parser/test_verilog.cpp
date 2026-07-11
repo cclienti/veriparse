@@ -393,6 +393,9 @@ TEST(VerilogParserTest, sv_unit_scope0) { TEST_CORE_SV; }
 // Compilation-unit-scope typedefs, interleaved with imports and a module
 // (IEEE 1800-2017 §26.3, ADR-0009 §6).
 TEST(VerilogParserTest, sv_unit_typedef0) { TEST_CORE_SV; }
+// Array typedefs (`typedef T name [dims]`, unpacked dims on the Typedef) and
+// forward typedefs (bare + enum/struct/union kind hints), A.2.1.3.
+TEST(VerilogParserTest, sv_typedef_dims0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }

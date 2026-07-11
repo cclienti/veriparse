@@ -1,0 +1,138 @@
+Source:
+  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+      line: 1
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+          line: 1
+          name: sv_typedef_dims0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 3
+              fwd_kind: NONE
+              name: word_t
+              unpacked_dims:
+              - SizeDim:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 3
+                  size:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                      line: 3
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 4
+              fwd_kind: NONE
+              name: mem_t
+              unpacked_dims:
+              - SizeDim:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 4
+                  size:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                      line: 4
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 2
+              type:
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 4
+                  name: word_t
+                  signing: NONE
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 6
+              fwd_kind: NONE
+              name: fw_t
+              type:
+                DataType: null
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 7
+              fwd_kind: ENUM
+              name: fe_t
+              type:
+                DataType: null
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 8
+              fwd_kind: STRUCT
+              name: fs_t
+              type:
+                DataType: null
+          - Typedef:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 9
+              fwd_kind: UNION
+              name: fu_t
+              type:
+                DataType: null
+          - Var:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 11
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: w
+              init:
+                Rvalue: null
+              type:
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 11
+                  name: word_t
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+              line: 12
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: m
+              init:
+                Rvalue: null
+              type:
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_typedef_dims0.sv
+                  line: 12
+                  name: mem_t
+                  signing: NONE

@@ -3,6 +3,8 @@
 #include <veriparse/passes/transformations/typedef_inliner.hpp>
 
 #include <veriparse/AST/node_cast.hpp>
+#include <veriparse/passes/analysis/dimensions.hpp>
+#include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
 
 namespace Veriparse
@@ -209,6 +211,21 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
     case AST::NodeType::NamedType:
         return substitute_named_type(AST::cast_to<AST::NamedType>(node), parent);
 
+    case AST::NodeType::TypeCast: {
+        // A cast to a typedef of a packed vector type is a width conversion
+        // (§6.24.1): it lowers to a SizeCast of the alias's packed width —
+        // a TypeCast target has no legal rendering for a non-named type.
+        const auto &cast = AST::cast_to<AST::TypeCast>(node);
+        if(substitute(cast->get_expr(), node)) {
+            return 1;
+        }
+        const auto &target = cast->get_target();
+        if(!target || !target->is_node_type(AST::NodeType::NamedType)) {
+            return substitute(target, node);
+        }
+        return substitute_typedef_cast(cast, parent);
+    }
+
     case AST::NodeType::EnumType: {
         // A declaration's enum type lowers to its base (ADR-0009 §4): the
         // items are dead weight once EnumInliner has inlined every
@@ -313,6 +330,65 @@ int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
         LOG_ERROR_N(named) << "type reference '" << name << "' has no enclosing node";
         return 1;
     }
+    return 0;
+}
+
+int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
+                                            const AST::Node::Ptr &parent)
+{
+    const auto &named = AST::cast_to<AST::NamedType>(cast->get_target());
+    const std::string &name = named->get_name();
+
+    const Alias *alias = lookup(name);
+    if(!alias) {
+        LOG_ERROR_N(named) << "'" << name << "' does not name a type";
+        return 1;
+    }
+    if(!alias->complete) {
+        LOG_ERROR_N(named) << "forward typedef '" << name
+                           << "' is not defined at this reference (IEEE 1800-2017 6.18)";
+        return 1;
+    }
+    if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
+        LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
+        return 1;
+    }
+
+    // Only an unsigned packed vector shape lowers losslessly to a size cast;
+    // reject the rest loudly rather than mis-render.
+    const auto &type = alias->type;
+    if(type->get_signing() != AST::DataType::SigningEnum::NONE ||
+       (!type->is_node_type(AST::NodeType::LogicType) &&
+        !type->is_node_type(AST::NodeType::BitType) &&
+        !type->is_node_type(AST::NodeType::ImplicitType))) {
+        LOG_ERROR_N(named) << "cast to typedef '" << name
+                           << "': only an unsigned logic/bit vector alias is supported";
+        return 1;
+    }
+
+    std::size_t width = 1;
+    if(type->get_packed_dims()) {
+        for(const AST::Dimension::Ptr &dim : *type->get_packed_dims()) {
+            Analysis::Dimensions::DimInfo info;
+            if(!Analysis::Dimensions::extract_dimension(dim, Analysis::Dimensions::Packing::packed,
+                                                        info)) {
+                LOG_ERROR_N(named)
+                    << "cast to typedef '" << name << "': the alias width is not constant";
+                return 1;
+            }
+            width *= info.width;
+        }
+    }
+
+    const auto &size = std::make_shared<AST::IntConstN>(10, -1, true, Misc::Math::u64_to_mpz(width),
+                                                        cast->get_filename(), cast->get_line());
+    const auto &size_cast = std::make_shared<AST::SizeCast>(size, cast->get_expr(),
+                                                            cast->get_filename(), cast->get_line());
+    if(!parent) {
+        LOG_ERROR_N(cast) << "cast to typedef '" << name << "' has no enclosing node";
+        return 1;
+    }
+    parent->replace(cast, size_cast);
     return 0;
 }
 

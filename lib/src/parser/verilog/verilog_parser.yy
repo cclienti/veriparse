@@ -1893,6 +1893,45 @@ typedef_decl:
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
+
+                // Forward typedefs (A.2.1.3: `typedef [ enum | struct | union ]
+                // type_identifier ;`): a null type marks the declaration
+                // incomplete; the completing definition must follow in the
+                // same scope. The class kinds are not supported (no classes).
+        |       TK_TYPEDEF TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_name($2);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_ENUM TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_name($3);
+                    $$->set_fwd_kind(AST::Typedef::Fwd_kindEnum::ENUM);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_STRUCT TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_name($3);
+                    $$->set_fwd_kind(AST::Typedef::Fwd_kindEnum::STRUCT);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_UNION TK_IDENTIFIER TK_SEMICOLON
+                {
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_name($3);
+                    $$->set_fwd_kind(AST::Typedef::Fwd_kindEnum::UNION);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
         ;
 
 enum_def:
