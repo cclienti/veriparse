@@ -177,8 +177,14 @@ TEST(PassesTransformation_ModuleFlattener, iface_out0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_conn_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_modport_mismatch0) { TEST_ERROR_SV; }
+// A chained interface port declared with a bogus modport must be reported,
+// not crash the modport lookup.
+TEST(PassesTransformation_ModuleFlattener, iface_err_chained_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_not_in_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_no_member0) { TEST_ERROR_SV; }
+// An interface enumerator is a constant, not an aliasable signal: a reference
+// through a port (p.EN_IDLE) is rejected.
+TEST(PassesTransformation_ModuleFlattener, iface_err_enum_member0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_unconnected0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_type_mismatch0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_nested_path0) { TEST_ERROR_SV; }
@@ -194,6 +200,9 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_array_nonconst0) { TEST_ERR
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_noindex0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_bogus0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_member_actual0) { TEST_ERROR_SV; }
+// Opposite-direction formal/actual array ranges (u[0:1] vs v[1:0]) require
+// left-to-left remapping, deferred past v1: rejected as a range mismatch.
+TEST(PassesTransformation_ModuleFlattener, iface_array_pairing0) { TEST_ERROR_SV; }
 
 // Nested interfaces (ADR-0008 §8.1): recursive elaboration, structural
 // port-path validation, nested actuals.

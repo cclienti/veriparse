@@ -72,21 +72,26 @@ AST::Module::Default_nettypeEnum to_module_nettype(AST::Interface::Default_netty
     return AST::Module::Default_nettypeEnum::NONE;
 }
 
-/// Member names of one interface: header ports plus the nets, variables and
-/// enumerators its body binds (§25.10 objects). Parameters, typedefs and
-/// subroutines are deliberately excluded: parameters inline away during the
-/// pseudo-module resolution and subroutines are not externally accessible
-/// (ADR-0008 §8) — a reference through the port to such a name fails the
-/// member check loudly instead of dangling.
-void collect_members(const AST::Interface::Ptr &interface, std::set<std::string> &members)
+/// Member names of one interface: header ports plus the nets and variables
+/// its body binds (§25.10 objects), collected into `members`. Enumerators go
+/// into `enumerators` instead: they are constants, not aliasable signals, so
+/// a reference through a port must be rejected, not rewritten to a net.
+/// Parameters, typedefs and subroutines are deliberately excluded: parameters
+/// inline away during the pseudo-module resolution and subroutines are not
+/// externally accessible (ADR-0008 §8) — a reference through the port to such
+/// a name fails the member check loudly instead of dangling.
+void collect_members(const AST::Interface::Ptr &interface, std::set<std::string> &members,
+                     std::set<std::string> &enumerators)
 {
-    const auto visit = [&members](const std::string &name, const AST::Node::Ptr &denoted) {
+    const auto visit = [&members, &enumerators](const std::string &name,
+                                                const AST::Node::Ptr &denoted) {
         if(!denoted) {
             return;
         }
-        if(denoted->is_node_type(AST::NodeType::Var) ||
-           denoted->is_node_category(AST::NodeType::Net) ||
-           denoted->is_node_type(AST::NodeType::EnumItem)) {
+        if(denoted->is_node_type(AST::NodeType::EnumItem)) {
+            enumerators.insert(name);
+        } else if(denoted->is_node_type(AST::NodeType::Var) ||
+                  denoted->is_node_category(AST::NodeType::Net)) {
             members.insert(name);
         }
     };
@@ -176,7 +181,7 @@ int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfa
         const auto &interface = AST::cast_to<AST::Interface>(entry.second->clone());
 
         auto &members = design.members[name];
-        collect_members(interface, members);
+        collect_members(interface, members, design.enumerators[name]);
 
         // A nested interface instance elaborates through the pseudo-module
         // recursion; its name is recorded so port-path references
@@ -320,7 +325,13 @@ struct PortRewrite
 /// base name, checking member existence and modport visibility (§25.10).
 /// Calls inherit Identifier, so an external subroutine access (p.method())
 /// fails the member check here (ADR-0008 §8).
-int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
+///
+/// All of a child's interface ports are rewritten in a single walk, keyed by
+/// port name: a per-port sequence of full-tree passes would re-capture an
+/// earlier rewrite whose base coincides with a later port name (a port named
+/// like another port's actual).
+int rewrite_port_refs(const AST::Node::Ptr &node,
+                      const std::map<std::string, PortRewrite> &rewrites)
 {
     if(!node) {
         return 0;
@@ -330,7 +341,10 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
         const auto &identifier = AST::cast_to<AST::Identifier>(node);
         const auto &hier = identifier->get_hier();
         const auto &labels = hier ? hier->get_labellist() : nullptr;
-        if(labels && !labels->empty() && labels->front()->get_name() == rw.port_name) {
+        const auto rw_it = labels && !labels->empty() ? rewrites.find(labels->front()->get_name())
+                                                      : rewrites.end();
+        if(rw_it != rewrites.end()) {
+            const PortRewrite &rw = rw_it->second;
             // Walk the reference path (§8.1): intermediate labels descend the
             // nested-instance table, the leaf must be a member of the final
             // interface. A modport restricts the first level of the
@@ -370,6 +384,15 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
 
             if(labels->size() == 1) {
                 if(rw.visible->count(identifier->get_name()) == 0) {
+                    const auto en_it = rw.design->enumerators.find(rw.iface);
+                    if(en_it != rw.design->enumerators.end() &&
+                       en_it->second.count(identifier->get_name()) != 0) {
+                        LOG_ERROR_N(node)
+                            << "enumerator '" << identifier->get_name() << "' of interface '"
+                            << rw.iface << "' cannot be accessed through an interface port: "
+                            << "it is a constant, not a signal";
+                        return 1;
+                    }
                     if(rw.modport.empty()) {
                         LOG_ERROR_N(node) << "interface '" << rw.iface << "' has no member '"
                                           << identifier->get_name() << "'";
@@ -450,7 +473,7 @@ int rewrite_port_refs(const AST::Node::Ptr &node, const PortRewrite &rw)
     const AST::Node::ListPtr children = node->get_children();
     if(children) {
         for(const AST::Node::Ptr &child : *children) {
-            ret |= rewrite_port_refs(child, rw);
+            ret |= rewrite_port_refs(child, rewrites);
         }
     }
     return ret;
@@ -496,6 +519,11 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
     if(!ports) {
         return 0;
     }
+
+    // All interface ports of the child are decoded and validated first, then
+    // rewritten in a single pass (see rewrite_port_refs): sequential per-port
+    // passes would re-capture across ports.
+    std::map<std::string, PortRewrite> rewrites;
 
     for(auto port_it = ports->begin(); port_it != ports->end();) {
         const auto &port = *port_it;
@@ -674,6 +702,16 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
             return 1;
         }
 
+        // The effective modport must exist: it may have come from a chained
+        // port declared with a bogus modport, which the header check above
+        // does not cover. Validate before indexing the modport table.
+        if(!effective.empty() &&
+           (modports_it == design.modports.end() || modports_it->second.count(effective) == 0)) {
+            LOG_ERROR_N(portarg) << "interface '" << iface << "' has no modport '" << effective
+                                 << "' (IEEE 1800-2017 25.5)";
+            return 1;
+        }
+
         const auto members_it = design.members.find(iface);
         const std::set<std::string> &visible =
             effective.empty() ? members_it->second : modports_it->second.at(effective);
@@ -689,16 +727,18 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
         rewrite.chained = chained;
         rewrite.instances = &scope.instances;
         rewrite.design = &design;
-
-        if(rewrite_port_refs(child, rewrite)) {
-            return 1;
-        }
+        rewrites.emplace(port_name, std::move(rewrite));
 
         // Drop the dissolved port and its connection: the value-port
         // binding must never clone the interface Arg nor synthesize an
         // assignment for it — connection is aliasing (§25.3.2).
         portargs->remove(portarg);
         port_it = ports->erase(port_it);
+    }
+
+    // Single rewrite pass over the child once every port's target is known.
+    if(!rewrites.empty() && rewrite_port_refs(child, rewrites)) {
+        return 1;
     }
 
     return 0;
