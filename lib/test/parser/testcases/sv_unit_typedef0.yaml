@@ -1,0 +1,227 @@
+Source:
+  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+      line: 1
+      definitions:
+      - Typedef:
+          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+          line: 1
+          fwd_kind: NONE
+          name: nib_t
+          type:
+            LogicType:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 1
+              signing: NONE
+              packed_dims:
+              - RangeDim:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 1
+                  left:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 1
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+                  right:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 1
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+      - Import:
+          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+          line: 3
+          package: ipkg
+          symbol: '*'
+      - Typedef:
+          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+          line: 5
+          fwd_kind: NONE
+          name: pair_t
+          type:
+            NamedType:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 5
+              name: nib_t
+              signing: NONE
+      - Module:
+          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+          line: 7
+          name: sv_unit_typedef0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 7
+              name: a
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 7
+              name: b
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                          line: 7
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 8
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: x
+              init:
+                Rvalue: null
+              type:
+                NamedType:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 8
+                  name: nib_t
+                  signing: NONE
+          - Assign:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 9
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 9
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 9
+                      name: x
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 9
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 9
+                      name: a
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+              line: 10
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 10
+                      name: b
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                  line: 10
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_unit_typedef0.sv
+                      line: 10
+                      name: x
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

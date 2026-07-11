@@ -218,14 +218,20 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
 void PackageInliner::build_unit_scope(const AST::Node::Ptr &source)
 {
     // The `$unit` (compilation-unit) pseudo-package holds the names this source's
-    // top-level imports bring in, so `$unit::x` resolves through the same
-    // single-segment path. (Top-level value declarations are not in the grammar,
-    // so the unit scope holds only imported names.) It is per-source: overwrite
-    // any previous source's `$unit`.
+    // top-level imports bring in — so `$unit::x` resolves through the same
+    // single-segment path — plus its own top-level typedefs (§26.3; the only
+    // unit-scope declaration the grammar admits, ADR-0009 §6). It is per-source:
+    // overwrite any previous source's `$unit`.
     PackageEntry unit; // entry.package stays null: there is no Package node
     const AST::Node::ListPtr defs = top_level_definitions(source);
     if(defs) {
         for(const AST::Node::Ptr &item : *defs) {
+            if(item->is_node_type(AST::NodeType::Typedef)) {
+                const auto &tdef = AST::cast_to<AST::Typedef>(item);
+                unit.symbols[tdef->get_name()] = item;
+                unit.origin[tdef->get_name()] = UNIT_SCOPE;
+                continue;
+            }
             if(!item->is_node_type(AST::NodeType::Import)) {
                 continue;
             }
@@ -267,13 +273,22 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
     }
 
     // This source's own top-level imports are visible to its modules only (an
-    // import in another file belongs to another compilation unit).
+    // import in another file belongs to another compilation unit). A top-level
+    // typedef is directly visible in the unit's modules (§26.3): it rides the
+    // same path as a synthesized explicit `import $unit::T`, so shadowing,
+    // dedup and collision handling are inherited unchanged.
     std::list<AST::Node::Ptr> unit_imports;
     const AST::Node::ListPtr defs = top_level_definitions(source);
     if(defs) {
         for(const AST::Node::Ptr &item : *defs) {
             if(item->is_node_type(AST::NodeType::Import)) {
                 unit_imports.push_back(item);
+            } else if(item->is_node_type(AST::NodeType::Typedef)) {
+                const auto &imp =
+                    std::make_shared<AST::Import>(item->get_filename(), item->get_line());
+                imp->set_package(UNIT_SCOPE);
+                imp->set_symbol(AST::cast_to<AST::Typedef>(item)->get_name());
+                unit_imports.push_back(imp);
             }
         }
     }
@@ -288,10 +303,12 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
         }
     }
 
-    // Strip the now-resolved compilation-unit imports and package definitions.
+    // Strip the now-resolved compilation-unit imports, typedefs (copied into
+    // their consuming modules) and package definitions.
     if(defs) {
         for(auto it = defs->begin(); it != defs->end();) {
             const bool drop = (*it)->is_node_type(AST::NodeType::Import) ||
+                              (*it)->is_node_type(AST::NodeType::Typedef) ||
                               (*it)->is_node_type(AST::NodeType::Package);
             it = drop ? defs->erase(it) : std::next(it);
         }

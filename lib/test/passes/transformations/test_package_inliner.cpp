@@ -124,6 +124,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner_task_shadow) { TEST_CO
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport) { TEST_CORE_SV; }
 // A module-local declaration shadows a re-exported name (§26.5 + §26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_shadow) { TEST_CORE_SV; }
+// Compilation-unit-scope typedefs (§26.3, ADR-0009 §6): copied into the unit's
+// modules like package symbols; a module-local same-name typedef shadows.
+TEST(PassesTransformation_PackageInliner, package_inliner_unit_typedef) { TEST_CORE_SV; }
 // Explicit `export P1::A` of a wildcard-imported-but-unused name forces its
 // import, so a module importing P2 still sees A (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_force) { TEST_CORE_SV; }

@@ -390,6 +390,9 @@ TEST(VerilogParserErrorTest, sv_tf_arg_dims)
 TEST(VerilogParserTest, sv_data_type_multiname0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_type0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_unit_scope0) { TEST_CORE_SV; }
+// Compilation-unit-scope typedefs, interleaved with imports and a module
+// (IEEE 1800-2017 §26.3, ADR-0009 §6).
+TEST(VerilogParserTest, sv_unit_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }

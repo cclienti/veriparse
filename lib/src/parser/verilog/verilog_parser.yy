@@ -724,6 +724,21 @@ definitions:    definition
                     $$ = $1;
                     $$->splice($$->end(), *$2);
                 }
+
+                // Compilation-unit-scope typedef (§26.3 admits package_items
+                // between design elements; typedef is the one supported here).
+                // It joins the `$unit` pseudo-package during package inlining.
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
+
+        |       definitions typedef_decl
+                {
+                    $$ = $1;
+                    $$->push_back(AST::to_node($2));
+                }
         ;
 
 
