@@ -481,6 +481,16 @@ AST::Instance::ListPtr Module::get_instance_nodes(AST::Node::Ptr node)
     return list;
 }
 
+AST::InterfaceType::Ptr Module::get_port_interface_type(const AST::Port::Ptr &port)
+{
+    const auto &decl = port ? port->get_decl() : nullptr;
+    const auto &type = decl ? decl->get_type() : nullptr;
+    if(type && type->is_node_type(AST::NodeType::InterfaceType)) {
+        return AST::cast_to<AST::InterfaceType>(type);
+    }
+    return nullptr;
+}
+
 } // namespace Analysis
 } // namespace Passes
 } // namespace Veriparse

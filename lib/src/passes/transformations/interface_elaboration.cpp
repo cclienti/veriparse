@@ -7,6 +7,9 @@
 #include <veriparse/passes/transformations/scope_table.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <algorithm>
+#include <cctype>
+
 namespace Veriparse
 {
 namespace Passes
@@ -19,17 +22,21 @@ namespace
 
 // The generated per-node enums are identical value lists that astgen cannot
 // share (ADR-0002 §2.1); these switches bridge them, like the parser's
-// to_interface_nettype does in the other direction.
+// to_interface_nettype does in the other direction. They are deliberately
+// exhaustive with no `default`: a new enumerator added to the yaml makes the
+// switch non-exhaustive, which -Wall -Werror turns into a compile error at
+// this exact spot rather than silently mapping the new value to NONE.
 AST::Module::LifetimeEnum to_module_lifetime(AST::Interface::LifetimeEnum lifetime)
 {
     switch(lifetime) {
+    case AST::Interface::LifetimeEnum::NONE:
+        return AST::Module::LifetimeEnum::NONE;
     case AST::Interface::LifetimeEnum::AUTOMATIC:
         return AST::Module::LifetimeEnum::AUTOMATIC;
     case AST::Interface::LifetimeEnum::STATIC:
         return AST::Module::LifetimeEnum::STATIC;
-    default:
-        return AST::Module::LifetimeEnum::NONE;
     }
+    return AST::Module::LifetimeEnum::NONE;
 }
 
 AST::Module::Default_nettypeEnum to_module_nettype(AST::Interface::Default_nettypeEnum nettype)
@@ -59,9 +66,10 @@ AST::Module::Default_nettypeEnum to_module_nettype(AST::Interface::Default_netty
         return AST::Module::Default_nettypeEnum::SUPPLY0;
     case AST::Interface::Default_nettypeEnum::SUPPLY1:
         return AST::Module::Default_nettypeEnum::SUPPLY1;
-    default:
+    case AST::Interface::Default_nettypeEnum::NONE:
         return AST::Module::Default_nettypeEnum::NONE;
     }
+    return AST::Module::Default_nettypeEnum::NONE;
 }
 
 /// Member names of one interface: header ports plus the nets, variables and
@@ -235,17 +243,6 @@ int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfa
 namespace
 {
 
-/// The InterfaceType of an interface-typed port declaration, or nullptr.
-AST::InterfaceType::Ptr port_interface_type(const AST::Port::Ptr &port)
-{
-    const auto &decl = port->get_decl();
-    const auto &type = decl ? decl->get_type() : nullptr;
-    if(type && type->is_node_type(AST::NodeType::InterfaceType)) {
-        return AST::cast_to<AST::InterfaceType>(type);
-    }
-    return nullptr;
-}
-
 /// §25.5: a connection may name a modport in the port declaration, in the
 /// port connection, or both — in which case the two names shall be
 /// identical.
@@ -271,6 +268,28 @@ bool constant_index(const AST::Node::Ptr &node, std::string &index_str)
     }
     index_str = value.str();
     return true;
+}
+
+/// True when `base` names a split interface array in scope: at least one
+/// element `base<index>` is a scope instance of interface `iface`. The
+/// normalizer names split elements `base` + decimal index (§23.3.3.5), so a
+/// bare arrayed-port actual is a valid array base only if such an element
+/// exists — otherwise it names nothing and must be rejected.
+bool names_array_instance(const std::map<std::string, std::string> &instances,
+                          const std::string &base, const std::string &iface)
+{
+    for(const auto &entry : instances) {
+        const std::string &name = entry.first;
+        if(name.size() <= base.size() || name.compare(0, base.size(), base) != 0 ||
+           entry.second != iface) {
+            continue;
+        }
+        if(std::all_of(name.begin() + base.size(), name.end(),
+                       [](unsigned char c) { return std::isdigit(c) != 0; })) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /// How references through one dissolved interface port rewrite.
@@ -456,7 +475,7 @@ int InterfaceElaboration::collect_scope(const AST::Node::Ptr &module, const Desi
         const auto &ports = AST::cast_to<AST::Module>(module)->get_ports();
         if(ports) {
             for(const AST::Port::Ptr &port : *ports) {
-                const auto &type = port_interface_type(port);
+                const auto &type = Analysis::Module::get_port_interface_type(port);
                 if(type) {
                     symbols.ports.emplace(
                         port->get_decl()->get_name(),
@@ -480,7 +499,7 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
 
     for(auto port_it = ports->begin(); port_it != ports->end();) {
         const auto &port = *port_it;
-        const auto &type = port_interface_type(port);
+        const auto &type = Analysis::Module::get_port_interface_type(port);
         if(!type) {
             ++port_it;
             continue;
@@ -577,9 +596,13 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
                     actual_iface = port_ref_it->second.iface;
                     ref_modport = port_ref_it->second.modport;
                     chained = true;
-                } else if(arrayed && leaf.empty()) {
-                    // Assumed base of a split instance array; every element
-                    // is checked per reference (§23.3.3.5).
+                } else if(arrayed && leaf.empty() &&
+                          names_array_instance(scope.instances, ref_name, iface)) {
+                    // Base of a split interface array: at least one element
+                    // exists in scope, and each referenced element is checked
+                    // per reference (§23.3.3.5). Without a matching element the
+                    // actual names nothing and falls through to the
+                    // does-not-name-an-instance error below.
                     actual_iface = iface;
                     array_base = true;
                 }

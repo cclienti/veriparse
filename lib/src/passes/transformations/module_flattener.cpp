@@ -13,6 +13,7 @@
 #include <boost/algorithm/string/join.hpp>
 
 #include <algorithm>
+#include <cctype>
 
 namespace Veriparse
 {
@@ -32,8 +33,12 @@ public:
     /**
      * @brief Check if the scoped identifier corresponds to an instance
      * hierarchy.
+     *
+     * @param error set when the reference names a split instance array but
+     * carries a non-constant index, so it cannot be flattened.
      */
-    bool match_scope(const AST::Identifier::Ptr &identifier, std::string &matched) const
+    bool match_scope(const AST::Identifier::Ptr &identifier, std::string &matched,
+                     bool &error) const
     {
         auto scope = identifier->get_hier();
         if(!scope) {
@@ -54,13 +59,18 @@ public:
 
             // An indexed label (u[2].sig) names the scalar split off the
             // instance array (u2): the effective label is name + constant
-            // index. A non-constant index cannot name a unique instance, so
-            // the reference stays hierarchical.
+            // index. A non-constant index cannot name a unique instance; if
+            // the label none the less names a split instance array, the
+            // reference cannot be flattened and is an error rather than a
+            // silent dangling hierarchical reference.
             std::string labelscope = (*labelit)->get_name();
             const AST::Node::Ptr &loop = (*labelit)->get_loop();
             if(loop) {
                 mpz_class index;
                 if(!ExpressionEvaluation().evaluate_node(loop, index)) {
+                    if(names_array_child(node, labelscope)) {
+                        error = true;
+                    }
                     return false;
                 }
                 labelscope += index.str();
@@ -93,6 +103,25 @@ public:
         }
 
         return true;
+    }
+
+    /**
+     * @brief True when a child instance is an element `base<index>` of a
+     * split instance array — the normalizer names split elements `base` plus
+     * a decimal index.
+     */
+    static bool names_array_child(const InstTreeNode *node, const std::string &base)
+    {
+        for(const auto &child : node->get_children()) {
+            const std::string &name =
+                static_cast<const InstTreeNode *>(child.get())->get_value().second;
+            if(name.size() > base.size() && name.compare(0, base.size(), base) == 0 &&
+               std::all_of(name.begin() + base.size(), name.end(),
+                           [](unsigned char c) { return std::isdigit(c) != 0; })) {
+                return true;
+            }
+        }
+        return false;
     }
 
 private:
@@ -169,12 +198,11 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         const auto &ports = AST::cast_to<AST::Module>(node)->get_ports();
         if(ports) {
             for(const AST::Port::Ptr &port : *ports) {
-                const auto &decl = port->get_decl();
-                const auto &type = decl ? decl->get_type() : nullptr;
-                if(type && type->is_node_type(AST::NodeType::InterfaceType)) {
-                    LOG_ERROR_N(port) << "top module has an interface port '" << decl->get_name()
-                                      << "'; flatten an enclosing module that owns the "
-                                      << "interface instance";
+                if(Analysis::Module::get_port_interface_type(port)) {
+                    LOG_ERROR_N(port)
+                        << "top module has an interface port '" << port->get_decl()->get_name()
+                        << "'; flatten an enclosing module that owns the "
+                        << "interface instance";
                     return 1;
                 }
             }
@@ -569,10 +597,24 @@ bool ModuleFlattener::check_output_rvalue_wire(const AST::Node::Ptr &node)
     switch(node->get_node_type()) {
     case AST::NodeType::Identifier: {
         const auto &id = AST::cast_to<AST::Identifier>(node);
-        // A hierarchical target (an interface member actual, bus.d) is not a
-        // local declaration: it resolves after splicing, so the wire check
-        // is deferred to the consuming tools.
-        if(id->get_hier()) {
+        // A hierarchical output actual addresses an interface member (bus.d):
+        // it resolves to a flattened signal after splicing, and a variable
+        // member may legally take a single module-output driver (IEEE
+        // 1800-2017 §10.3.2), so the wire check is deferred to the consuming
+        // tools. A hierarchical target whose base does not name an interface
+        // instance is not a drivable local net — reject it loudly rather than
+        // emit a dangling reference into the flattened netlist.
+        const auto &hier = id->get_hier();
+        if(hier) {
+            const auto &labels = hier->get_labellist();
+            const std::string base =
+                (labels && !labels->empty()) ? labels->front()->get_name() : std::string();
+            if(!base.empty() && m_scope_symbols.instances.count(base) != 0) {
+                break;
+            }
+            LOG_ERROR_N(node) << "hierarchical output actual '" << base << "." << id->get_name()
+                              << "' does not name an interface member";
+            ret = false;
             break;
         }
         const auto it = m_var_type_map.find(id->get_name());
@@ -765,10 +807,17 @@ int ModuleFlattener::replace_scoped_identifiers(const AST::Node::Ptr &node)
 
         const auto &tree = static_cast<const InstTreeNode &>(*m_instance_tree);
         std::string matched;
-        if(tree.match_scope(identifier, matched)) {
+        bool error = false;
+        if(tree.match_scope(identifier, matched, error)) {
             identifier->set_hier(nullptr);
             matched += "_" + identifier->get_name();
             identifier->set_name(matched);
+        } else if(error) {
+            LOG_ERROR_N(identifier)
+                << "hierarchical reference '" << identifier->get_name()
+                << "' indexes a split instance array with a non-constant index; "
+                << "the instance cannot be flattened";
+            return 1;
         }
     } break;
 
