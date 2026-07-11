@@ -6,6 +6,7 @@
 #include <veriparse/importers/yaml_importer.hpp>
 #include <veriparse/passes/transformations/module_flattener.hpp>
 #include <veriparse/passes/transformations/name_resolution.hpp>
+#include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <gtest/gtest.h>
 
@@ -47,9 +48,9 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
-// SystemVerilog cases (interfaces): parse in SV mode, resolve names so
-// interface instances/ports are tagged, then flatten with the interface
-// dictionary.
+// SystemVerilog cases (interfaces, packages, typedefs): parse in SV mode,
+// inline packages and resolve names — the veriflat front-end order — then
+// flatten with the interface dictionary.
 #define TEST_CORE_SV                                                                               \
     ENABLE_LOGGER;                                                                                 \
                                                                                                    \
@@ -58,6 +59,8 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    ASSERT_EQ(0, Passes::Transformations::PackageInliner().run(source));                           \
                                                                                                    \
     Passes::Transformations::NameResolution resolution;                                            \
     ASSERT_EQ(0, resolution.run(source));                                                          \
@@ -116,6 +119,8 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
                                                                                                    \
+    ASSERT_EQ(0, Passes::Transformations::PackageInliner().run(source));                           \
+                                                                                                   \
     Passes::Transformations::NameResolution resolution;                                            \
     ASSERT_EQ(0, resolution.run(source));                                                          \
                                                                                                    \
@@ -166,6 +171,12 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_bad_modport0) { TEST_ERROR_
 // A SystemVerilog logic variable accepts a child-output connection
 // (continuous assignment to a variable, IEEE 1800-2017 §10.3.2).
 TEST(PassesTransformation_ModuleFlattener, logic_out0) { TEST_CORE_SV; }
+
+// Typedef inlining (ADR-0009): typedefs substitute to concrete types before
+// flattening, so the flat output carries no typedef and no NamedType.
+TEST(PassesTransformation_ModuleFlattener, tdef_collision0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_pkg0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

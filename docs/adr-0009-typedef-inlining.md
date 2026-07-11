@@ -70,10 +70,17 @@ precedent — resolve the sugar to what it denotes, then drop the declaration.
 
 `TypedefInliner` walks a module (or interface pseudo-module) clone:
 
-1. **Bind.** Build the lexical scope of `Typedef` items with `ScopeTable`
-   (which already classifies `Typedef` as `SymbolKind::TYPE`), so nested
-   scopes (generate blocks, named blocks) shadow correctly and §6.18
-   before-use order is enforced at the binding step.
+1. **Bind.** Build the lexical scope of `Typedef` items in declaration order,
+   so nested scopes (generate regions, begin/end and fork/join blocks) shadow
+   correctly and §6.18 before-use order is enforced within a body.
+   **Refinement (implementation)**: header ports and parameters resolve
+   against the *whole* module scope rather than strict lexical order —
+   `PackageInliner` splices package/unit typedefs at the head of the body,
+   and those must stay visible to the header they lexically follow. The
+   permissiveness this buys (a port referencing a *body* typedef, illegal
+   per §6.18, is accepted and correctly substituted) is deliberate: the
+   splice erases the provenance that strict enforcement would need, and the
+   parser is permissive by design (ADR-0003 §1).
 2. **Substitute.** Every `NamedType` whose name binds to a `Typedef` is
    replaced by a **clone of the aliased `DataType`** — at *every* type
    position: `Var`/net/`Arg`/`Param`/`Member` decl types, `Typedef` chains,
@@ -205,9 +212,9 @@ it must run **before** this pass.
 | Condition | Clause | Message shape |
 |---|---|---|
 | `NamedType` binds to nothing | §6.18 | `'X' does not name a type` |
-| reference before the typedef's declaration point | §6.18 | `'X' is referenced before its declaration` |
-| typedef cycle (`typedef a b; typedef b a;`) | §6.18 | `typedef 'X' is circular` |
-| forward typedef never completed but used | §6.18 | `forward typedef 'X' is never defined` |
+| body reference before the typedef's declaration point (headers are exempt — §2 refinement) | §6.18 | `'X' does not name a type` (the later typedef is not yet bound) |
+| typedef redeclared in the same scope | §6.18 | `typedef 'X' is already declared in this scope` |
+| forward typedef referenced before its completing definition — which also covers every expressible cycle (`typedef a; typedef a b; typedef b a;`), since bindings substitute eagerly at registration | §6.18 | `forward typedef 'X' is not defined at this reference` |
 | typedef-with-unpacked-dims in a dims-less position | §6.18/A.2.1.3 | `array typedef 'X' is not legal here` |
 
 ## 11. Pass placement & structure

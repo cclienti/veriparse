@@ -7,6 +7,7 @@
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/passes/transformations/enum_elaboration.hpp>
 #include <veriparse/passes/transformations/enum_inliner.hpp>
+#include <veriparse/passes/transformations/typedef_inliner.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/branch_selection.hpp>
@@ -74,6 +75,11 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     if(EnumInliner().run(node)) {
         LOG_ERROR_N(node) << "Failed to inline enums";
+        return 1;
+    }
+
+    if(TypedefInliner().run(node)) {
+        LOG_ERROR_N(node) << "Failed to inline typedefs";
         return 1;
     }
 
