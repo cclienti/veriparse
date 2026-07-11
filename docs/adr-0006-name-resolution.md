@@ -327,15 +327,15 @@ is accepted.
   `HierLabel` index — was closed by ADR-0008: `match_scope` folds a constant
   index into the label key, so `u[2].sig` resolves into split instance
   arrays.)
-- **Interface elaboration** (flattening a design *through* an interface) — a
-  `ModuleFlattener`-side feature that consumes this pass's tags; own ADR when
-  tackled. Its shape is already known and non-trivial: the flattener will
-  replace an interface **field by field** — each signal the interface declares
-  becomes a flattened net/var, and every `port.field` access is rewritten to
-  it. Doing that requires **locating the interface instance** behind each
-  connection to bind its parameter values (a `my_if #(.W(16)) u` and a
-  `my_if #(.W(8)) v` produce different field widths from the same definition)
-  — which is exactly why this pass tags `InterfaceInstance` and preserves its
-  `parameterlist` untouched.
+- **Interface elaboration** (flattening a design *through* an interface) —
+  **implemented by ADR-0008** (`InterfaceElaboration`, invoked from
+  `ModuleFlattener`), consuming exactly the tags this pass produces. The
+  implemented shape differs from the field-by-field replacement sketched when
+  this item was deferred: each interface definition transplants into a
+  **pseudo-module** that elaborates through the existing per-instance clone →
+  parametrize → inline path (which is what binds per-instance parameter values
+  — the reason this pass tags `InterfaceInstance` and preserves its
+  `parameterlist` untouched), and every `port.field` access rewrites onto the
+  connected instance's flattened signals by hier-label aliasing.
 - **Expression-position `FunctionCall` validation** (name actually a function?)
   — diagnostics-only concern for a later validation pass (ADR-0005 §3.6 family).

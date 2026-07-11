@@ -848,11 +848,12 @@ Build top to bottom — each step is independently shippable and lands green.
 | 5 | **Interface elaboration** — lowers interfaces to plain signals during flattening: pseudo-module transplant, hier-label aliasing for interface ports, modport visibility, interface arrays | [ADR-0008](adr-0008-interface-elaboration.md) | **done** | 3, 4 |
 
 Notes:
-- **[ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md)** is a *living
-  catalogue*, not a single step: it records every parser deferral, and steps 2–4
-  resolve those entries. Feature ADRs append to it (interfaces added §3.4/§4.4;
-  package/import added §4.5).
+- **[ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md)** was a *living
+  catalogue*, not a single step: it recorded every parser deferral, and steps 2–4
+  resolved those entries (interfaces added §3.4/§4.4; package/import added §4.5).
+  **Closed 2026-07-11** — only the implicit-default rows (§4.1/§4.2) remain,
+  handed off to the future default-resolution pass (ADR-0006 §8).
 - **Steps 2 and 3 are independent** (different subsystems) and may land in either
   order; both only need step 1.
-- The **statement-call gap** (ADR-0003 §6 — grammar emits `TaskCall`, never the
-  neutral `Call`) is folded into step 4 (or fixed standalone earlier — it is local).
+- The **statement-call gap** (ADR-0003 §6 — grammar emitted `TaskCall`, never the
+  neutral `Call`) was closed by step 4 (ADR-0006 §4.1).
