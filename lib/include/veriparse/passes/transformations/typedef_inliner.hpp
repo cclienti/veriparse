@@ -85,6 +85,14 @@ private:
     int substitute_named_type(const AST::NamedType::Ptr &named, const AST::Node::Ptr &parent);
 
     /**
+     * @brief Lower a cast to a typedef into a SizeCast of the alias's packed
+     * width (IEEE 1800-2017 §6.24.1) — a TypeCast target has no legal
+     * rendering for a non-named type.
+     * @return zero on success
+     */
+    int substitute_typedef_cast(const AST::TypeCast::Ptr &cast, const AST::Node::Ptr &parent);
+
+    /**
      * @brief The innermost binding of a name, or nullptr.
      */
     const Alias *lookup(const std::string &name) const;

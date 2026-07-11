@@ -84,13 +84,20 @@ precedent — resolve the sugar to what it denotes, then drop the declaration.
 2. **Substitute.** Every `NamedType` whose name binds to a `Typedef` is
    replaced by a **clone of the aliased `DataType`** — at *every* type
    position: `Var`/net/`Arg`/`Param`/`Member` decl types, `Typedef` chains,
-   `TypeCast` targets (`nib_t'(x)`), `TypeOpType` operands, function return
-   types. Chains (`typedef a b; typedef b c;`) resolve transitively; a cycle
-   (expressible through forward typedefs) is a hard error. A forward typedef
-   (`type == null`) is satisfied by its completing definition in scope; a
-   forward declaration never completed but referenced is a hard error. A
-   `NamedType` that binds to nothing is a hard error (it can no longer be an
-   interface name — `NameResolution` already re-tagged those).
+   `TypeOpType` operands, function return types. Chains (`typedef a b;
+   typedef b c;`) resolve transitively; a cycle (expressible through forward
+   typedefs) is a hard error. A forward typedef (`type == null`) is satisfied
+   by its completing definition in scope; a forward declaration never
+   completed but referenced is a hard error. A `NamedType` that binds to
+   nothing is a hard error (it can no longer be an interface name —
+   `NameResolution` already re-tagged those).
+   **Cast targets are special** (implementation refinement): a `TypeCast`
+   target has no legal rendering for a non-named type (`logic [3:0]'(x)` is
+   not SystemVerilog), so a cast to a typedef lowers to a **`SizeCast` of the
+   alias's packed width** — the §6.24.1 equivalence for an unsigned packed
+   vector alias (which is also what a lowered enum typedef is, making
+   `state_t'(x)` work). A signed or non-vector alias in cast position is
+   rejected loudly rather than mis-rendered.
 3. **Drop.** All `Typedef` items are removed. After the pass the module
    contains no `Typedef` and no `NamedType`.
 
@@ -215,7 +222,8 @@ it must run **before** this pass.
 | body reference before the typedef's declaration point (headers are exempt — §2 refinement) | §6.18 | `'X' does not name a type` (the later typedef is not yet bound) |
 | typedef redeclared in the same scope | §6.18 | `typedef 'X' is already declared in this scope` |
 | forward typedef referenced before its completing definition — which also covers every expressible cycle (`typedef a; typedef a b; typedef b a;`), since bindings substitute eagerly at registration | §6.18 | `forward typedef 'X' is not defined at this reference` |
-| typedef-with-unpacked-dims in a dims-less position | §6.18/A.2.1.3 | `array typedef 'X' is not legal here` |
+| typedef-with-unpacked-dims in a dims-less position (incl. cast targets) | §6.18/A.2.1.3 | `array typedef 'X' is not legal here` |
+| cast to a signed or non-vector typedef (no lossless SizeCast lowering) | §6.24.1 | `cast to typedef 'X': only an unsigned logic/bit vector alias is supported` |
 
 ## 11. Pass placement & structure
 

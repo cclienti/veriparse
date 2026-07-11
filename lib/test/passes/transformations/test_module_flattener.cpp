@@ -188,6 +188,15 @@ TEST(PassesTransformation_ModuleFlattener, enum_dup0) { TEST_CORE_SV; }
 // own dims — `word_t bank [2]` with `typedef logic [7:0] word_t [4]` is
 // `logic [7:0] bank [2][4]`.
 TEST(PassesTransformation_ModuleFlattener, tdef_dims0) { TEST_CORE_SV; }
+// A forward typedef completed in the same scope; the enum-typedef cast
+// lowers to a SizeCast of the alias width (§6.24.1).
+TEST(PassesTransformation_ModuleFlattener, tdef_forward0) { TEST_CORE_SV; }
+// Typedef error catalogue (ADR-0009 §10).
+TEST(PassesTransformation_ModuleFlattener, tdef_err_unknown0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_err_order0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_err_dup0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_err_forward0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_err_dims_cast0) { TEST_ERROR_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
