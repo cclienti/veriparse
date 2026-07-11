@@ -49,6 +49,19 @@ bool decl_has_unpacked_dims_slot(const AST::Declaration::Ptr &decl)
            decl->is_node_type(AST::NodeType::Typedef) || decl->is_node_category(AST::NodeType::Net);
 }
 
+/// The concrete type an enum decl type lowers to: its base data type, or the
+/// §6.19 default `int` when no base is written. Enum item references are
+/// already constants (EnumInliner runs first), so the items are dead weight
+/// that would re-declare the enumerators at every flattened splice.
+AST::DataType::Ptr lowered_enum(const AST::EnumType::Ptr &etype)
+{
+    const auto &base = etype->get_base();
+    if(base) {
+        return AST::cast_to<AST::DataType>(base->clone());
+    }
+    return std::make_shared<AST::IntType>(etype->get_filename(), etype->get_line());
+}
+
 void set_decl_unpacked_dims(const AST::Declaration::Ptr &decl, const AST::Dimension::ListPtr &dims)
 {
     if(decl->is_node_type(AST::NodeType::Var)) {
@@ -195,6 +208,23 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
     switch(node->get_node_type()) {
     case AST::NodeType::NamedType:
         return substitute_named_type(AST::cast_to<AST::NamedType>(node), parent);
+
+    case AST::NodeType::EnumType: {
+        // A declaration's enum type lowers to its base (ADR-0009 §4): the
+        // items are dead weight once EnumInliner has inlined every
+        // enumerator reference — kept, they would re-declare the enumerators
+        // at each flattened splice. The base may itself be an alias
+        // (`enum nib_t {..}`), so it substitutes first.
+        const auto &etype = AST::cast_to<AST::EnumType>(node);
+        if(etype->get_base() && substitute(etype->get_base(), node)) {
+            return 1;
+        }
+        if(parent && parent->is_node_category(AST::NodeType::Declaration) &&
+           AST::cast_to<AST::Declaration>(parent)->get_type() == node) {
+            AST::cast_to<AST::Declaration>(parent)->set_type(lowered_enum(etype));
+        }
+        return 0;
+    }
 
     // Nested scopes: their typedefs shadow enclosing bindings and are
     // registered/dropped in declaration order.
