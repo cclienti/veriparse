@@ -32,8 +32,7 @@ bool is_interface_port(const AST::Module::Ptr &module_decl, const std::string &p
     for(const AST::Port::Ptr &port : *ports) {
         const auto &decl = port->get_decl();
         if(decl && decl->get_name() == port_name) {
-            const auto &type = decl->get_type();
-            return type && type->is_node_type(AST::NodeType::InterfaceType);
+            return Analysis::Module::get_port_interface_type(port) != nullptr;
         }
     }
     return false;
@@ -102,6 +101,13 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
         return ret;
     }
 
+    LOG_DEBUG_N(node) << "Collect array instances";
+    ret = collect_array_instances(node);
+    if(ret) {
+        LOG_ERROR_N(node) << "error while collecting array instances";
+        return ret;
+    }
+
     LOG_DEBUG_N(node) << "Split arrays";
     ret = split_array(node, parent);
     if(ret) {
@@ -109,6 +115,20 @@ int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent
         return ret;
     }
 
+    return 0;
+}
+
+int ModuleInstanceNormalizer::collect_array_instances(const AST::Node::Ptr &node)
+{
+    m_array_instances.clear();
+    const auto &instances = Analysis::Module::get_instance_nodes(node);
+    if(instances) {
+        for(const auto &instance : *instances) {
+            if(instance->get_array()) {
+                m_array_instances.insert(instance->get_name());
+            }
+        }
+    }
     return 0;
 }
 
@@ -280,13 +300,16 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             // corresponding port.
             const auto &arg = port->get_name();
 
-            // An interface-typed formal is not sliced: a bare array actual
-            // distributes element-wise (IEEE 1800-2017 §23.3.3.5), indexed
-            // with the element's own array index; an already-indexed or
-            // modport-qualified actual is shared by every element as-is.
+            // An interface-typed formal is not sliced. A bare actual that
+            // names an interface array distributes element-wise (IEEE
+            // 1800-2017 §23.3.3.5), indexed with the element's own array
+            // index. A scalar interface instance matches a single instance
+            // port and is shared by every element as-is; so is an
+            // already-indexed or modport-qualified actual.
             if(is_interface_port(module_decl, arg)) {
                 if(value->is_node_type(AST::NodeType::Identifier) &&
-                   !AST::cast_to<AST::Identifier>(value)->get_hier()) {
+                   !AST::cast_to<AST::Identifier>(value)->get_hier() &&
+                   m_array_instances.count(AST::cast_to<AST::Identifier>(value)->get_name()) != 0) {
                     auto index_node = std::make_shared<AST::IntConstN>(
                         10, -1, true, Misc::Math::u64_to_mpz(new_name_index));
                     port->set_value(std::make_shared<AST::Pointer>(index_node, port->get_value()));

@@ -281,6 +281,16 @@ public:
      * @brief Return all instance nodes.
      */
     static AST::Instance::ListPtr get_instance_nodes(AST::Node::Ptr node);
+
+    /**
+     * @brief Return the interface type of an interface-typed port, or
+     * nullptr when the port is not interface-typed.
+     *
+     * An interface port connects by aliasing (ADR-0008 §3): its actual is
+     * never sliced nor buffered in an intermediate wire. This is the single
+     * predicate for "is this port interface-typed".
+     */
+    static AST::InterfaceType::Ptr get_port_interface_type(const AST::Port::Ptr &port);
 };
 
 } // namespace Analysis

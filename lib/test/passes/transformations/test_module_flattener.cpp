@@ -89,6 +89,23 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
+// Illegal-input Verilog cases: the flattener must reject the design (non-zero).
+#define TEST_ERROR                                                                                 \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    Passes::Analysis::Module::ModulesMap modules_map;                                              \
+    Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
+                                                                                                   \
+    Passes::Transformations::ModuleFlattener flattener(AST::ParamArg::ListPtr(), modules_map);     \
+    Passes::Analysis::UniqueDeclaration::seed(0);                                                  \
+    ASSERT_TRUE(modules_map.count(test_name) == 1);                                                \
+    ASSERT_NE(0, flattener.run(modules_map[test_name]))
+
 // Illegal-input cases: the flattener must reject the design (non-zero).
 #define TEST_ERROR_SV                                                                              \
     ENABLE_LOGGER;                                                                                 \
@@ -126,6 +143,13 @@ TEST(PassesTransformation_ModuleFlattener, defparam4) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, deadcode6) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, scoped0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; }
+// A runtime (non-constant) index into a split instance array cannot select a
+// unique flattened element: the flattener rejects it instead of leaving a
+// dangling hierarchical reference.
+TEST(PassesTransformation_ModuleFlattener, hier_err_runtime_index0) { TEST_ERROR; }
+// A child-output actual that is a hierarchical reference to a non-interface
+// net is not a drivable local net: the flattener rejects it loudly.
+TEST(PassesTransformation_ModuleFlattener, hier_err_out0) { TEST_ERROR; }
 TEST(PassesTransformation_ModuleFlattener, shmemif) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, alu_dsp) { TEST_CORE; }
 
@@ -163,10 +187,12 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_nested_path0) { TEST_ERROR_
 TEST(PassesTransformation_ModuleFlattener, iface_array0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_array1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_array_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_array_shared0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_elem0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_range0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_nonconst0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_array_noindex0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_err_array_bogus0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_member_actual0) { TEST_ERROR_SV; }
 
 // Nested interfaces (ADR-0008 §8.1): recursive elaboration, structural

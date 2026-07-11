@@ -10,6 +10,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 
 namespace Veriparse
@@ -86,11 +87,22 @@ private:
      */
     int replace_port_affectation(const AST::Node::Ptr &node, const AST::Node::Ptr &parent);
 
+    /**
+     * @brief Record the names of instances declared as arrays.
+     *
+     * A bare interface actual is only distributed element-wise across a
+     * child instance array when the actual is itself an interface array
+     * (IEEE 1800-2017 §23.3.3.5); a scalar interface instance is shared by
+     * every element. Populates m_array_instances.
+     */
+    int collect_array_instances(const AST::Node::Ptr &node);
+
 private:
     Analysis::Dimensions::DimMap m_dim_map;
     Analysis::Module::ModulesMap m_modules_map;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::map<std::string, AST::Defparam::Ptr> m_defparam_map;
+    std::set<std::string> m_array_instances;
 };
 
 } // namespace Transformations
