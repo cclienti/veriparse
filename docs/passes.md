@@ -134,7 +134,16 @@ Replaces enum item name identifiers with their resolved `IntConstN` constants th
 
 - Collects all `EnumDef` item name → `IntConstN` mappings in a single pass.
 - Replaces every simple `Identifier` (no scope qualifier) whose name matches an enum item with a clone of the constant.
-- Skips `EnumDef` subtrees to preserve typedef declarations intact.
+- Skips `EnumDef` subtrees — the typedef declarations they preserve are consumed and dropped by `TypedefInliner`.
+
+---
+
+### `TypedefInliner`
+Substitutes every user-defined type name with its underlying data type and drops the typedef declarations (ADR-0009). **Must run after `EnumInliner`.**
+
+- Lexical typedef bindings: nested scopes (generate regions, begin/end blocks) shadow; body references must follow their typedef (IEEE 1800-2017 §6.18); header ports/params resolve against the whole module scope (package/unit typedefs are spliced at the body head).
+- Substitutes a clone of the aliased type at every `NamedType` use (decl types, cast targets, `type()` operands); chains collapse eagerly; an array typedef's unpacked dims append after the declaration's own.
+- After the pass no `Typedef` item and no `NamedType` reference remains, so `Dimensions` and the flattener only see concrete types.
 
 ---
 
@@ -309,6 +318,7 @@ LocalparamInliner
 ConstantFolding
 EnumElaboration       ← SV: fill auto-increment enum values
 EnumInliner           ← SV: replace enum names with IntConstN
+TypedefInliner        ← SV: substitute typedefs with concrete types (ADR-0009)
 ScopeElevator
 LoopUnrolling
 BranchSelection
