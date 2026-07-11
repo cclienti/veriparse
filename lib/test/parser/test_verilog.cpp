@@ -370,6 +370,20 @@ TEST(VerilogParserErrorTest, sv_packed_dim_rejects_size)
                 ::testing::ExitedWithCode(1), "packed dimension shall be a range");
 }
 
+// A task/function argument cannot carry unpacked dimensions (`pair_t a [2]`):
+// the shared portname grammar admits them, but arrays of subroutine arguments
+// are not modelled, so the parser rejects them rather than silently dropping
+// the argument (IEEE 1800-2017 13.3, ADR-0008 §5).
+TEST(VerilogParserErrorTest, sv_tf_arg_dims)
+{
+    ENABLE_LOGGER;
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    ASSERT_EXIT(verilog.parse(test_helpers.get_sv_filename("sv_tf_arg_dims_err0")),
+                ::testing::ExitedWithCode(1),
+                "unpacked dimensions are not supported on task/function arguments");
+}
+
 // Focused multi-name node-sharing case (bit a,b + named e,f + inherited ports
 // p,q). The no-node-sharing tree invariant is now checked by TEST_CORE/
 // TEST_CORE_SV for *every* testcase; this just keeps a dedicated case for it.

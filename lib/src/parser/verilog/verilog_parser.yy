@@ -221,8 +221,10 @@ AST::ScopeName::ListPtr pkg_scope(const std::string &package,
                                   const std::string &filename="", uint32_t line=0);
 
 // task/function argument list (one Arg per port_info).
+// if return null, the create_args_decls failed. Error in loc and error_message.
 AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
-                                    const std::string &filename);
+                                    const std::string &filename,
+                                    location &loc, std::string &error_message);
 
 // Upcast a Param list to a Declaration list (Module.params child).
 AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in);
@@ -5146,7 +5148,10 @@ function_ports_block:
 
 function_ports: function_portinfo_list
                 {
-                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename());
+                    location loc;
+                    std::string error_message;
+                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename(), loc, error_message);
+                    if(!$$) error(loc, error_message);
                 }
         ;
 
@@ -5419,7 +5424,10 @@ task_ports_block:
 
 task_ports:     task_portinfo_list
                 {
-                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename());
+                    location loc;
+                    std::string error_message;
+                    $$ = ParserHelpers::create_args_decls($1, scanner.get_filename(), loc, error_message);
+                    if(!$$) error(loc, error_message);
                 }
         ;
 
@@ -6192,7 +6200,8 @@ namespace Veriparse {
             // inherited from the previous arg when absent). The arg's type comes
             // from the data_type / named type / implicit signing+dims of the info.
             AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
-                                                const std::string &filename) {
+                                                const std::string &filename,
+                                                location &loc, std::string &error_message) {
                 auto list = std::make_shared<AST::Arg::List>();
                 direction_t last_dir = direction_t::INPUT;
                 for(const port_info_t &pinfo : port_list) {
@@ -6201,7 +6210,11 @@ namespace Veriparse {
                     uint32_t line = pinfo.loc.begin.line;
                     if(pinfo.lengths) {
                         // The shared portname grammar admits them; arrays of
-                        // task/function arguments are not modelled.
+                        // task/function arguments are not modelled, so reject
+                        // them rather than silently dropping the argument.
+                        loc = pinfo.loc;
+                        error_message = std::string("unpacked dimensions are not supported "
+                                                    "on task/function arguments");
                         return nullptr;
                     }
                     auto arg = std::make_shared<AST::Arg>(filename, line);
