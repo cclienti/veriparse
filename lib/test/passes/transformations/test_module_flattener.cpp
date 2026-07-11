@@ -184,6 +184,10 @@ TEST(PassesTransformation_ModuleFlattener, tdef_array0) { TEST_CORE_SV; }
 // twice must not re-declare its enumerators in the flat output.
 TEST(PassesTransformation_ModuleFlattener, tdef_enum0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, enum_dup0) { TEST_CORE_SV; }
+// Array typedef (ADR-0009 §5): the alias dims append after the declaration's
+// own dims — `word_t bank [2]` with `typedef logic [7:0] word_t [4]` is
+// `logic [7:0] bank [2][4]`.
+TEST(PassesTransformation_ModuleFlattener, tdef_dims0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

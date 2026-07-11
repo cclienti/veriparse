@@ -1790,6 +1790,20 @@ typedef_decl:
                     $$->set_line(@1.begin.line);
                 }
 
+        |       TK_TYPEDEF data_type TK_IDENTIFIER lengths TK_SEMICOLON
+                {
+                    // array typedef (A.1.3: `typedef data_type type_identifier
+                    // { variable_dimension } ;`): the alias is an array type,
+                    // its dims ride Typedef.unpacked_dims.
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_type(ParserHelpers::build_data_type_def($2, scanner.get_filename(),
+                                                                   @1.begin.line));
+                    $$->set_name($3);
+                    $$->set_unpacked_dims($4);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
         |       TK_TYPEDEF net_type widths TK_IDENTIFIER TK_SEMICOLON
                 {
                     // typedef of a net type: the alias is the net's data type
@@ -1823,6 +1837,20 @@ typedef_decl:
                     $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
                                                                    @1.begin.line));
                     $$->set_name($3);
+                    $$->set_filename(scanner.get_filename());
+                    $$->set_line(@1.begin.line);
+                }
+
+        |       TK_TYPEDEF TK_IDENTIFIER TK_IDENTIFIER lengths TK_SEMICOLON
+                {
+                    // named array alias: `typedef my_t mem_t [4];`
+                    auto ref = ParserHelpers::make_named_type($2, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
+                    $$ = std::make_shared<AST::Typedef>();
+                    $$->set_type(ParserHelpers::build_data_type_def(dt, scanner.get_filename(),
+                                                                   @1.begin.line));
+                    $$->set_name($3);
+                    $$->set_unpacked_dims($4);
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
                 }
