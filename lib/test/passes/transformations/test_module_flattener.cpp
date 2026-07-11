@@ -170,6 +170,9 @@ TEST(PassesTransformation_ModuleFlattener, logic_out0) { TEST_CORE_SV; }
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
 TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }
+// Two ports where the second is named like the first port's actual: the
+// single-pass rewrite must not re-capture the first rewrite's result.
+TEST(PassesTransformation_ModuleFlattener, iface_alias_capture0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_modport0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_modport1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_chain0) { TEST_CORE_SV; }
