@@ -180,6 +180,10 @@ TEST(PassesTransformation_ModuleFlattener, tdef_pkg0) { TEST_CORE_SV; }
 // The Dimensions-blindness repro: a typedef-typed actual on an instance
 // array must split element-wise, not truncate to a shared scalar.
 TEST(PassesTransformation_ModuleFlattener, tdef_array0) { TEST_CORE_SV; }
+// Enum decl types lower to their base (ADR-0009 §4): a child instantiated
+// twice must not re-declare its enumerators in the flat output.
+TEST(PassesTransformation_ModuleFlattener, tdef_enum0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, enum_dup0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
