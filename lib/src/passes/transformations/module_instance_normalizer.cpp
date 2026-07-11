@@ -124,8 +124,14 @@ int ModuleInstanceNormalizer::collect_array_instances(const AST::Node::Ptr &node
     const auto &instances = Analysis::Module::get_instance_nodes(node);
     if(instances) {
         for(const auto &instance : *instances) {
-            if(instance->get_array()) {
-                m_array_instances.insert(instance->get_name());
+            const auto &array = instance->get_array();
+            if(!array) {
+                continue;
+            }
+            Analysis::Dimensions::DimInfo dim;
+            if(Analysis::Dimensions::extract_dimension(array, Analysis::Dimensions::Packing::packed,
+                                                       dim)) {
+                m_array_instances.emplace(instance->get_name(), dim);
             }
         }
     }
@@ -308,11 +314,27 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             // already-indexed or modport-qualified actual.
             if(is_interface_port(module_decl, arg)) {
                 if(value->is_node_type(AST::NodeType::Identifier) &&
-                   !AST::cast_to<AST::Identifier>(value)->get_hier() &&
-                   m_array_instances.count(AST::cast_to<AST::Identifier>(value)->get_name()) != 0) {
-                    auto index_node = std::make_shared<AST::IntConstN>(
-                        10, -1, true, Misc::Math::u64_to_mpz(new_name_index));
-                    port->set_value(std::make_shared<AST::Pointer>(index_node, port->get_value()));
+                   !AST::cast_to<AST::Identifier>(value)->get_hier()) {
+                    const auto arr_it =
+                        m_array_instances.find(AST::cast_to<AST::Identifier>(value)->get_name());
+                    if(arr_it != m_array_instances.end()) {
+                        // The formal and actual arrays must have identical
+                        // ranges; a different range direction/bound would
+                        // require left-to-left index remapping, deferred to a
+                        // later version (ADR-0008 §5). v1 rejects it.
+                        const auto &actual_dim = arr_it->second;
+                        if(actual_dim.msb != array_dim.msb || actual_dim.lsb != array_dim.lsb) {
+                            LOG_ERROR_N(port)
+                                << "interface array actual '" << arr_it->first << "' of port '"
+                                << arg << "' has a range that does not match the instance array "
+                                << "range (IEEE 1800-2017 23.3.3.5)";
+                            return 1;
+                        }
+                        auto index_node = std::make_shared<AST::IntConstN>(
+                            10, -1, true, Misc::Math::u64_to_mpz(new_name_index));
+                        port->set_value(
+                            std::make_shared<AST::Pointer>(index_node, port->get_value()));
+                    }
                 }
                 continue;
             }

@@ -50,9 +50,17 @@ public:
 
         /**
          * @brief Interface name → member names (header ports plus body
-         * nets, variables and enumerators). Parameter-independent.
+         * nets and variables). Parameter-independent. Enumerators are kept
+         * apart in `enumerators`: they are constants, not aliasable signals.
          */
         std::map<std::string, std::set<std::string>> members;
+
+        /**
+         * @brief Interface name → enumerator names its body declares. Held
+         * apart from `members` so a reference through a port (p.EN_IDLE) is
+         * rejected — an enumerator is a constant, not a net/var to alias.
+         */
+        std::map<std::string, std::set<std::string>> enumerators;
 
         /**
          * @brief Interface name → nested interface instance name → the
