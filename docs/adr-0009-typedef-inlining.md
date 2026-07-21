@@ -93,11 +93,15 @@ precedent — resolve the sugar to what it denotes, then drop the declaration.
    `NameResolution` already re-tagged those).
    **Cast targets are special** (implementation refinement): a `TypeCast`
    target has no legal rendering for a non-named type (`logic [3:0]'(x)` is
-   not SystemVerilog), so a cast to a typedef lowers to a **`SizeCast` of the
-   alias's packed width** — the §6.24.1 equivalence for an unsigned packed
-   vector alias (which is also what a lowered enum typedef is, making
-   `state_t'(x)` work). A signed or non-vector alias in cast position is
-   rejected loudly rather than mis-rendered.
+   not SystemVerilog), so a cast to an **integral** typedef lowers to a
+   **`SizeCast` of the alias's packed width** — the §6.24.1 equivalence. A
+   vector alias contributes its packed dims; an integer atom alias its fixed
+   §6.11 width (`byte` 8, `shortint` 16, `int`/`integer` 32, `longint`/`time`
+   64 — so a default-based enum typedef, whose base is `int` per §6.19.3,
+   casts too). A size cast keeps the operand's signedness (§6.24.1), so a
+   signed alias (atoms are signed by default, `time` unsigned) additionally
+   wraps in a `SigningCast`: `signed'(N'(x))`. A non-integral alias in cast
+   position is rejected loudly rather than mis-rendered.
 3. **Drop.** All `Typedef` items are removed. After the pass the module
    contains no `Typedef` and no `NamedType`.
 
@@ -178,7 +182,7 @@ is already spliced at unit scope). The unit-scope typedef joins the `$unit`
 pseudo-package that `PackageInliner` already builds (`build_unit_scope`), so
 visibility follows §26.3 compilation-unit rules with **no new machinery**: by
 the time `TypedefInliner` runs, the unit-scope typedef has been copied into
-its consuming modules like any package typedef.
+its consuming scopes like any package typedef.
 
 ## 7. Ordering relative to the default-resolution pass (ADR-0006 §8)
 
@@ -223,7 +227,8 @@ it must run **before** this pass.
 | typedef redeclared in the same scope | §6.18 | `typedef 'X' is already declared in this scope` |
 | forward typedef referenced before its completing definition — which also covers every expressible cycle (`typedef a; typedef a b; typedef b a;`), since bindings substitute eagerly at registration | §6.18 | `forward typedef 'X' is not defined at this reference` |
 | typedef-with-unpacked-dims in a dims-less position (incl. cast targets) | §6.18/A.2.1.3 | `array typedef 'X' is not legal here` |
-| cast to a signed or non-vector typedef (no lossless SizeCast lowering) | §6.24.1 | `cast to typedef 'X': only an unsigned logic/bit vector alias is supported` |
+| cast to a non-integral typedef (no lossless SizeCast lowering) | §6.24.1 | `cast to typedef 'X': only an integral alias is supported` |
+| package-scoped type reference surviving into this pass (any position, cast targets included) | §26.3 | `unresolved package-scoped type 'X'` |
 
 ## 11. Pass placement & structure
 
