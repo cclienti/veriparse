@@ -204,6 +204,12 @@ TEST(PassesTransformation_ModuleFlattener, tdef_err_dims_cast0) { TEST_ERROR_SV;
 // A cast to a default-based enum typedef: the base is `int` (§6.19.3), so the
 // alias is a signed 32-bit atom — it lowers to signed'(32'(x)).
 TEST(PassesTransformation_ModuleFlattener, tdef_enum_int_cast0) { TEST_CORE_SV; }
+// A compilation-unit typedef aliasing a package-scoped type: the unit scope
+// resolves before modules copy from it, so the clone is scope-free.
+TEST(PassesTransformation_ModuleFlattener, tdef_unit_pkg_alias0) { TEST_CORE_SV; }
+// A compilation-unit typedef used inside an interface body: interfaces are
+// importing scopes like modules and receive the $unit typedefs.
+TEST(PassesTransformation_ModuleFlattener, tdef_unit_iface0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
