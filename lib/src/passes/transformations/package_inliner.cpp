@@ -22,11 +22,13 @@ namespace
 /// The compilation-unit scope name (`$unit::`), modelled as a pseudo-package.
 const char *const UNIT_SCOPE = "$unit";
 
-/// A module/package opens a separate name scope; a scope is resolved on its own
-/// traversal, so reference rewriting stops at these boundaries.
+/// A module/interface/package opens a separate name scope; a scope is resolved
+/// on its own traversal, so reference rewriting stops at these boundaries.
 bool is_scope_boundary(const AST::Node::Ptr &node)
 {
-    return node->is_node_type(AST::NodeType::Module) || node->is_node_type(AST::NodeType::Package);
+    return node->is_node_type(AST::NodeType::Module) ||
+           node->is_node_type(AST::NodeType::Interface) ||
+           node->is_node_type(AST::NodeType::Package);
 }
 
 /// A reference carrying a `::` scope is either a value ref (Identifier and its
@@ -273,17 +275,49 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
     }
 
     // This source's own top-level imports are visible to its modules only (an
-    // import in another file belongs to another compilation unit). A top-level
-    // typedef is directly visible in the unit's modules (§26.3): it rides the
-    // same path as a synthesized explicit `import $unit::T`, so shadowing,
-    // dedup and collision handling are inherited unchanged.
+    // import in another file belongs to another compilation unit). Capture the
+    // Import nodes first: resolving the unit scope below strips them from the
+    // tree, but every module/interface scope still consumes them.
     std::list<AST::Node::Ptr> unit_imports;
+    bool has_unit_typedef = false;
     const AST::Node::ListPtr defs = top_level_definitions(source);
     if(defs) {
         for(const AST::Node::Ptr &item : *defs) {
             if(item->is_node_type(AST::NodeType::Import)) {
                 unit_imports.push_back(item);
             } else if(item->is_node_type(AST::NodeType::Typedef)) {
+                has_unit_typedef = true;
+            }
+        }
+    }
+
+    // A top-level typedef may itself reference package symbols — qualified
+    // (`typedef p::T u_t;`) or through the unit's imports. The unit scope is an
+    // importing scope of its own (§26.3): resolve it before any consuming scope
+    // copies its typedefs, so every clone spliced downstream is scope-free.
+    // Resolution may splice package dependency copies at the unit scope's head;
+    // register them as unit symbols so consuming scopes pull them in too.
+    if(has_unit_typedef) {
+        const std::list<AST::Node::Ptr> no_extra_imports;
+        if(process_scope(defs, source, no_extra_imports) != 0) {
+            return 1;
+        }
+        PackageEntry &unit = m_packages[UNIT_SCOPE];
+        for(const AST::Node::Ptr &item : *defs) {
+            ScopeTable::for_each_bound_name(item, [&unit, &item](const std::string &name) {
+                unit.symbols[name] = item;
+                unit.contents[name] = item;
+                unit.origin.emplace(name, UNIT_SCOPE);
+            });
+        }
+    }
+
+    // A top-level typedef is directly visible in the unit's modules (§26.3): it
+    // rides the same path as a synthesized explicit `import $unit::T`, so
+    // shadowing, dedup and collision handling are inherited unchanged.
+    if(defs) {
+        for(const AST::Node::Ptr &item : *defs) {
+            if(item->is_node_type(AST::NodeType::Typedef)) {
                 const auto &imp =
                     std::make_shared<AST::Import>(item->get_filename(), item->get_line());
                 imp->set_package(UNIT_SCOPE);
@@ -293,12 +327,19 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
         }
     }
 
-    // Each module body is an importing scope; resolve them independently, with
-    // this source's compilation-unit imports folded in.
+    // Each module or interface body is an importing scope; resolve them
+    // independently, with this source's compilation-unit imports folded in.
     std::list<AST::Node::Ptr> modules;
     find_nodes(source, AST::NodeType::Module, modules);
     for(const AST::Node::Ptr &m : modules) {
         if(process_scope(AST::cast_to<AST::Module>(m)->get_items(), m, unit_imports) != 0) {
+            return 1;
+        }
+    }
+    std::list<AST::Node::Ptr> interfaces;
+    find_nodes(source, AST::NodeType::Interface, interfaces);
+    for(const AST::Node::Ptr &i : interfaces) {
+        if(process_scope(AST::cast_to<AST::Interface>(i)->get_items(), i, unit_imports) != 0) {
             return 1;
         }
     }

@@ -184,6 +184,21 @@ visibility follows §26.3 compilation-unit rules with **no new machinery**: by
 the time `TypedefInliner` runs, the unit-scope typedef has been copied into
 its consuming scopes like any package typedef.
 
+Two refinements (found in review):
+
+- **The unit scope is itself an importing scope.** A top-level typedef may
+  reference package symbols — qualified (`typedef p::T u_t;`) or through the
+  unit's own imports. `PackageInliner` therefore resolves the top-level
+  definitions list through the same `process_scope` path as a package body
+  *before* any consuming scope copies from it, so every clone spliced
+  downstream is scope-free; dependency copies spliced at the unit scope's
+  head are registered as `$unit` symbols so consuming scopes pull them in
+  transitively.
+- **Interfaces are importing scopes like modules.** Unit-scope typedefs (and
+  imports) are spliced into interface bodies too, and `Interface` is a scope
+  boundary for reference rewriting — an interface body resolves on its own
+  traversal, exactly like a module body.
+
 ## 7. Ordering relative to the default-resolution pass (ADR-0006 §8)
 
 The future *default-resolution* pass (implicit defaults: `ImplicitType` →
