@@ -198,6 +198,13 @@ TEST(PassesTransformation_ModuleFlattener, tdef_err_dup0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_err_forward0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_err_dims_cast0) { TEST_ERROR_SV; }
 
+// Regression pins for the ADR-0009 review findings — legal SystemVerilog
+// that the typedef/package inlining once wrongly rejected.
+//
+// A cast to a default-based enum typedef: the base is `int` (§6.19.3), so the
+// alias is a signed 32-bit atom — it lowers to signed'(32'(x)).
+TEST(PassesTransformation_ModuleFlattener, tdef_enum_int_cast0) { TEST_CORE_SV; }
+
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
 TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }

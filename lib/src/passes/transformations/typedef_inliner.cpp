@@ -339,6 +339,14 @@ int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
     const auto &named = AST::cast_to<AST::NamedType>(cast->get_target());
     const std::string &name = named->get_name();
 
+    if(named->get_scope()) {
+        // Package-scoped references are resolved (and their scope stripped)
+        // by PackageInliner before this pass runs. Looking up the bare name
+        // could silently bind a same-named local typedef instead.
+        LOG_ERROR_N(named) << "unresolved package-scoped type '" << name << "'";
+        return 1;
+    }
+
     const Alias *alias = lookup(name);
     if(!alias) {
         LOG_ERROR_N(named) << "'" << name << "' does not name a type";
@@ -354,19 +362,50 @@ int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
         return 1;
     }
 
-    // Only an unsigned packed vector shape lowers losslessly to a size cast;
-    // reject the rest loudly rather than mis-render.
+    // An integral alias lowers to a size cast of its packed width (§6.24.1):
+    // a vector type contributes its dims, an integer atom its fixed width
+    // (§6.11). A size cast keeps the operand's signedness, so a signed alias
+    // additionally wraps in a signing cast. Reject non-integral aliases
+    // loudly rather than mis-render.
     const auto &type = alias->type;
-    if(type->get_signing() != AST::DataType::SigningEnum::NONE ||
-       (!type->is_node_type(AST::NodeType::LogicType) &&
-        !type->is_node_type(AST::NodeType::BitType) &&
-        !type->is_node_type(AST::NodeType::ImplicitType))) {
+    bool is_signed = false;
+    std::size_t width = 1;
+    switch(type->get_node_type()) {
+    case AST::NodeType::LogicType:
+    case AST::NodeType::RegType:
+    case AST::NodeType::BitType:
+    case AST::NodeType::ImplicitType:
+        // Vector types default to unsigned (§6.11).
+        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+        break;
+    case AST::NodeType::ByteType:
+        width = 8;
+        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
+        break;
+    case AST::NodeType::ShortintType:
+        width = 16;
+        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
+        break;
+    case AST::NodeType::IntType:
+    case AST::NodeType::IntegerType:
+        width = 32;
+        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
+        break;
+    case AST::NodeType::LongintType:
+        width = 64;
+        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
+        break;
+    case AST::NodeType::TimeType:
+        // `time` is the one unsigned integer atom (§6.11).
+        width = 64;
+        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+        break;
+    default:
         LOG_ERROR_N(named) << "cast to typedef '" << name
-                           << "': only an unsigned logic/bit vector alias is supported";
+                           << "': only an integral alias is supported";
         return 1;
     }
 
-    std::size_t width = 1;
     if(type->get_packed_dims()) {
         for(const AST::Dimension::Ptr &dim : *type->get_packed_dims()) {
             Analysis::Dimensions::DimInfo info;
@@ -382,13 +421,17 @@ int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
 
     const auto &size = std::make_shared<AST::IntConstN>(10, -1, true, Misc::Math::u64_to_mpz(width),
                                                         cast->get_filename(), cast->get_line());
-    const auto &size_cast = std::make_shared<AST::SizeCast>(size, cast->get_expr(),
-                                                            cast->get_filename(), cast->get_line());
+    AST::Node::Ptr lowered = std::make_shared<AST::SizeCast>(
+        size, cast->get_expr(), cast->get_filename(), cast->get_line());
+    if(is_signed) {
+        lowered = std::make_shared<AST::SigningCast>(lowered, AST::SigningCast::SigningEnum::SIGNED,
+                                                     cast->get_filename(), cast->get_line());
+    }
     if(!parent) {
         LOG_ERROR_N(cast) << "cast to typedef '" << name << "' has no enclosing node";
         return 1;
     }
-    parent->replace(cast, size_cast);
+    parent->replace(cast, lowered);
     return 0;
 }
 
