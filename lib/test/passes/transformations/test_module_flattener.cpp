@@ -207,6 +207,10 @@ TEST(PassesTransformation_ModuleFlattener, tdef_enum_int_cast0) { TEST_CORE_SV; 
 // A compilation-unit typedef aliasing a package-scoped type: the unit scope
 // resolves before modules copy from it, so the clone is scope-free.
 TEST(PassesTransformation_ModuleFlattener, tdef_unit_pkg_alias0) { TEST_CORE_SV; }
+// A unit typedef whose package alias depends on a package parameter: the
+// dependency chain rides into the module, and the final strip leaves no
+// dependency copy at top level (the grammar admits only design elements).
+TEST(PassesTransformation_ModuleFlattener, tdef_unit_pkg_param0) { TEST_CORE_SV; }
 // A compilation-unit typedef used inside an interface body: interfaces are
 // importing scopes like modules and receive the $unit typedefs.
 TEST(PassesTransformation_ModuleFlattener, tdef_unit_iface0) { TEST_CORE_SV; }

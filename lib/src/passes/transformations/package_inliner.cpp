@@ -344,14 +344,17 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
         }
     }
 
-    // Strip the now-resolved compilation-unit imports, typedefs (copied into
-    // their consuming modules) and package definitions.
+    // Strip everything the scopes have consumed: the compilation-unit imports,
+    // typedefs (copied into their consuming scopes), package definitions, and
+    // any dependency declaration the unit-scope resolution spliced (a package
+    // parameter or subroutine pulled in by a unit typedef). Only design
+    // elements remain — the grammar admits nothing else at this level.
     if(defs) {
         for(auto it = defs->begin(); it != defs->end();) {
-            const bool drop = (*it)->is_node_type(AST::NodeType::Import) ||
-                              (*it)->is_node_type(AST::NodeType::Typedef) ||
-                              (*it)->is_node_type(AST::NodeType::Package);
-            it = drop ? defs->erase(it) : std::next(it);
+            const bool keep = (*it)->is_node_type(AST::NodeType::Module) ||
+                              (*it)->is_node_type(AST::NodeType::Interface) ||
+                              (*it)->is_node_type(AST::NodeType::Pragmalist);
+            it = keep ? std::next(it) : defs->erase(it);
         }
     }
 
