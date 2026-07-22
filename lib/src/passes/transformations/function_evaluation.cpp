@@ -5,6 +5,7 @@
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/scope_elevator.hpp>
+#include <veriparse/passes/analysis/dimensions.hpp>
 #include <veriparse/passes/analysis/function.hpp>
 #include <veriparse/passes/analysis/functioncall.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -36,21 +37,6 @@ std::string port_name(const AST::Port::Ptr &p)
     return std::string();
 }
 
-// Unpacked dimensions of a Var/Net declaration (only the concrete kinds carry
-// them).
-AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
-{
-    if(!decl) {
-        return nullptr;
-    }
-    if(decl->is_node_type(AST::NodeType::Var)) {
-        return AST::cast_to<AST::Var>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_category(AST::NodeType::Net)) {
-        return AST::cast_to<AST::Net>(decl)->get_unpacked_dims();
-    }
-    return nullptr;
-}
 } // namespace
 
 class FunctionCallCounter
@@ -248,13 +234,14 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                         s->is_node_category(AST::NodeType::Net)) &&
                        AST::cast_to<AST::Declaration>(s)->get_name() == name) {
                         type = AST::cast_to<AST::Declaration>(s)->get_type();
-                        unpacked = decl_unpacked_dims(AST::cast_to<AST::Declaration>(s));
+                        unpacked = Analysis::Dimensions::decl_unpacked_dims(
+                            AST::cast_to<AST::Declaration>(s));
                         break;
                     }
                 }
                 if(!type && port->get_decl()) {
                     type = port->get_decl()->get_type();
-                    unpacked = decl_unpacked_dims(port->get_decl());
+                    unpacked = Analysis::Dimensions::decl_unpacked_dims(port->get_decl());
                 }
 
                 params.push_back({name, type, unpacked});

@@ -17,40 +17,6 @@ namespace Transformations
 namespace
 {
 
-/// The unpacked-dims list of a declaration, or nullptr when the declaration
-/// kind carries none. The accessor is per-subclass (no common virtual), hence
-/// the dispatch.
-AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
-{
-    if(decl->is_node_type(AST::NodeType::Var)) {
-        return AST::cast_to<AST::Var>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_type(AST::NodeType::Arg)) {
-        return AST::cast_to<AST::Arg>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_type(AST::NodeType::Member)) {
-        return AST::cast_to<AST::Member>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_type(AST::NodeType::Param)) {
-        return AST::cast_to<AST::Param>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_type(AST::NodeType::Typedef)) {
-        return AST::cast_to<AST::Typedef>(decl)->get_unpacked_dims();
-    }
-    if(decl->is_node_category(AST::NodeType::Net)) {
-        return AST::cast_to<AST::Net>(decl)->get_unpacked_dims();
-    }
-    return nullptr;
-}
-
-/// True when the declaration kind carries an unpacked-dims slot.
-bool decl_has_unpacked_dims_slot(const AST::Declaration::Ptr &decl)
-{
-    return decl->is_node_type(AST::NodeType::Var) || decl->is_node_type(AST::NodeType::Arg) ||
-           decl->is_node_type(AST::NodeType::Member) || decl->is_node_type(AST::NodeType::Param) ||
-           decl->is_node_type(AST::NodeType::Typedef) || decl->is_node_category(AST::NodeType::Net);
-}
-
 /// The concrete type an enum decl type lowers to: its base data type, or the
 /// §6.19 default `int` when no base is written. Enum item references are
 /// already constants (EnumInliner runs first), so the items are dead weight
@@ -62,23 +28,6 @@ AST::DataType::Ptr lowered_enum(const AST::EnumType::Ptr &etype)
         return AST::cast_to<AST::DataType>(base->clone());
     }
     return std::make_shared<AST::IntType>(etype->get_filename(), etype->get_line());
-}
-
-void set_decl_unpacked_dims(const AST::Declaration::Ptr &decl, const AST::Dimension::ListPtr &dims)
-{
-    if(decl->is_node_type(AST::NodeType::Var)) {
-        AST::cast_to<AST::Var>(decl)->set_unpacked_dims(dims);
-    } else if(decl->is_node_type(AST::NodeType::Arg)) {
-        AST::cast_to<AST::Arg>(decl)->set_unpacked_dims(dims);
-    } else if(decl->is_node_type(AST::NodeType::Member)) {
-        AST::cast_to<AST::Member>(decl)->set_unpacked_dims(dims);
-    } else if(decl->is_node_type(AST::NodeType::Param)) {
-        AST::cast_to<AST::Param>(decl)->set_unpacked_dims(dims);
-    } else if(decl->is_node_type(AST::NodeType::Typedef)) {
-        AST::cast_to<AST::Typedef>(decl)->set_unpacked_dims(dims);
-    } else if(decl->is_node_category(AST::NodeType::Net)) {
-        AST::cast_to<AST::Net>(decl)->set_unpacked_dims(dims);
-    }
 }
 
 } // namespace
@@ -309,17 +258,18 @@ int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
                               AST::cast_to<AST::Declaration>(parent)->get_type() == named;
     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
         const auto &decl = is_decl_type ? AST::cast_to<AST::Declaration>(parent) : nullptr;
-        if(!decl || !decl_has_unpacked_dims_slot(decl)) {
-            LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
-            return 1;
-        }
-        auto dims = decl_unpacked_dims(decl);
+        auto dims = Analysis::Dimensions::decl_unpacked_dims(decl);
         if(!dims) {
             dims = std::make_shared<AST::Dimension::List>();
         }
         const auto &extra = AST::Dimension::clone_list(alias->unpacked_dims);
         dims->insert(dims->end(), extra->begin(), extra->end());
-        set_decl_unpacked_dims(decl, dims);
+        // The setter answers whether the declaration kind carries a slot at
+        // all — the merged list is only built locally until it succeeds.
+        if(!Analysis::Dimensions::set_decl_unpacked_dims(decl, dims)) {
+            LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
+            return 1;
+        }
     }
 
     if(is_decl_type) {

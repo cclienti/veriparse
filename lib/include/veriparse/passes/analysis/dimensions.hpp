@@ -164,6 +164,26 @@ public:
                                DimList &dims);
 
     /**
+     * @brief Unpacked-dims list of a declaration, or nullptr when the
+     * declaration kind carries none.
+     *
+     * The accessor is per-subclass (no common virtual), hence the single
+     * shared dispatch: every declaration kind with an unpacked-dims slot
+     * (Var, Arg, Member, Param, Typedef, the Net category) is listed here
+     * and nowhere else.
+     */
+    static AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl);
+
+    /**
+     * @brief Replace the unpacked-dims list of a declaration.
+     *
+     * @return true when the declaration kind carries an unpacked-dims slot
+     * (the dual of decl_unpacked_dims); nothing is written otherwise.
+     */
+    static bool set_decl_unpacked_dims(const AST::Declaration::Ptr &decl,
+                                       const AST::Dimension::ListPtr &dims);
+
+    /**
      * @brief analyse all I/O and variables of a module and fill a map
      * where name are keys and values are DimList.
      *

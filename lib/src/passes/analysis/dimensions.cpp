@@ -172,14 +172,25 @@ bool Dimensions::extract_arrays(const AST::Dimension::ListPtr &arrays, Packing p
     return true;
 }
 
-namespace
+AST::Dimension::ListPtr Dimensions::decl_unpacked_dims(const AST::Declaration::Ptr &decl)
 {
-// Unpacked dimensions of a Var/Net declaration (the base Declaration carries no
-// unpacked dims; only the concrete kinds do).
-AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
-{
+    if(!decl) {
+        return nullptr;
+    }
     if(decl->is_node_type(AST::NodeType::Var)) {
         return AST::cast_to<AST::Var>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_type(AST::NodeType::Arg)) {
+        return AST::cast_to<AST::Arg>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_type(AST::NodeType::Member)) {
+        return AST::cast_to<AST::Member>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_type(AST::NodeType::Param)) {
+        return AST::cast_to<AST::Param>(decl)->get_unpacked_dims();
+    }
+    if(decl->is_node_type(AST::NodeType::Typedef)) {
+        return AST::cast_to<AST::Typedef>(decl)->get_unpacked_dims();
     }
     if(decl->is_node_category(AST::NodeType::Net)) {
         return AST::cast_to<AST::Net>(decl)->get_unpacked_dims();
@@ -187,6 +198,32 @@ AST::Dimension::ListPtr decl_unpacked_dims(const AST::Declaration::Ptr &decl)
     return nullptr;
 }
 
+bool Dimensions::set_decl_unpacked_dims(const AST::Declaration::Ptr &decl,
+                                        const AST::Dimension::ListPtr &dims)
+{
+    if(!decl) {
+        return false;
+    }
+    if(decl->is_node_type(AST::NodeType::Var)) {
+        AST::cast_to<AST::Var>(decl)->set_unpacked_dims(dims);
+    } else if(decl->is_node_type(AST::NodeType::Arg)) {
+        AST::cast_to<AST::Arg>(decl)->set_unpacked_dims(dims);
+    } else if(decl->is_node_type(AST::NodeType::Member)) {
+        AST::cast_to<AST::Member>(decl)->set_unpacked_dims(dims);
+    } else if(decl->is_node_type(AST::NodeType::Param)) {
+        AST::cast_to<AST::Param>(decl)->set_unpacked_dims(dims);
+    } else if(decl->is_node_type(AST::NodeType::Typedef)) {
+        AST::cast_to<AST::Typedef>(decl)->set_unpacked_dims(dims);
+    } else if(decl->is_node_category(AST::NodeType::Net)) {
+        AST::cast_to<AST::Net>(decl)->set_unpacked_dims(dims);
+    } else {
+        return false;
+    }
+    return true;
+}
+
+namespace
+{
 // Append the packed dimensions of a declaration to @p dims. Packed dimensions
 // live on the data type; an `integer` is the special case of a fixed 32-bit type
 // with no explicit packed dims.
