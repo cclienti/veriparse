@@ -398,6 +398,9 @@ TEST(VerilogParserTest, sv_unit_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typedef_dims0) { TEST_CORE_SV; }
 // Local typedefs in function/task bodies (A.2.7 tf_item_declaration).
 TEST(VerilogParserTest, sv_tf_typedef0) { TEST_CORE_SV; }
+// Type parameters (ADR-0010): header/body formals, keyword and identifier
+// and ordered actuals (§6.20.3, §23.10).
+TEST(VerilogParserTest, sv_type_param0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }
