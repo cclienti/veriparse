@@ -245,6 +245,7 @@ TEST(VerilogGeneratorTest, sv_data_type_named0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_member0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_funcbody0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_tf_typedef0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_type_param0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_data_type_typedef0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_struct_multiname0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_signing0) { TEST_CORE_SV; }
