@@ -26,7 +26,8 @@ namespace Transformations
  * information, and parameter-dependent typedef dims are already folded.
  *
  * Typedef bindings are lexical: a nested scope (generate region, begin/end
- * or fork/join block) shadows an enclosing typedef of the same name. Within
+ * or fork/join block, function or task body) shadows an enclosing typedef
+ * of the same name. Within
  * the body, a typedef must precede its references (IEEE 1800-2017 §6.18);
  * header ports and parameters resolve against the whole module scope, since
  * package- and unit-scope typedefs are spliced at the head of the body by

@@ -396,6 +396,8 @@ TEST(VerilogParserTest, sv_unit_typedef0) { TEST_CORE_SV; }
 // Array typedefs (`typedef T name [dims]`, unpacked dims on the Typedef) and
 // forward typedefs (bare + enum/struct/union kind hints), A.2.1.3.
 TEST(VerilogParserTest, sv_typedef_dims0) { TEST_CORE_SV; }
+// Local typedefs in function/task bodies (A.2.7 tf_item_declaration).
+TEST(VerilogParserTest, sv_tf_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }
