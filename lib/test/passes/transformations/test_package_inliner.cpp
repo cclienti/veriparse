@@ -142,6 +142,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner_reexport_star_explicit
 // Chained re-export P3 <- P2 <- P1: X reaches the module through two re-exports,
 // its origin carried transitively (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_chain) { TEST_CORE_SV; }
+// A `$unit::` qualified reference to a name reaching the unit scope through a
+// re-export: the `$unit` snapshot must see the post-export interface (§26.6).
+TEST(PassesTransformation_PackageInliner, package_inliner_reexport_unit) { TEST_CORE_SV; }
 
 // Enum members are package symbols (§6.19): a wildcard import binds an
 // enumerator referenced WITHOUT naming its typedef (the containing typedef is
