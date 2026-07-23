@@ -317,8 +317,8 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
         m_defparams.erase(defparams_range.first, defparams_range.second);
 
         // Check parameters declared in the instance against
-        // declared in the module.
-        auto paramlist_module = Analysis::Module::get_parameter_nodes(module);
+        // declared in the module — value and type parameters both (§23.10).
+        auto paramlist_module = Analysis::Module::get_parameter_decl_nodes(module);
         auto paramlist_inst = instance->get_parameterlist();
         if(paramlist_inst) {
             for(auto &param_inst : *paramlist_inst) {
@@ -341,7 +341,12 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                 for(auto &param_module : *paramlist_module) {
                     if(param_module->get_name() == param_inst->get_name()) {
                         found = true;
-                        auto default_value = param_module->get_value();
+                        // A value parameter defaults through its value, a
+                        // type parameter through its declared type.
+                        const AST::Node::Ptr default_value =
+                            param_module->is_node_type(AST::NodeType::TypeParam)
+                                ? AST::to_node(param_module->get_type())
+                                : AST::cast_to<AST::Param>(param_module)->get_value();
                         if(!default_value) {
                             LOG_ERROR_N(param_module) << "no default value declared";
                             return 1;
@@ -355,7 +360,7 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
 
                 if(!found) {
                     LOG_ERROR_N(node) << "parameter " << param_inst->get_name()
-                                      << "not found in module " << module_name;
+                                      << " not found in module " << module_name;
                     return 1;
                 }
             }

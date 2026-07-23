@@ -45,19 +45,17 @@ int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     AST::Module::ListPtr module_nodes = Analysis::Module::get_module_nodes(node);
 
     for(AST::Module::Ptr &module : *module_nodes) {
-        // Hoist value parameters declared in the body up to the module parameter
-        // list, then drop them from the body.
-        AST::Param::ListPtr parameter_nodes = Analysis::Module::get_parameter_nodes(module);
+        // Hoist overridable parameters — value and type (§6.20.1) — declared
+        // in the body up to the module parameter list, then drop them from
+        // the body. Localparams (value and type) keep their body position.
+        AST::Declaration::ListPtr parameter_nodes =
+            Analysis::Module::get_parameter_decl_nodes(module);
         remove_module_parameters(module);
 
         if(parameter_nodes->empty()) {
             module->set_params(nullptr);
         } else {
-            AST::Declaration::ListPtr params = std::make_shared<AST::Declaration::List>();
-            for(const AST::Param::Ptr &p : *parameter_nodes) {
-                params->push_back(p);
-            }
-            module->set_params(params);
+            module->set_params(parameter_nodes);
         }
 
         // Body direction declarations (non-ANSI ports). ANSI ports already live
@@ -142,8 +140,11 @@ int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 void ModuleIONormalizer::remove_module_parameters(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     if(node) {
-        if(node->is_node_type(AST::NodeType::Param) &&
-           !AST::cast_to<AST::Param>(node)->get_is_local()) {
+        const bool overridable_param = (node->is_node_type(AST::NodeType::Param) &&
+                                        !AST::cast_to<AST::Param>(node)->get_is_local()) ||
+                                       (node->is_node_type(AST::NodeType::TypeParam) &&
+                                        !AST::cast_to<AST::TypeParam>(node)->get_is_local());
+        if(overridable_param) {
             if(parent) {
                 parent->remove(node);
             }

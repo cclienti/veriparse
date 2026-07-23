@@ -3,6 +3,7 @@
 #include <veriparse/passes/transformations/resolve_module.hpp>
 #include <veriparse/passes/transformations/module_io_normalizer.hpp>
 #include <veriparse/passes/transformations/parameter_inliner.hpp>
+#include <veriparse/passes/transformations/type_param_inliner.hpp>
 #include <veriparse/passes/transformations/localparam_inliner.hpp>
 #include <veriparse/passes/transformations/constant_folding.hpp>
 #include <veriparse/passes/transformations/enum_elaboration.hpp>
@@ -50,6 +51,13 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     if(ModuleIONormalizer().run(node)) {
         LOG_ERROR_N(node) << "Failed to normalized module I/Os";
+        return 1;
+    }
+
+    // Type parameters reduce to typedefs first (ADR-0010): ParameterInliner
+    // then sees no TypeParam, and the type-actual ParamArgs stay unmatched.
+    if(TypeParamInliner(m_paramlist_inst).run(node)) {
+        LOG_ERROR_N(node) << "Failed to inline type parameters";
         return 1;
     }
 

@@ -138,6 +138,15 @@ Replaces enum item name identifiers with their resolved `IntConstN` constants th
 
 ---
 
+### `TypeParamInliner`
+Reduces every type parameter (`parameter type T`, ADR-0010) to a `Typedef` — the instantiation actual (matched by name in the same ParamArg list `ParameterInliner` consumes) or the declared default — so `TypedefInliner` performs all substitution. **Must run before `ParameterInliner`.**
+
+- Header formals splice after the leading typedef run at the body head; body `localparam type` reduces in place.
+- Errors: no default and no override (§6.20.3), a non-type actual for a type formal, an override of a `localparam type`.
+- A bare-identifier type actual (`.T(word_t)`) is resolved to a concrete type in the *parent's* scope by `TypedefInliner` (one-namespace rule, §3.13); a type actual for a value formal errors in `ParameterInliner`.
+
+---
+
 ### `TypedefInliner`
 Substitutes every user-defined type name with its underlying data type and drops the typedef declarations (ADR-0009). **Must run after `EnumInliner`.**
 
@@ -313,6 +322,7 @@ Exact pipeline order:
 
 ```
 ModuleIONormalizer
+TypeParamInliner      ← SV: reduce type parameters to typedefs (ADR-0010)
 ParameterInliner
 LocalparamInliner
 ConstantFolding

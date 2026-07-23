@@ -1,6 +1,7 @@
 # ADR-0010 — Type parameters (`parameter type`) lower to typedefs
 
-- **Status**: Proposed — design settled; implementation pending.
+- **Status**: Accepted — implemented (grammar, `TypeParamInliner`, parent-side
+  identifier-actual resolution, error catalogue).
 - **Date**: 2026-07-23
 - **Scope**: Parse `parameter type T = data_type` in module/interface
   parameter ports and `localparam type` in bodies, accept type actuals at
@@ -61,9 +62,17 @@ A new `TypeParamInliner` pass runs inside `ResolveModule`, **before
    with no default is an error (§6.20.3). A `localparam type` (`is_local`)
    accepts no override — same rule value `localparam`s already follow.
 2. **Reduce.** The `TypeParam` is removed from the header (or body) and a
-   `Typedef` with the same name and the bound type is spliced at the **head
-   of the body** — ahead of the `PackageInliner` splices, so header ports and
-   parameters see it through ADR-0009 §2's whole-module-scope refinement.
+   `Typedef` with the same name and the bound type is spliced **after the
+   leading typedef run at the body head** — a formal's default may reference
+   a package/unit typedef `PackageInliner` spliced there, and
+   `TypedefInliner` registers in declaration order (§6.18); header ports and
+   parameters see the result either way through ADR-0009 §2's
+   whole-module-scope refinement. A body `localparam type` reduces in place,
+   keeping its §6.18 position. (Implementation notes: `ModuleIONormalizer`
+   hoists body *overridable* type params to the header first, exactly as it
+   does value params — §6.20.1; positional actuals bind across value and
+   type formals interleaved, so the instance normalizer and the flattener
+   consult the combined `get_parameter_decl_nodes` list.)
 3. **Drop.** After the pass no `TypeParam` remains; `TypedefInliner`
    (running later, unchanged) substitutes every use.
 

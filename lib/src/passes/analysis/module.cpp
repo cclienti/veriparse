@@ -186,6 +186,41 @@ AST::Param::ListPtr Module::get_parameter_nodes(AST::Node::Ptr node)
     return list;
 }
 
+namespace
+{
+
+// Collect, in tree order, every non-local Param and TypeParam reachable from
+// `node` — a single walk, so header value and type parameters stay interleaved
+// exactly as positional actuals bind them.
+void collect_parameter_decls(const AST::Node::Ptr &node, const AST::Declaration::ListPtr &out)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::Param)) {
+        if(!AST::cast_to<AST::Param>(node)->get_is_local()) {
+            out->push_back(AST::cast_to<AST::Param>(node));
+        }
+    } else if(node->is_node_type(AST::NodeType::TypeParam)) {
+        if(!AST::cast_to<AST::TypeParam>(node)->get_is_local()) {
+            out->push_back(AST::cast_to<AST::TypeParam>(node));
+        }
+    }
+    const AST::Node::ListPtr children = node->get_children();
+    for(const AST::Node::Ptr &child : *children) {
+        collect_parameter_decls(child, out);
+    }
+}
+
+} // namespace
+
+AST::Declaration::ListPtr Module::get_parameter_decl_nodes(AST::Node::Ptr node)
+{
+    AST::Declaration::ListPtr list = std::make_shared<AST::Declaration::List>();
+    collect_parameter_decls(node, list);
+    return list;
+}
+
 std::vector<std::string> Module::get_parameter_names(AST::Node::Ptr node)
 {
     AST::Param::ListPtr parameters = get_parameter_nodes(node);
