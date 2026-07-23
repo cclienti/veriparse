@@ -222,6 +222,14 @@ TEST(PassesTransformation_ModuleFlattener, tdef_tf0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_tf_const0) { TEST_CORE_SV; }
 // A subroutine-local typedef does not escape its body (§6.18).
 TEST(PassesTransformation_ModuleFlattener, tdef_err_tf_leak0) { TEST_ERROR_SV; }
+// Type parameters (ADR-0010): keyword override, parent-typedef identifier
+// override, and default binding — all reduce to typedefs and flatten.
+TEST(PassesTransformation_ModuleFlattener, tdef_type_param0) { TEST_CORE_SV; }
+// Type-parameter error catalogue (ADR-0010 §8).
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_nodefault0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_notatype0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_valuetype0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_local0) { TEST_ERROR_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

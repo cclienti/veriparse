@@ -85,6 +85,13 @@ public:
     static AST::Param::ListPtr get_parameter_nodes(AST::Node::Ptr node);
 
     /**
+     * @brief Return all overridable parameter declarations — value (Param)
+     * and type (TypeParam) parameters interleaved in declaration order, as
+     * positional instantiation actuals bind (IEEE 1800-2017 §23.10).
+     */
+    static AST::Declaration::ListPtr get_parameter_decl_nodes(AST::Node::Ptr node);
+
+    /**
      * @brief Return all parameters names.
      */
     static std::vector<std::string> get_parameter_names(AST::Node::Ptr node);
