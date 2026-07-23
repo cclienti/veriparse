@@ -274,6 +274,13 @@ int PackageInliner::resolve(const AST::Node::Ptr &source)
         return 1;
     }
 
+    // Folding re-exports extends a package's interface, and the unit's
+    // imports were snapshotted before that: rebuild `$unit` so a qualified
+    // `$unit::x` also sees the names a re-export brings in (§26.6). The
+    // first build stays — package bodies consume `$unit` typedefs while
+    // resolving, per §26.3 declaration order.
+    build_unit_scope(source);
+
     // This source's own top-level imports are visible to its modules only (an
     // import in another file belongs to another compilation unit). Capture the
     // Import nodes first: resolving the unit scope below strips them from the
