@@ -199,6 +199,26 @@ if(NOT WIN32)
       VERILOG_SOURCES ${_iface_hs_sources}
       HARNESS ${_iface_hs_harness}
     )
+
+    set(_type_param_pipe_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/type_param_pipe/src/type_param_pipe.sv)
+    set(_type_param_pipe_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/type_param_pipe/cosim/test_type_param_pipe.cpp)
+
+    add_cosim_test(
+      NAME test_cosim_type_param_pipe_dut
+      TOP_MODULE type_param_pipe
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_type_param_pipe_sources}
+      HARNESS ${_type_param_pipe_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_type_param_pipe_flat
+      TOP_MODULE type_param_pipe
+      VERIFLAT_ARGS --sv
+      VERILOG_SOURCES ${_type_param_pipe_sources}
+      HARNESS ${_type_param_pipe_harness}
+    )
   endif()
 
 endif()
