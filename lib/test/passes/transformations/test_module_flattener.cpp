@@ -214,6 +214,14 @@ TEST(PassesTransformation_ModuleFlattener, tdef_unit_pkg_param0) { TEST_CORE_SV;
 // A compilation-unit typedef used inside an interface body: interfaces are
 // importing scopes like modules and receive the $unit typedefs.
 TEST(PassesTransformation_ModuleFlattener, tdef_unit_iface0) { TEST_CORE_SV; }
+// Subroutine-local typedefs (A.2.7): body-scoped substitution, and a
+// task-local alias shadowing the module-level one at another width.
+TEST(PassesTransformation_ModuleFlattener, tdef_tf0) { TEST_CORE_SV; }
+// A constant call to a function with a local typedef folds at the second
+// ConstantFolding, once the body is typedef-free.
+TEST(PassesTransformation_ModuleFlattener, tdef_tf_const0) { TEST_CORE_SV; }
+// A subroutine-local typedef does not escape its body (§6.18).
+TEST(PassesTransformation_ModuleFlattener, tdef_err_tf_leak0) { TEST_ERROR_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

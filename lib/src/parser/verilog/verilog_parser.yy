@@ -535,6 +535,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <data_type_t>                        data_type port_data_type
 %type   <AST::Node::ListPtr>                 data_declaration
 %type   <AST::Node::ListPtr>                 typed_var_decl
+%type   <AST::Node::ListPtr>                 typed_var_tf_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
 %type   <signing_t>                          signing
 %type   <AST::Dimension::ListPtr>                packed_dimensions
@@ -2319,30 +2320,18 @@ virtual_iface_modport:
 // conflicts. So it stays a dedicated rule with the `type_id var_list` shape that
 // defers the instance-vs-declaration choice to the token after the second id;
 // build_variable(NAMED) keeps node construction unified.
-typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+// The packed-dims forms live outside `typed_var_tf_decl`: in a subroutine
+// body, `id [expr` is an indexed lvalue (`tmp[0] = ...`), so a named type
+// with packed dims there would be ambiguous — module items carry no such
+// statements.
+typed_var_decl: typed_var_tf_decl
                 {
-                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
-                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $2) {
-                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
-                                                                    @1.begin.line));
-                    }
+                    $$ = $1;
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
                     data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $2, ref, nullptr};
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $3) {
-                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
-                                                                    @1.begin.line));
-                    }
-                }
-        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
-                {
-                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
-                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -2355,6 +2344,32 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                     data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $3, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $4) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
+                    }
+                }
+        ;
+
+
+// The subroutine-body-safe subset of `typed_var_decl` (no packed dims after
+// the type name): `my_t x;`, `pkg::T y [4];`.
+typed_var_tf_decl:
+                TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $2) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
+                    }
+                }
+        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
                                                                     @1.begin.line));
                     }
@@ -5351,6 +5366,19 @@ funcvar_decl:   parameter_decl
                 {
                     $$ = $1;
                 }
+
+        |       typed_var_tf_decl
+                {
+                    $$ = $1;
+                }
+
+                // Local typedef (A.2.7 tf_item_declaration ->
+                // block_item_declaration -> data_declaration -> type_declaration).
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
         ;
 
 
@@ -5635,6 +5663,19 @@ taskvar_decl:
         |       data_declaration
                 {
                     $$ = $1;
+                }
+
+        |       typed_var_tf_decl
+                {
+                    $$ = $1;
+                }
+
+                // Local typedef (A.2.7 tf_item_declaration ->
+                // block_item_declaration -> data_declaration -> type_declaration).
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
                 }
         ;
 

@@ -192,6 +192,42 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
         return 0;
     }
 
+    // Subroutine bodies are nested scopes too (§6.18): the return type and
+    // the ANSI args lexically precede the body, so they resolve against the
+    // enclosing scope before the body scope opens.
+    case AST::NodeType::Function: {
+        const auto &function = AST::cast_to<AST::Function>(node);
+        if(function->get_return_type() && substitute(function->get_return_type(), node)) {
+            return 1;
+        }
+        if(function->get_args()) {
+            for(const AST::Arg::Ptr &arg : *function->get_args()) {
+                if(substitute(arg, node)) {
+                    return 1;
+                }
+            }
+        }
+        m_scopes.emplace_back();
+        const int ret = process_items(function->get_statements());
+        m_scopes.pop_back();
+        return ret;
+    }
+
+    case AST::NodeType::Task: {
+        const auto &task = AST::cast_to<AST::Task>(node);
+        if(task->get_args()) {
+            for(const AST::Arg::Ptr &arg : *task->get_args()) {
+                if(substitute(arg, node)) {
+                    return 1;
+                }
+            }
+        }
+        m_scopes.emplace_back();
+        const int ret = process_items(task->get_statements());
+        m_scopes.pop_back();
+        return ret;
+    }
+
     // Nested scopes: their typedefs shadow enclosing bindings and are
     // registered/dropped in declaration order.
     case AST::NodeType::Block: {

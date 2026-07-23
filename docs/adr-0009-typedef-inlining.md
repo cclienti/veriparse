@@ -71,8 +71,14 @@ precedent — resolve the sugar to what it denotes, then drop the declaration.
 `TypedefInliner` walks a module (or interface pseudo-module) clone:
 
 1. **Bind.** Build the lexical scope of `Typedef` items in declaration order,
-   so nested scopes (generate regions, begin/end and fork/join blocks) shadow
-   correctly and §6.18 before-use order is enforced within a body.
+   so nested scopes (generate regions, begin/end and fork/join blocks, and
+   function/task bodies — A.2.7 `tf_item_declaration` admits a local
+   typedef) shadow correctly and §6.18 before-use order is enforced within a
+   body. A subroutine's return type and ANSI args lexically precede its body
+   and resolve against the enclosing scope. A *constant* call to a function
+   with a local typedef folds at the second `ConstantFolding` (after this
+   pass has inlined the body); the pre-inline attempt leaves the call
+   un-evaluated with a warning.
    **Refinement (implementation)**: header ports and parameters resolve
    against the *whole* module scope rather than strict lexical order —
    `PackageInliner` splices package/unit typedefs at the head of the body,
@@ -229,7 +235,6 @@ it must run **before** this pass.
 | Feature | v1 behavior | Future home |
 |---|---|---|
 | `parameter type` (type parameters, §6.20.3) | not parsed today — unchanged (the `TypeParam` node exists in the schema, like `Module.lifetime` before ADR-0006 §8; only the grammar is missing) | own ADR (interacts with `ParameterInliner`) |
-| typedef inside task/function bodies | not parsed today — unchanged | grammar + this pass's scope walk |
 | `typedef iface.type_t t;` (interface-based typedef, A.2.1.3 second form) | not parsed today — unchanged | after ADR-0008 v2 items |
 | struct/union **transformation** support | substitution is a faithful clone; downstream passes reject/ignore structs exactly as before | own ADR (needs `Dimensions` + flatten support) |
 
