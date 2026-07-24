@@ -230,6 +230,16 @@ TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_nodefault0) { TEST_ERROR_
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_notatype0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_valuetype0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_local0) { TEST_ERROR_SV; }
+// A subroutine-local parameter is not an overridable module formal.
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_funcparam0) { TEST_ERROR_SV; }
+// A type actual with a runtime-dependent width is rejected (§6.20.2).
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_err_nonconst0) { TEST_ERROR_SV; }
+// A body `parameter type` after the typedef it names reduces in place (§6.18).
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_order0) { TEST_CORE_SV; }
+// An array-typedef type actual carries its unpacked dims into the child.
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_array0) { TEST_CORE_SV; }
+// A bodiless module with a header type parameter gains a body for the splice.
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_sink0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

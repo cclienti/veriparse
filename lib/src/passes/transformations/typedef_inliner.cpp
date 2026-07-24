@@ -213,11 +213,19 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
                         return 1;
                     }
                     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
-                        LOG_ERROR_N(ident)
-                            << "array typedef '" << ident->get_name() << "' is not legal here";
-                        return 1;
+                        // An array-typedef actual: the type and its unpacked
+                        // dims travel together as a Typedef value, so the
+                        // child's reduction re-attaches the dims (ADR-0010
+                        // §7, ADR-0009 §5).
+                        const auto &packed = std::make_shared<AST::Typedef>(ident->get_filename(),
+                                                                            ident->get_line());
+                        packed->set_name(ident->get_name());
+                        packed->set_type(AST::cast_to<AST::DataType>(alias->type->clone()));
+                        packed->set_unpacked_dims(AST::Dimension::clone_list(alias->unpacked_dims));
+                        parg->set_value(packed);
+                    } else {
+                        parg->set_value(AST::cast_to<AST::DataType>(alias->type->clone()));
                     }
-                    parg->set_value(AST::cast_to<AST::DataType>(alias->type->clone()));
                 }
             }
             return 0;
