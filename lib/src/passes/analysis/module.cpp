@@ -226,6 +226,20 @@ AST::Declaration::ListPtr Module::get_parameter_decl_nodes(AST::Node::Ptr node)
     return list;
 }
 
+AST::Node::Ptr Module::get_parameter_default(const AST::Declaration::Ptr &decl)
+{
+    if(!decl) {
+        return nullptr;
+    }
+    if(decl->is_node_type(AST::NodeType::Param)) {
+        return AST::cast_to<AST::Param>(decl)->get_value();
+    }
+    if(decl->is_node_type(AST::NodeType::TypeParam)) {
+        return AST::to_node(decl->get_type());
+    }
+    return nullptr;
+}
+
 std::vector<std::string> Module::get_parameter_names(AST::Node::Ptr node)
 {
     AST::Param::ListPtr parameters = get_parameter_nodes(node);

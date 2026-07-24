@@ -696,13 +696,7 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node,
         paramlist = std::make_shared<AST::ParamArg::List>();
 
         for(const auto &param : *decl_paramlist) {
-            // A value parameter's default is its value; a type parameter's
-            // is its declared type.
-            const bool has_default =
-                param->is_node_type(AST::NodeType::TypeParam)
-                    ? (param->get_type() != nullptr)
-                    : (AST::cast_to<AST::Param>(param)->get_value() != nullptr);
-            if(!has_default) {
+            if(!Analysis::Module::get_parameter_default(param)) {
                 LOG_ERROR_N(param)
                     << "missing default value of parameter '" << param->get_name() << "'";
                 return 1;

@@ -240,6 +240,10 @@ TEST(PassesTransformation_ModuleFlattener, tdef_tp_order0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_array0) { TEST_CORE_SV; }
 // A bodiless module with a header type parameter gains a body for the splice.
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_sink0) { TEST_CORE_SV; }
+// A scoped type actual reduces to the bare-identifier case (ADR-0010 §4).
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_pkg0) { TEST_CORE_SV; }
+// Chained parameterization: a parent forwards its own type param (`.T(T)`).
+TEST(PassesTransformation_ModuleFlattener, tdef_tp_chain0) { TEST_CORE_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

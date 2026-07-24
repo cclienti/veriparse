@@ -92,6 +92,13 @@ public:
     static AST::Declaration::ListPtr get_parameter_decl_nodes(AST::Node::Ptr node);
 
     /**
+     * @brief Return a parameter declaration's default: a value parameter
+     * defaults through its value, a type parameter through its declared
+     * type. Null when the declaration carries no default (or is neither).
+     */
+    static AST::Node::Ptr get_parameter_default(const AST::Declaration::Ptr &decl);
+
+    /**
      * @brief Return all parameters names.
      */
     static std::vector<std::string> get_parameter_names(AST::Node::Ptr node);
