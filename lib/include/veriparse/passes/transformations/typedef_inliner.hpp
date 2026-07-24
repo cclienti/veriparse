@@ -83,6 +83,13 @@ private:
      * merging an array typedef's dims into the use-site declaration.
      * @return zero on success
      */
+    /**
+     * @brief Substitute a subroutine's ANSI args against the enclosing
+     * scope, then process its body as a nested scope (§6.18).
+     */
+    int substitute_subroutine(const AST::Arg::ListPtr &args, const AST::Node::ListPtr &statements,
+                              const AST::Node::Ptr &node);
+
     int substitute_named_type(const AST::NamedType::Ptr &named, const AST::Node::Ptr &parent);
 
     /**

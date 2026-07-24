@@ -341,12 +341,8 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
                 for(auto &param_module : *paramlist_module) {
                     if(param_module->get_name() == param_inst->get_name()) {
                         found = true;
-                        // A value parameter defaults through its value, a
-                        // type parameter through its declared type.
                         const AST::Node::Ptr default_value =
-                            param_module->is_node_type(AST::NodeType::TypeParam)
-                                ? AST::to_node(param_module->get_type())
-                                : AST::cast_to<AST::Param>(param_module)->get_value();
+                            Analysis::Module::get_parameter_default(param_module);
                         if(!default_value) {
                             LOG_ERROR_N(param_module) << "no default value declared";
                             return 1;

@@ -246,32 +246,12 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
         if(function->get_return_type() && substitute(function->get_return_type(), node)) {
             return 1;
         }
-        if(function->get_args()) {
-            for(const AST::Arg::Ptr &arg : *function->get_args()) {
-                if(substitute(arg, node)) {
-                    return 1;
-                }
-            }
-        }
-        m_scopes.emplace_back();
-        const int ret = process_items(function->get_statements());
-        m_scopes.pop_back();
-        return ret;
+        return substitute_subroutine(function->get_args(), function->get_statements(), node);
     }
 
     case AST::NodeType::Task: {
         const auto &task = AST::cast_to<AST::Task>(node);
-        if(task->get_args()) {
-            for(const AST::Arg::Ptr &arg : *task->get_args()) {
-                if(substitute(arg, node)) {
-                    return 1;
-                }
-            }
-        }
-        m_scopes.emplace_back();
-        const int ret = process_items(task->get_statements());
-        m_scopes.pop_back();
-        return ret;
+        return substitute_subroutine(task->get_args(), task->get_statements(), node);
     }
 
     // Nested scopes: their typedefs shadow enclosing bindings and are
@@ -306,6 +286,23 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
         return ret;
     }
     }
+}
+
+int TypedefInliner::substitute_subroutine(const AST::Arg::ListPtr &args,
+                                          const AST::Node::ListPtr &statements,
+                                          const AST::Node::Ptr &node)
+{
+    if(args) {
+        for(const AST::Arg::Ptr &arg : *args) {
+            if(substitute(arg, node)) {
+                return 1;
+            }
+        }
+    }
+    m_scopes.emplace_back();
+    const int ret = process_items(statements);
+    m_scopes.pop_back();
+    return ret;
 }
 
 int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
