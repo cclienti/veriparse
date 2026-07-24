@@ -191,10 +191,15 @@ namespace
 
 // Collect, in tree order, every non-local Param and TypeParam reachable from
 // `node` — a single walk, so header value and type parameters stay interleaved
-// exactly as positional actuals bind them.
+// exactly as positional actuals bind them. Subroutine bodies are skipped, as
+// in StandardSearch: a function/task-local parameter is not a module formal
+// and is not overridable from an instantiation.
 void collect_parameter_decls(const AST::Node::Ptr &node, const AST::Declaration::ListPtr &out)
 {
     if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::Function) || node->is_node_type(AST::NodeType::Task)) {
         return;
     }
     if(node->is_node_type(AST::NodeType::Param)) {
