@@ -5,6 +5,8 @@
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <algorithm>
+
 namespace Veriparse
 {
 namespace Passes
@@ -45,11 +47,26 @@ int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     AST::Module::ListPtr module_nodes = Analysis::Module::get_module_nodes(node);
 
     for(AST::Module::Ptr &module : *module_nodes) {
-        // Hoist overridable parameters — value and type (§6.20.1) — declared
-        // in the body up to the module parameter list, then drop them from
-        // the body. Localparams (value and type) keep their body position.
-        AST::Declaration::ListPtr parameter_nodes =
+        // Hoist overridable value parameters declared in the body up to the
+        // module parameter list, then drop them from the body. Type
+        // parameters are NOT hoisted: a body `parameter type T = my_t;` may
+        // legally follow the typedef it references (§6.18), and its in-place
+        // reduction (TypeParamInliner) preserves that order — actual
+        // matching finds body type params through the whole-tree
+        // get_parameter_decl_nodes walk regardless. Localparams (value and
+        // type) keep their body position too.
+        const AST::Declaration::ListPtr header = module->get_params();
+        const AST::Declaration::ListPtr all_decls =
             Analysis::Module::get_parameter_decl_nodes(module);
+        AST::Declaration::ListPtr parameter_nodes = std::make_shared<AST::Declaration::List>();
+        for(const AST::Declaration::Ptr &decl : *all_decls) {
+            const bool in_header =
+                header && std::find(header->begin(), header->end(), decl) != header->end();
+            if(decl->is_node_type(AST::NodeType::TypeParam) && !in_header) {
+                continue;
+            }
+            parameter_nodes->push_back(decl);
+        }
         remove_module_parameters(module);
 
         if(parameter_nodes->empty()) {
@@ -140,11 +157,10 @@ int ModuleIONormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 void ModuleIONormalizer::remove_module_parameters(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     if(node) {
-        const bool overridable_param = (node->is_node_type(AST::NodeType::Param) &&
-                                        !AST::cast_to<AST::Param>(node)->get_is_local()) ||
-                                       (node->is_node_type(AST::NodeType::TypeParam) &&
-                                        !AST::cast_to<AST::TypeParam>(node)->get_is_local());
-        if(overridable_param) {
+        // Value parameters only: type parameters stay in place (a body one
+        // reduces where it stands, a header one lives in the rebuilt list).
+        if(node->is_node_type(AST::NodeType::Param) &&
+           !AST::cast_to<AST::Param>(node)->get_is_local()) {
             if(parent) {
                 parent->remove(node);
             }

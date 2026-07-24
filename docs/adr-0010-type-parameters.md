@@ -67,12 +67,16 @@ A new `TypeParamInliner` pass runs inside `ResolveModule`, **before
    a package/unit typedef `PackageInliner` spliced there, and
    `TypedefInliner` registers in declaration order (§6.18); header ports and
    parameters see the result either way through ADR-0009 §2's
-   whole-module-scope refinement. A body `localparam type` reduces in place,
-   keeping its §6.18 position. (Implementation notes: `ModuleIONormalizer`
-   hoists body *overridable* type params to the header first, exactly as it
-   does value params — §6.20.1; positional actuals bind across value and
-   type formals interleaved, so the instance normalizer and the flattener
-   consult the combined `get_parameter_decl_nodes` list.)
+   whole-module-scope refinement. A body type parameter — `localparam type`
+   or overridable `parameter type` — reduces **in place**: it may legally
+   follow the typedef its default names (§6.18), so `ModuleIONormalizer`
+   does *not* hoist it (unlike body value params); actual matching still
+   finds it through the whole-tree `get_parameter_decl_nodes` walk, which
+   also keeps positional actuals binding across value and type formals
+   interleaved, and skips subroutine bodies (a function/task-local
+   `parameter` is not a module formal). A *header* formal's default may
+   reference the leading typedef run (package/unit splices) but not a
+   later-body typedef — the strict §6.18 reading.
 3. **Drop.** After the pass no `TypeParam` remains; `TypedefInliner`
    (running later, unchanged) substitutes every use.
 
@@ -124,9 +128,11 @@ A keyword actual's packed dims are expressions in the parent
 (`.T(logic [W-1:0])`). They live inside the parent's body, so the parent's
 own `ParameterInliner`/`ConstantFolding` (which traverse instance param args
 generically) fold them to constants before `ResolveModule` recurses into the
-child clone. `TypeParamInliner` refuses a bound type whose packed dims are
-not constant — the same "alias width is not constant" shape ADR-0009's cast
-lowering uses.
+child clone. `TypeParamInliner` refuses an **override** whose packed dims
+are not constant — a runtime-dependent type. A *default's* dims are exempt:
+they may reference sibling value formals (`parameter W = 8,
+parameter type T = logic [W-1:0]` is legal) and fold later in the child's
+own pipeline, after the reduced typedef is spliced.
 
 ## 6. Interfaces
 
@@ -142,6 +148,8 @@ no extra machinery, mirroring ADR-0009.
 | `type()` operator as actual or default (`.T(type(x))`, §6.23) | not parsed — unchanged | own ADR (needs expression typing) |
 | `$bits`/type query functions over a type param | whatever `$bits` support exists today; the reduced typedef makes the type concrete first | with `$bits` support |
 | `parameter type` in classes / virtual interfaces | out of the synthesizable subset | — |
+| comma-continued `list_of_type_assignments` in a header (`parameter type A = t1, B = t2` — A.2.3) | rejected at parse: an identifier default gets a dedicated diagnostic ("repeat the keywords"), a keyword-headed default a generic syntax error | grammar (needs the continuation to re-enter type context) |
+| header formal default naming a later-*body* typedef | rejected (strict §6.18; only the leading typedef run — package/unit splices — precedes the reduced formals) | — |
 | `defparam` on a type parameter | illegal per §23.10.1 — rejected | — |
 | unpacked-dim'd type actual (`.T(logic [7:0] [4])` in dims-less position) | inherits ADR-0009 §5 array-typedef rules after reduction | — |
 

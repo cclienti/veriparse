@@ -85,9 +85,11 @@ int ParameterInliner::resolve_paramlist()
                 const auto &value = pinst->get_value();
                 if(!value) {
                     continue;
-                } else if(value->is_node_category(AST::NodeType::DataType)) {
+                } else if(value->is_node_category(AST::NodeType::DataType) ||
+                          value->is_node_type(AST::NodeType::Typedef)) {
                     // A type actual bound to a value formal (§23.10): the
-                    // TypeParam of the same name would have consumed it.
+                    // TypeParam of the same name would have consumed it. An
+                    // array-typedef actual travels as a Typedef value.
                     LOG_ERROR_N(p) << "override of parameter '" << p->get_name() << "' with a type";
                     return 1;
                 } else {
