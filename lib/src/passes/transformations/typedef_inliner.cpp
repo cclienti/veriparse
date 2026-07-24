@@ -192,6 +192,80 @@ int TypedefInliner::substitute(const AST::Node::Ptr &node, const AST::Node::Ptr 
         return 0;
     }
 
+    case AST::NodeType::ParamArg: {
+        // An instance type actual written as a bare identifier parses as an
+        // expression. One name cannot denote both a value and a type in a
+        // scope (§3.13), so an identifier that resolves to a typedef alias
+        // here — the instantiating scope, where §23.10 evaluates actuals —
+        // IS a type actual: rewrite it to the alias's concrete type. Any
+        // other identifier is a value actual for the usual passes.
+        const auto &parg = AST::cast_to<AST::ParamArg>(node);
+        const auto &value = parg->get_value();
+        if(value && value->is_node_type(AST::NodeType::Identifier)) {
+            const auto &ident = AST::cast_to<AST::Identifier>(value);
+            if((!ident->get_scope() || ident->get_scope()->empty()) && !ident->get_hier()) {
+                const Alias *alias = lookup(ident->get_name());
+                if(alias) {
+                    if(!alias->complete) {
+                        LOG_ERROR_N(ident)
+                            << "forward typedef '" << ident->get_name()
+                            << "' is not defined at this reference (IEEE 1800-2017 6.18)";
+                        return 1;
+                    }
+                    if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
+                        LOG_ERROR_N(ident)
+                            << "array typedef '" << ident->get_name() << "' is not legal here";
+                        return 1;
+                    }
+                    parg->set_value(AST::cast_to<AST::DataType>(alias->type->clone()));
+                }
+            }
+            return 0;
+        }
+        int ret = 0;
+        const AST::Node::ListPtr children = node->get_children();
+        for(const AST::Node::Ptr &child : *children) {
+            ret |= substitute(child, node);
+        }
+        return ret;
+    }
+
+    // Subroutine bodies are nested scopes too (§6.18): the return type and
+    // the ANSI args lexically precede the body, so they resolve against the
+    // enclosing scope before the body scope opens.
+    case AST::NodeType::Function: {
+        const auto &function = AST::cast_to<AST::Function>(node);
+        if(function->get_return_type() && substitute(function->get_return_type(), node)) {
+            return 1;
+        }
+        if(function->get_args()) {
+            for(const AST::Arg::Ptr &arg : *function->get_args()) {
+                if(substitute(arg, node)) {
+                    return 1;
+                }
+            }
+        }
+        m_scopes.emplace_back();
+        const int ret = process_items(function->get_statements());
+        m_scopes.pop_back();
+        return ret;
+    }
+
+    case AST::NodeType::Task: {
+        const auto &task = AST::cast_to<AST::Task>(node);
+        if(task->get_args()) {
+            for(const AST::Arg::Ptr &arg : *task->get_args()) {
+                if(substitute(arg, node)) {
+                    return 1;
+                }
+            }
+        }
+        m_scopes.emplace_back();
+        const int ret = process_items(task->get_statements());
+        m_scopes.pop_back();
+        return ret;
+    }
+
     // Nested scopes: their typedefs shadow enclosing bindings and are
     // registered/dropped in declaration order.
     case AST::NodeType::Block: {

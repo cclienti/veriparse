@@ -226,9 +226,6 @@ AST::Arg::ListPtr create_args_decls(const std::list<port_info_t> &port_list,
                                     const std::string &filename,
                                     location &loc, std::string &error_message);
 
-// Upcast a Param list to a Declaration list (Module.params child).
-AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in);
-
 // Map the scanner's `default_nettype (an AST::Module enum) onto the identical
 // AST::Interface enum.
 AST::Interface::Default_nettypeEnum to_interface_nettype(AST::Module::Default_nettypeEnum nt);
@@ -535,6 +532,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <data_type_t>                        data_type port_data_type
 %type   <AST::Node::ListPtr>                 data_declaration
 %type   <AST::Node::ListPtr>                 typed_var_decl
+%type   <AST::Node::ListPtr>                 typed_var_tf_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
 %type   <signing_t>                          signing
 %type   <AST::Dimension::ListPtr>                packed_dimensions
@@ -567,8 +565,13 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::AlwaysLatch::Ptr>              always_latch
 %type   <AST::Initial::Ptr>                  initial
 %type   <AST::Node::Ptr>                     initial_statement
-%type   <AST::Param::ListPtr>            params_block params param_assignment_list parameter_decl
-%type   <AST::Param::Ptr>                param_assignment param_start
+%type   <AST::Declaration::ListPtr>      params_block params
+%type   <AST::Declaration::Ptr>          param_start
+%type   <AST::Param::ListPtr>            param_assignment_list parameter_decl
+%type   <AST::Param::Ptr>                param_assignment
+%type   <AST::TypeParam::Ptr>            type_param_assignment
+%type   <AST::TypeParam::ListPtr>        typeparam_assignment_list
+%type   <AST::Node::ListPtr>             typeparam_decl
 %type   <AST::DataType::Ptr>             param_type
 %type   <AST::Defparamlist::Ptr>             defparam
 %type   <AST::Defparam::ListPtr>             defparamlist
@@ -941,7 +944,7 @@ moduledef:      TK_MODULE modulename module_imports params_block ports_block ite
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
                     $$->set_name($2);
-                    $$->set_params(ParserHelpers::to_decl_list($4));
+                    $$->set_params($4);
                     $$->set_ports($5);
                     $$->set_items($6);
                 }
@@ -961,7 +964,7 @@ moduledef:      TK_MODULE modulename module_imports params_block ports_block ite
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
                     $$->set_name($2);
-                    $$->set_params(ParserHelpers::to_decl_list($4));
+                    $$->set_params($4);
                     $$->set_ports($5);
                     if (!$3->empty()) $$->set_items($3);
                 }
@@ -1013,7 +1016,7 @@ interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports par
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
                     $$->set_lifetime($2);
-                    $$->set_params(ParserHelpers::to_decl_list($5));
+                    $$->set_params($5);
                     $$->set_ports($6);
                     $$->set_items($7);
                 }
@@ -1035,7 +1038,7 @@ interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports par
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
                     $$->set_lifetime($2);
-                    $$->set_params(ParserHelpers::to_decl_list($5));
+                    $$->set_params($5);
                     $$->set_ports($6);
                     if (!$4->empty()) $$->set_items($4);
                 }
@@ -1162,7 +1165,14 @@ params:         params TK_COMMA param_start
         |       params TK_COMMA param_assignment
                 {
                     $$ = $1;
-                    // inherit the previous param's type by cloning it, override name/value
+                    // inherit the previous param's type by cloning it, override
+                    // name/value. The shorthand does not distribute over a type
+                    // parameter (the actual would parse as an expression):
+                    // each type formal repeats its keywords.
+                    if(!$1->back()->is_node_type(AST::NodeType::Param)) {
+                        error(@3, "a bare assignment cannot follow 'parameter type': "
+                                  "repeat the keywords for each type formal");
+                    }
                     AST::Param::Ptr param = AST::cast_to<AST::Param>($1->back()->clone());
                     param->set_line($3->get_line());
                     param->set_filename($3->get_filename());
@@ -1173,7 +1183,7 @@ params:         params TK_COMMA param_start
 
         |       param_start
                 {
-                    $$ = std::make_shared<AST::Param::List>();
+                    $$ = std::make_shared<AST::Declaration::List>();
                     $$->push_back($1);
                 }
         ;
@@ -1197,18 +1207,30 @@ param_start:    TK_PARAMETER param_assignment
 
         |       TK_LOCALPARAM localparam_assignment
                 {
-                    $$ = $2;
-                    $$->set_is_local(true);
-                    if(!$$->get_type()) {
-                        $$->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
+                    $2->set_is_local(true);
+                    if(!$2->get_type()) {
+                        $2->set_type(std::make_shared<AST::ImplicitType>(scanner.get_filename(), @1.begin.line));
                     }
+                    $$ = $2;
                 }
 
         |       TK_LOCALPARAM localparam_type localparam_assignment
                 {
+                    $3->set_is_local(true);
+                    $3->set_type(AST::cast_to<AST::DataType>($2->clone()));
                     $$ = $3;
-                    $$->set_is_local(true);
-                    $$->set_type(AST::cast_to<AST::DataType>($2->clone()));
+                }
+
+                // Type parameter (§6.20.3): `parameter type T [= type]`.
+        |       TK_PARAMETER TK_TYPE type_param_assignment
+                {
+                    $$ = $3;
+                }
+
+        |       TK_LOCALPARAM TK_TYPE type_param_assignment
+                {
+                    $3->set_is_local(true);
+                    $$ = $3;
                 }
         ;
 
@@ -1681,6 +1703,11 @@ standard_item_base:
                     $$ = AST::cast_list_to<AST::Node>($1);
                 }
 
+        |       typeparam_decl
+                {
+                    $$ = $1;
+                }
+
         |       genvar_decl
                 {
                     $$ = AST::cast_list_to<AST::Node>($1);
@@ -1772,6 +1799,73 @@ standard_item_base:
         ;
 
 
+
+
+// One type-parameter formal (§6.20.3): `T`, `T = data_type`, `T = my_t`,
+// `T = pkg::T`. The named-type defaults keep dedicated forms, as `data_type`
+// cannot start with a bare identifier (the named-type wall).
+type_param_assignment:
+                TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::TypeParam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                }
+
+        |       TK_IDENTIFIER TK_EQUALS data_type
+                {
+                    $$ = std::make_shared<AST::TypeParam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_type(ParserHelpers::build_data_type_def($3, scanner.get_filename(),
+                                                                    @1.begin.line));
+                }
+
+        |       TK_IDENTIFIER TK_EQUALS TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::TypeParam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_type(ParserHelpers::make_named_type($3, "", scanner.get_filename(),
+                                                                @1.begin.line));
+                }
+
+        |       TK_IDENTIFIER TK_EQUALS package_scope TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::TypeParam>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($1);
+                    $$->set_type(ParserHelpers::make_named_type($4, $3, scanner.get_filename(),
+                                                                @1.begin.line));
+                }
+        ;
+
+
+typeparam_assignment_list:
+                typeparam_assignment_list TK_COMMA type_param_assignment
+                {
+                    $$ = $1;
+                    $$->push_back($3);
+                }
+
+        |       type_param_assignment
+                {
+                    $$ = std::make_shared<AST::TypeParam::List>();
+                    $$->push_back($1);
+                }
+        ;
+
+
+// Body form: `parameter type A = t1, B = t2;` / `localparam type ...;`.
+typeparam_decl: TK_PARAMETER TK_TYPE typeparam_assignment_list TK_SEMICOLON
+                {
+                    $$ = AST::cast_list_to<AST::Node>($3);
+                }
+
+        |       TK_LOCALPARAM TK_TYPE typeparam_assignment_list TK_SEMICOLON
+                {
+                    for(const AST::TypeParam::Ptr &tp : *$3) {
+                        tp->set_is_local(true);
+                    }
+                    $$ = AST::cast_list_to<AST::Node>($3);
+                }
+        ;
 
 
 // typedef of any data_type (Annex A: `typedef data_type type_identifier ;`).
@@ -2319,30 +2413,18 @@ virtual_iface_modport:
 // conflicts. So it stays a dedicated rule with the `type_id var_list` shape that
 // defers the instance-vs-declaration choice to the token after the second id;
 // build_variable(NAMED) keeps node construction unified.
-typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+// The packed-dims forms live outside `typed_var_tf_decl`: in a subroutine
+// body, `id [expr` is an indexed lvalue (`tmp[0] = ...`), so a named type
+// with packed dims there would be ambiguous — module items carry no such
+// statements.
+typed_var_decl: typed_var_tf_decl
                 {
-                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
-                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $2) {
-                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
-                                                                    @1.begin.line));
-                    }
+                    $$ = $1;
                 }
         |       TK_IDENTIFIER widths var_decl_namelist TK_SEMICOLON
                 {
                     auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
                     data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $2, ref, nullptr};
-                    $$ = std::make_shared<AST::Node::List>();
-                    for(const decl_name_t &d: $3) {
-                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
-                                                                    @1.begin.line));
-                    }
-                }
-        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
-                {
-                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
-                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
@@ -2355,6 +2437,32 @@ typed_var_decl: TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
                     data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, $3, ref, nullptr};
                     $$ = std::make_shared<AST::Node::List>();
                     for(const decl_name_t &d: $4) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
+                    }
+                }
+        ;
+
+
+// The subroutine-body-safe subset of `typed_var_decl` (no packed dims after
+// the type name): `my_t x;`, `pkg::T y [4];`.
+typed_var_tf_decl:
+                TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = ParserHelpers::make_named_type($1, "", scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $2) {
+                        $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
+                                                                    @1.begin.line));
+                    }
+                }
+        |       package_scope TK_IDENTIFIER var_decl_namelist TK_SEMICOLON
+                {
+                    auto ref = ParserHelpers::make_named_type($2, $1, scanner.get_filename(), @1.begin.line);
+                    data_type_t dt{data_type_kind_t::NAMED, signing_t::NONE, nullptr, ref, nullptr};
+                    $$ = std::make_shared<AST::Node::List>();
+                    for(const decl_name_t &d: $3) {
                         $$->push_back(ParserHelpers::build_variable(dt, d, scanner.get_filename(),
                                                                     @1.begin.line));
                     }
@@ -4749,11 +4857,30 @@ param_arg_noname:
                     $$->set_value($1);
                 }
 
+                // Keyword-headed type actual for a type parameter (§23.10,
+                // A.4.1.1 param_expression admits a data_type). A bare
+                // identifier actual stays an expression: the formal's kind is
+                // unknown at parse and resolution happens in the parent scope.
+        |       data_type
+                {
+                    $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
+                    $$->set_value(ParserHelpers::build_data_type_def($1, scanner.get_filename(),
+                                                                     @1.begin.line));
+                }
+
 
 param_arg:      TK_DOT TK_IDENTIFIER TK_LPARENTHESIS expression TK_RPARENTHESIS
                 {
                     $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
                     $$->set_value($4);
+                    $$->set_name($2);
+                }
+
+        |       TK_DOT TK_IDENTIFIER TK_LPARENTHESIS data_type TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::ParamArg>(scanner.get_filename(), @1.begin.line);
+                    $$->set_value(ParserHelpers::build_data_type_def($4, scanner.get_filename(),
+                                                                     @1.begin.line));
                     $$->set_name($2);
                 }
 
@@ -5351,6 +5478,19 @@ funcvar_decl:   parameter_decl
                 {
                     $$ = $1;
                 }
+
+        |       typed_var_tf_decl
+                {
+                    $$ = $1;
+                }
+
+                // Local typedef (A.2.7 tf_item_declaration ->
+                // block_item_declaration -> data_declaration -> type_declaration).
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
+                }
         ;
 
 
@@ -5635,6 +5775,19 @@ taskvar_decl:
         |       data_declaration
                 {
                     $$ = $1;
+                }
+
+        |       typed_var_tf_decl
+                {
+                    $$ = $1;
+                }
+
+                // Local typedef (A.2.7 tf_item_declaration ->
+                // block_item_declaration -> data_declaration -> type_declaration).
+        |       typedef_decl
+                {
+                    $$ = std::make_shared<AST::Node::List>();
+                    $$->push_back(AST::to_node($1));
                 }
         ;
 
@@ -5986,13 +6139,6 @@ namespace Veriparse {
                 seg->set_name(package);
                 scope->push_back(seg);
                 return scope;
-            }
-
-            AST::Declaration::ListPtr to_decl_list(const AST::Param::ListPtr &in) {
-                if(!in) return nullptr;
-                auto out = std::make_shared<AST::Declaration::List>();
-                for(const AST::Param::Ptr &p : *in) out->push_back(p);
-                return out;
             }
 
             AST::ModportPort::DirectionEnum to_modport_dir(direction_t d) {
