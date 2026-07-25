@@ -398,54 +398,22 @@ int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
     // loudly rather than mis-render.
     const auto &type = alias->type;
     bool is_signed = false;
-    std::size_t width = 1;
-    switch(type->get_node_type()) {
-    case AST::NodeType::LogicType:
-    case AST::NodeType::RegType:
-    case AST::NodeType::BitType:
-    case AST::NodeType::ImplicitType:
-        // Vector types default to unsigned (§6.11).
-        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-        break;
-    case AST::NodeType::ByteType:
-        width = 8;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::ShortintType:
-        width = 16;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::IntType:
-    case AST::NodeType::IntegerType:
-        width = 32;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::LongintType:
-        width = 64;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::TimeType:
-        // `time` is the one unsigned integer atom (§6.11).
-        width = 64;
-        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-        break;
-    default:
+    std::uint64_t width = 1;
+    if(!Analysis::Dimensions::integral_base(type, width, is_signed)) {
         LOG_ERROR_N(named) << "cast to typedef '" << name
                            << "': only an integral alias is supported";
         return 1;
     }
 
     if(type->get_packed_dims()) {
-        for(const AST::Dimension::Ptr &dim : *type->get_packed_dims()) {
-            Analysis::Dimensions::DimInfo info;
-            if(!Analysis::Dimensions::extract_dimension(dim, Analysis::Dimensions::Packing::packed,
-                                                        info)) {
-                LOG_ERROR_N(named)
-                    << "cast to typedef '" << name << "': the alias width is not constant";
-                return 1;
-            }
-            width *= info.width;
+        Analysis::Dimensions::DimList dims;
+        if(!Analysis::Dimensions::extract_arrays(type->get_packed_dims(),
+                                                 Analysis::Dimensions::Packing::packed, dims)) {
+            LOG_ERROR_N(named) << "cast to typedef '" << name
+                               << "': the alias width is not constant";
+            return 1;
         }
+        width *= dims.packed_width();
     }
 
     const auto &size = std::make_shared<AST::IntConstN>(10, -1, true, Misc::Math::u64_to_mpz(width),

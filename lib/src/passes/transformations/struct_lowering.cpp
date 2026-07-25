@@ -24,21 +24,10 @@ AST::Node::Ptr make_const(std::uint64_t value, const AST::Node::Ptr &at)
                                             at->get_filename(), at->get_line());
 }
 
-/// The product of a type's packed dims; false when a dim is not constant.
-bool packed_dims_width(const AST::DataType::Ptr &type, std::uint64_t &width)
+bool is_aggregate(const AST::DataType::Ptr &type)
 {
-    width = 1;
-    if(type->get_packed_dims()) {
-        for(const AST::Dimension::Ptr &dim : *type->get_packed_dims()) {
-            Analysis::Dimensions::DimInfo info;
-            if(!Analysis::Dimensions::extract_dimension(dim, Analysis::Dimensions::Packing::packed,
-                                                        info)) {
-                return false;
-            }
-            width *= info.width;
-        }
-    }
-    return true;
+    return type && (type->is_node_type(AST::NodeType::StructType) ||
+                    type->is_node_type(AST::NodeType::UnionType));
 }
 
 } // namespace
@@ -52,40 +41,12 @@ int StructLowering::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     switch(node->get_node_type()) {
     case AST::NodeType::Module: {
         const auto &module = AST::cast_to<AST::Module>(node);
-        m_scopes.emplace_back();
-        int ret = 0;
-        // Ports first: their decls are module-scope names, visible to the
-        // whole body (like the header refinement of ADR-0009 §2).
-        if(module->get_ports()) {
-            for(const AST::Port::Ptr &port : *module->get_ports()) {
-                if(port->get_decl()) {
-                    ret |= register_decl(port->get_decl());
-                }
-            }
-        }
-        if(ret == 0) {
-            ret = process_items(module->get_items(), node);
-        }
-        m_scopes.pop_back();
-        return ret;
+        return process_definition(module->get_ports(), module->get_items(), node);
     }
 
     case AST::NodeType::Interface: {
         const auto &interface = AST::cast_to<AST::Interface>(node);
-        m_scopes.emplace_back();
-        int ret = 0;
-        if(interface->get_ports()) {
-            for(const AST::Port::Ptr &port : *interface->get_ports()) {
-                if(port->get_decl()) {
-                    ret |= register_decl(port->get_decl());
-                }
-            }
-        }
-        if(ret == 0) {
-            ret = process_items(interface->get_items(), node);
-        }
-        m_scopes.pop_back();
-        return ret;
+        return process_definition(interface->get_ports(), interface->get_items(), node);
     }
 
     default: {
@@ -97,6 +58,35 @@ int StructLowering::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return ret;
     }
     }
+}
+
+int StructLowering::process_definition(const AST::Port::ListPtr &ports,
+                                       const AST::Node::ListPtr &items, const AST::Node::Ptr &node)
+{
+    m_scopes.emplace_back();
+    int ret = 0;
+    // Ports first: their decls are module-scope names, visible to the
+    // whole body (like the header refinement of ADR-0009 §2).
+    if(ports) {
+        for(const AST::Port::Ptr &port : *ports) {
+            if(port->get_decl()) {
+                ret |= register_decl(port->get_decl());
+            }
+        }
+    }
+    if(ret == 0) {
+        ret = process_items(items, node);
+    }
+    m_scopes.pop_back();
+    return ret;
+}
+
+int StructLowering::scoped_items(const AST::Node::ListPtr &items, const AST::Node::Ptr &node)
+{
+    m_scopes.emplace_back();
+    const int ret = process_items(items, node);
+    m_scopes.pop_back();
+    return ret;
 }
 
 int StructLowering::process_items(const AST::Node::ListPtr &items, const AST::Node::Ptr &node)
@@ -123,16 +113,32 @@ int StructLowering::process_items(const AST::Node::ListPtr &items, const AST::No
 
 int StructLowering::register_decl(const AST::Declaration::Ptr &decl)
 {
-    const auto &type = decl->get_type();
-    if(!type || (!type->is_node_type(AST::NodeType::StructType) &&
-                 !type->is_node_type(AST::NodeType::UnionType))) {
+    if(!is_aggregate(decl->get_type())) {
         return 0;
+    }
+    const auto &vec = lower_type(decl->get_type(), decl->get_name());
+    if(!vec) {
+        return 1;
+    }
+    decl->set_type(vec);
+    return 0;
+}
+
+AST::DataType::Ptr StructLowering::lower_type(const AST::DataType::Ptr &type,
+                                              const std::string &name)
+{
+    // A packed array of aggregates (`struct packed {..} [1:0] v`) would
+    // need per-element member maps; reject rather than lower at the wrong
+    // width.
+    if(type->get_packed_dims() && !type->get_packed_dims()->empty()) {
+        LOG_ERROR_N(type) << "'" << name << "': a packed array of aggregates is not supported";
+        return nullptr;
     }
 
     Layout layout;
     layout.is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-    if(compute_layout(type, decl->get_name(), layout.width, layout.members)) {
-        return 1;
+    if(compute_layout(type, name, layout.width, layout.members)) {
+        return nullptr;
     }
 
     // The declaration becomes its equivalent vector (§7.2.1/§7.3.1): a
@@ -142,15 +148,14 @@ int StructLowering::register_decl(const AST::Declaration::Ptr &decl)
         vec->set_signing(AST::DataType::SigningEnum::SIGNED);
     }
     const auto &range = std::make_shared<AST::RangeDim>(type->get_filename(), type->get_line());
-    range->set_left(make_const(layout.width - 1, decl));
-    range->set_right(make_const(0, decl));
+    range->set_left(make_const(layout.width - 1, type));
+    range->set_right(make_const(0, type));
     const auto &dims = std::make_shared<AST::Dimension::List>();
     dims->push_back(range);
     vec->set_packed_dims(dims);
-    decl->set_type(vec);
 
-    m_scopes.back()[decl->get_name()] = layout;
-    return 0;
+    m_scopes.back()[name] = layout;
+    return vec;
 }
 
 int StructLowering::compute_layout(const AST::DataType::Ptr &type, const std::string &decl_name,
@@ -184,7 +189,7 @@ int StructLowering::compute_layout(const AST::DataType::Ptr &type, const std::st
     for(const AST::Member::Ptr &member : *member_list) {
         MemberInfo info;
         std::uint64_t w = 0;
-        if(member_width(member, w, info.is_signed, info.members)) {
+        if(member_width(member, w, info)) {
             return 1;
         }
         info.msb = w; // width, repositioned below
@@ -235,7 +240,7 @@ int StructLowering::compute_layout(const AST::DataType::Ptr &type, const std::st
 }
 
 int StructLowering::member_width(const AST::Member::Ptr &member, std::uint64_t &width,
-                                 bool &is_signed, std::map<std::string, MemberInfo> &members)
+                                 MemberInfo &info)
 {
     if(member->get_unpacked_dims() && !member->get_unpacked_dims()->empty()) {
         LOG_ERROR_N(member) << "member '" << member->get_name()
@@ -250,54 +255,64 @@ int StructLowering::member_width(const AST::Member::Ptr &member, std::uint64_t &
     }
 
     // A nested packed aggregate recurses; its slice bounds are made
-    // absolute by the caller.
-    if(type->is_node_type(AST::NodeType::StructType) ||
-       type->is_node_type(AST::NodeType::UnionType)) {
-        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-        return compute_layout(type, member->get_name(), width, members);
+    // absolute by the caller. Selects address its sub-members, never the
+    // aggregate as an array.
+    if(is_aggregate(type)) {
+        if(type->get_packed_dims() && !type->get_packed_dims()->empty()) {
+            LOG_ERROR_N(member) << "member '" << member->get_name()
+                                << "': a packed array of aggregates is not supported";
+            return 1;
+        }
+        info.is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+        info.sel = SelKind::none;
+        return compute_layout(type, member->get_name(), width, info.members);
     }
 
     std::uint64_t base = 1;
-    switch(type->get_node_type()) {
-    case AST::NodeType::LogicType:
-    case AST::NodeType::RegType:
-    case AST::NodeType::BitType:
-        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-        break;
-    case AST::NodeType::ByteType:
-        base = 8;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::ShortintType:
-        base = 16;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::IntType:
-    case AST::NodeType::IntegerType:
-        base = 32;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::LongintType:
-        base = 64;
-        is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
-        break;
-    case AST::NodeType::TimeType:
-        base = 64;
-        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
-        break;
-    default:
+    if(!Analysis::Dimensions::integral_base(type, base, info.is_signed)) {
         LOG_ERROR_N(member) << "member '" << member->get_name()
                             << "': not an integral type (IEEE 1800-2017 7.2.1)";
         return 1;
     }
 
-    std::uint64_t dims = 1;
-    if(!packed_dims_width(type, dims)) {
+    // Selects into the member fold against its DECLARED range (§7.4.2):
+    // record it for single-range vector shapes; an atom addresses as
+    // [W-1:0]. A multi-dim member cannot fold a select (an element select
+    // is not a bit select) — accessing it whole stays fine.
+    const auto &pdims = type->get_packed_dims();
+    const std::size_t ndims = pdims ? pdims->size() : 0;
+    if(ndims == 0) {
+        width = base;
+        info.sel = SelKind::descending;
+        info.range_left = static_cast<std::int64_t>(base) - 1;
+        info.range_right = 0;
+        return 0;
+    }
+
+    Analysis::Dimensions::DimList dims;
+    if(!Analysis::Dimensions::extract_arrays(pdims, Analysis::Dimensions::Packing::packed, dims)) {
         LOG_ERROR_N(member) << "struct member '" << member->get_name()
                             << "': the width is not constant";
         return 1;
     }
-    width = base * dims;
+    width = base * dims.packed_width();
+
+    if(ndims == 1 && base == 1) {
+        Analysis::Dimensions::DimInfo dim;
+        if(!Analysis::Dimensions::extract_dimension(pdims->front(),
+                                                    Analysis::Dimensions::Packing::packed, dim)) {
+            LOG_ERROR_N(member) << "struct member '" << member->get_name()
+                                << "': the width is not constant";
+            return 1;
+        }
+        // DimInfo keeps the written bounds: msb = left, lsb = right, and
+        // is_big = left > right — i.e. a conventional descending range.
+        info.sel = dim.is_big ? SelKind::descending : SelKind::ascending;
+        info.range_left = dim.msb;
+        info.range_right = dim.lsb;
+    } else {
+        info.sel = SelKind::none;
+    }
     return 0;
 }
 
@@ -321,41 +336,58 @@ int StructLowering::rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &pa
         return ret;
     }
 
+    // Select nodes: the selected variable inherits the context, but the
+    // index/bound subexpressions are rvalue even under an assignment
+    // target (`mem[base + s.off] = x` reads s.off).
+    case AST::NodeType::Pointer: {
+        const auto &ptr = AST::cast_to<AST::Pointer>(node);
+        int ret = rewrite(ptr->get_ptr(), node, false);
+        ret |= rewrite(ptr->get_var(), node, in_lvalue);
+        return ret;
+    }
+
+    case AST::NodeType::Partselect: {
+        const auto &sel = AST::cast_to<AST::Partselect>(node);
+        int ret = rewrite(sel->get_msb(), node, false);
+        ret |= rewrite(sel->get_lsb(), node, false);
+        ret |= rewrite(sel->get_var(), node, in_lvalue);
+        return ret;
+    }
+
+    case AST::NodeType::PartselectPlusIndexed: {
+        const auto &sel = AST::cast_to<AST::PartselectPlusIndexed>(node);
+        int ret = rewrite(sel->get_index(), node, false);
+        ret |= rewrite(sel->get_size(), node, false);
+        ret |= rewrite(sel->get_var(), node, in_lvalue);
+        return ret;
+    }
+
+    case AST::NodeType::PartselectMinusIndexed: {
+        const auto &sel = AST::cast_to<AST::PartselectMinusIndexed>(node);
+        int ret = rewrite(sel->get_index(), node, false);
+        ret |= rewrite(sel->get_size(), node, false);
+        ret |= rewrite(sel->get_var(), node, in_lvalue);
+        return ret;
+    }
+
     // Nested scopes: their declarations shadow enclosing bindings.
     case AST::NodeType::Block:
-        m_scopes.emplace_back();
-        {
-            const int ret = process_items(AST::cast_to<AST::Block>(node)->get_statements(), node);
-            m_scopes.pop_back();
-            return ret;
-        }
+        return scoped_items(AST::cast_to<AST::Block>(node)->get_statements(), node);
 
     case AST::NodeType::ParallelBlock:
-        m_scopes.emplace_back();
-        {
-            const int ret =
-                process_items(AST::cast_to<AST::ParallelBlock>(node)->get_statements(), node);
-            m_scopes.pop_back();
-            return ret;
-        }
+        return scoped_items(AST::cast_to<AST::ParallelBlock>(node)->get_statements(), node);
 
     case AST::NodeType::GenerateStatement:
-        m_scopes.emplace_back();
-        {
-            const int ret =
-                process_items(AST::cast_to<AST::GenerateStatement>(node)->get_items(), node);
-            m_scopes.pop_back();
-            return ret;
-        }
+        return scoped_items(AST::cast_to<AST::GenerateStatement>(node)->get_items(), node);
 
     case AST::NodeType::Function: {
         const auto &function = AST::cast_to<AST::Function>(node);
-        return process_subroutine(function->get_args(), function->get_statements(), node);
+        return process_subroutine(function->get_args(), function->get_statements(), node, function);
     }
 
     case AST::NodeType::Task: {
         const auto &task = AST::cast_to<AST::Task>(node);
-        return process_subroutine(task->get_args(), task->get_statements(), node);
+        return process_subroutine(task->get_args(), task->get_statements(), node, nullptr);
     }
 
     default: {
@@ -371,10 +403,22 @@ int StructLowering::rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &pa
 
 int StructLowering::process_subroutine(const AST::Arg::ListPtr &args,
                                        const AST::Node::ListPtr &statements,
-                                       const AST::Node::Ptr &node)
+                                       const AST::Node::Ptr &node,
+                                       const AST::Function::Ptr &function)
 {
     m_scopes.emplace_back();
     int ret = 0;
+    // A function's aggregate return type lowers like a declaration: the
+    // function name is the implicit return variable (§13.4), so
+    // `fname.member = ...` resolves against its layout.
+    if(function && is_aggregate(function->get_return_type())) {
+        const auto &vec = lower_type(function->get_return_type(), function->get_name());
+        if(!vec) {
+            m_scopes.pop_back();
+            return 1;
+        }
+        function->set_return_type(vec);
+    }
     if(args) {
         for(const AST::Arg::Ptr &arg : *args) {
             ret |= register_decl(arg);
@@ -445,26 +489,78 @@ int StructLowering::rewrite_access(const AST::Identifier::Ptr &ident, const AST:
     }
 
     // A directly enclosing select folds into the member offset instead of
-    // stacking on the emitted part-select (`s.f[i]` is bit lsb+i of s).
-    const auto &offset = [&](const AST::Node::Ptr &sel) -> AST::Node::Ptr {
-        if(info->lsb == 0) {
-            return sel;
+    // stacking on the emitted part-select. The written index names a bit
+    // of the member's DECLARED range (§7.4.2): a descending [l:r] member
+    // maps bit i to vector bit lsb+(i-r); an ascending [l:r] member maps
+    // bit i to vector bit msb-(i-l).
+    const bool sel_parent =
+        (parent->is_node_type(AST::NodeType::Pointer) &&
+         AST::cast_to<AST::Pointer>(parent)->get_var() == ident) ||
+        (parent->is_node_type(AST::NodeType::Partselect) &&
+         AST::cast_to<AST::Partselect>(parent)->get_var() == ident) ||
+        (parent->is_node_type(AST::NodeType::PartselectPlusIndexed) &&
+         AST::cast_to<AST::PartselectPlusIndexed>(parent)->get_var() == ident) ||
+        (parent->is_node_type(AST::NodeType::PartselectMinusIndexed) &&
+         AST::cast_to<AST::PartselectMinusIndexed>(parent)->get_var() == ident);
+
+    if(sel_parent) {
+        if(info->sel == SelKind::none) {
+            LOG_ERROR_N(ident) << "'" << root->get_name() << "." << ident->get_name()
+                               << "': a select into this member is not supported";
+            return 1;
         }
-        return std::make_shared<AST::Plus>(make_const(info->lsb, ident), sel, ident->get_filename(),
-                                           ident->get_line());
-    };
-    if(parent->is_node_type(AST::NodeType::Pointer) &&
-       AST::cast_to<AST::Pointer>(parent)->get_var() == ident) {
-        const auto &ptr = AST::cast_to<AST::Pointer>(parent);
-        ptr->set_ptr(offset(ptr->get_ptr()));
-        ptr->set_var(base);
-        return 0;
-    }
-    if(parent->is_node_type(AST::NodeType::Partselect) &&
-       AST::cast_to<AST::Partselect>(parent)->get_var() == ident) {
-        const auto &sel = AST::cast_to<AST::Partselect>(parent);
-        sel->set_msb(offset(sel->get_msb()));
-        sel->set_lsb(offset(sel->get_lsb()));
+        const auto &normalize = [&](const AST::Node::Ptr &sel) -> AST::Node::Ptr {
+            if(info->sel == SelKind::ascending) {
+                // vector bit = msb - (i - left) = (msb + left) - i
+                const std::uint64_t kappa =
+                    info->msb + static_cast<std::uint64_t>(info->range_left);
+                return std::make_shared<AST::Minus>(make_const(kappa, ident), sel,
+                                                    ident->get_filename(), ident->get_line());
+            }
+            // vector bit = lsb + (i - right)
+            const std::int64_t delta = static_cast<std::int64_t>(info->lsb) - info->range_right;
+            if(delta == 0) {
+                return sel;
+            }
+            if(delta > 0) {
+                return std::make_shared<AST::Plus>(
+                    make_const(static_cast<std::uint64_t>(delta), ident), sel,
+                    ident->get_filename(), ident->get_line());
+            }
+            return std::make_shared<AST::Minus>(
+                sel, make_const(static_cast<std::uint64_t>(-delta), ident), ident->get_filename(),
+                ident->get_line());
+        };
+        if(parent->is_node_type(AST::NodeType::Pointer)) {
+            const auto &ptr = AST::cast_to<AST::Pointer>(parent);
+            ptr->set_ptr(normalize(ptr->get_ptr()));
+            ptr->set_var(base);
+            return 0;
+        }
+        if(parent->is_node_type(AST::NodeType::Partselect)) {
+            const auto &sel = AST::cast_to<AST::Partselect>(parent);
+            sel->set_msb(normalize(sel->get_msb()));
+            sel->set_lsb(normalize(sel->get_lsb()));
+            sel->set_var(base);
+            return 0;
+        }
+        // Indexed part-selects sweep upward from the base index; on an
+        // ascending member the sweep direction inverts — reject rather
+        // than mis-map.
+        if(info->sel == SelKind::ascending) {
+            LOG_ERROR_N(ident) << "'" << root->get_name() << "." << ident->get_name()
+                               << "': an indexed part-select on an ascending member is not "
+                               << "supported";
+            return 1;
+        }
+        if(parent->is_node_type(AST::NodeType::PartselectPlusIndexed)) {
+            const auto &sel = AST::cast_to<AST::PartselectPlusIndexed>(parent);
+            sel->set_index(normalize(sel->get_index()));
+            sel->set_var(base);
+            return 0;
+        }
+        const auto &sel = AST::cast_to<AST::PartselectMinusIndexed>(parent);
+        sel->set_index(normalize(sel->get_index()));
         sel->set_var(base);
         return 0;
     }
