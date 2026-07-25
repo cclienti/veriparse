@@ -197,6 +197,8 @@ TEST(PassesTransformation_ModuleFlattener, tdef_err_order0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_err_dup0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_err_forward0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, tdef_err_dims_cast0) { TEST_ERROR_SV; }
+// An array typedef in a subroutine return type has no inlined rendering.
+TEST(PassesTransformation_ModuleFlattener, tdef_err_array_ret0) { TEST_ERROR_SV; }
 
 // Regression pins for the ADR-0009 review findings — legal SystemVerilog
 // that the typedef/package inlining once wrongly rejected.

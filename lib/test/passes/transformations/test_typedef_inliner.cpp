@@ -89,7 +89,8 @@ namespace
 // declaration of the given kind whose type slot references it. Neither shape
 // is producible by the parser today (`nettype` has no grammar; TypeParamInliner
 // reduces every TypeParam before this pass runs), so the AST is built by hand:
-// it models a dims-less declaration kind reaching the array-typedef merge.
+// it models a declaration kind whose unpacked dims the generator does not
+// emit reaching the array-typedef merge.
 AST::Module::Ptr build_array_alias_module(const AST::Declaration::Ptr &decl)
 {
     const auto &tdef = std::make_shared<AST::Typedef>();
@@ -123,9 +124,14 @@ AST::Module::Ptr build_array_alias_module(const AST::Declaration::Ptr &decl)
 
 } // namespace
 
-// An array typedef in a NetTypeDecl's type slot must be rejected: unpacked
-// dims are meaningless on a nettype declaration, and the base unpacked_dims
-// slot it would silently absorb them into has no consumer there.
+// An array typedef as a nettype's data type is LEGAL SystemVerilog — IEEE
+// 1800-2017 §6.6.7(d) admits "a fixed-size unpacked array ... where each
+// element has a valid data type", the LRM's own `typedef real TR[5]; nettype
+// TR wTR;`. It is nonetheless rejected here, because inlining the alias would
+// leave an unpacked array type with no anonymous syntax to render into (a
+// nettype declaration has no unpacked-dims slot the generator emits). The
+// rejection is a representability limit of this tool, not a language rule —
+// the loud error is what keeps it from silently dropping the array shape.
 TEST(PassesTransformation_TypedefInliner, array_alias_nettypedecl_rejected)
 {
     ENABLE_LOGGER;
@@ -136,9 +142,11 @@ TEST(PassesTransformation_TypedefInliner, array_alias_nettypedecl_rejected)
     ASSERT_NE(0, Passes::Transformations::TypedefInliner().run(module));
 }
 
-// Same for a TypeParam surviving to this pass (it cannot, in the standard
-// pipeline — TypeParamInliner reduces them first — but the guard must not
-// depend on pass ordering).
+// Same for a TypeParam surviving to this pass: `parameter type T = mem_t;`
+// is legal source (§6.20.3), but a TypeParam carries no rendered unpacked
+// dims. Unreachable in the standard pipeline — TypeParamInliner reduces
+// every type parameter to a Typedef first, and that path DOES carry the
+// dims (ADR-0010 §7) — but the guard must not depend on pass ordering.
 TEST(PassesTransformation_TypedefInliner, array_alias_typeparam_rejected)
 {
     ENABLE_LOGGER;

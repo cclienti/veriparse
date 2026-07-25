@@ -251,16 +251,20 @@ Common base + role nodes (lean, dispatch by type; decision #1 = B, the "fat
 single node" was rejected):
 
 ```
-Declaration (abstract)   { name,  type: DataType }
-  ├── Var       { unpacked_dims, init, is_var, is_const, lifetime }              # data_declaration
+Declaration (abstract)   { name,  type: DataType,  unpacked_dims }
+  ├── Var       { init, is_var, is_const, lifetime }                            # data_declaration
   ├── Net       (abstract — node per net-type, see below)                       # net_declaration (signing -> on the DataType)
   ├── Port      { direction, decl: (Var | Net) }                                # ANSI port (dir + declaration)
-  ├── Arg       { direction, unpacked_dims, default, is_var }                    # task/function arg
-  ├── Param     { is_local, value, unpacked_dims }                              # parameter / localparam (value; unpacked = array param)
-  ├── TypeParam { name, type }                                                  # parameter type T = …
-  ├── Typedef   { name, type, unpacked_dims, fwd_kind }                         # typedef (type null + fwd_kind set = forward typedef)
-  ├── Member    { unpacked_dims, init }                                         # struct/union member
+  ├── Arg       { direction, default, is_var }                                  # task/function arg
+  ├── Param     { is_local, value }                                             # parameter / localparam (value; unpacked = array param)
+  ├── TypeParam { name, type }                                                  # parameter type T = … (dims stay null)
+  ├── Typedef   { name, type, fwd_kind }                                        # typedef (type null + fwd_kind set = forward typedef)
+  ├── Member    { init }                                                        # struct/union member
   └── Genvar    { }                                                             # genvar (compile-time, NO type slot — always integer)
+
+`unpacked_dims` lives on the base (one slot, one accessor — passes need no
+per-kind dispatch); kinds where unpacked dims cannot occur (TypeParam,
+NetTypeDecl) leave it null.
 ```
 
 - `name` + `type` on the base ⇒ uniform access everywhere. *(For `Port`, name/type
@@ -300,8 +304,8 @@ Notes (from the IEEE A.2 cross-check):
 
 ### The `Net` hierarchy (node per net-type — decision #6 = B)
 ```
-Net (abstract : Declaration)   { unpacked_dims, cont_assign, strength: Strength,
-                                 is_vectored, is_scalared, ldelay, rdelay }   # type: DataType from the base
+Net (abstract : Declaration)   { cont_assign, strength: Strength,
+                                 is_vectored, is_scalared, ldelay, rdelay }   # type + unpacked_dims from the base
   # the 12 IEEE net_types (keyword tags -> nodes, like LogicType/IntType)
   ├── WireNet  ├── TriNet  ├── Tri0Net  ├── Tri1Net  ├── TriandNet  ├── TriorNet
   ├── TriregNet ├── WandNet ├── WorNet  ├── UwireNet ├── Supply0Net ├── Supply1Net
