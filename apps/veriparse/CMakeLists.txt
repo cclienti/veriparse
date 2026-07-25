@@ -219,6 +219,26 @@ if(NOT WIN32)
       VERILOG_SOURCES ${_type_param_pipe_sources}
       HARNESS ${_type_param_pipe_harness}
     )
+
+    set(_struct_pipe_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/struct_pipe/src/struct_pipe.sv)
+    set(_struct_pipe_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/struct_pipe/cosim/test_struct_pipe.cpp)
+
+    add_cosim_test(
+      NAME test_cosim_struct_pipe_dut
+      TOP_MODULE struct_pipe
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_struct_pipe_sources}
+      HARNESS ${_struct_pipe_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_struct_pipe_flat
+      TOP_MODULE struct_pipe
+      VERIFLAT_ARGS --sv
+      VERILOG_SOURCES ${_struct_pipe_sources}
+      HARNESS ${_struct_pipe_harness}
+    )
   endif()
 
 endif()

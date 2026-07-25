@@ -1,6 +1,7 @@
 # ADR-0011 — Packed struct/union lowering (`StructLowering`)
 
-- **Status**: Proposed — design settled; implementation pending.
+- **Status**: Accepted — implemented (`StructLowering`, error catalogue,
+  goldens, cosim).
 - **Date**: 2026-07-25
 - **Scope**: A transformation pass that **lowers every packed struct/union
   declaration type to its equivalent packed vector** and **rewrites member
