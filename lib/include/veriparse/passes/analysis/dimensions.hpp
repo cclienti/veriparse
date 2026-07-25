@@ -164,6 +164,18 @@ public:
                                DimList &dims);
 
     /**
+     * @brief Base width and default signedness of an integral data type
+     * (IEEE 1800-2017 §6.11): vector types (logic/reg/bit) contribute base
+     * 1 and default to unsigned, integer atoms their fixed width and
+     * default to signed (`time` unsigned). Packed dims are NOT folded in —
+     * they multiply on top of the base.
+     *
+     * @return false when the type is not integral
+     */
+    static bool integral_base(const AST::DataType::Ptr &type, std::uint64_t &base_width,
+                              bool &is_signed);
+
+    /**
      * @brief Unpacked-dims list of a declaration, or nullptr when the
      * declaration kind carries none.
      *

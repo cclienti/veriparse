@@ -41,13 +41,27 @@ namespace Transformations
 class StructLowering : public TransformationBase
 {
 private:
-    /// A member's slice of the lowered vector (absolute bounds), plus its
-    /// own sub-members when the member is itself a packed struct/union.
+    /// How a bit/part select into a member maps to the lowered vector:
+    /// against a descending or ascending declared range, or not at all (a
+    /// nested aggregate or a multi-packed-dim member).
+    enum class SelKind
+    {
+        none,
+        descending,
+        ascending
+    };
+
+    /// A member's slice of the lowered vector (absolute bounds), its
+    /// declared range for select normalization (§7.4.2), plus its own
+    /// sub-members when the member is itself a packed struct/union.
     struct MemberInfo
     {
         std::uint64_t msb{0};
         std::uint64_t lsb{0};
         bool is_signed{false};
+        SelKind sel{SelKind::none};
+        std::int64_t range_left{0};
+        std::int64_t range_right{0};
         std::map<std::string, MemberInfo> members;
     };
 
@@ -73,10 +87,29 @@ private:
     int process_items(const AST::Node::ListPtr &items, const AST::Node::Ptr &node);
 
     /**
+     * @brief One module/interface definition: ports register into the
+     * scope first (module-wide names), then the body is processed.
+     */
+    int process_definition(const AST::Port::ListPtr &ports, const AST::Node::ListPtr &items,
+                           const AST::Node::Ptr &node);
+
+    /**
+     * @brief Process an item list in a fresh nested scope.
+     */
+    int scoped_items(const AST::Node::ListPtr &items, const AST::Node::Ptr &node);
+
+    /**
      * @brief Lower one declaration when its type is a packed struct/union;
      * registers the layout under the declaration's name.
      */
     int register_decl(const AST::Declaration::Ptr &decl);
+
+    /**
+     * @brief Lower an aggregate type to its vector: computes the layout,
+     * registers it under `name`, and returns the replacement type (null on
+     * error).
+     */
+    AST::DataType::Ptr lower_type(const AST::DataType::Ptr &type, const std::string &name);
 
     /**
      * @brief Compute the member layout of a packed struct/union type.
@@ -86,11 +119,11 @@ private:
                        std::uint64_t &width, std::map<std::string, MemberInfo> &members);
 
     /**
-     * @brief The packed width and signedness of an integral member type.
+     * @brief The packed width of a member plus its select-normalization
+     * info (declared range) and sub-members.
      * @return zero on success
      */
-    int member_width(const AST::Member::Ptr &member, std::uint64_t &width, bool &is_signed,
-                     std::map<std::string, MemberInfo> &members);
+    int member_width(const AST::Member::Ptr &member, std::uint64_t &width, MemberInfo &info);
 
     /**
      * @brief Rewrite member accesses in a subtree; in_lvalue suppresses the
@@ -107,10 +140,12 @@ private:
                        bool in_lvalue);
 
     /**
-     * @brief Subroutine bodies: args register against the body scope.
+     * @brief Subroutine bodies: args register against the body scope; a
+     * function's aggregate return type lowers and registers under the
+     * function's own name (the implicit return variable).
      */
     int process_subroutine(const AST::Arg::ListPtr &args, const AST::Node::ListPtr &statements,
-                           const AST::Node::Ptr &node);
+                           const AST::Node::Ptr &node, const AST::Function::Ptr &function);
 
     const Layout *lookup(const std::string &name) const;
 

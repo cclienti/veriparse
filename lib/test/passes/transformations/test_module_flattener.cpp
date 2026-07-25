@@ -253,10 +253,20 @@ TEST(PassesTransformation_ModuleFlattener, struct_array0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_signed0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_union0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_func0) { TEST_CORE_SV; }
+// Member selects normalize against the member's declared range (§7.4.2).
+TEST(PassesTransformation_ModuleFlattener, struct_range0) { TEST_CORE_SV; }
+// A signed member in an lvalue's index keeps its signed'() (rvalue context).
+TEST(PassesTransformation_ModuleFlattener, struct_signed_idx0) { TEST_CORE_SV; }
+// Indexed part-selects fold; never a select stacked on a part-select.
+TEST(PassesTransformation_ModuleFlattener, struct_idxsel0) { TEST_CORE_SV; }
+// A struct-typed function return lowers; `fname.member` writes resolve.
+TEST(PassesTransformation_ModuleFlattener, struct_func_ret0) { TEST_CORE_SV; }
 // Aggregate error catalogue (ADR-0011 §6).
 TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_err_member0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_err_union_width0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_err_packed_array0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_err_mdim_sel0) { TEST_ERROR_SV; }
 
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.

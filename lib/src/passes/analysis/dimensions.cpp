@@ -172,6 +172,47 @@ bool Dimensions::extract_arrays(const AST::Dimension::ListPtr &arrays, Packing p
     return true;
 }
 
+bool Dimensions::integral_base(const AST::DataType::Ptr &type, std::uint64_t &base_width,
+                               bool &is_signed)
+{
+    if(!type) {
+        return false;
+    }
+    base_width = 1;
+    switch(type->get_node_type()) {
+    case AST::NodeType::LogicType:
+    case AST::NodeType::RegType:
+    case AST::NodeType::BitType:
+    case AST::NodeType::ImplicitType:
+        // Vector types default to unsigned (§6.11).
+        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+        return true;
+    case AST::NodeType::ByteType:
+        base_width = 8;
+        break;
+    case AST::NodeType::ShortintType:
+        base_width = 16;
+        break;
+    case AST::NodeType::IntType:
+    case AST::NodeType::IntegerType:
+        base_width = 32;
+        break;
+    case AST::NodeType::LongintType:
+        base_width = 64;
+        break;
+    case AST::NodeType::TimeType:
+        // `time` is the one unsigned integer atom (§6.11).
+        base_width = 64;
+        is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+        return true;
+    default:
+        return false;
+    }
+    // Integer atoms default to signed (§6.11).
+    is_signed = type->get_signing() != AST::DataType::SigningEnum::UNSIGNED;
+    return true;
+}
+
 AST::Dimension::ListPtr Dimensions::decl_unpacked_dims(const AST::Declaration::Ptr &decl)
 {
     if(!decl) {

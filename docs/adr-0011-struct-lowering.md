@@ -68,6 +68,19 @@ survives to confuse hierarchical-name handling). Per module/interface clone:
    identifier whose root binds to nothing in the table is left untouched —
    interface accesses and genuine hierarchical references resolve
    downstream, as today.
+   **Select folding** (refinement): a bit select, part select, or indexed
+   part select applied directly to a member folds into the member offset
+   instead of stacking on the emitted part-select (a select of a
+   part-select is not legal output). The written index names a bit of the
+   member's *declared* range (§7.4.2): a descending `[l:r]` member maps
+   bit `i` to vector bit `lsb+(i−r)`, an ascending `[l:r]` member to
+   `msb−(i−l)`; the layout records each leaf member's declared range for
+   this. Inside an *lvalue*, only the selected variable chain is
+   assignment context — index and bound subexpressions are rvalue, so a
+   signed member read there keeps its `signed'()` re-wrap.
+   A function's aggregate **return type** lowers like a declaration, its
+   layout registered under the function's own name (the implicit return
+   variable, §13.4), so `fname.member = ...` resolves.
 3. **Drop.** After the pass no `StructType`/`UnionType` remains in the
    module. Whole-struct reads/writes/comparisons need no rewrite at all:
    the declaration *is* a vector now.
@@ -103,6 +116,9 @@ ADR-0009 made typedef'd ports concrete before binding.
 | struct literal in a cast (`T'{...}`) | not parsed today — unchanged | with assignment patterns |
 | member select on a function *call* result (`f(x).m`) | not parsed today — unchanged | needs expression typing |
 | `$bits` over a struct type | whatever `$bits` support exists today; after lowering the operand is a vector | — |
+| packed array of aggregates (`struct packed {..} [1:0] v`, as a declaration or member type) | hard error — per-element member maps would be needed; lowering at a single-element width would silently truncate | element-indexed layout maps |
+| select into a multi-packed-dim member (`s.words[1]` on `logic [1:0][7:0] words`) | hard error — an element select is not a bit select; whole-member access stays supported | element-aware select folding |
+| indexed part-select on an ascending member | hard error — the sweep direction inverts | — |
 
 ## 6. Errors
 
