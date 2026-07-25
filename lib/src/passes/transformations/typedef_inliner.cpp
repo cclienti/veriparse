@@ -337,8 +337,12 @@ int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
                               AST::cast_to<AST::Declaration>(parent)->get_type() == named;
     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
         // Only a declaration's type slot has somewhere for the dims to go:
-        // a cast target or packed context would silently drop them.
-        if(!is_decl_type) {
+        // a cast target or packed context would silently drop them. Among
+        // declarations, unpacked dims are meaningless on a nettype or type
+        // parameter — the base slot exists there but nothing consumes it,
+        // so a merge would silently drop the array shape.
+        if(!is_decl_type || parent->is_node_type(AST::NodeType::NetTypeDecl) ||
+           parent->is_node_type(AST::NodeType::TypeParam)) {
             LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
             return 1;
         }
