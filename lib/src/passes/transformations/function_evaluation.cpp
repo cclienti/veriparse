@@ -230,11 +230,14 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                 AST::DataType::Ptr type;
                 AST::Dimension::ListPtr unpacked;
                 for(const auto &s : *stmts) {
-                    if((s->is_node_type(AST::NodeType::Var) ||
-                        s->is_node_category(AST::NodeType::Net)) &&
-                       AST::cast_to<AST::Declaration>(s)->get_name() == name) {
-                        type = AST::cast_to<AST::Declaration>(s)->get_type();
-                        unpacked = AST::cast_to<AST::Declaration>(s)->get_unpacked_dims();
+                    if(!s->is_node_type(AST::NodeType::Var) &&
+                       !s->is_node_category(AST::NodeType::Net)) {
+                        continue;
+                    }
+                    const auto &decl = AST::cast_to<AST::Declaration>(s);
+                    if(decl->get_name() == name) {
+                        type = decl->get_type();
+                        unpacked = decl->get_unpacked_dims();
                         break;
                     }
                 }

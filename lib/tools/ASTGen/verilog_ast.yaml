@@ -395,8 +395,8 @@ Declaration:
     unpacked_dims: list(Dimension)
 
 # data_declaration: a variable. `is_var`/`is_const` are the SV qualifiers,
-# `lifetime` the static/automatic lifetime. `unpacked_dims` the [..] after the
-# name, `init` the initializer.
+# `lifetime` the static/automatic lifetime. The inherited `unpacked_dims`
+# carry the [..] after the name; `init` is the initializer.
 Var:
   inherit: Declaration
   properties:
@@ -475,7 +475,7 @@ ChargeStrength:
 
 # parameter / localparam value parameter. `is_local` distinguishes localparam.
 # `value` is the default (null on a param-port overridden at instantiation);
-# `unpacked_dims` covers array parameters (`parameter int N [4]`).
+# the inherited `unpacked_dims` cover array parameters (`parameter int N [4]`).
 Param:
   inherit: Declaration
   properties:
@@ -493,7 +493,7 @@ TypeParam:
 # typedef. The inherited `type` is the aliased DataType; `type == null` marks a
 # FORWARD typedef and `fwd_kind` is its optional kind hint (`typedef class C;`,
 # `typedef enum E;`, or bare `typedef foo_t;` with fwd_kind NONE).
-# `unpacked_dims` covers `typedef logic [7:0] mem_t [256]`.
+# The inherited `unpacked_dims` cover `typedef logic [7:0] mem_t [256]`.
 Typedef:
   inherit: Declaration
   properties:
@@ -507,8 +507,8 @@ Member:
     init: Rvalue
 
 # task/function argument. `direction` defaults to input; `is_var` for an explicit
-# `var` qualifier; `unpacked_dims` the array dims; `default_value` the default
-# (`default` is a C++ keyword, hence the name).
+# `var` qualifier; the inherited `unpacked_dims` are the array dims;
+# `default_value` the default (`default` is a C++ keyword, hence the name).
 Arg:
   inherit: Declaration
   properties:
