@@ -236,6 +236,7 @@ it must run **before** this pass.
 |---|---|---|
 | `parameter type` (type parameters, §6.20.3) | not parsed today — unchanged (the `TypeParam` node exists in the schema, like `Module.lifetime` before ADR-0006 §8; only the grammar is missing) | own ADR (interacts with `ParameterInliner`) |
 | `typedef iface.type_t t;` (interface-based typedef, A.2.1.3 second form) | not parsed today — unchanged | after ADR-0008 v2 items |
+| array typedef in a subroutine return type or a nettype data type (legal source: A.2.6, §6.6.7(d)) | rejected loudly — inlining the alias leaves an unpacked array type with no anonymous syntax to render (A.2.2.1 admits packed dims only after a type_identifier) | needs a synthesized typedef in the output, or keeping the alias |
 | struct/union **transformation** support | substitution is a faithful clone; downstream passes reject/ignore structs exactly as before | own ADR (needs `Dimensions` + flatten support) |
 
 ## 10. Errors
@@ -246,7 +247,7 @@ it must run **before** this pass.
 | body reference before the typedef's declaration point (headers are exempt — §2 refinement) | §6.18 | `'X' does not name a type` (the later typedef is not yet bound) |
 | typedef redeclared in the same scope | §6.18 | `typedef 'X' is already declared in this scope` |
 | forward typedef referenced before its completing definition — which also covers every expressible cycle (`typedef a; typedef a b; typedef b a;`), since bindings substitute eagerly at registration | §6.18 | `forward typedef 'X' is not defined at this reference` |
-| typedef-with-unpacked-dims in a dims-less position (incl. cast targets) | §6.18/A.2.1.3 | `array typedef 'X' is not legal here` |
+| array typedef inlined where the result has no anonymous syntax — a cast target, a packed context, a subroutine return type (A.2.6), a nettype data type (legal in source per §6.6.7(d)) — or any declaration kind whose unpacked dims the generator does not emit | §6.18/A.2.1.3, A.2.2.1 | `array typedef 'X' cannot be inlined here: an unpacked array type is only expressible through a type name` |
 | cast to a non-integral typedef (no lossless SizeCast lowering) | §6.24.1 | `cast to typedef 'X': only an integral alias is supported` |
 | package-scoped type reference surviving into this pass (any position, cast targets included) | §26.3 | `unresolved package-scoped type 'X'` |
 

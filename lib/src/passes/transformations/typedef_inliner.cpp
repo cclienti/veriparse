@@ -17,6 +17,20 @@ namespace Transformations
 namespace
 {
 
+/// True when the generator emits a declaration's unpacked dims — i.e. when
+/// an array typedef merged onto it survives into the output. Deliberately
+/// fail-closed (an allow-list): a declaration kind added later must opt in
+/// here, and until it does an array typedef in that position errors loudly
+/// instead of silently losing its array shape. Mirrors the kinds whose
+/// VerilogGenerator renderers pass get_unpacked_dims() to
+/// decl_tail_to_string / dims_to_string.
+bool renders_unpacked_dims(const AST::Node::Ptr &decl)
+{
+    return decl->is_node_type(AST::NodeType::Var) || decl->is_node_type(AST::NodeType::Arg) ||
+           decl->is_node_type(AST::NodeType::Member) || decl->is_node_type(AST::NodeType::Param) ||
+           decl->is_node_type(AST::NodeType::Typedef) || decl->is_node_category(AST::NodeType::Net);
+}
+
 /// The concrete type an enum decl type lowers to: its base data type, or the
 /// §6.19 default `int` when no base is written. Enum item references are
 /// already constants (EnumInliner runs first), so the items are dead weight
@@ -336,14 +350,21 @@ int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
     const bool is_decl_type = parent && parent->is_node_category(AST::NodeType::Declaration) &&
                               AST::cast_to<AST::Declaration>(parent)->get_type() == named;
     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
-        // Only a declaration's type slot has somewhere for the dims to go:
-        // a cast target or packed context would silently drop them. Among
-        // declarations, unpacked dims are meaningless on a nettype or type
-        // parameter — the base slot exists there but nothing consumes it,
-        // so a merge would silently drop the array shape.
-        if(!is_decl_type || parent->is_node_type(AST::NodeType::NetTypeDecl) ||
-           parent->is_node_type(AST::NodeType::TypeParam)) {
-            LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
+        // An unpacked array type has no anonymous form in SystemVerilog: it
+        // is only expressible through a type_identifier (A.2.2.1 —
+        // `data_type ::= ... type_identifier { packed_dimension }` admits
+        // packed dims only). Substituting the alias away therefore leaves
+        // the dims with nowhere legal to go unless the *declaration* has an
+        // unpacked-dims slot the generator emits. Positions where the
+        // source is legal but the inlined form is not — a nettype data type
+        // (§6.6.7(d) explicitly allows a fixed-size unpacked array), a
+        // subroutine return type (A.2.6), a cast target, a packed context —
+        // are rejected loudly rather than silently losing the array shape.
+        // This is the ADR-0009 §8 family of knowingly narrowed semantics.
+        if(!is_decl_type || !renders_unpacked_dims(parent)) {
+            LOG_ERROR_N(named) << "array typedef '" << name
+                               << "' cannot be inlined here: an unpacked array type is only "
+                               << "expressible through a type name";
             return 1;
         }
         const auto &decl = AST::cast_to<AST::Declaration>(parent);
