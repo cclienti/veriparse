@@ -413,7 +413,11 @@ int TypedefInliner::substitute_typedef_cast(const AST::TypeCast::Ptr &cast,
         return 1;
     }
     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
-        LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
+        // A cast target is a type position with no unpacked-dims slot, and
+        // the lowering below is a width conversion — an array alias has no
+        // width. Same representability limit as the declaration path.
+        LOG_ERROR_N(named) << "cast to array typedef '" << name
+                           << "': an unpacked array type has no width to cast to";
         return 1;
     }
 
