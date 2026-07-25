@@ -16,10 +16,10 @@ Member::Member(const std::string &filename, uint32_t line) : Declaration(filenam
     set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
-Member::Member(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr init,
-               const DataType::Ptr type, const std::string &name, const std::string &filename,
-               uint32_t line)
-    : Declaration(type, name, filename, line), m_unpacked_dims(unpacked_dims), m_init(init)
+Member::Member(const Rvalue::Ptr init, const DataType::Ptr type,
+               const Dimension::ListPtr unpacked_dims, const std::string &name,
+               const std::string &filename, uint32_t line)
+    : Declaration(type, unpacked_dims, name, filename, line), m_init(init)
 {
     set_node_type(NodeType::Member);
     set_node_categories({NodeType::Declaration, NodeType::Node});
@@ -64,6 +64,26 @@ bool Member::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullpt
 bool Member::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
+    if(get_init()) {
+        if(get_init() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Member::replace matches multiple times (Rvalue::init)";
+            }
+            set_init(cast_to<Rvalue>(new_node));
+            found = true;
+        }
+    }
+    if(get_type()) {
+        if(get_type() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Member::replace matches multiple times (DataType::type)";
+            }
+            set_type(cast_to<DataType>(new_node));
+            found = true;
+        }
+    }
     if(get_unpacked_dims()) {
         Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
         for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
@@ -91,26 +111,6 @@ bool Member::replace(Node::Ptr node, Node::Ptr new_node)
             set_unpacked_dims(new_list);
         } else {
             set_unpacked_dims(nullptr);
-        }
-    }
-    if(get_init()) {
-        if(get_init() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Member::replace matches multiple times (Rvalue::init)";
-            }
-            set_init(cast_to<Rvalue>(new_node));
-            found = true;
-        }
-    }
-    if(get_type()) {
-        if(get_type() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Member::replace matches multiple times (DataType::type)";
-            }
-            set_type(cast_to<DataType>(new_node));
-            found = true;
         }
     }
     return found;
@@ -168,6 +168,12 @@ Member::ListPtr Member::clone_list(const ListPtr nodes)
 Node::ListPtr Member::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
+    if(get_init()) {
+        list->push_back(std::static_pointer_cast<Node>(get_init()));
+    }
+    if(get_type()) {
+        list->push_back(std::static_pointer_cast<Node>(get_type()));
+    }
     if(get_unpacked_dims()) {
         for(const Dimension::Ptr &node : *get_unpacked_dims()) {
             if(node) {
@@ -175,24 +181,18 @@ Node::ListPtr Member::get_children(void) const
             }
         }
     }
-    if(get_init()) {
-        list->push_back(std::static_pointer_cast<Node>(get_init()));
-    }
-    if(get_type()) {
-        list->push_back(std::static_pointer_cast<Node>(get_type()));
-    }
     return list;
 }
 
 void Member::clone_children(Node::Ptr new_node) const
 {
-    cast_to<Member>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
     if(get_init()) {
         cast_to<Member>(new_node)->set_init(cast_to<Rvalue>(get_init()->clone()));
     }
     if(get_type()) {
         cast_to<Member>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
+    cast_to<Member>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
 }
 
 Node::Ptr Member::alloc_same(void) const

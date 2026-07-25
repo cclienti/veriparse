@@ -42,9 +42,9 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Net.
      */
-    Net(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
-        const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
-        const DelayStatement::Ptr rdelay, const DataType::Ptr type, const bool &is_vectored,
+    Net(const Rvalue::Ptr cont_assign, const Strength::Ptr strength,
+        const DelayStatement::Ptr ldelay, const DelayStatement::Ptr rdelay,
+        const DataType::Ptr type, const Dimension::ListPtr unpacked_dims, const bool &is_vectored,
         const bool &is_scalared, const std::string &name, const std::string &filename = "",
         uint32_t line = 0);
 
@@ -94,11 +94,6 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child unpacked_dims.
-     */
-    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
-
-    /**
      * Return the child cont_assign.
      */
     virtual Rvalue::Ptr get_cont_assign(void) const { return m_cont_assign; }
@@ -117,14 +112,6 @@ public:
      * Return the child rdelay.
      */
     virtual DelayStatement::Ptr get_rdelay(void) const { return m_rdelay; }
-
-    /**
-     * Change the child unpacked_dims.
-     */
-    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
-    {
-        m_unpacked_dims = unpacked_dims;
-    }
 
     /**
      * Change the child cont_assign.
@@ -190,7 +177,6 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Dimension::ListPtr m_unpacked_dims{};
     Rvalue::Ptr m_cont_assign{};
     Strength::Ptr m_strength{};
     DelayStatement::Ptr m_ldelay{};

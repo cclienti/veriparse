@@ -1733,6 +1733,13 @@ YAML::Node YAMLGenerator::render_declaration(const AST::Declaration::Ptr node) c
         content["name"] = node->get_name();
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_declaration["Declaration"] = content;
@@ -1765,16 +1772,16 @@ YAML::Node YAMLGenerator::render_var(const AST::Var::Ptr node) const
         }
         content["name"] = node->get_name();
 
+        content["init"] = render(node->get_init());
+
+        content["type"] = render(node->get_type());
+
         if(node->get_unpacked_dims()) {
             content["unpacked_dims"] = YAML::Load("[]");
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 content["unpacked_dims"].push_back(render(n));
             }
         }
-
-        content["init"] = render(node->get_init());
-
-        content["type"] = render(node->get_type());
     }
 
     node_var["Var"] = content;
@@ -1797,13 +1804,6 @@ YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -1813,6 +1813,13 @@ YAML::Node YAMLGenerator::render_net(const AST::Net::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_net["Net"] = content;
@@ -1835,13 +1842,6 @@ YAML::Node YAMLGenerator::render_wirenet(const AST::WireNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -1851,6 +1851,13 @@ YAML::Node YAMLGenerator::render_wirenet(const AST::WireNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_wirenet["WireNet"] = content;
@@ -1873,13 +1880,6 @@ YAML::Node YAMLGenerator::render_trinet(const AST::TriNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -1889,6 +1889,13 @@ YAML::Node YAMLGenerator::render_trinet(const AST::TriNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_trinet["TriNet"] = content;
@@ -1911,13 +1918,6 @@ YAML::Node YAMLGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -1927,6 +1927,13 @@ YAML::Node YAMLGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_tri0net["Tri0Net"] = content;
@@ -1949,13 +1956,6 @@ YAML::Node YAMLGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -1965,6 +1965,13 @@ YAML::Node YAMLGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_tri1net["Tri1Net"] = content;
@@ -1987,13 +1994,6 @@ YAML::Node YAMLGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2003,6 +2003,13 @@ YAML::Node YAMLGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_triandnet["TriandNet"] = content;
@@ -2025,13 +2032,6 @@ YAML::Node YAMLGenerator::render_triornet(const AST::TriorNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2041,6 +2041,13 @@ YAML::Node YAMLGenerator::render_triornet(const AST::TriorNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_triornet["TriorNet"] = content;
@@ -2063,13 +2070,6 @@ YAML::Node YAMLGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2079,6 +2079,13 @@ YAML::Node YAMLGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_triregnet["TriregNet"] = content;
@@ -2101,13 +2108,6 @@ YAML::Node YAMLGenerator::render_wandnet(const AST::WandNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2117,6 +2117,13 @@ YAML::Node YAMLGenerator::render_wandnet(const AST::WandNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_wandnet["WandNet"] = content;
@@ -2139,13 +2146,6 @@ YAML::Node YAMLGenerator::render_wornet(const AST::WorNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2155,6 +2155,13 @@ YAML::Node YAMLGenerator::render_wornet(const AST::WorNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_wornet["WorNet"] = content;
@@ -2177,13 +2184,6 @@ YAML::Node YAMLGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2193,6 +2193,13 @@ YAML::Node YAMLGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_uwirenet["UwireNet"] = content;
@@ -2215,13 +2222,6 @@ YAML::Node YAMLGenerator::render_supply0net(const AST::Supply0Net::Ptr node) con
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2231,6 +2231,13 @@ YAML::Node YAMLGenerator::render_supply0net(const AST::Supply0Net::Ptr node) con
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_supply0net["Supply0Net"] = content;
@@ -2253,13 +2260,6 @@ YAML::Node YAMLGenerator::render_supply1net(const AST::Supply1Net::Ptr node) con
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2269,6 +2269,13 @@ YAML::Node YAMLGenerator::render_supply1net(const AST::Supply1Net::Ptr node) con
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_supply1net["Supply1Net"] = content;
@@ -2291,13 +2298,6 @@ YAML::Node YAMLGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2307,6 +2307,13 @@ YAML::Node YAMLGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_interconnectnet["InterconnectNet"] = content;
@@ -2329,13 +2336,6 @@ YAML::Node YAMLGenerator::render_usernet(const AST::UserNet::Ptr node) const
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2345,6 +2345,13 @@ YAML::Node YAMLGenerator::render_usernet(const AST::UserNet::Ptr node) const
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_usernet["UserNet"] = content;
@@ -2367,13 +2374,6 @@ YAML::Node YAMLGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
         content["is_scalared"] = node->get_is_scalared();
         content["name"] = node->get_name();
 
-        if(node->get_unpacked_dims()) {
-            content["unpacked_dims"] = YAML::Load("[]");
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                content["unpacked_dims"].push_back(render(n));
-            }
-        }
-
         content["cont_assign"] = render(node->get_cont_assign());
 
         content["strength"] = render(node->get_strength());
@@ -2383,6 +2383,13 @@ YAML::Node YAMLGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
         content["rdelay"] = render(node->get_rdelay());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_implicitnet["ImplicitNet"] = content;
@@ -2406,6 +2413,13 @@ YAML::Node YAMLGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) c
         content["resolver"] = render(node->get_resolver());
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_nettypedecl["NetTypeDecl"] = content;
@@ -2525,14 +2539,14 @@ YAML::Node YAMLGenerator::render_param(const AST::Param::Ptr node) const
 
         content["value"] = render(node->get_value());
 
+        content["type"] = render(node->get_type());
+
         if(node->get_unpacked_dims()) {
             content["unpacked_dims"] = YAML::Load("[]");
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 content["unpacked_dims"].push_back(render(n));
             }
         }
-
-        content["type"] = render(node->get_type());
     }
 
     node_param["Param"] = content;
@@ -2555,6 +2569,13 @@ YAML::Node YAMLGenerator::render_typeparam(const AST::TypeParam::Ptr node) const
         content["name"] = node->get_name();
 
         content["type"] = render(node->get_type());
+
+        if(node->get_unpacked_dims()) {
+            content["unpacked_dims"] = YAML::Load("[]");
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                content["unpacked_dims"].push_back(render(n));
+            }
+        }
     }
 
     node_typeparam["TypeParam"] = content;
@@ -2594,14 +2615,14 @@ YAML::Node YAMLGenerator::render_typedef(const AST::Typedef::Ptr node) const
         }
         content["name"] = node->get_name();
 
+        content["type"] = render(node->get_type());
+
         if(node->get_unpacked_dims()) {
             content["unpacked_dims"] = YAML::Load("[]");
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 content["unpacked_dims"].push_back(render(n));
             }
         }
-
-        content["type"] = render(node->get_type());
     }
 
     node_typedef["Typedef"] = content;
@@ -2622,16 +2643,16 @@ YAML::Node YAMLGenerator::render_member(const AST::Member::Ptr node) const
         content["line"] = node->get_line();
         content["name"] = node->get_name();
 
+        content["init"] = render(node->get_init());
+
+        content["type"] = render(node->get_type());
+
         if(node->get_unpacked_dims()) {
             content["unpacked_dims"] = YAML::Load("[]");
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 content["unpacked_dims"].push_back(render(n));
             }
         }
-
-        content["init"] = render(node->get_init());
-
-        content["type"] = render(node->get_type());
     }
 
     node_member["Member"] = content;
@@ -2672,16 +2693,16 @@ YAML::Node YAMLGenerator::render_arg(const AST::Arg::Ptr node) const
         }
         content["name"] = node->get_name();
 
+        content["default_value"] = render(node->get_default_value());
+
+        content["type"] = render(node->get_type());
+
         if(node->get_unpacked_dims()) {
             content["unpacked_dims"] = YAML::Load("[]");
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 content["unpacked_dims"].push_back(render(n));
             }
         }
-
-        content["default_value"] = render(node->get_default_value());
-
-        content["type"] = render(node->get_type());
     }
 
     node_arg["Arg"] = content;

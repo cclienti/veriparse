@@ -49,7 +49,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Typedef.
      */
-    Typedef(const Dimension::ListPtr unpacked_dims, const DataType::Ptr type,
+    Typedef(const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
             const Fwd_kindEnum &fwd_kind, const std::string &name, const std::string &filename = "",
             uint32_t line = 0);
 
@@ -99,19 +99,6 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child unpacked_dims.
-     */
-    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
-
-    /**
-     * Change the child unpacked_dims.
-     */
-    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
-    {
-        m_unpacked_dims = unpacked_dims;
-    }
-
-    /**
      * Return the property fwd_kind.
      */
     virtual const Fwd_kindEnum &get_fwd_kind(void) const { return m_fwd_kind; }
@@ -145,7 +132,6 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Dimension::ListPtr m_unpacked_dims{};
     Fwd_kindEnum m_fwd_kind{};
 };
 

@@ -1047,14 +1047,17 @@ TEST(YAMLGenerator, Declaration)
     Logger::add_stderr_sink();
 
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     std::string p_name = "mynbiqpmzj";
 
-    AST::Declaration::Ptr m_declaration(new AST::Declaration(c_type, p_name, "filename", 0));
+    AST::Declaration::Ptr m_declaration(
+        new AST::Declaration(c_type, c_unpacked_dims, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_declaration);
 
     ASSERT_TRUE(yaml["Declaration"]);
     ASSERT_TRUE(yaml["Declaration"]["type"]);
+    ASSERT_TRUE(yaml["Declaration"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Declaration"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -1064,23 +1067,23 @@ TEST(YAMLGenerator, Var)
     Logger::add_text_sink("YAMLGenerator.Var.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_init(new AST::Rvalue);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_var = false;
     bool p_is_const = false;
     AST::Var::LifetimeEnum p_lifetime = AST::Var::LifetimeEnum::NONE;
     std::string p_name = "iqpmzjplsg";
 
-    AST::Var::Ptr m_var(new AST::Var(c_unpacked_dims, c_init, c_type, p_is_var, p_is_const,
+    AST::Var::Ptr m_var(new AST::Var(c_init, c_type, c_unpacked_dims, p_is_var, p_is_const,
                                      p_lifetime, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_var);
 
     ASSERT_TRUE(yaml["Var"]);
-    ASSERT_TRUE(yaml["Var"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Var"]["init"]);
     ASSERT_TRUE(yaml["Var"]["type"]);
+    ASSERT_TRUE(yaml["Var"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Var"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Var"]["is_const"].as<bool>() == false);
     ASSERT_TRUE(yaml["Var"]["lifetime"].as<AST::Var::LifetimeEnum>() ==
@@ -1094,28 +1097,29 @@ TEST(YAMLGenerator, Net)
     Logger::add_text_sink("YAMLGenerator.Net.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::Net::Ptr m_net(new AST::Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay,
-                                     c_type, p_is_vectored, p_is_scalared, p_name, "filename", 0));
+    AST::Net::Ptr m_net(new AST::Net(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                                     c_unpacked_dims, p_is_vectored, p_is_scalared, p_name,
+                                     "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_net);
 
     ASSERT_TRUE(yaml["Net"]);
-    ASSERT_TRUE(yaml["Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Net"]["strength"]);
     ASSERT_TRUE(yaml["Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Net"]["type"]);
+    ASSERT_TRUE(yaml["Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1127,29 +1131,29 @@ TEST(YAMLGenerator, WireNet)
     Logger::add_text_sink("YAMLGenerator.WireNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::WireNet::Ptr m_wirenet(new AST::WireNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::WireNet::Ptr m_wirenet(new AST::WireNet(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                 c_type, c_unpacked_dims, p_is_vectored,
                                                  p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_wirenet);
 
     ASSERT_TRUE(yaml["WireNet"]);
-    ASSERT_TRUE(yaml["WireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WireNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WireNet"]["strength"]);
     ASSERT_TRUE(yaml["WireNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WireNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WireNet"]["type"]);
+    ASSERT_TRUE(yaml["WireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WireNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WireNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WireNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1161,29 +1165,29 @@ TEST(YAMLGenerator, TriNet)
     Logger::add_text_sink("YAMLGenerator.TriNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::TriNet::Ptr m_trinet(new AST::TriNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay,
-                                              c_rdelay, c_type, p_is_vectored, p_is_scalared,
-                                              p_name, "filename", 0));
+    AST::TriNet::Ptr m_trinet(new AST::TriNet(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                                              c_unpacked_dims, p_is_vectored, p_is_scalared, p_name,
+                                              "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_trinet);
 
     ASSERT_TRUE(yaml["TriNet"]);
-    ASSERT_TRUE(yaml["TriNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriNet"]["strength"]);
     ASSERT_TRUE(yaml["TriNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriNet"]["type"]);
+    ASSERT_TRUE(yaml["TriNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1195,29 +1199,29 @@ TEST(YAMLGenerator, Tri0Net)
     Logger::add_text_sink("YAMLGenerator.Tri0Net.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::Tri0Net::Ptr m_tri0net(new AST::Tri0Net(c_unpacked_dims, c_cont_assign, c_strength,
-                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::Tri0Net::Ptr m_tri0net(new AST::Tri0Net(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                 c_type, c_unpacked_dims, p_is_vectored,
                                                  p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_tri0net);
 
     ASSERT_TRUE(yaml["Tri0Net"]);
-    ASSERT_TRUE(yaml["Tri0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri0Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Tri0Net"]["strength"]);
     ASSERT_TRUE(yaml["Tri0Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri0Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Tri0Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri0Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri0Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri0Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1229,29 +1233,29 @@ TEST(YAMLGenerator, Tri1Net)
     Logger::add_text_sink("YAMLGenerator.Tri1Net.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::Tri1Net::Ptr m_tri1net(new AST::Tri1Net(c_unpacked_dims, c_cont_assign, c_strength,
-                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::Tri1Net::Ptr m_tri1net(new AST::Tri1Net(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                 c_type, c_unpacked_dims, p_is_vectored,
                                                  p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_tri1net);
 
     ASSERT_TRUE(yaml["Tri1Net"]);
-    ASSERT_TRUE(yaml["Tri1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri1Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Tri1Net"]["strength"]);
     ASSERT_TRUE(yaml["Tri1Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri1Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Tri1Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri1Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri1Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri1Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1263,29 +1267,29 @@ TEST(YAMLGenerator, TriandNet)
     Logger::add_text_sink("YAMLGenerator.TriandNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::TriandNet::Ptr m_triandnet(new AST::TriandNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                       c_ldelay, c_rdelay, c_type, p_is_vectored,
-                                                       p_is_scalared, p_name, "filename", 0));
+    AST::TriandNet::Ptr m_triandnet(
+        new AST::TriandNet(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims,
+                           p_is_vectored, p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_triandnet);
 
     ASSERT_TRUE(yaml["TriandNet"]);
-    ASSERT_TRUE(yaml["TriandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriandNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriandNet"]["strength"]);
     ASSERT_TRUE(yaml["TriandNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriandNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriandNet"]["type"]);
+    ASSERT_TRUE(yaml["TriandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriandNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriandNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriandNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1297,29 +1301,29 @@ TEST(YAMLGenerator, TriorNet)
     Logger::add_text_sink("YAMLGenerator.TriorNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::TriorNet::Ptr m_triornet(new AST::TriorNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                    c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::TriorNet::Ptr m_triornet(new AST::TriorNet(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                    c_type, c_unpacked_dims, p_is_vectored,
                                                     p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_triornet);
 
     ASSERT_TRUE(yaml["TriorNet"]);
-    ASSERT_TRUE(yaml["TriorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriorNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriorNet"]["strength"]);
     ASSERT_TRUE(yaml["TriorNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriorNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriorNet"]["type"]);
+    ASSERT_TRUE(yaml["TriorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriorNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriorNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriorNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1331,29 +1335,29 @@ TEST(YAMLGenerator, TriregNet)
     Logger::add_text_sink("YAMLGenerator.TriregNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::TriregNet::Ptr m_triregnet(new AST::TriregNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                       c_ldelay, c_rdelay, c_type, p_is_vectored,
-                                                       p_is_scalared, p_name, "filename", 0));
+    AST::TriregNet::Ptr m_triregnet(
+        new AST::TriregNet(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims,
+                           p_is_vectored, p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_triregnet);
 
     ASSERT_TRUE(yaml["TriregNet"]);
-    ASSERT_TRUE(yaml["TriregNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriregNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriregNet"]["strength"]);
     ASSERT_TRUE(yaml["TriregNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriregNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriregNet"]["type"]);
+    ASSERT_TRUE(yaml["TriregNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriregNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriregNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriregNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1365,29 +1369,29 @@ TEST(YAMLGenerator, WandNet)
     Logger::add_text_sink("YAMLGenerator.WandNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::WandNet::Ptr m_wandnet(new AST::WandNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::WandNet::Ptr m_wandnet(new AST::WandNet(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                 c_type, c_unpacked_dims, p_is_vectored,
                                                  p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_wandnet);
 
     ASSERT_TRUE(yaml["WandNet"]);
-    ASSERT_TRUE(yaml["WandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WandNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WandNet"]["strength"]);
     ASSERT_TRUE(yaml["WandNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WandNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WandNet"]["type"]);
+    ASSERT_TRUE(yaml["WandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WandNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WandNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WandNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1399,29 +1403,29 @@ TEST(YAMLGenerator, WorNet)
     Logger::add_text_sink("YAMLGenerator.WorNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::WorNet::Ptr m_wornet(new AST::WorNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay,
-                                              c_rdelay, c_type, p_is_vectored, p_is_scalared,
-                                              p_name, "filename", 0));
+    AST::WorNet::Ptr m_wornet(new AST::WorNet(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+                                              c_unpacked_dims, p_is_vectored, p_is_scalared, p_name,
+                                              "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_wornet);
 
     ASSERT_TRUE(yaml["WorNet"]);
-    ASSERT_TRUE(yaml["WorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WorNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WorNet"]["strength"]);
     ASSERT_TRUE(yaml["WorNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WorNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WorNet"]["type"]);
+    ASSERT_TRUE(yaml["WorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WorNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WorNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WorNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1433,29 +1437,29 @@ TEST(YAMLGenerator, UwireNet)
     Logger::add_text_sink("YAMLGenerator.UwireNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::UwireNet::Ptr m_uwirenet(new AST::UwireNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                    c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::UwireNet::Ptr m_uwirenet(new AST::UwireNet(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                    c_type, c_unpacked_dims, p_is_vectored,
                                                     p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_uwirenet);
 
     ASSERT_TRUE(yaml["UwireNet"]);
-    ASSERT_TRUE(yaml["UwireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UwireNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["UwireNet"]["strength"]);
     ASSERT_TRUE(yaml["UwireNet"]["ldelay"]);
     ASSERT_TRUE(yaml["UwireNet"]["rdelay"]);
     ASSERT_TRUE(yaml["UwireNet"]["type"]);
+    ASSERT_TRUE(yaml["UwireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UwireNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["UwireNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["UwireNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1467,29 +1471,29 @@ TEST(YAMLGenerator, Supply0Net)
     Logger::add_text_sink("YAMLGenerator.Supply0Net.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
     AST::Supply0Net::Ptr m_supply0net(
-        new AST::Supply0Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+        new AST::Supply0Net(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims,
                             p_is_vectored, p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_supply0net);
 
     ASSERT_TRUE(yaml["Supply0Net"]);
-    ASSERT_TRUE(yaml["Supply0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply0Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Supply0Net"]["strength"]);
     ASSERT_TRUE(yaml["Supply0Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply0Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Supply0Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply0Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply0Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply0Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1501,29 +1505,29 @@ TEST(YAMLGenerator, Supply1Net)
     Logger::add_text_sink("YAMLGenerator.Supply1Net.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
     AST::Supply1Net::Ptr m_supply1net(
-        new AST::Supply1Net(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+        new AST::Supply1Net(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims,
                             p_is_vectored, p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_supply1net);
 
     ASSERT_TRUE(yaml["Supply1Net"]);
-    ASSERT_TRUE(yaml["Supply1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply1Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Supply1Net"]["strength"]);
     ASSERT_TRUE(yaml["Supply1Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply1Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Supply1Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply1Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply1Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply1Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1535,29 +1539,29 @@ TEST(YAMLGenerator, InterconnectNet)
     Logger::add_text_sink("YAMLGenerator.InterconnectNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::InterconnectNet::Ptr m_interconnectnet(
-        new AST::InterconnectNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay,
-                                 c_type, p_is_vectored, p_is_scalared, p_name, "filename", 0));
+    AST::InterconnectNet::Ptr m_interconnectnet(new AST::InterconnectNet(
+        c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims, p_is_vectored,
+        p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_interconnectnet);
 
     ASSERT_TRUE(yaml["InterconnectNet"]);
-    ASSERT_TRUE(yaml["InterconnectNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["strength"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["ldelay"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["rdelay"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["type"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["InterconnectNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["InterconnectNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1569,29 +1573,29 @@ TEST(YAMLGenerator, UserNet)
     Logger::add_text_sink("YAMLGenerator.UserNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
-    AST::UserNet::Ptr m_usernet(new AST::UserNet(c_unpacked_dims, c_cont_assign, c_strength,
-                                                 c_ldelay, c_rdelay, c_type, p_is_vectored,
+    AST::UserNet::Ptr m_usernet(new AST::UserNet(c_cont_assign, c_strength, c_ldelay, c_rdelay,
+                                                 c_type, c_unpacked_dims, p_is_vectored,
                                                  p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_usernet);
 
     ASSERT_TRUE(yaml["UserNet"]);
-    ASSERT_TRUE(yaml["UserNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UserNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["UserNet"]["strength"]);
     ASSERT_TRUE(yaml["UserNet"]["ldelay"]);
     ASSERT_TRUE(yaml["UserNet"]["rdelay"]);
     ASSERT_TRUE(yaml["UserNet"]["type"]);
+    ASSERT_TRUE(yaml["UserNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UserNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["UserNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["UserNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1603,29 +1607,29 @@ TEST(YAMLGenerator, ImplicitNet)
     Logger::add_text_sink("YAMLGenerator.ImplicitNet.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_cont_assign(new AST::Rvalue);
     AST::Strength::Ptr c_strength(new AST::Strength);
     AST::DelayStatement::Ptr c_ldelay(new AST::DelayStatement);
     AST::DelayStatement::Ptr c_rdelay(new AST::DelayStatement);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_vectored = false;
     bool p_is_scalared = false;
     std::string p_name = "biqpmzjpls";
 
     AST::ImplicitNet::Ptr m_implicitnet(
-        new AST::ImplicitNet(c_unpacked_dims, c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type,
+        new AST::ImplicitNet(c_cont_assign, c_strength, c_ldelay, c_rdelay, c_type, c_unpacked_dims,
                              p_is_vectored, p_is_scalared, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_implicitnet);
 
     ASSERT_TRUE(yaml["ImplicitNet"]);
-    ASSERT_TRUE(yaml["ImplicitNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["strength"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["ldelay"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["rdelay"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["type"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["ImplicitNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["ImplicitNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1639,16 +1643,18 @@ TEST(YAMLGenerator, NetTypeDecl)
 
     AST::Identifier::Ptr c_resolver(new AST::Identifier);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     std::string p_name = "mynbiqpmzj";
 
     AST::NetTypeDecl::Ptr m_nettypedecl(
-        new AST::NetTypeDecl(c_resolver, c_type, p_name, "filename", 0));
+        new AST::NetTypeDecl(c_resolver, c_type, c_unpacked_dims, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_nettypedecl);
 
     ASSERT_TRUE(yaml["NetTypeDecl"]);
     ASSERT_TRUE(yaml["NetTypeDecl"]["resolver"]);
     ASSERT_TRUE(yaml["NetTypeDecl"]["type"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["NetTypeDecl"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -1709,20 +1715,20 @@ TEST(YAMLGenerator, Param)
     Logger::add_stderr_sink();
 
     AST::Node::Ptr c_value(new AST::Node);
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_local = false;
     std::string p_name = "ynbiqpmzjp";
 
     AST::Param::Ptr m_param(
-        new AST::Param(c_value, c_unpacked_dims, c_type, p_is_local, p_name, "filename", 0));
+        new AST::Param(c_value, c_type, c_unpacked_dims, p_is_local, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_param);
 
     ASSERT_TRUE(yaml["Param"]);
     ASSERT_TRUE(yaml["Param"]["value"]);
-    ASSERT_TRUE(yaml["Param"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Param"]["type"]);
+    ASSERT_TRUE(yaml["Param"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Param"]["is_local"].as<bool>() == false);
     ASSERT_TRUE(yaml["Param"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
@@ -1734,15 +1740,18 @@ TEST(YAMLGenerator, TypeParam)
     Logger::add_stderr_sink();
 
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_local = false;
     std::string p_name = "ynbiqpmzjp";
 
-    AST::TypeParam::Ptr m_typeparam(new AST::TypeParam(c_type, p_is_local, p_name, "filename", 0));
+    AST::TypeParam::Ptr m_typeparam(
+        new AST::TypeParam(c_type, c_unpacked_dims, p_is_local, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_typeparam);
 
     ASSERT_TRUE(yaml["TypeParam"]);
     ASSERT_TRUE(yaml["TypeParam"]["type"]);
+    ASSERT_TRUE(yaml["TypeParam"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TypeParam"]["is_local"].as<bool>() == false);
     ASSERT_TRUE(yaml["TypeParam"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
@@ -1753,19 +1762,19 @@ TEST(YAMLGenerator, Typedef)
     Logger::add_text_sink("YAMLGenerator.Typedef.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Typedef::Fwd_kindEnum p_fwd_kind = AST::Typedef::Fwd_kindEnum::UNION;
     std::string p_name = "ynbiqpmzjp";
 
     AST::Typedef::Ptr m_typedef(
-        new AST::Typedef(c_unpacked_dims, c_type, p_fwd_kind, p_name, "filename", 0));
+        new AST::Typedef(c_type, c_unpacked_dims, p_fwd_kind, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_typedef);
 
     ASSERT_TRUE(yaml["Typedef"]);
-    ASSERT_TRUE(yaml["Typedef"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Typedef"]["type"]);
+    ASSERT_TRUE(yaml["Typedef"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Typedef"]["fwd_kind"].as<AST::Typedef::Fwd_kindEnum>() ==
                 AST::Typedef::Fwd_kindEnum::UNION);
     ASSERT_TRUE(yaml["Typedef"]["name"].as<std::string>() == "ynbiqpmzjp");
@@ -1777,20 +1786,20 @@ TEST(YAMLGenerator, Member)
     Logger::add_text_sink("YAMLGenerator.Member.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Rvalue::Ptr c_init(new AST::Rvalue);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     std::string p_name = "mynbiqpmzj";
 
     AST::Member::Ptr m_member(
-        new AST::Member(c_unpacked_dims, c_init, c_type, p_name, "filename", 0));
+        new AST::Member(c_init, c_type, c_unpacked_dims, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_member);
 
     ASSERT_TRUE(yaml["Member"]);
-    ASSERT_TRUE(yaml["Member"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Member"]["init"]);
     ASSERT_TRUE(yaml["Member"]["type"]);
+    ASSERT_TRUE(yaml["Member"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Member"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -1800,22 +1809,22 @@ TEST(YAMLGenerator, Arg)
     Logger::add_text_sink("YAMLGenerator.Arg.log");
     Logger::add_stderr_sink();
 
-    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     AST::Node::Ptr c_default_value(new AST::Node);
     AST::DataType::Ptr c_type(new AST::DataType);
+    AST::Dimension::ListPtr c_unpacked_dims(new AST::Dimension::List);
     bool p_is_var = false;
     AST::Arg::DirectionEnum p_direction = AST::Arg::DirectionEnum::INOUT;
     std::string p_name = "biqpmzjpls";
 
-    AST::Arg::Ptr m_arg(new AST::Arg(c_unpacked_dims, c_default_value, c_type, p_is_var,
+    AST::Arg::Ptr m_arg(new AST::Arg(c_default_value, c_type, c_unpacked_dims, p_is_var,
                                      p_direction, p_name, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_arg);
 
     ASSERT_TRUE(yaml["Arg"]);
-    ASSERT_TRUE(yaml["Arg"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Arg"]["default_value"]);
     ASSERT_TRUE(yaml["Arg"]["type"]);
+    ASSERT_TRUE(yaml["Arg"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Arg"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Arg"]["direction"].as<AST::Arg::DirectionEnum>() ==
                 AST::Arg::DirectionEnum::INOUT);

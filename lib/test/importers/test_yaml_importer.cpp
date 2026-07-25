@@ -1232,6 +1232,7 @@ TEST(YAMLImporter, Declaration)
                     "  filename: declaration.v\n"
                     "  line: 11\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -1241,6 +1242,7 @@ TEST(YAMLImporter, Declaration)
     ASSERT_TRUE(yaml["Declaration"]["filename"].as<std::string>() == "declaration.v");
     ASSERT_TRUE(yaml["Declaration"]["line"].as<int>() == 11);
     ASSERT_TRUE(yaml["Declaration"]["type"]);
+    ASSERT_TRUE(yaml["Declaration"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Declaration"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -1252,9 +1254,9 @@ TEST(YAMLImporter, Var)
     std::string str("Var:\n"
                     "  filename: var.v\n"
                     "  line: 3\n"
-                    "  unpacked_dims:\n"
                     "  init:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_var: false\n"
                     "  is_const: false\n"
                     "  lifetime: NONE\n"
@@ -1266,9 +1268,9 @@ TEST(YAMLImporter, Var)
     ASSERT_TRUE(yaml["Var"]);
     ASSERT_TRUE(yaml["Var"]["filename"].as<std::string>() == "var.v");
     ASSERT_TRUE(yaml["Var"]["line"].as<int>() == 3);
-    ASSERT_TRUE(yaml["Var"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Var"]["init"]);
     ASSERT_TRUE(yaml["Var"]["type"]);
+    ASSERT_TRUE(yaml["Var"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Var"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Var"]["is_const"].as<bool>() == false);
     ASSERT_TRUE(yaml["Var"]["lifetime"].as<AST::Var::LifetimeEnum>() ==
@@ -1284,12 +1286,12 @@ TEST(YAMLImporter, Net)
     std::string str("Net:\n"
                     "  filename: net.v\n"
                     "  line: 3\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1300,12 +1302,12 @@ TEST(YAMLImporter, Net)
     ASSERT_TRUE(yaml["Net"]);
     ASSERT_TRUE(yaml["Net"]["filename"].as<std::string>() == "net.v");
     ASSERT_TRUE(yaml["Net"]["line"].as<int>() == 3);
-    ASSERT_TRUE(yaml["Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Net"]["strength"]);
     ASSERT_TRUE(yaml["Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Net"]["type"]);
+    ASSERT_TRUE(yaml["Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1319,12 +1321,12 @@ TEST(YAMLImporter, WireNet)
     std::string str("WireNet:\n"
                     "  filename: wirenet.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1335,12 +1337,12 @@ TEST(YAMLImporter, WireNet)
     ASSERT_TRUE(yaml["WireNet"]);
     ASSERT_TRUE(yaml["WireNet"]["filename"].as<std::string>() == "wirenet.v");
     ASSERT_TRUE(yaml["WireNet"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["WireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WireNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WireNet"]["strength"]);
     ASSERT_TRUE(yaml["WireNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WireNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WireNet"]["type"]);
+    ASSERT_TRUE(yaml["WireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WireNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WireNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WireNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1354,12 +1356,12 @@ TEST(YAMLImporter, TriNet)
     std::string str("TriNet:\n"
                     "  filename: trinet.v\n"
                     "  line: 6\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1370,12 +1372,12 @@ TEST(YAMLImporter, TriNet)
     ASSERT_TRUE(yaml["TriNet"]);
     ASSERT_TRUE(yaml["TriNet"]["filename"].as<std::string>() == "trinet.v");
     ASSERT_TRUE(yaml["TriNet"]["line"].as<int>() == 6);
-    ASSERT_TRUE(yaml["TriNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriNet"]["strength"]);
     ASSERT_TRUE(yaml["TriNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriNet"]["type"]);
+    ASSERT_TRUE(yaml["TriNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1389,12 +1391,12 @@ TEST(YAMLImporter, Tri0Net)
     std::string str("Tri0Net:\n"
                     "  filename: tri0net.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1405,12 +1407,12 @@ TEST(YAMLImporter, Tri0Net)
     ASSERT_TRUE(yaml["Tri0Net"]);
     ASSERT_TRUE(yaml["Tri0Net"]["filename"].as<std::string>() == "tri0net.v");
     ASSERT_TRUE(yaml["Tri0Net"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["Tri0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri0Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Tri0Net"]["strength"]);
     ASSERT_TRUE(yaml["Tri0Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri0Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Tri0Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri0Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri0Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri0Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1424,12 +1426,12 @@ TEST(YAMLImporter, Tri1Net)
     std::string str("Tri1Net:\n"
                     "  filename: tri1net.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1440,12 +1442,12 @@ TEST(YAMLImporter, Tri1Net)
     ASSERT_TRUE(yaml["Tri1Net"]);
     ASSERT_TRUE(yaml["Tri1Net"]["filename"].as<std::string>() == "tri1net.v");
     ASSERT_TRUE(yaml["Tri1Net"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["Tri1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri1Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Tri1Net"]["strength"]);
     ASSERT_TRUE(yaml["Tri1Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Tri1Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Tri1Net"]["type"]);
+    ASSERT_TRUE(yaml["Tri1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Tri1Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri1Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Tri1Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1459,12 +1461,12 @@ TEST(YAMLImporter, TriandNet)
     std::string str("TriandNet:\n"
                     "  filename: triandnet.v\n"
                     "  line: 9\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1475,12 +1477,12 @@ TEST(YAMLImporter, TriandNet)
     ASSERT_TRUE(yaml["TriandNet"]);
     ASSERT_TRUE(yaml["TriandNet"]["filename"].as<std::string>() == "triandnet.v");
     ASSERT_TRUE(yaml["TriandNet"]["line"].as<int>() == 9);
-    ASSERT_TRUE(yaml["TriandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriandNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriandNet"]["strength"]);
     ASSERT_TRUE(yaml["TriandNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriandNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriandNet"]["type"]);
+    ASSERT_TRUE(yaml["TriandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriandNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriandNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriandNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1494,12 +1496,12 @@ TEST(YAMLImporter, TriorNet)
     std::string str("TriorNet:\n"
                     "  filename: triornet.v\n"
                     "  line: 8\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1510,12 +1512,12 @@ TEST(YAMLImporter, TriorNet)
     ASSERT_TRUE(yaml["TriorNet"]);
     ASSERT_TRUE(yaml["TriorNet"]["filename"].as<std::string>() == "triornet.v");
     ASSERT_TRUE(yaml["TriorNet"]["line"].as<int>() == 8);
-    ASSERT_TRUE(yaml["TriorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriorNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriorNet"]["strength"]);
     ASSERT_TRUE(yaml["TriorNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriorNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriorNet"]["type"]);
+    ASSERT_TRUE(yaml["TriorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriorNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriorNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriorNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1529,12 +1531,12 @@ TEST(YAMLImporter, TriregNet)
     std::string str("TriregNet:\n"
                     "  filename: triregnet.v\n"
                     "  line: 9\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1545,12 +1547,12 @@ TEST(YAMLImporter, TriregNet)
     ASSERT_TRUE(yaml["TriregNet"]);
     ASSERT_TRUE(yaml["TriregNet"]["filename"].as<std::string>() == "triregnet.v");
     ASSERT_TRUE(yaml["TriregNet"]["line"].as<int>() == 9);
-    ASSERT_TRUE(yaml["TriregNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriregNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["TriregNet"]["strength"]);
     ASSERT_TRUE(yaml["TriregNet"]["ldelay"]);
     ASSERT_TRUE(yaml["TriregNet"]["rdelay"]);
     ASSERT_TRUE(yaml["TriregNet"]["type"]);
+    ASSERT_TRUE(yaml["TriregNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TriregNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriregNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["TriregNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1564,12 +1566,12 @@ TEST(YAMLImporter, WandNet)
     std::string str("WandNet:\n"
                     "  filename: wandnet.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1580,12 +1582,12 @@ TEST(YAMLImporter, WandNet)
     ASSERT_TRUE(yaml["WandNet"]);
     ASSERT_TRUE(yaml["WandNet"]["filename"].as<std::string>() == "wandnet.v");
     ASSERT_TRUE(yaml["WandNet"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["WandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WandNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WandNet"]["strength"]);
     ASSERT_TRUE(yaml["WandNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WandNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WandNet"]["type"]);
+    ASSERT_TRUE(yaml["WandNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WandNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WandNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WandNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1599,12 +1601,12 @@ TEST(YAMLImporter, WorNet)
     std::string str("WorNet:\n"
                     "  filename: wornet.v\n"
                     "  line: 6\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1615,12 +1617,12 @@ TEST(YAMLImporter, WorNet)
     ASSERT_TRUE(yaml["WorNet"]);
     ASSERT_TRUE(yaml["WorNet"]["filename"].as<std::string>() == "wornet.v");
     ASSERT_TRUE(yaml["WorNet"]["line"].as<int>() == 6);
-    ASSERT_TRUE(yaml["WorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WorNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["WorNet"]["strength"]);
     ASSERT_TRUE(yaml["WorNet"]["ldelay"]);
     ASSERT_TRUE(yaml["WorNet"]["rdelay"]);
     ASSERT_TRUE(yaml["WorNet"]["type"]);
+    ASSERT_TRUE(yaml["WorNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["WorNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["WorNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["WorNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1634,12 +1636,12 @@ TEST(YAMLImporter, UwireNet)
     std::string str("UwireNet:\n"
                     "  filename: uwirenet.v\n"
                     "  line: 8\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1650,12 +1652,12 @@ TEST(YAMLImporter, UwireNet)
     ASSERT_TRUE(yaml["UwireNet"]);
     ASSERT_TRUE(yaml["UwireNet"]["filename"].as<std::string>() == "uwirenet.v");
     ASSERT_TRUE(yaml["UwireNet"]["line"].as<int>() == 8);
-    ASSERT_TRUE(yaml["UwireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UwireNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["UwireNet"]["strength"]);
     ASSERT_TRUE(yaml["UwireNet"]["ldelay"]);
     ASSERT_TRUE(yaml["UwireNet"]["rdelay"]);
     ASSERT_TRUE(yaml["UwireNet"]["type"]);
+    ASSERT_TRUE(yaml["UwireNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UwireNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["UwireNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["UwireNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1669,12 +1671,12 @@ TEST(YAMLImporter, Supply0Net)
     std::string str("Supply0Net:\n"
                     "  filename: supply0net.v\n"
                     "  line: 10\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1685,12 +1687,12 @@ TEST(YAMLImporter, Supply0Net)
     ASSERT_TRUE(yaml["Supply0Net"]);
     ASSERT_TRUE(yaml["Supply0Net"]["filename"].as<std::string>() == "supply0net.v");
     ASSERT_TRUE(yaml["Supply0Net"]["line"].as<int>() == 10);
-    ASSERT_TRUE(yaml["Supply0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply0Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Supply0Net"]["strength"]);
     ASSERT_TRUE(yaml["Supply0Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply0Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Supply0Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply0Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply0Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply0Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply0Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1704,12 +1706,12 @@ TEST(YAMLImporter, Supply1Net)
     std::string str("Supply1Net:\n"
                     "  filename: supply1net.v\n"
                     "  line: 10\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1720,12 +1722,12 @@ TEST(YAMLImporter, Supply1Net)
     ASSERT_TRUE(yaml["Supply1Net"]);
     ASSERT_TRUE(yaml["Supply1Net"]["filename"].as<std::string>() == "supply1net.v");
     ASSERT_TRUE(yaml["Supply1Net"]["line"].as<int>() == 10);
-    ASSERT_TRUE(yaml["Supply1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply1Net"]["cont_assign"]);
     ASSERT_TRUE(yaml["Supply1Net"]["strength"]);
     ASSERT_TRUE(yaml["Supply1Net"]["ldelay"]);
     ASSERT_TRUE(yaml["Supply1Net"]["rdelay"]);
     ASSERT_TRUE(yaml["Supply1Net"]["type"]);
+    ASSERT_TRUE(yaml["Supply1Net"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Supply1Net"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply1Net"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["Supply1Net"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1739,12 +1741,12 @@ TEST(YAMLImporter, InterconnectNet)
     std::string str("InterconnectNet:\n"
                     "  filename: interconnectnet.v\n"
                     "  line: 15\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1755,12 +1757,12 @@ TEST(YAMLImporter, InterconnectNet)
     ASSERT_TRUE(yaml["InterconnectNet"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["filename"].as<std::string>() == "interconnectnet.v");
     ASSERT_TRUE(yaml["InterconnectNet"]["line"].as<int>() == 15);
-    ASSERT_TRUE(yaml["InterconnectNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["strength"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["ldelay"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["rdelay"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["type"]);
+    ASSERT_TRUE(yaml["InterconnectNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["InterconnectNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["InterconnectNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["InterconnectNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1774,12 +1776,12 @@ TEST(YAMLImporter, UserNet)
     std::string str("UserNet:\n"
                     "  filename: usernet.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1790,12 +1792,12 @@ TEST(YAMLImporter, UserNet)
     ASSERT_TRUE(yaml["UserNet"]);
     ASSERT_TRUE(yaml["UserNet"]["filename"].as<std::string>() == "usernet.v");
     ASSERT_TRUE(yaml["UserNet"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["UserNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UserNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["UserNet"]["strength"]);
     ASSERT_TRUE(yaml["UserNet"]["ldelay"]);
     ASSERT_TRUE(yaml["UserNet"]["rdelay"]);
     ASSERT_TRUE(yaml["UserNet"]["type"]);
+    ASSERT_TRUE(yaml["UserNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["UserNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["UserNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["UserNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1809,12 +1811,12 @@ TEST(YAMLImporter, ImplicitNet)
     std::string str("ImplicitNet:\n"
                     "  filename: implicitnet.v\n"
                     "  line: 11\n"
-                    "  unpacked_dims:\n"
                     "  cont_assign:\n"
                     "  strength:\n"
                     "  ldelay:\n"
                     "  rdelay:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_vectored: false\n"
                     "  is_scalared: false\n"
                     "  name: biqpmzjpls\n");
@@ -1825,12 +1827,12 @@ TEST(YAMLImporter, ImplicitNet)
     ASSERT_TRUE(yaml["ImplicitNet"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["filename"].as<std::string>() == "implicitnet.v");
     ASSERT_TRUE(yaml["ImplicitNet"]["line"].as<int>() == 11);
-    ASSERT_TRUE(yaml["ImplicitNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["cont_assign"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["strength"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["ldelay"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["rdelay"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["type"]);
+    ASSERT_TRUE(yaml["ImplicitNet"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["ImplicitNet"]["is_vectored"].as<bool>() == false);
     ASSERT_TRUE(yaml["ImplicitNet"]["is_scalared"].as<bool>() == false);
     ASSERT_TRUE(yaml["ImplicitNet"]["name"].as<std::string>() == "biqpmzjpls");
@@ -1846,6 +1848,7 @@ TEST(YAMLImporter, NetTypeDecl)
                     "  line: 11\n"
                     "  resolver:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -1856,6 +1859,7 @@ TEST(YAMLImporter, NetTypeDecl)
     ASSERT_TRUE(yaml["NetTypeDecl"]["line"].as<int>() == 11);
     ASSERT_TRUE(yaml["NetTypeDecl"]["resolver"]);
     ASSERT_TRUE(yaml["NetTypeDecl"]["type"]);
+    ASSERT_TRUE(yaml["NetTypeDecl"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["NetTypeDecl"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -1928,8 +1932,8 @@ TEST(YAMLImporter, Param)
                     "  filename: param.v\n"
                     "  line: 5\n"
                     "  value:\n"
-                    "  unpacked_dims:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_local: false\n"
                     "  name: ynbiqpmzjp\n");
 
@@ -1940,8 +1944,8 @@ TEST(YAMLImporter, Param)
     ASSERT_TRUE(yaml["Param"]["filename"].as<std::string>() == "param.v");
     ASSERT_TRUE(yaml["Param"]["line"].as<int>() == 5);
     ASSERT_TRUE(yaml["Param"]["value"]);
-    ASSERT_TRUE(yaml["Param"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Param"]["type"]);
+    ASSERT_TRUE(yaml["Param"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Param"]["is_local"].as<bool>() == false);
     ASSERT_TRUE(yaml["Param"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
@@ -1955,6 +1959,7 @@ TEST(YAMLImporter, TypeParam)
                     "  filename: typeparam.v\n"
                     "  line: 9\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_local: false\n"
                     "  name: ynbiqpmzjp\n");
 
@@ -1965,6 +1970,7 @@ TEST(YAMLImporter, TypeParam)
     ASSERT_TRUE(yaml["TypeParam"]["filename"].as<std::string>() == "typeparam.v");
     ASSERT_TRUE(yaml["TypeParam"]["line"].as<int>() == 9);
     ASSERT_TRUE(yaml["TypeParam"]["type"]);
+    ASSERT_TRUE(yaml["TypeParam"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["TypeParam"]["is_local"].as<bool>() == false);
     ASSERT_TRUE(yaml["TypeParam"]["name"].as<std::string>() == "ynbiqpmzjp");
 }
@@ -1977,8 +1983,8 @@ TEST(YAMLImporter, Typedef)
     std::string str("Typedef:\n"
                     "  filename: typedef.v\n"
                     "  line: 7\n"
-                    "  unpacked_dims:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  fwd_kind: UNION\n"
                     "  name: ynbiqpmzjp\n");
 
@@ -1988,8 +1994,8 @@ TEST(YAMLImporter, Typedef)
     ASSERT_TRUE(yaml["Typedef"]);
     ASSERT_TRUE(yaml["Typedef"]["filename"].as<std::string>() == "typedef.v");
     ASSERT_TRUE(yaml["Typedef"]["line"].as<int>() == 7);
-    ASSERT_TRUE(yaml["Typedef"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Typedef"]["type"]);
+    ASSERT_TRUE(yaml["Typedef"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Typedef"]["fwd_kind"].as<AST::Typedef::Fwd_kindEnum>() ==
                 AST::Typedef::Fwd_kindEnum::UNION);
     ASSERT_TRUE(yaml["Typedef"]["name"].as<std::string>() == "ynbiqpmzjp");
@@ -2003,9 +2009,9 @@ TEST(YAMLImporter, Member)
     std::string str("Member:\n"
                     "  filename: member.v\n"
                     "  line: 6\n"
-                    "  unpacked_dims:\n"
                     "  init:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  name: mynbiqpmzj\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -2014,9 +2020,9 @@ TEST(YAMLImporter, Member)
     ASSERT_TRUE(yaml["Member"]);
     ASSERT_TRUE(yaml["Member"]["filename"].as<std::string>() == "member.v");
     ASSERT_TRUE(yaml["Member"]["line"].as<int>() == 6);
-    ASSERT_TRUE(yaml["Member"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Member"]["init"]);
     ASSERT_TRUE(yaml["Member"]["type"]);
+    ASSERT_TRUE(yaml["Member"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Member"]["name"].as<std::string>() == "mynbiqpmzj");
 }
 
@@ -2028,9 +2034,9 @@ TEST(YAMLImporter, Arg)
     std::string str("Arg:\n"
                     "  filename: arg.v\n"
                     "  line: 3\n"
-                    "  unpacked_dims:\n"
                     "  default_value:\n"
                     "  type:\n"
+                    "  unpacked_dims:\n"
                     "  is_var: false\n"
                     "  direction: INOUT\n"
                     "  name: biqpmzjpls\n");
@@ -2041,9 +2047,9 @@ TEST(YAMLImporter, Arg)
     ASSERT_TRUE(yaml["Arg"]);
     ASSERT_TRUE(yaml["Arg"]["filename"].as<std::string>() == "arg.v");
     ASSERT_TRUE(yaml["Arg"]["line"].as<int>() == 3);
-    ASSERT_TRUE(yaml["Arg"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Arg"]["default_value"]);
     ASSERT_TRUE(yaml["Arg"]["type"]);
+    ASSERT_TRUE(yaml["Arg"]["unpacked_dims"]);
     ASSERT_TRUE(yaml["Arg"]["is_var"].as<bool>() == false);
     ASSERT_TRUE(yaml["Arg"]["direction"].as<AST::Arg::DirectionEnum>() ==
                 AST::Arg::DirectionEnum::INOUT);

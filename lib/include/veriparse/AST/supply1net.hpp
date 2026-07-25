@@ -42,11 +42,11 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Supply1Net.
      */
-    Supply1Net(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
-               const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
-               const DelayStatement::Ptr rdelay, const DataType::Ptr type, const bool &is_vectored,
-               const bool &is_scalared, const std::string &name, const std::string &filename = "",
-               uint32_t line = 0);
+    Supply1Net(const Rvalue::Ptr cont_assign, const Strength::Ptr strength,
+               const DelayStatement::Ptr ldelay, const DelayStatement::Ptr rdelay,
+               const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
+               const bool &is_vectored, const bool &is_scalared, const std::string &name,
+               const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.

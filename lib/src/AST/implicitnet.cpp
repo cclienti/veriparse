@@ -16,12 +16,12 @@ ImplicitNet::ImplicitNet(const std::string &filename, uint32_t line) : Net(filen
     set_node_categories({NodeType::Net, NodeType::Declaration, NodeType::Node});
 }
 
-ImplicitNet::ImplicitNet(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
-                         const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
-                         const DelayStatement::Ptr rdelay, const DataType::Ptr type,
+ImplicitNet::ImplicitNet(const Rvalue::Ptr cont_assign, const Strength::Ptr strength,
+                         const DelayStatement::Ptr ldelay, const DelayStatement::Ptr rdelay,
+                         const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
                          const bool &is_vectored, const bool &is_scalared, const std::string &name,
                          const std::string &filename, uint32_t line)
-    : Net(unpacked_dims, cont_assign, strength, ldelay, rdelay, type, is_vectored, is_scalared,
+    : Net(cont_assign, strength, ldelay, rdelay, type, unpacked_dims, is_vectored, is_scalared,
           name, filename, line)
 {
     set_node_type(NodeType::ImplicitNet);
@@ -75,35 +75,6 @@ bool ImplicitNet::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(n
 bool ImplicitNet::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
-    if(get_unpacked_dims()) {
-        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
-        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
-            if(lnode) {
-                if(lnode != node) {
-                    new_list->push_back(lnode);
-                } else {
-                    if(found) {
-                        LOG_WARNING << *this << ", "
-                                    << "ImplicitNet::replace matches multiple times "
-                                       "(list(Dimension)::unpacked_dims)";
-                    }
-                    if(new_node) {
-                        new_list->push_back(cast_to<Dimension>(new_node));
-                    }
-                    found = true;
-                }
-            } else {
-                LOG_WARNING << *this << ", "
-                            << "found an empty node during ImplicitNet::replace "
-                            << "of children list(Dimension)::unpacked_dims";
-            }
-        }
-        if(new_list->size() != 0) {
-            set_unpacked_dims(new_list);
-        } else {
-            set_unpacked_dims(nullptr);
-        }
-    }
     if(get_cont_assign()) {
         if(get_cont_assign() == node) {
             if(found) {
@@ -154,6 +125,35 @@ bool ImplicitNet::replace(Node::Ptr node, Node::Ptr new_node)
             }
             set_type(cast_to<DataType>(new_node));
             found = true;
+        }
+    }
+    if(get_unpacked_dims()) {
+        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
+        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "ImplicitNet::replace matches multiple times "
+                                       "(list(Dimension)::unpacked_dims)";
+                    }
+                    if(new_node) {
+                        new_list->push_back(cast_to<Dimension>(new_node));
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during ImplicitNet::replace "
+                            << "of children list(Dimension)::unpacked_dims";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_unpacked_dims(new_list);
+        } else {
+            set_unpacked_dims(nullptr);
         }
     }
     return found;
@@ -211,13 +211,6 @@ ImplicitNet::ListPtr ImplicitNet::clone_list(const ListPtr nodes)
 Node::ListPtr ImplicitNet::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
-    if(get_unpacked_dims()) {
-        for(const Dimension::Ptr &node : *get_unpacked_dims()) {
-            if(node) {
-                list->push_back(std::static_pointer_cast<Node>(node));
-            }
-        }
-    }
     if(get_cont_assign()) {
         list->push_back(std::static_pointer_cast<Node>(get_cont_assign()));
     }
@@ -233,12 +226,18 @@ Node::ListPtr ImplicitNet::get_children(void) const
     if(get_type()) {
         list->push_back(std::static_pointer_cast<Node>(get_type()));
     }
+    if(get_unpacked_dims()) {
+        for(const Dimension::Ptr &node : *get_unpacked_dims()) {
+            if(node) {
+                list->push_back(std::static_pointer_cast<Node>(node));
+            }
+        }
+    }
     return list;
 }
 
 void ImplicitNet::clone_children(Node::Ptr new_node) const
 {
-    cast_to<ImplicitNet>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
     if(get_cont_assign()) {
         cast_to<ImplicitNet>(new_node)->set_cont_assign(
             cast_to<Rvalue>(get_cont_assign()->clone()));
@@ -255,6 +254,7 @@ void ImplicitNet::clone_children(Node::Ptr new_node) const
     if(get_type()) {
         cast_to<ImplicitNet>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
+    cast_to<ImplicitNet>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
 }
 
 Node::Ptr ImplicitNet::alloc_same(void) const

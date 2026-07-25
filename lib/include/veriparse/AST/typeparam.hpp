@@ -7,6 +7,7 @@
 #include <veriparse/AST/declaration.hpp>
 
 #include <veriparse/AST/datatype.hpp>
+#include <veriparse/AST/dimension.hpp>
 
 #include <list>
 #include <string>
@@ -38,8 +39,9 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::TypeParam.
      */
-    TypeParam(const DataType::Ptr type, const bool &is_local, const std::string &name,
-              const std::string &filename = "", uint32_t line = 0);
+    TypeParam(const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
+              const bool &is_local, const std::string &name, const std::string &filename = "",
+              uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.

@@ -49,8 +49,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Arg.
      */
-    Arg(const Dimension::ListPtr unpacked_dims, const Node::Ptr default_value,
-        const DataType::Ptr type, const bool &is_var, const DirectionEnum &direction,
+    Arg(const Node::Ptr default_value, const DataType::Ptr type,
+        const Dimension::ListPtr unpacked_dims, const bool &is_var, const DirectionEnum &direction,
         const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
@@ -99,22 +99,9 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child unpacked_dims.
-     */
-    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
-
-    /**
      * Return the child default_value.
      */
     virtual Node::Ptr get_default_value(void) const { return m_default_value; }
-
-    /**
-     * Change the child unpacked_dims.
-     */
-    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
-    {
-        m_unpacked_dims = unpacked_dims;
-    }
 
     /**
      * Change the child default_value.
@@ -165,7 +152,6 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Dimension::ListPtr m_unpacked_dims{};
     Node::Ptr m_default_value{};
     bool m_is_var{};
     DirectionEnum m_direction{};

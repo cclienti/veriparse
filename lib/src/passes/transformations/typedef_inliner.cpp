@@ -336,19 +336,20 @@ int TypedefInliner::substitute_named_type(const AST::NamedType::Ptr &named,
     const bool is_decl_type = parent && parent->is_node_category(AST::NodeType::Declaration) &&
                               AST::cast_to<AST::Declaration>(parent)->get_type() == named;
     if(alias->unpacked_dims && !alias->unpacked_dims->empty()) {
-        const auto &decl = is_decl_type ? AST::cast_to<AST::Declaration>(parent) : nullptr;
-        auto dims = Analysis::Dimensions::decl_unpacked_dims(decl);
+        // Only a declaration's type slot has somewhere for the dims to go:
+        // a cast target or packed context would silently drop them.
+        if(!is_decl_type) {
+            LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
+            return 1;
+        }
+        const auto &decl = AST::cast_to<AST::Declaration>(parent);
+        auto dims = decl->get_unpacked_dims();
         if(!dims) {
             dims = std::make_shared<AST::Dimension::List>();
         }
         const auto &extra = AST::Dimension::clone_list(alias->unpacked_dims);
         dims->insert(dims->end(), extra->begin(), extra->end());
-        // The setter answers whether the declaration kind carries a slot at
-        // all — the merged list is only built locally until it succeeds.
-        if(!Analysis::Dimensions::set_decl_unpacked_dims(decl, dims)) {
-            LOG_ERROR_N(named) << "array typedef '" << name << "' is not legal here";
-            return 1;
-        }
+        decl->set_unpacked_dims(dims);
     }
 
     if(is_decl_type) {

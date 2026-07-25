@@ -234,14 +234,13 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                         s->is_node_category(AST::NodeType::Net)) &&
                        AST::cast_to<AST::Declaration>(s)->get_name() == name) {
                         type = AST::cast_to<AST::Declaration>(s)->get_type();
-                        unpacked = Analysis::Dimensions::decl_unpacked_dims(
-                            AST::cast_to<AST::Declaration>(s));
+                        unpacked = AST::cast_to<AST::Declaration>(s)->get_unpacked_dims();
                         break;
                     }
                 }
                 if(!type && port->get_decl()) {
                     type = port->get_decl()->get_type();
-                    unpacked = Analysis::Dimensions::decl_unpacked_dims(port->get_decl());
+                    unpacked = port->get_decl()->get_unpacked_dims();
                 }
 
                 params.push_back({name, type, unpacked});

@@ -4108,6 +4108,35 @@ AST::Node::Ptr YAMLImporter::convert_declaration(const YAML::Node node) const
                 result->set_type(child_cast);
             }
         }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Declaration>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
+        }
     }
 
     // Return the result
@@ -4175,6 +4204,34 @@ AST::Node::Ptr YAMLImporter::convert_var(const YAML::Node node) const
             }
         }
 
+        // Manage Child init
+        if(node["init"]) {
+            const YAML::Node node_init = node["init"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_init);
+            if(child) {
+                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Var>();
+                }
+                result->set_init(child_cast);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Var>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+
         // Manage Child unpacked_dims
         if(node["unpacked_dims"]) {
             const YAML::Node node_unpacked_dims = node["unpacked_dims"];
@@ -4202,34 +4259,6 @@ AST::Node::Ptr YAMLImporter::convert_var(const YAML::Node node) const
                 result = std::make_shared<AST::Var>();
             }
             result->set_unpacked_dims(unpacked_dims_list);
-        }
-
-        // Manage Child init
-        if(node["init"]) {
-            const YAML::Node node_init = node["init"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_init);
-            if(child) {
-                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Var>();
-                }
-                result->set_init(child_cast);
-            }
-        }
-
-        // Manage Child type
-        if(node["type"]) {
-            const YAML::Node node_type = node["type"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_type);
-            if(child) {
-                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Var>();
-                }
-                result->set_type(child_cast);
-            }
         }
     }
 
@@ -4288,35 +4317,6 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::Net>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -4385,6 +4385,35 @@ AST::Node::Ptr YAMLImporter::convert_net(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Net>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -4443,35 +4472,6 @@ AST::Node::Ptr YAMLImporter::convert_wirenet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::WireNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -4540,6 +4540,35 @@ AST::Node::Ptr YAMLImporter::convert_wirenet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::WireNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -4598,35 +4627,6 @@ AST::Node::Ptr YAMLImporter::convert_trinet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::TriNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -4695,6 +4695,35 @@ AST::Node::Ptr YAMLImporter::convert_trinet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TriNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -4753,35 +4782,6 @@ AST::Node::Ptr YAMLImporter::convert_tri0net(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::Tri0Net>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -4850,6 +4850,35 @@ AST::Node::Ptr YAMLImporter::convert_tri0net(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Tri0Net>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -4908,35 +4937,6 @@ AST::Node::Ptr YAMLImporter::convert_tri1net(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::Tri1Net>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5005,6 +5005,35 @@ AST::Node::Ptr YAMLImporter::convert_tri1net(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Tri1Net>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5063,35 +5092,6 @@ AST::Node::Ptr YAMLImporter::convert_triandnet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::TriandNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5160,6 +5160,35 @@ AST::Node::Ptr YAMLImporter::convert_triandnet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TriandNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5218,35 +5247,6 @@ AST::Node::Ptr YAMLImporter::convert_triornet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::TriorNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5315,6 +5315,35 @@ AST::Node::Ptr YAMLImporter::convert_triornet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TriorNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5373,35 +5402,6 @@ AST::Node::Ptr YAMLImporter::convert_triregnet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::TriregNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5470,6 +5470,35 @@ AST::Node::Ptr YAMLImporter::convert_triregnet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TriregNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5528,35 +5557,6 @@ AST::Node::Ptr YAMLImporter::convert_wandnet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::WandNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5625,6 +5625,35 @@ AST::Node::Ptr YAMLImporter::convert_wandnet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::WandNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5683,35 +5712,6 @@ AST::Node::Ptr YAMLImporter::convert_wornet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::WorNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5780,6 +5780,35 @@ AST::Node::Ptr YAMLImporter::convert_wornet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::WorNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5838,35 +5867,6 @@ AST::Node::Ptr YAMLImporter::convert_uwirenet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::UwireNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -5935,6 +5935,35 @@ AST::Node::Ptr YAMLImporter::convert_uwirenet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::UwireNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -5993,35 +6022,6 @@ AST::Node::Ptr YAMLImporter::convert_supply0net(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::Supply0Net>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -6090,6 +6090,35 @@ AST::Node::Ptr YAMLImporter::convert_supply0net(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Supply0Net>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6148,35 +6177,6 @@ AST::Node::Ptr YAMLImporter::convert_supply1net(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::Supply1Net>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -6245,6 +6245,35 @@ AST::Node::Ptr YAMLImporter::convert_supply1net(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::Supply1Net>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6303,35 +6332,6 @@ AST::Node::Ptr YAMLImporter::convert_interconnectnet(const YAML::Node node) cons
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::InterconnectNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -6400,6 +6400,35 @@ AST::Node::Ptr YAMLImporter::convert_interconnectnet(const YAML::Node node) cons
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::InterconnectNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6458,35 +6487,6 @@ AST::Node::Ptr YAMLImporter::convert_usernet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::UserNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -6555,6 +6555,35 @@ AST::Node::Ptr YAMLImporter::convert_usernet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::UserNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6613,35 +6642,6 @@ AST::Node::Ptr YAMLImporter::convert_implicitnet(const YAML::Node node) const
             }
         }
 
-        // Manage Child unpacked_dims
-        if(node["unpacked_dims"]) {
-            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
-            // Fill the list of children
-            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
-            if(node_unpacked_dims.IsSequence()) {
-                // The YAML node is a sequence
-                for(YAML::const_iterator it = node_unpacked_dims.begin();
-                    it != node_unpacked_dims.end(); ++it) {
-                    AST::Node::Ptr child = convert(*it);
-                    if(child) {
-                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                        unpacked_dims_list->push_back(child_cast);
-                    }
-                }
-            } else {
-                AST::Node::Ptr child = convert(node_unpacked_dims);
-                if(child) {
-                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
-                    unpacked_dims_list->push_back(child_cast);
-                }
-            }
-            // Set the list
-            if(!result) {
-                result = std::make_shared<AST::ImplicitNet>();
-            }
-            result->set_unpacked_dims(unpacked_dims_list);
-        }
-
         // Manage Child cont_assign
         if(node["cont_assign"]) {
             const YAML::Node node_cont_assign = node["cont_assign"];
@@ -6710,6 +6710,35 @@ AST::Node::Ptr YAMLImporter::convert_implicitnet(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::ImplicitNet>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6774,6 +6803,35 @@ AST::Node::Ptr YAMLImporter::convert_nettypedecl(const YAML::Node node) const
                 }
                 result->set_type(child_cast);
             }
+        }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::NetTypeDecl>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
         }
     }
 
@@ -6943,6 +7001,20 @@ AST::Node::Ptr YAMLImporter::convert_param(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Param>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+
         // Manage Child unpacked_dims
         if(node["unpacked_dims"]) {
             const YAML::Node node_unpacked_dims = node["unpacked_dims"];
@@ -6970,20 +7042,6 @@ AST::Node::Ptr YAMLImporter::convert_param(const YAML::Node node) const
                 result = std::make_shared<AST::Param>();
             }
             result->set_unpacked_dims(unpacked_dims_list);
-        }
-
-        // Manage Child type
-        if(node["type"]) {
-            const YAML::Node node_type = node["type"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_type);
-            if(child) {
-                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Param>();
-                }
-                result->set_type(child_cast);
-            }
         }
     }
 
@@ -7045,6 +7103,35 @@ AST::Node::Ptr YAMLImporter::convert_typeparam(const YAML::Node node) const
                 result->set_type(child_cast);
             }
         }
+
+        // Manage Child unpacked_dims
+        if(node["unpacked_dims"]) {
+            const YAML::Node node_unpacked_dims = node["unpacked_dims"];
+            // Fill the list of children
+            AST::Dimension::ListPtr unpacked_dims_list(new AST::Dimension::List);
+            if(node_unpacked_dims.IsSequence()) {
+                // The YAML node is a sequence
+                for(YAML::const_iterator it = node_unpacked_dims.begin();
+                    it != node_unpacked_dims.end(); ++it) {
+                    AST::Node::Ptr child = convert(*it);
+                    if(child) {
+                        AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                        unpacked_dims_list->push_back(child_cast);
+                    }
+                }
+            } else {
+                AST::Node::Ptr child = convert(node_unpacked_dims);
+                if(child) {
+                    AST::Dimension::Ptr child_cast = AST::cast_to<AST::Dimension>(child);
+                    unpacked_dims_list->push_back(child_cast);
+                }
+            }
+            // Set the list
+            if(!result) {
+                result = std::make_shared<AST::TypeParam>();
+            }
+            result->set_unpacked_dims(unpacked_dims_list);
+        }
     }
 
     // Return the result
@@ -7092,6 +7179,20 @@ AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
             }
         }
 
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Typedef>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+
         // Manage Child unpacked_dims
         if(node["unpacked_dims"]) {
             const YAML::Node node_unpacked_dims = node["unpacked_dims"];
@@ -7119,20 +7220,6 @@ AST::Node::Ptr YAMLImporter::convert_typedef(const YAML::Node node) const
                 result = std::make_shared<AST::Typedef>();
             }
             result->set_unpacked_dims(unpacked_dims_list);
-        }
-
-        // Manage Child type
-        if(node["type"]) {
-            const YAML::Node node_type = node["type"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_type);
-            if(child) {
-                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Typedef>();
-                }
-                result->set_type(child_cast);
-            }
         }
     }
 
@@ -7171,6 +7258,34 @@ AST::Node::Ptr YAMLImporter::convert_member(const YAML::Node node) const
             }
         }
 
+        // Manage Child init
+        if(node["init"]) {
+            const YAML::Node node_init = node["init"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_init);
+            if(child) {
+                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Member>();
+                }
+                result->set_init(child_cast);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Member>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+
         // Manage Child unpacked_dims
         if(node["unpacked_dims"]) {
             const YAML::Node node_unpacked_dims = node["unpacked_dims"];
@@ -7198,34 +7313,6 @@ AST::Node::Ptr YAMLImporter::convert_member(const YAML::Node node) const
                 result = std::make_shared<AST::Member>();
             }
             result->set_unpacked_dims(unpacked_dims_list);
-        }
-
-        // Manage Child init
-        if(node["init"]) {
-            const YAML::Node node_init = node["init"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_init);
-            if(child) {
-                AST::Rvalue::Ptr child_cast = AST::cast_to<AST::Rvalue>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Member>();
-                }
-                result->set_init(child_cast);
-            }
-        }
-
-        // Manage Child type
-        if(node["type"]) {
-            const YAML::Node node_type = node["type"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_type);
-            if(child) {
-                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Member>();
-                }
-                result->set_type(child_cast);
-            }
         }
     }
 
@@ -7284,6 +7371,33 @@ AST::Node::Ptr YAMLImporter::convert_arg(const YAML::Node node) const
             }
         }
 
+        // Manage Child default_value
+        if(node["default_value"]) {
+            const YAML::Node node_default_value = node["default_value"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_default_value);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Arg>();
+                }
+                result->set_default_value(child);
+            }
+        }
+
+        // Manage Child type
+        if(node["type"]) {
+            const YAML::Node node_type = node["type"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_type);
+            if(child) {
+                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
+                if(!result) {
+                    result = std::make_shared<AST::Arg>();
+                }
+                result->set_type(child_cast);
+            }
+        }
+
         // Manage Child unpacked_dims
         if(node["unpacked_dims"]) {
             const YAML::Node node_unpacked_dims = node["unpacked_dims"];
@@ -7311,33 +7425,6 @@ AST::Node::Ptr YAMLImporter::convert_arg(const YAML::Node node) const
                 result = std::make_shared<AST::Arg>();
             }
             result->set_unpacked_dims(unpacked_dims_list);
-        }
-
-        // Manage Child default_value
-        if(node["default_value"]) {
-            const YAML::Node node_default_value = node["default_value"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_default_value);
-            if(child) {
-                if(!result) {
-                    result = std::make_shared<AST::Arg>();
-                }
-                result->set_default_value(child);
-            }
-        }
-
-        // Manage Child type
-        if(node["type"]) {
-            const YAML::Node node_type = node["type"];
-            // Set the child
-            AST::Node::Ptr child = convert(node_type);
-            if(child) {
-                AST::DataType::Ptr child_cast = AST::cast_to<AST::DataType>(child);
-                if(!result) {
-                    result = std::make_shared<AST::Arg>();
-                }
-                result->set_type(child_cast);
-            }
         }
     }
 

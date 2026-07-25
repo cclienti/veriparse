@@ -2717,15 +2717,34 @@ std::string DotGenerator::render_declaration(const AST::Declaration::Ptr node) c
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
         childID = reinterpret_cast<uint64_t>(node->get_type().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        if(node->get_unpacked_dims()) {
+            int i = 0;
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
         }
     }
 
@@ -2763,13 +2782,19 @@ std::string DotGenerator::render_var(const AST::Var::Ptr node) const
         }
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">init</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_init().get()) {
+            ss << render(node->get_init());
+        }
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
+        }
         if(node->get_unpacked_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 if(n) {
@@ -2777,30 +2802,24 @@ std::string DotGenerator::render_var(const AST::Var::Ptr node) const
                 }
             }
         }
-        if(node->get_init().get()) {
-            ss << render(node->get_init());
-        }
-        if(node->get_type().get()) {
-            ss << render(node->get_type());
-        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_init().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_init().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -2829,26 +2848,19 @@ std::string DotGenerator::render_net(const AST::Net::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -2864,36 +2876,43 @@ std::string DotGenerator::render_net(const AST::Net::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -2922,26 +2941,19 @@ std::string DotGenerator::render_wirenet(const AST::WireNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -2957,36 +2969,43 @@ std::string DotGenerator::render_wirenet(const AST::WireNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3015,26 +3034,19 @@ std::string DotGenerator::render_trinet(const AST::TriNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3050,36 +3062,43 @@ std::string DotGenerator::render_trinet(const AST::TriNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3108,26 +3127,19 @@ std::string DotGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3143,36 +3155,43 @@ std::string DotGenerator::render_tri0net(const AST::Tri0Net::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3201,26 +3220,19 @@ std::string DotGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3236,36 +3248,43 @@ std::string DotGenerator::render_tri1net(const AST::Tri1Net::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3294,26 +3313,19 @@ std::string DotGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3329,36 +3341,43 @@ std::string DotGenerator::render_triandnet(const AST::TriandNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3387,26 +3406,19 @@ std::string DotGenerator::render_triornet(const AST::TriorNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3422,36 +3434,43 @@ std::string DotGenerator::render_triornet(const AST::TriorNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3480,26 +3499,19 @@ std::string DotGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3515,36 +3527,43 @@ std::string DotGenerator::render_triregnet(const AST::TriregNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3573,26 +3592,19 @@ std::string DotGenerator::render_wandnet(const AST::WandNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3608,36 +3620,43 @@ std::string DotGenerator::render_wandnet(const AST::WandNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3666,26 +3685,19 @@ std::string DotGenerator::render_wornet(const AST::WorNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3701,36 +3713,43 @@ std::string DotGenerator::render_wornet(const AST::WorNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3759,26 +3778,19 @@ std::string DotGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3794,36 +3806,43 @@ std::string DotGenerator::render_uwirenet(const AST::UwireNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3852,26 +3871,19 @@ std::string DotGenerator::render_supply0net(const AST::Supply0Net::Ptr node) con
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3887,36 +3899,43 @@ std::string DotGenerator::render_supply0net(const AST::Supply0Net::Ptr node) con
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -3945,26 +3964,19 @@ std::string DotGenerator::render_supply1net(const AST::Supply1Net::Ptr node) con
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -3980,36 +3992,43 @@ std::string DotGenerator::render_supply1net(const AST::Supply1Net::Ptr node) con
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4038,26 +4057,19 @@ std::string DotGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -4073,36 +4085,43 @@ std::string DotGenerator::render_interconnectnet(const AST::InterconnectNet::Ptr
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4131,26 +4150,19 @@ std::string DotGenerator::render_usernet(const AST::UserNet::Ptr node) const
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -4166,36 +4178,43 @@ std::string DotGenerator::render_usernet(const AST::UserNet::Ptr node) const
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4224,26 +4243,19 @@ std::string DotGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
            << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">cont_assign</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">strength</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">ldelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p4\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">rdelay</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p5\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p6\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
-        if(node->get_unpacked_dims()) {
-            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
-                if(n) {
-                    ss << render(n);
-                }
-            }
-        }
         if(node->get_cont_assign().get()) {
             ss << render(node->get_cont_assign());
         }
@@ -4259,36 +4271,43 @@ std::string DotGenerator::render_implicitnet(const AST::ImplicitNet::Ptr node) c
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p6 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_cont_assign().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_strength().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_ldelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p4 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_rdelay().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p5 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p6 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4316,6 +4335,8 @@ std::string DotGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) c
            << "<FONT COLOR=\"wheat\">resolver</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_resolver().get()) {
@@ -4323,6 +4344,13 @@ std::string DotGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) c
         }
         if(node->get_type().get()) {
             ss << render(node->get_type());
+        }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
         }
         uint64_t childID;
         childID = reinterpret_cast<uint64_t>(node->get_resolver().get());
@@ -4332,6 +4360,16 @@ std::string DotGenerator::render_nettypedecl(const AST::NetTypeDecl::Ptr node) c
         childID = reinterpret_cast<uint64_t>(node->get_type().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
+        if(node->get_unpacked_dims()) {
+            int i = 0;
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
         }
     }
 
@@ -4471,13 +4509,16 @@ std::string DotGenerator::render_param(const AST::Param::Ptr node) const
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">value</FONT></TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_value().get()) {
             ss << render(node->get_value());
+        }
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
         }
         if(node->get_unpacked_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
@@ -4486,27 +4527,24 @@ std::string DotGenerator::render_param(const AST::Param::Ptr node) const
                 }
             }
         }
-        if(node->get_type().get()) {
-            ss << render(node->get_type());
-        }
         uint64_t childID;
         childID = reinterpret_cast<uint64_t>(node->get_value().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
         }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4534,15 +4572,34 @@ std::string DotGenerator::render_typeparam(const AST::TypeParam::Ptr node) const
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_type().get()) {
             ss << render(node->get_type());
         }
+        if(node->get_unpacked_dims()) {
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                if(n) {
+                    ss << render(n);
+                }
+            }
+        }
         uint64_t childID;
         childID = reinterpret_cast<uint64_t>(node->get_type().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        if(node->get_unpacked_dims()) {
+            int i = 0;
+            for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
+                childID = reinterpret_cast<uint64_t>(n.get());
+                if(childID) {
+                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
+                       << "\"];" << std::endl;
+                }
+            }
         }
     }
 
@@ -4586,11 +4643,14 @@ std::string DotGenerator::render_typedef(const AST::Typedef::Ptr node) const
         }
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
+        }
         if(node->get_unpacked_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 if(n) {
@@ -4598,23 +4658,20 @@ std::string DotGenerator::render_typedef(const AST::Typedef::Ptr node) const
                 }
             }
         }
-        if(node->get_type().get()) {
-            ss << render(node->get_type());
-        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p2 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4639,13 +4696,19 @@ std::string DotGenerator::render_member(const AST::Member::Ptr node) const
            << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">line: " << node->get_line() << "</TD></TR>\n";
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">init</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_init().get()) {
+            ss << render(node->get_init());
+        }
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
+        }
         if(node->get_unpacked_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 if(n) {
@@ -4653,30 +4716,24 @@ std::string DotGenerator::render_member(const AST::Member::Ptr node) const
                 }
             }
         }
-        if(node->get_init().get()) {
-            ss << render(node->get_init());
-        }
-        if(node->get_type().get()) {
-            ss << render(node->get_type());
-        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_init().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_init().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
@@ -4721,13 +4778,19 @@ std::string DotGenerator::render_arg(const AST::Arg::Ptr node) const
         }
         ss << "\t\t<TR><TD BGCOLOR=\"cornsilk2\">name: " << node->get_name() << "</TD></TR>\n";
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
-           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">default_value</FONT></TD></TR>\n";
-        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">type</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p3\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">unpacked_dims</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
+        if(node->get_default_value().get()) {
+            ss << render(node->get_default_value());
+        }
+        if(node->get_type().get()) {
+            ss << render(node->get_type());
+        }
         if(node->get_unpacked_dims()) {
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 if(n) {
@@ -4735,30 +4798,24 @@ std::string DotGenerator::render_arg(const AST::Arg::Ptr node) const
                 }
             }
         }
-        if(node->get_default_value().get()) {
-            ss << render(node->get_default_value());
-        }
-        if(node->get_type().get()) {
-            ss << render(node->get_type());
-        }
         uint64_t childID;
+        childID = reinterpret_cast<uint64_t>(node->get_default_value().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_type().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
+        }
         if(node->get_unpacked_dims()) {
             int i = 0;
             for(const AST::Dimension::Ptr &n : *node->get_unpacked_dims()) {
                 childID = reinterpret_cast<uint64_t>(n.get());
                 if(childID) {
-                    ss << "\tn" << nodeID << ":p1 -> n" << childID << " [label=\"i=" << i++
+                    ss << "\tn" << nodeID << ":p3 -> n" << childID << " [label=\"i=" << i++
                        << "\"];" << std::endl;
                 }
             }
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_default_value().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
-        }
-        childID = reinterpret_cast<uint64_t>(node->get_type().get());
-        if(childID) {
-            ss << "\tn" << nodeID << ":p3 -> n" << childID << ";" << std::endl;
         }
     }
 
