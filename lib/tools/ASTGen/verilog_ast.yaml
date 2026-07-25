@@ -383,11 +383,16 @@ AssocDim:
 
 # Abstract base: binds a `name` to a `type` (DataType). For a forward typedef the
 # type is null; for Port the name/type are delegated to its inner decl.
+# `unpacked_dims` — the [..] after the declared name — lives on the base:
+# every declaration kind that admits them shares one slot (single dispatch
+# for passes), and kinds where they cannot occur (TypeParam, NetTypeDecl)
+# simply leave it null.
 Declaration:
   properties:
     name: "std::string"
   children:
     type: DataType
+    unpacked_dims: list(Dimension)
 
 # data_declaration: a variable. `is_var`/`is_const` are the SV qualifiers,
 # `lifetime` the static/automatic lifetime. `unpacked_dims` the [..] after the
@@ -399,7 +404,6 @@ Var:
     is_const: bool
     lifetime: enum(NONE, AUTOMATIC, STATIC)
   children:
-    unpacked_dims: list(Dimension)
     init: Rvalue
 
 # net_declaration base (node per net-type below). The net's signing and data type
@@ -413,7 +417,6 @@ Net:
     is_vectored: bool
     is_scalared: bool
   children:
-    unpacked_dims: list(Dimension)
     cont_assign: Rvalue
     strength: Strength
     ldelay: DelayStatement
@@ -479,7 +482,6 @@ Param:
     is_local: bool
   children:
     value: Node
-    unpacked_dims: list(Dimension)
 
 # parameter type T = <default> — the inherited `type` is the default DataType
 # (null when no default, `parameter type U;`). `is_local` for `localparam type`.
@@ -497,13 +499,11 @@ Typedef:
   properties:
     fwd_kind: enum(NONE, ENUM, STRUCT, UNION, CLASS, INTERFACE_CLASS)
   children:
-    unpacked_dims: list(Dimension)
 
 # struct/union member declaration.
 Member:
   inherit: Declaration
   children:
-    unpacked_dims: list(Dimension)
     init: Rvalue
 
 # task/function argument. `direction` defaults to input; `is_var` for an explicit
@@ -518,7 +518,6 @@ Arg:
     # (Verilog tf_port default); NONE is only the neutral programmatic default.
     direction: enum(NONE, INPUT, OUTPUT, INOUT, REF, CONST_REF)
   children:
-    unpacked_dims: list(Dimension)
     default_value: Node
 
 # genvar: compile-time, untyped (always integer) — deliberately NOT a Declaration

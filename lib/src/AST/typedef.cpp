@@ -16,10 +16,10 @@ Typedef::Typedef(const std::string &filename, uint32_t line) : Declaration(filen
     set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
-Typedef::Typedef(const Dimension::ListPtr unpacked_dims, const DataType::Ptr type,
+Typedef::Typedef(const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
                  const Fwd_kindEnum &fwd_kind, const std::string &name, const std::string &filename,
                  uint32_t line)
-    : Declaration(type, name, filename, line), m_unpacked_dims(unpacked_dims), m_fwd_kind(fwd_kind)
+    : Declaration(type, unpacked_dims, name, filename, line), m_fwd_kind(fwd_kind)
 {
     set_node_type(NodeType::Typedef);
     set_node_categories({NodeType::Declaration, NodeType::Node});
@@ -68,6 +68,16 @@ bool Typedef::remove(Node::Ptr node) { return replace(node, AST::Node::Ptr(nullp
 bool Typedef::replace(Node::Ptr node, Node::Ptr new_node)
 {
     bool found = false;
+    if(get_type()) {
+        if(get_type() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Typedef::replace matches multiple times (DataType::type)";
+            }
+            set_type(cast_to<DataType>(new_node));
+            found = true;
+        }
+    }
     if(get_unpacked_dims()) {
         Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
         for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
@@ -95,16 +105,6 @@ bool Typedef::replace(Node::Ptr node, Node::Ptr new_node)
             set_unpacked_dims(new_list);
         } else {
             set_unpacked_dims(nullptr);
-        }
-    }
-    if(get_type()) {
-        if(get_type() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Typedef::replace matches multiple times (DataType::type)";
-            }
-            set_type(cast_to<DataType>(new_node));
-            found = true;
         }
     }
     return found;
@@ -162,6 +162,9 @@ Typedef::ListPtr Typedef::clone_list(const ListPtr nodes)
 Node::ListPtr Typedef::get_children(void) const
 {
     Node::ListPtr list = std::make_shared<Node::List>();
+    if(get_type()) {
+        list->push_back(std::static_pointer_cast<Node>(get_type()));
+    }
     if(get_unpacked_dims()) {
         for(const Dimension::Ptr &node : *get_unpacked_dims()) {
             if(node) {
@@ -169,18 +172,15 @@ Node::ListPtr Typedef::get_children(void) const
             }
         }
     }
-    if(get_type()) {
-        list->push_back(std::static_pointer_cast<Node>(get_type()));
-    }
     return list;
 }
 
 void Typedef::clone_children(Node::Ptr new_node) const
 {
-    cast_to<Typedef>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
     if(get_type()) {
         cast_to<Typedef>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
+    cast_to<Typedef>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
 }
 
 Node::Ptr Typedef::alloc_same(void) const

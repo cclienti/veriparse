@@ -16,9 +16,10 @@ TypeParam::TypeParam(const std::string &filename, uint32_t line) : Declaration(f
     set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
-TypeParam::TypeParam(const DataType::Ptr type, const bool &is_local, const std::string &name,
-                     const std::string &filename, uint32_t line)
-    : Declaration(type, name, filename, line), m_is_local(is_local)
+TypeParam::TypeParam(const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
+                     const bool &is_local, const std::string &name, const std::string &filename,
+                     uint32_t line)
+    : Declaration(type, unpacked_dims, name, filename, line), m_is_local(is_local)
 {
     set_node_type(NodeType::TypeParam);
     set_node_categories({NodeType::Declaration, NodeType::Node});
@@ -77,12 +78,72 @@ bool TypeParam::replace(Node::Ptr node, Node::Ptr new_node)
             found = true;
         }
     }
+    if(get_unpacked_dims()) {
+        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
+        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "TypeParam::replace matches multiple times "
+                                       "(list(Dimension)::unpacked_dims)";
+                    }
+                    if(new_node) {
+                        new_list->push_back(cast_to<Dimension>(new_node));
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during TypeParam::replace "
+                            << "of children list(Dimension)::unpacked_dims";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_unpacked_dims(new_list);
+        } else {
+            set_unpacked_dims(nullptr);
+        }
+    }
     return found;
 }
 
 bool TypeParam::replace(Node::Ptr node, Node::ListPtr new_nodes)
 {
     bool found = false;
+    if(get_unpacked_dims()) {
+        Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
+        for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
+            if(lnode) {
+                if(lnode != node) {
+                    new_list->push_back(lnode);
+                } else {
+                    if(found) {
+                        LOG_WARNING << *this << ", "
+                                    << "TypeParam::replace matches multiple times "
+                                       "(list(Dimension)::unpacked_dims)";
+                    }
+                    if(new_nodes) {
+                        for(const Node::Ptr &n : *new_nodes) {
+                            new_list->push_back(cast_to<Dimension>(n));
+                        }
+                    }
+                    found = true;
+                }
+            } else {
+                LOG_WARNING << *this << ", "
+                            << "found an empty node during TypeParam::replace "
+                            << "of children list(Dimension)::unpacked_dims";
+            }
+        }
+        if(new_list->size() != 0) {
+            set_unpacked_dims(new_list);
+        } else {
+            set_unpacked_dims(nullptr);
+        }
+    }
     return found;
 }
 
@@ -104,6 +165,13 @@ Node::ListPtr TypeParam::get_children(void) const
     if(get_type()) {
         list->push_back(std::static_pointer_cast<Node>(get_type()));
     }
+    if(get_unpacked_dims()) {
+        for(const Dimension::Ptr &node : *get_unpacked_dims()) {
+            if(node) {
+                list->push_back(std::static_pointer_cast<Node>(node));
+            }
+        }
+    }
     return list;
 }
 
@@ -112,6 +180,7 @@ void TypeParam::clone_children(Node::Ptr new_node) const
     if(get_type()) {
         cast_to<TypeParam>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
+    cast_to<TypeParam>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
 }
 
 Node::Ptr TypeParam::alloc_same(void) const

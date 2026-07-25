@@ -82,8 +82,8 @@ TEST(ASTTest, CloneList)
         AST::to_node(unpacked_left), AST::to_node(unpacked_right), "filename.v", 3));
 
     AST::WireNet::Ptr wire0 = std::make_shared<AST::WireNet>(
-        unpacked_dims, AST::Rvalue::Ptr(), AST::Strength::Ptr(), AST::DelayStatement::Ptr(),
-        AST::DelayStatement::Ptr(), type, false, false, "wire0", "filename", 3);
+        AST::Rvalue::Ptr(), AST::Strength::Ptr(), AST::DelayStatement::Ptr(),
+        AST::DelayStatement::Ptr(), type, unpacked_dims, false, false, "wire0", "filename", 3);
 
     AST::WireNet::Ptr wire1 = std::make_shared<AST::WireNet>("filename", 3);
     wire1->set_name("wire1");

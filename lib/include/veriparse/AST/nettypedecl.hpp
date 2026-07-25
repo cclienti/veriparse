@@ -7,6 +7,7 @@
 #include <veriparse/AST/declaration.hpp>
 
 #include <veriparse/AST/datatype.hpp>
+#include <veriparse/AST/dimension.hpp>
 #include <veriparse/AST/identifier.hpp>
 
 #include <list>
@@ -39,7 +40,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::NetTypeDecl.
      */
-    NetTypeDecl(const Identifier::Ptr resolver, const DataType::Ptr type, const std::string &name,
+    NetTypeDecl(const Identifier::Ptr resolver, const DataType::Ptr type,
+                const Dimension::ListPtr unpacked_dims, const std::string &name,
                 const std::string &filename = "", uint32_t line = 0);
 
     /**

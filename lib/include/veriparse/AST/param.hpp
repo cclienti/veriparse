@@ -39,7 +39,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Param.
      */
-    Param(const Node::Ptr value, const Dimension::ListPtr unpacked_dims, const DataType::Ptr type,
+    Param(const Node::Ptr value, const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
           const bool &is_local, const std::string &name, const std::string &filename = "",
           uint32_t line = 0);
 
@@ -94,22 +94,9 @@ public:
     virtual Node::Ptr get_value(void) const { return m_value; }
 
     /**
-     * Return the child unpacked_dims.
-     */
-    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
-
-    /**
      * Change the child value.
      */
     virtual void set_value(Node::Ptr value) { m_value = value; }
-
-    /**
-     * Change the child unpacked_dims.
-     */
-    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
-    {
-        m_unpacked_dims = unpacked_dims;
-    }
 
     /**
      * Return the property is_local.
@@ -146,7 +133,6 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     Node::Ptr m_value{};
-    Dimension::ListPtr m_unpacked_dims{};
     bool m_is_local{};
 };
 

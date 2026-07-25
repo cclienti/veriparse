@@ -16,11 +16,10 @@ Param::Param(const std::string &filename, uint32_t line) : Declaration(filename,
     set_node_categories({NodeType::Declaration, NodeType::Node});
 }
 
-Param::Param(const Node::Ptr value, const Dimension::ListPtr unpacked_dims,
-             const DataType::Ptr type, const bool &is_local, const std::string &name,
+Param::Param(const Node::Ptr value, const DataType::Ptr type,
+             const Dimension::ListPtr unpacked_dims, const bool &is_local, const std::string &name,
              const std::string &filename, uint32_t line)
-    : Declaration(type, name, filename, line), m_value(value), m_unpacked_dims(unpacked_dims),
-      m_is_local(is_local)
+    : Declaration(type, unpacked_dims, name, filename, line), m_value(value), m_is_local(is_local)
 {
     set_node_type(NodeType::Param);
     set_node_categories({NodeType::Declaration, NodeType::Node});
@@ -79,6 +78,16 @@ bool Param::replace(Node::Ptr node, Node::Ptr new_node)
             found = true;
         }
     }
+    if(get_type()) {
+        if(get_type() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Param::replace matches multiple times (DataType::type)";
+            }
+            set_type(cast_to<DataType>(new_node));
+            found = true;
+        }
+    }
     if(get_unpacked_dims()) {
         Dimension::ListPtr new_list = std::make_shared<Dimension::List>();
         for(const Dimension::Ptr &lnode : *get_unpacked_dims()) {
@@ -106,16 +115,6 @@ bool Param::replace(Node::Ptr node, Node::Ptr new_node)
             set_unpacked_dims(new_list);
         } else {
             set_unpacked_dims(nullptr);
-        }
-    }
-    if(get_type()) {
-        if(get_type() == node) {
-            if(found) {
-                LOG_WARNING << *this << ", "
-                            << "Param::replace matches multiple times (DataType::type)";
-            }
-            set_type(cast_to<DataType>(new_node));
-            found = true;
         }
     }
     return found;
@@ -176,15 +175,15 @@ Node::ListPtr Param::get_children(void) const
     if(get_value()) {
         list->push_back(std::static_pointer_cast<Node>(get_value()));
     }
+    if(get_type()) {
+        list->push_back(std::static_pointer_cast<Node>(get_type()));
+    }
     if(get_unpacked_dims()) {
         for(const Dimension::Ptr &node : *get_unpacked_dims()) {
             if(node) {
                 list->push_back(std::static_pointer_cast<Node>(node));
             }
         }
-    }
-    if(get_type()) {
-        list->push_back(std::static_pointer_cast<Node>(get_type()));
     }
     return list;
 }
@@ -194,10 +193,10 @@ void Param::clone_children(Node::Ptr new_node) const
     if(get_value()) {
         cast_to<Param>(new_node)->set_value(get_value()->clone());
     }
-    cast_to<Param>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
     if(get_type()) {
         cast_to<Param>(new_node)->set_type(cast_to<DataType>(get_type()->clone()));
     }
+    cast_to<Param>(new_node)->set_unpacked_dims(Dimension::clone_list(get_unpacked_dims()));
 }
 
 Node::Ptr Param::alloc_same(void) const

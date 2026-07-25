@@ -5,6 +5,7 @@
 
 #include <veriparse/AST/node.hpp>
 #include <veriparse/AST/datatype.hpp>
+#include <veriparse/AST/dimension.hpp>
 
 #include <list>
 #include <string>
@@ -36,8 +37,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Declaration.
      */
-    Declaration(const DataType::Ptr type, const std::string &name, const std::string &filename = "",
-                uint32_t line = 0);
+    Declaration(const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
+                const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -90,9 +91,22 @@ public:
     virtual DataType::Ptr get_type(void) const { return m_type; }
 
     /**
+     * Return the child unpacked_dims.
+     */
+    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
+
+    /**
      * Change the child type.
      */
     virtual void set_type(DataType::Ptr type) { m_type = type; }
+
+    /**
+     * Change the child unpacked_dims.
+     */
+    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
+    {
+        m_unpacked_dims = unpacked_dims;
+    }
 
     /**
      * Return the property name.
@@ -129,6 +143,7 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     DataType::Ptr m_type{};
+    Dimension::ListPtr m_unpacked_dims{};
     std::string m_name{};
 };
 

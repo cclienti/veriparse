@@ -40,7 +40,7 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Member.
      */
-    Member(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr init, const DataType::Ptr type,
+    Member(const Rvalue::Ptr init, const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
            const std::string &name, const std::string &filename = "", uint32_t line = 0);
 
     /**
@@ -89,22 +89,9 @@ public:
     virtual bool replace(Node::Ptr node, Node::ListPtr new_nodes) override;
 
     /**
-     * Return the child unpacked_dims.
-     */
-    virtual Dimension::ListPtr get_unpacked_dims(void) const { return m_unpacked_dims; }
-
-    /**
      * Return the child init.
      */
     virtual Rvalue::Ptr get_init(void) const { return m_init; }
-
-    /**
-     * Change the child unpacked_dims.
-     */
-    virtual void set_unpacked_dims(Dimension::ListPtr unpacked_dims)
-    {
-        m_unpacked_dims = unpacked_dims;
-    }
 
     /**
      * Change the child init.
@@ -135,7 +122,6 @@ private:
      */
     virtual Node::Ptr alloc_same(void) const override;
 
-    Dimension::ListPtr m_unpacked_dims{};
     Rvalue::Ptr m_init{};
 };
 

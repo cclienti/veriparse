@@ -42,9 +42,9 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::InterconnectNet.
      */
-    InterconnectNet(const Dimension::ListPtr unpacked_dims, const Rvalue::Ptr cont_assign,
-                    const Strength::Ptr strength, const DelayStatement::Ptr ldelay,
-                    const DelayStatement::Ptr rdelay, const DataType::Ptr type,
+    InterconnectNet(const Rvalue::Ptr cont_assign, const Strength::Ptr strength,
+                    const DelayStatement::Ptr ldelay, const DelayStatement::Ptr rdelay,
+                    const DataType::Ptr type, const Dimension::ListPtr unpacked_dims,
                     const bool &is_vectored, const bool &is_scalared, const std::string &name,
                     const std::string &filename = "", uint32_t line = 0);
 
