@@ -245,6 +245,19 @@ TEST(PassesTransformation_ModuleFlattener, tdef_tp_pkg0) { TEST_CORE_SV; }
 // Chained parameterization: a parent forwards its own type param (`.T(T)`).
 TEST(PassesTransformation_ModuleFlattener, tdef_tp_chain0) { TEST_CORE_SV; }
 
+// Packed struct/union lowering (ADR-0011): declaration types become their
+// equivalent vectors, member accesses become constant part-selects.
+TEST(PassesTransformation_ModuleFlattener, struct_basic0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_port0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_array0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_signed0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_union0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_func0) { TEST_CORE_SV; }
+// Aggregate error catalogue (ADR-0011 §6).
+TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_err_member0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, struct_err_union_width0) { TEST_ERROR_SV; }
+
 // Interface ports on children (ADR-0008 §3/§4): references through the port
 // alias the connected instance's flattened signals.
 TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }
