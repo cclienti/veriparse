@@ -156,6 +156,15 @@ Substitutes every user-defined type name with its underlying data type and drops
 
 ---
 
+### `StructLowering`
+Lowers packed struct/union declaration types to their equivalent packed vectors and rewrites member accesses to constant part-selects (ADR-0011). **Must run after `TypedefInliner`.**
+
+- First member at the MSBs (IEEE 1800-2017 §7.2.1); a packed union overlays equal-width members on the full range (§7.3.1); nested aggregates fold to absolute offsets; a directly enclosing bit/part-select folds into the member offset; signed members re-wrap in `signed'()` in expression position.
+- Lexical scopes (module/interface, blocks, generate regions, subroutine bodies); identifiers whose root binds to no lowered declaration stay untouched (interface accesses, hierarchical references).
+- Errors: unpacked aggregates, tagged unions, unknown members, non-integral or non-constant-width members, union width mismatches.
+
+---
+
 ### `BranchSelection`
 Evaluates `if`/`case` conditions that are constant after folding and replaces the branch node with the selected branch's statements.
 
@@ -329,6 +338,7 @@ ConstantFolding
 EnumElaboration       ← SV: fill auto-increment enum values
 EnumInliner           ← SV: replace enum names with IntConstN
 TypedefInliner        ← SV: substitute typedefs with concrete types (ADR-0009)
+StructLowering        ← SV: packed structs/unions to vectors (ADR-0011)
 ScopeElevator
 LoopUnrolling
 BranchSelection
