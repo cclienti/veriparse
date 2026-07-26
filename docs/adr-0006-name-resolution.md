@@ -285,9 +285,10 @@ is accepted.
 ## 8. Out of scope (kept deferred, with their future homes)
 
 - **Implicit defaults** (ADR-0003 §4.1/§4.2: `ImplicitType`→`logic`,
-  `ImplicitNet`→`` `default_nettype ``, §23.2.2.3 first-port `inout`) — a
-  context-local *default-resolution* pass; needs no symbol table, and baking
-  defaults early would violate the round-trip fidelity the AST guarantees today.
+  `ImplicitNet`→`` `default_nettype ``, §23.2.2.3 first-port `inout`) —
+  **implemented by ADR-0012** (`DefaultResolution`): context-local, no symbol
+  table, run design-wide after this pass; the parse-only tools do not run it,
+  preserving round-trip fidelity.
 - **Effective subroutine lifetime** (§13.3.1/§13.4.2) — same default-resolution
   family: a `Function`/`Task` with `lifetime: NONE` inherits the enclosing
   `module`/`interface`/`package` default (itself `NONE` ⇒ **static**). The AST

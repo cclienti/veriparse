@@ -1,12 +1,13 @@
 # ADR-0003 — Parser ambiguity & deferred semantic resolution (neutral nodes / base-class fallbacks)
 
-- **Status**: **Closed** (2026-07-11) — the inventory is resolved. Every Family-A
-  neutral node is re-typed by `NameResolution` (ADR-0006) and every deferred
-  reference is bound by `PackageInliner` (ADR-0004) or at flatten time
-  (ADR-0006 §8 / ADR-0008), except the two **implicit defaults** (§4.1/§4.2),
-  which remain deliberately unresolved in the AST and are handed off to the
-  future *default-resolution* pass (ADR-0006 §8). The catalogue is frozen: a
-  feature ADR that introduces a new deferred resolution documents it in its own
+- **Status**: **Closed** (2026-07-11; last rows resolved 2026-07-26) — the
+  inventory is resolved. Every Family-A neutral node is re-typed by
+  `NameResolution` (ADR-0006) and every deferred reference is bound by
+  `PackageInliner` (ADR-0004) or at flatten time (ADR-0006 §8 / ADR-0008);
+  the two **implicit defaults** (§4.1/§4.2) are resolved by the
+  `DefaultResolution` pass (ADR-0012), which the parse-only tools do not
+  run, preserving round-trip fidelity. The catalogue is frozen: a feature
+  ADR that introduces a new deferred resolution documents it in its own
   text rather than appending here.
 - **Date**: 2026-06-16
 - **Scope**: Every place where the **grammar** cannot pick the *exact* AST node
@@ -151,17 +152,18 @@ So the AST carries a small, explicit vocabulary of "**not yet resolved**" states
   "implicit is explicit": the parser **records the absence**, it does not fabricate
   a `LogicType`.
 - **Resolved by**: context-dependent default (IEEE 1800-2017 §6.8 — variable
-  defaults, parameter inherited defaults). *Open — handed off to the future
-  default-resolution pass (ADR-0006 §8); deliberately unresolved in the AST to
-  preserve round-trip fidelity.*
+  defaults, parameter inherited defaults). *Done — `DefaultResolution`
+  (ADR-0012): `logic` in SV mode, §6.20.2 carve-out for range-less
+  parameters; the parse-only tools do not run the pass, so round-trip
+  fidelity is preserved where it matters.*
 
 ### 4.2 No net keyword — `ImplicitNet`
 
 - **Source**: a net introduced with no net-type keyword.
 - **Model**: `ImplicitNet : Net` (`verilog_ast.yaml:382`).
 - **Resolved by**: the prevailing `` `default_nettype `` directive (defaults to
-  `wire`). *Open — same hand-off as §4.1 (default-resolution pass,
-  ADR-0006 §8).*
+  `wire`). *Done — `DefaultResolution` (ADR-0012), incl. the §23.2.2.3
+  port-kind rules and the `` `default_nettype none `` error.*
 
 ### 4.3 Unresolved scope / hierarchy — `NamedType` & `Identifier` carry `scope` / `hier`
 
@@ -241,8 +243,8 @@ statement call to a function was silently mis-tagged.
 | 3.2 | `WIDTH'(x)` | `TypeCast{ NamedType }` | `SizeCast` | const-vs-type of `WIDTH` | `NameResolution` *(done, ADR-0006 §4.4)* | `yaml:507-521` |
 | 3.3 | `type(my_t)` | `TypeOpExpr` | `TypeOpType` | type-vs-expr of operand, §6.23 | `NameResolution` *(done, ADR-0006 §4.5)* | `yaml:269-277` |
 | 3.4 | `my_if u(...)` instance | `Instance` (neutral) | `InterfaceInstance` | module-vs-iface = declared kind, §25.3 | `NameResolution` *(done, ADR-0006 §4.2)* | ADR-0002 §2.4 |
-| 4.1 | `var a` (no type kw) | `ImplicitType` | concrete `DataType` | context default, §6.8 | default resolution *(open — handed off, ADR-0006 §8)* | `yaml:203`, `yy:975-993` |
-| 4.2 | net, no net kw | `ImplicitNet` | concrete `Net` | `` `default_nettype `` | default resolution *(open — handed off, ADR-0006 §8)* | `yaml:382` |
+| 4.1 | `var a` (no type kw) | `ImplicitType` | concrete `DataType` | context default, §6.8 | `DefaultResolution` *(done, ADR-0012)* | `yaml:203`, `yy:975-993` |
+| 4.2 | net, no net kw | `ImplicitNet` | concrete `Net` | `` `default_nettype `` | `DefaultResolution` *(done, ADR-0012)* | `yaml:382` |
 | 4.3 | `pkg::T`, `top.u1.sig` | `NamedType`/`Identifier` + `scope`/`hier` | bound type / signal | needs symbol table / elaboration | `::` `PackageInliner` *(done)*; `.` flatten-time (ADR-0006 §8) | `yaml:107-118,214-219` |
 | 4.4 | `module m(my_if i)` port | `NamedType{my_if}` | `InterfaceType` | iface-vs-typedef = declared kind, §25.4 | `NameResolution` *(done, ADR-0006 §4.2)* | ADR-0002 §2.3 |
 | 4.5 | unqualified `x` under `import pkg::*` | `Identifier{scope:[]}` | bound `pkg::x` | local-vs-import precedence, §26.4–26.6 | `PackageInliner` *(done)* | ADR-0004 |
@@ -251,8 +253,8 @@ statement call to a function was silently mis-tagged.
 > **Principle restated**: the parser's job is to record *syntax faithfully*,
 > including the syntactic fact "**this is ambiguous / implicit / unresolved**" as a
 > first-class node. Re-typing those nodes is the job of the semantic passes —
-> now built (`NameResolution`, `PackageInliner`, flatten-time hier resolution).
-> The to-do list this ADR once was is closed; only the two implicit-default rows
-> (4.1/4.2) remain, by design, for the future default-resolution pass
-> (ADR-0006 §8). The **principle itself stays normative** for any new grammar:
-> commit to what syntax proves, defer the rest as an honest neutral node.
+> now built (`NameResolution`, `PackageInliner`, `DefaultResolution`,
+> flatten-time hier resolution). The to-do list this ADR once was is closed —
+> the last two rows (4.1/4.2) resolved by ADR-0012. The **principle itself
+> stays normative** for any new grammar: commit to what syntax proves, defer
+> the rest as an honest neutral node.
