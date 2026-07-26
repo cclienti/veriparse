@@ -86,9 +86,12 @@ private:
 
     /// Recursive body walk: port kinds for body direction declarations,
     /// and (SV mode) ImplicitType materialization on declarations and
-    /// subroutine return types.
+    /// subroutine return types. Below a Function/Task (@p in_subroutine) a
+    /// Port is an old-style formal — a variable, never a net (§13.3/§13.4)
+    /// — so the §23.2.2.3 kind rules stop at the subroutine boundary and
+    /// the formal stays as parsed.
     int resolve_body(const AST::Node::Ptr &node, AST::Module::Default_nettypeEnum defnt,
-                     const std::set<std::string> &declared);
+                     const std::set<std::string> &declared, bool in_subroutine = false);
 
     /// §6.8 (and §6.20.2 for parameters): materialize a declaration's
     /// ImplicitType as logic, preserving signing and packed dims.

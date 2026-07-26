@@ -199,6 +199,14 @@ port's decl carries an `InterfaceType` (the existing
 ports are left untouched** — direction, kind and type all stay as they
 are. Applying an `inout` default to one would contradict ADR-0002.
 
+The `Port` node has a second life the kind rules must not touch: an
+**old-style task/function formal** (`task t; input [3:0] u; …`) parses
+as the same Port shape, but a subroutine formal is a **variable**
+(§13.3/§13.4; 1364-2005 tf_input_declaration admits no net keyword) and
+never subject to §23.2.2.3 or `` `default_nettype ``. The body walk
+therefore stops applying the port rules at the Function/Task boundary
+and leaves formals exactly as parsed.
+
 ## 5. Decision 4 — `var` with a defaulted `inout` is an error
 
 The LRM makes `module mh4 (var x);` an error: the direction defaults to
