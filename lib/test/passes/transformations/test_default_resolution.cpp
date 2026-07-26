@@ -66,6 +66,9 @@ TEST(PassesTransformation_DefaultResolution, default_resolution3) { TEST_CORE_SV
 // Interface: ports resolve like a module's; interface ports of a module
 // stay untouched.
 TEST(PassesTransformation_DefaultResolution, default_resolution4) { TEST_CORE_SV; }
+// The §23.2.2.3 mh examples that parse (ADR-0012 §3): first-port inout
+// default, direction inheritance, kind rules, per the LRM's comments.
+TEST(PassesTransformation_DefaultResolution, default_resolution_mh0) { TEST_CORE_SV; }
 // `default_nettype none: an implicit net is a hard error (§22.8).
 TEST(PassesTransformation_DefaultResolution, default_resolution_none0) { TEST_ERROR_SV; }
 // Verilog mode: net kinds resolve, implicit types stay (1364 in, 1364 out).
