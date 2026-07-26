@@ -499,7 +499,15 @@ AST::Declaration::ListPtr Module::get_variable_nodes_within_module(AST::Node::Pt
 std::vector<std::string> Module::get_variable_names_within_module(AST::Node::Ptr node)
 {
     std::vector<std::string> var_names = get_variable_names(node);
+
+    // A name is module-internal only if it is visible at no boundary: the
+    // direction-carrying declarations AND every header port. The two sets
+    // are not the same — a §23.2.2.3 directionless ANSI port (`wire x`)
+    // and an interface port both have direction NONE, yet their names are
+    // part of the module's external interface.
     std::vector<std::string> io_names = get_iodir_names(node);
+    const std::vector<std::string> port_names = get_port_names(node);
+    io_names.insert(io_names.end(), port_names.begin(), port_names.end());
 
     for(const std::string &name : io_names) {
         var_names.erase(std::remove(var_names.begin(), var_names.end(), name), var_names.end());
