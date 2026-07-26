@@ -1,0 +1,522 @@
+Source:
+  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+  line: 6
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+      line: 6
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 6
+          name: mh0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 6
+              name: x
+              direction: NONE
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 6
+                      signing: NONE
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 10
+          name: mh1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 10
+              name: x
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 10
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    IntegerType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 10
+                      signing: NONE
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 14
+          name: mh3
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 14
+              name: x
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 14
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 14
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 14
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 18
+          name: mh14
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 18
+              name: x
+              direction: NONE
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 18
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 18
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 18
+              name: y
+              direction: NONE
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 18
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 18
+                      signing: NONE
+                  unpacked_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 18
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 22
+          name: mh15
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 22
+              name: x
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 22
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    IntegerType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 22
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 22
+              name: y
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 22
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 22
+                      signing: SIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 22
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 25
+          name: mh16
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 25
+              name: x
+              direction: NONE
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 25
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 25
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 25
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 25
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 5
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 25
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 25
+              name: y
+              direction: NONE
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 25
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 25
+                      signing: NONE
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 29
+          name: dr0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 29
+              name: x
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 29
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 29
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 29
+              name: y
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 29
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 29
+                      signing: NONE
+              expr: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+          line: 33
+          name: dr1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 33
+              name: a
+              direction: INPUT
+              decl:
+                TriNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 33
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 33
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+              line: 33
+              name: b
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                  line: 33
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                      line: 33
+                      signing: SIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_ansi_ports0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null

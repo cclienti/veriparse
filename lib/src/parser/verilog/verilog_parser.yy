@@ -269,13 +269,16 @@ AST::Member::ListPtr build_struct_members(const data_type_t &dt,
 AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
                                        const std::string &filename="", uint32_t line=0);
 
-// Build a Port wrapping a directed declaration.
+// Build a Port wrapping a directed declaration; `lengths` are the port
+// name's unpacked dimensions (A.1.3), landing on the declaration.
 AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
                                    AST::Dimension::ListPtr widths, std::string name,
+                                   const AST::Dimension::ListPtr &lengths,
                                    const std::string &filename="", uint32_t line=0);
 
 AST::Port::Ptr create_typed_ioport_decls(direction_t direction, const std::string &type_name,
                                          const std::string &type_package, const std::string &name,
+                                         const AST::Dimension::ListPtr &lengths,
                                          const std::string &filename="", uint32_t line=0);
 
 // Directionless named-type port (`my_if i`, `my_if.mp i`, ADR-0002): a Port with
@@ -288,15 +291,22 @@ AST::Port::Ptr create_interface_port(const std::string &type_name, const std::st
 
 AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
                                      const std::string &name,
+                                     const AST::Dimension::ListPtr &lengths,
                                      const std::string &filename="", uint32_t line=0);
 
 AST::Port::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
                                          const data_type_t &dt, const std::string &name,
+                                         const AST::Dimension::ListPtr &lengths,
                                          const std::string &filename="", uint32_t line=0);
 
 // if return null, the create_ports_decls failed. Error in loc and error_message.
+// `ansi_relax` (the SV-mode module/interface header) admits the §23.2.2.3
+// directionless ANSI forms: a first port carrying a kind/type but no
+// direction, direction-only inheritance for attributed subsequent ports,
+// and unpacked dimensions on plain ports. Body direction declarations and
+// task/function ports keep the strict rules.
 AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
-                                      const std::string &filename,
+                                      const std::string &filename, bool ansi_relax,
                                       location &loc, std::string &error_message);
 }
 
@@ -1256,7 +1266,8 @@ ports:          portinfo_list
                 {
                     location loc;
                     std::string error_message;
-                    $$ = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
+                    $$ = ParserHelpers::create_ports_decls($1, scanner.get_filename(),
+                                                           scanner.get_sv_mode(), loc, error_message);
                     if(!$$) error(loc, error_message);
                 }
         ;
@@ -1301,6 +1312,20 @@ portname:       TK_IDENTIFIER
                     $$.net_type = net_type_t::NONE;
                     $$.signing = signing_t::NONE;
                     $$.widths = nullptr;
+                    $$.name = $1;
+                }
+
+        |       TK_IDENTIFIER lengths
+                {
+                    // arrayed bare port: `wire x, y[7:0]` (A.1.3:
+                    // ansi_port_declaration carries { unpacked_dimension };
+                    // §23.2.2.3: dims are never inherited, so they ride the
+                    // port_info, not the inheritance state).
+                    $$.direction = direction_t::NONE;
+                    $$.net_type = net_type_t::NONE;
+                    $$.signing = signing_t::NONE;
+                    $$.widths = nullptr;
+                    $$.lengths = $2;
                     $$.name = $1;
                 }
 
@@ -1498,7 +1523,8 @@ ioports_decl:   ioports TK_SEMICOLON
                 {
                     location loc;
                     std::string error_message;
-                    auto _ports = ParserHelpers::create_ports_decls($1, scanner.get_filename(), loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($1, scanner.get_filename(),
+                                                                    false, loc, error_message);
                     if(!_ports) error(loc, error_message);
                     $$ = std::make_shared<AST::Node::List>();
                     for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
@@ -5500,7 +5526,8 @@ function_ioports_decl:
                     location loc;
                     std::string error_message;
                     for(port_info_t &p: $2) p.direction = $1;
-                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
+                                                                    false, loc, error_message);
                     if(!_ports) error(loc, error_message);
                     $$ = std::make_shared<AST::Node::List>();
                     for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
@@ -5798,7 +5825,8 @@ task_ioports_decl:
                     location loc;
                     std::string error_message;
                     for(port_info_t &p: $2) p.direction = $1;
-                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(), loc, error_message);
+                    auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
+                                                                    false, loc, error_message);
                     if(!_ports) error(loc, error_message);
                     $$ = std::make_shared<AST::Node::List>();
                     for(const AST::Port::Ptr &_p : *_ports) $$->push_back(_p);
@@ -6332,6 +6360,7 @@ namespace Veriparse {
 
             AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
                                                AST::Dimension::ListPtr widths, std::string name,
+                                               const AST::Dimension::ListPtr &lengths,
                                                const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
                 port->set_name(name);
@@ -6351,6 +6380,7 @@ namespace Veriparse {
                     decl.name = name;
                     net = create_net_type(decl, net_type, type, filename, line);
                 }
+                if(lengths) net->set_unpacked_dims(AST::Dimension::clone_list(lengths));
                 port->set_decl(net);
                 return port;
             }
@@ -6359,6 +6389,7 @@ namespace Veriparse {
                                                      const std::string &type_name,
                                                      const std::string &type_package,
                                                      const std::string &name,
+                                                     const AST::Dimension::ListPtr &lengths,
                                                      const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
                 port->set_name(name);
@@ -6366,6 +6397,7 @@ namespace Veriparse {
                 auto net = std::make_shared<AST::ImplicitNet>(filename, line);
                 net->set_type(make_named_type(type_name, type_package, filename, line));
                 net->set_name(name);
+                if(lengths) net->set_unpacked_dims(AST::Dimension::clone_list(lengths));
                 port->set_decl(net);
                 return port;
             }
@@ -6399,6 +6431,7 @@ namespace Veriparse {
 
             AST::Port::Ptr create_data_type_port(direction_t direction, const data_type_t &dt,
                                                  const std::string &name,
+                                                 const AST::Dimension::ListPtr &lengths,
                                                  const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
                 port->set_name(name);
@@ -6406,12 +6439,14 @@ namespace Veriparse {
                 auto net = std::make_shared<AST::ImplicitNet>(filename, line);
                 net->set_type(make_data_type(dt, filename, line));
                 net->set_name(name);
+                if(lengths) net->set_unpacked_dims(AST::Dimension::clone_list(lengths));
                 port->set_decl(net);
                 return port;
             }
 
             AST::Port::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
                                                      const data_type_t &dt, const std::string &name,
+                                                     const AST::Dimension::ListPtr &lengths,
                                                      const std::string &filename, uint32_t line) {
                 auto port = std::make_shared<AST::Port>(filename, line);
                 port->set_name(name);
@@ -6420,6 +6455,7 @@ namespace Veriparse {
                 decl.name = name;
                 AST::Net::Ptr net =
                     create_net_type(decl, net_type, make_data_type(dt, filename, line), filename, line);
+                if(lengths) net->set_unpacked_dims(AST::Dimension::clone_list(lengths));
                 port->set_decl(net);
                 return port;
             }
@@ -6466,7 +6502,7 @@ namespace Veriparse {
             }
 
             AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
-                                                  const std::string &filename,
+                                                  const std::string &filename, bool ansi_relax,
                                                   location &loc, std::string &error_message) {
                 direction_t last_dir = direction_t::NONE;
                 net_type_t last_net = net_type_t::NONE;
@@ -6484,8 +6520,19 @@ namespace Veriparse {
                     return node_list;
                 }
 
-                if (port_list.front().direction == direction_t::NONE &&
-                    port_list.front().type_name.empty()) {
+                // §23.2.2.3: the list is non-ANSI only when the first port
+                // omits direction, kind AND data type. The relaxed (SV
+                // header) form applies that criterion in full; the strict
+                // form treats any directionless non-named first port as
+                // non-ANSI and diagnoses attributes inside the branch.
+                const port_info_t &first = port_list.front();
+                const bool first_bare =
+                    first.direction == direction_t::NONE && first.type_name.empty() &&
+                    (!ansi_relax ||
+                     (first.net_type == net_type_t::NONE && first.signing == signing_t::NONE &&
+                      !first.widths && !first.has_data_type));
+
+                if (first_bare) {
                     // name-only ports (non-ANSI header references)
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
@@ -6493,6 +6540,16 @@ namespace Veriparse {
                             (pinfo.has_data_type)) {
                             loc = pinfo.loc;
                             error_message = std::string("missing port direction qualifier");
+                            return nullptr;
+                        }
+                        if (pinfo.lengths) {
+                            // 1364-2005 §12.3.2 admits a ranged port_reference
+                            // (a select of the internal signal); that form is
+                            // not modelled — reject it rather than dropping
+                            // the range.
+                            loc = pinfo.loc;
+                            error_message = std::string("a ranged port reference is not "
+                                                        "supported in a non-ANSI header");
                             return nullptr;
                         }
                         AST::Port::Ptr p = std::make_shared<AST::Port>(filename, pinfo.loc.begin.line);
@@ -6553,19 +6610,36 @@ namespace Veriparse {
                         else if (pinfo.direction == direction_t::NONE) {
                             if ((pinfo.net_type != net_type_t::NONE) || (pinfo.signing != signing_t::NONE) ||
                                 (pinfo.widths) || (pinfo.has_data_type)) {
-                                loc = pinfo.loc;
-                                error_message = std::string("missing port direction qualifier");
-                                return nullptr;
+                                if (!ansi_relax) {
+                                    loc = pinfo.loc;
+                                    error_message = std::string("missing port direction qualifier");
+                                    return nullptr;
+                                }
+                                // Directionless port with a kind and/or data
+                                // type: only the direction is inherited (IEEE
+                                // 1800-2017 §23.2.2.3); kind and type are the
+                                // port's own. A leading such port keeps NONE
+                                // for the resolution pass to seed (inout).
+                                dir = last_dir;
+                                net_type = pinfo.net_type;
+                                widths = pinfo.widths;
+                                signing = pinfo.signing;
+                                type_name.clear();
+                                type_package.clear();
+                                modport.clear();
+                                has_data_type = pinfo.has_data_type;
+                                data_type = pinfo.data_type;
+                            } else {
+                                dir = last_dir;
+                                net_type = last_net;
+                                widths = last_widths;
+                                signing = last_signing;
+                                type_name = last_type_name;
+                                type_package = last_type_package;
+                                modport = last_modport;
+                                has_data_type = last_has_data_type;
+                                data_type = last_data_type;
                             }
-                            dir = last_dir;
-                            net_type = last_net;
-                            widths = last_widths;
-                            signing = last_signing;
-                            type_name = last_type_name;
-                            type_package = last_type_package;
-                            modport = last_modport;
-                            has_data_type = last_has_data_type;
-                            data_type = last_data_type;
                         }
                         else {
                             dir = pinfo.direction;
@@ -6587,10 +6661,10 @@ namespace Veriparse {
                                                         pinfo.lengths,
                                                         filename, pinfo.loc.begin.line);
                         }
-                        else if (pinfo.lengths) {
-                            // A.1.3 admits unpacked dims on any ANSI port, but
-                            // only the directionless named-type form (interface
-                            // or deferred typedef port) carries them today.
+                        else if (pinfo.lengths && !ansi_relax) {
+                            // A.1.3 admits unpacked dims on any ANSI port; the
+                            // strict (body / task / function) form still limits
+                            // them to the directionless named-type case.
                             loc = pinfo.loc;
                             error_message = std::string("unpacked dimensions are only supported "
                                                         "on interface ports");
@@ -6598,18 +6672,21 @@ namespace Veriparse {
                         }
                         else if (has_data_type && net_type != net_type_t::NONE) {
                             iop = create_net_data_type_port(dir, net_type, data_type, pinfo.name,
+                                                            pinfo.lengths,
                                                             filename, pinfo.loc.begin.line);
                         }
                         else if (has_data_type) {
-                            iop = create_data_type_port(dir, data_type, pinfo.name,
+                            iop = create_data_type_port(dir, data_type, pinfo.name, pinfo.lengths,
                                                         filename, pinfo.loc.begin.line);
                         }
                         else if (!type_name.empty()) {
                             iop = create_typed_ioport_decls(dir, type_name, type_package, pinfo.name,
+                                                            pinfo.lengths,
                                                             filename, pinfo.loc.begin.line);
                         }
                         else {
                             iop = create_ioport_decls(dir, net_type, signing, widths, pinfo.name,
+                                                      pinfo.lengths,
                                                       filename, pinfo.loc.begin.line);
                         }
                         node_list->push_back(iop);
