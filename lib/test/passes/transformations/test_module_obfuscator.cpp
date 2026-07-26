@@ -69,6 +69,11 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 // spurious identifier into the output.
 TEST(PassesTransformation_ModuleObfuscator, typedef0) { TEST_CORE_SV(false); }
 
+// §23.2.2.3 directionless ANSI ports (`wire x`) are external interface
+// names like any other port: never obfuscated, even though their
+// direction is NONE until DefaultResolution runs (which veriobf does not).
+TEST(PassesTransformation_ModuleObfuscator, ansi_ports0) { TEST_CORE_SV(false); }
+
 TEST(PassesTransformation_ModuleObfuscator, module0) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, module1) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, localparam0) { TEST_CORE(true); }
