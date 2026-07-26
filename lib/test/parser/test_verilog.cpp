@@ -307,6 +307,7 @@ TEST(VerilogParserTest, sv_data_type_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_struct_multiname0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_signing0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_port_types0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_ansi_ports0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_assign_pattern0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_cast0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_net0) { TEST_CORE_SV; }
