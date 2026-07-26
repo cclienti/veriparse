@@ -218,8 +218,9 @@ the `var` port grammar.
   is a fully declared `input wire logic x`). Because the flip is only
   correct *after* the pass, the pass must not run between an analysis that
   relies on the old reading and its consumer; running design-wide before
-  `ResolveModule` satisfies this. The three copies are also a standing
-  duplication (a shared predicate is the tidy follow-up, out of scope here).
+  `ResolveModule` satisfies this. The three copies were also a standing
+  duplication — consolidated on this branch into the shared predicate in
+  `analysis/declaration_helpers.hpp`.
 - **Backed non-ANSI direction declarations stay untouched.** A body
   `input [7:0] x;` whose signal is also declared by a standalone body
   `reg [7:0] x;` (or any Var/Net) is a *reference* to that declaration,
