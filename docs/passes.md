@@ -295,6 +295,20 @@ lexical scope stack; re-tags `Call → Function/TaskCall`,
 
 ---
 
+### `DefaultResolution`
+Implicit-default resolution (ADR-0012): replaces every deferred implicit
+default with what the standard says it means — `ImplicitType` → `logic` with
+signing/packed dims carried verbatim (§6.8; SV mode only, so 1364-2005 designs
+render as 1364-2005; value parameters follow §6.20.2: only a ranged implicit
+type resolves), `ImplicitNet` → a net of the prevailing `` `default_nettype ``
+(§22.8, `none` is a hard error), and the §23.2.2.3 ANSI port defaults
+(first-port `inout`, direction inheritance, output-with-explicit-data-type and
+`ref` ports become variables). Interface ports and backed non-ANSI direction
+declarations stay untouched. Context-local, no symbol table. Entry:
+`run_design(sources)`.
+
+---
+
 ### `InterfaceElaboration`
 Lowers SystemVerilog interfaces to plain signals during flattening (ADR-0008).
 Each interface definition transplants into a pseudo-module (modports validated
@@ -390,6 +404,7 @@ Renames all local identifiers (variables, instances, named blocks, tasks, functi
 ```
 PackageInliner (run_units)         ← package/import resolution per unit
 NameResolution (run_design)        ← re-tags the parser deferrals
+DefaultResolution (run_design)     ← resolves the implicit defaults
 SynthesizableCheck                 ← rejects non-synthesizable constructs
 ModuleFlattener                    ← flattens hierarchy (incl. interfaces
   └─ per sub-module: ResolveModule    via InterfaceElaboration)

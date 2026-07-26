@@ -855,8 +855,8 @@ Notes:
 - **[ADR-0003](adr-0003-parser-ambiguity-deferred-resolution.md)** was a *living
   catalogue*, not a single step: it recorded every parser deferral, and steps 2–4
   resolved those entries (interfaces added §3.4/§4.4; package/import added §4.5).
-  **Closed 2026-07-11** — only the implicit-default rows (§4.1/§4.2) remain,
-  handed off to the future default-resolution pass (ADR-0006 §8).
+  **Closed 2026-07-11** — the last implicit-default rows (§4.1/§4.2) were
+  resolved by the `DefaultResolution` pass (ADR-0012, 2026-07-26).
 - **Steps 2 and 3 are independent** (different subsystems) and may land in either
   order; both only need step 1.
 - The **statement-call gap** (ADR-0003 §6 — grammar emitted `TaskCall`, never the

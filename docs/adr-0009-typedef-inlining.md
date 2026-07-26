@@ -207,8 +207,9 @@ Two refinements (found in review):
 
 ## 7. Ordering relative to the default-resolution pass (ADR-0006 §8)
 
-The future *default-resolution* pass (implicit defaults: `ImplicitType` →
-context default, `ImplicitNet` → `` `default_nettype ``, first-port `inout`)
+The *default-resolution* pass (implicit defaults: `ImplicitType` →
+context default, `ImplicitNet` → `` `default_nettype ``, first-port `inout` —
+implemented as `DefaultResolution`, ADR-0012)
 and this pass are **independent**: a typedef alias is never an implicit type
 (the grammar requires an explicit `data_type`), and default resolution never
 creates a `NamedType`. Neither consumes the other's output. Convention when

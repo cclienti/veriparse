@@ -1,6 +1,8 @@
 # ADR-0012 — Implicit-default resolution (`DefaultResolution`)
 
-- **Status**: Accepted — implementation in progress (this branch).
+- **Status**: Implemented (2026-07-26, this branch: `DefaultResolution`
+  pass, §3.1 parser relaxation, veriflat wiring; §3.2/§5 stay
+  parser-gated and §8 deferred).
 - **Date**: 2026-07-25 (amended 2026-07-26: §2.1 parse-mode gating, §2.2
   parameter carve-out, §3.1 parser relaxation scope, §5 parser-gating)
 - **Scope**: A design-wide pass that **replaces every deferred implicit
