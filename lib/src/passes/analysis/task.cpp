@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#include "./declaration_helpers.hpp"
+#include <veriparse/passes/analysis/declaration_helpers.hpp>
 #include <veriparse/passes/analysis/task.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/AST/nodes.hpp>

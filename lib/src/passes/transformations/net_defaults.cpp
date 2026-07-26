@@ -43,6 +43,27 @@ AST::Net::Ptr make_default_nettype_net(AST::Module::Default_nettypeEnum defnt,
     return nullptr;
 }
 
+AST::Net::Ptr make_default_nettype_net(AST::Module::Default_nettypeEnum defnt,
+                                       const AST::Net::Ptr &src)
+{
+    AST::Net::Ptr net = make_default_nettype_net(defnt, src->get_filename(), src->get_line());
+    if(!net) {
+        return nullptr;
+    }
+    // Declaration fields.
+    net->set_name(src->get_name());
+    net->set_type(src->get_type());
+    net->set_unpacked_dims(src->get_unpacked_dims());
+    // Net fields.
+    net->set_cont_assign(src->get_cont_assign());
+    net->set_strength(src->get_strength());
+    net->set_ldelay(src->get_ldelay());
+    net->set_rdelay(src->get_rdelay());
+    net->set_is_vectored(src->get_is_vectored());
+    net->set_is_scalared(src->get_is_scalared());
+    return net;
+}
+
 // The generated per-node enums are identical value lists that astgen cannot
 // share (ADR-0002 §2.1); this switch bridges them, like the parser's
 // to_interface_nettype does in the other direction. It is deliberately
