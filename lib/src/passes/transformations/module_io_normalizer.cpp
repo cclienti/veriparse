@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/module_io_normalizer.hpp>
+#include <veriparse/passes/transformations/net_defaults.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -264,50 +265,7 @@ AST::Net::Ptr ModuleIONormalizer::create_default_net_type_variable(
     AST::Module::Default_nettypeEnum defnt, AST::Dimension::ListPtr packed_dims,
     AST::DataType::SigningEnum signing, const std::string &name)
 {
-    AST::Net::Ptr net;
-
-    switch(defnt) {
-    case AST::Module::Default_nettypeEnum::WIRE:
-        net = std::make_shared<AST::WireNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRI:
-        net = std::make_shared<AST::TriNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRI0:
-        net = std::make_shared<AST::Tri0Net>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRI1:
-        net = std::make_shared<AST::Tri1Net>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRIAND:
-        net = std::make_shared<AST::TriandNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRIOR:
-        net = std::make_shared<AST::TriorNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::TRIREG:
-        net = std::make_shared<AST::TriregNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::WAND:
-        net = std::make_shared<AST::WandNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::WOR:
-        net = std::make_shared<AST::WorNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::UWIRE:
-        net = std::make_shared<AST::UwireNet>();
-        break;
-    case AST::Module::Default_nettypeEnum::SUPPLY0:
-        net = std::make_shared<AST::Supply0Net>();
-        break;
-    case AST::Module::Default_nettypeEnum::SUPPLY1:
-        net = std::make_shared<AST::Supply1Net>();
-        break;
-
-    case AST::Module::Default_nettypeEnum::NONE:
-    default:
-        break;
-    }
+    AST::Net::Ptr net = make_default_nettype_net(defnt);
 
     if(net) {
         auto type = std::make_shared<AST::ImplicitType>();
