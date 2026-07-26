@@ -218,7 +218,7 @@ int DefaultResolution::resolve_port_kind(const AST::Port::Ptr &port,
 
 int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
                                     AST::Module::Default_nettypeEnum defnt,
-                                    const std::set<std::string> &declared)
+                                    const std::set<std::string> &declared, bool in_subroutine)
 {
     if(!node) {
         return 0;
@@ -226,8 +226,11 @@ int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
 
     int ret = 0;
 
-    // A Port met in the body is a non-ANSI direction declaration.
-    if(node->is_node_type(AST::NodeType::Port)) {
+    // A Port met in the body is a non-ANSI direction declaration — but only
+    // at module level. Inside a task/function the same Port shape is an
+    // old-style formal, which is a variable (§13.3/§13.4), never a net: the
+    // §23.2.2.3 port-kind rules do not apply and the formal stays as parsed.
+    if(node->is_node_type(AST::NodeType::Port) && !in_subroutine) {
         ret += resolve_port_kind(AST::cast_to<AST::Port>(node), defnt, declared);
     }
 
@@ -243,9 +246,11 @@ int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
         }
     }
 
+    const bool subroutine = in_subroutine || node->is_node_type(AST::NodeType::Function) ||
+                            node->is_node_type(AST::NodeType::Task);
     const AST::Node::ListPtr children = node->get_children();
     for(const AST::Node::Ptr &child : *children) {
-        ret += resolve_body(child, defnt, declared);
+        ret += resolve_body(child, defnt, declared, subroutine);
     }
     return ret;
 }
