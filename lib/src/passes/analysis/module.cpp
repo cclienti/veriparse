@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
+#include "./declaration_helpers.hpp"
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <algorithm>
@@ -102,27 +103,6 @@ AST::Node::ListPtr Module::get_port_nodes(AST::Node::Ptr node)
 
 namespace
 {
-// A declared signal is a Var or any Net — but NOT a bare port placeholder. A
-// non-ANSI directional declaration with neither a net nor a data type keyword
-// (`input clock`, `input [7:0] x`) parses as an ImplicitNet carrying an
-// ImplicitType; its real signal is declared separately (`wire clock`) or defaults
-// to a net, so it is not itself a variable declaration. An ImplicitNet with a
-// concrete data type (`output reg valid` -> ImplicitNet + RegType) IS a real
-// declaration and is kept.
-bool is_declared_signal(const AST::Declaration::Ptr &d)
-{
-    if(!(d->is_node_type(AST::NodeType::Var) || d->is_node_category(AST::NodeType::Net))) {
-        return false;
-    }
-    if(d->is_node_type(AST::NodeType::ImplicitNet)) {
-        const AST::DataType::Ptr type = d->get_type();
-        if(!type || type->is_node_type(AST::NodeType::ImplicitType)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 // Effective signal name of a port: the port's own name (non-ANSI / explicit)
 // or, for an ANSI typed port, the name carried by its inner declaration.
 std::string port_name(const AST::Port::Ptr &p)

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
+#include "./declaration_helpers.hpp"
 #include <veriparse/passes/analysis/task.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/AST/nodes.hpp>
@@ -31,18 +32,9 @@ AST::Declaration::ListPtr Task::get_variable_nodes(AST::Node::Ptr node)
     get_node_list_by_category<AST::Declaration>(node, AST::NodeType::Declaration, decls);
     AST::Declaration::ListPtr list = std::make_shared<AST::Declaration::List>();
     for(const AST::Declaration::Ptr &d : *decls) {
-        // Skip bare directional placeholders (ImplicitNet + ImplicitType); only
-        // Var/Net with a concrete type are real variable declarations.
-        if(!(d->is_node_type(AST::NodeType::Var) || d->is_node_category(AST::NodeType::Net))) {
-            continue;
+        if(is_declared_signal(d)) {
+            list->push_back(d);
         }
-        if(d->is_node_type(AST::NodeType::ImplicitNet)) {
-            const AST::DataType::Ptr type = d->get_type();
-            if(!type || type->is_node_type(AST::NodeType::ImplicitType)) {
-                continue;
-            }
-        }
-        list->push_back(d);
     }
     return list;
 }

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
+#include "./declaration_helpers.hpp"
 #include <veriparse/passes/analysis/function.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/AST/nodes.hpp>
@@ -34,21 +35,6 @@ AST::Declaration::ListPtr Function::get_variable_nodes(AST::Node::Ptr node)
     // A function's local variables are the Var/Net declared in its body — NOT its
     // arguments (those are Arg, via get_iodir_nodes) and NOT its return type.
     AST::Declaration::ListPtr list = std::make_shared<AST::Declaration::List>();
-
-    // A bare directional placeholder (`input value` -> ImplicitNet + ImplicitType)
-    // is not a real variable declaration; only Var/Net with a concrete type are.
-    auto is_declared_signal = [](const AST::Declaration::Ptr &d) {
-        if(!(d->is_node_type(AST::NodeType::Var) || d->is_node_category(AST::NodeType::Net))) {
-            return false;
-        }
-        if(d->is_node_type(AST::NodeType::ImplicitNet)) {
-            const AST::DataType::Ptr type = d->get_type();
-            if(!type || type->is_node_type(AST::NodeType::ImplicitType)) {
-                return false;
-            }
-        }
-        return true;
-    };
 
     auto collect = [&](AST::Node::Ptr root) {
         AST::Declaration::ListPtr decls = std::make_shared<AST::Declaration::List>();
