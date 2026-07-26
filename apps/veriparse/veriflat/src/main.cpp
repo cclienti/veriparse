@@ -14,6 +14,7 @@
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/passes/transformations/name_resolution.hpp>
+#include <veriparse/passes/transformations/default_resolution.hpp>
 #include <veriparse/passes/transformations/wire_split.hpp>
 #include <veriparse/version.hpp>
 
@@ -193,6 +194,20 @@ static int veriflat(int argc, char *argv[])
 
     if(Veriparse::Passes::Transformations::NameResolution().run_design(sources) != 0) {
         LOG_ERROR << "name resolution failed";
+        return 1;
+    }
+
+    //---------------------------------------------------------
+    // Resolve the implicit defaults the parser recorded as-written: implicit
+    // data types become logic (SystemVerilog mode), implicit nets take the
+    // prevailing `default_nettype, and the IEEE 1800-2017 §23.2.2.3 port
+    // direction/kind defaults are applied. After this, a declaration's type,
+    // net kind and direction are explicit for every downstream pass.
+    //---------------------------------------------------------
+
+    if(Veriparse::Passes::Transformations::DefaultResolution(config.sv_mode).run_design(sources) !=
+       0) {
+        LOG_ERROR << "implicit-default resolution failed";
         return 1;
     }
 
