@@ -4,6 +4,7 @@
 
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
+#include <veriparse/passes/transformations/net_defaults.hpp>
 #include <veriparse/passes/transformations/scope_table.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -21,11 +22,12 @@ namespace
 {
 
 // The generated per-node enums are identical value lists that astgen cannot
-// share (ADR-0002 §2.1); these switches bridge them, like the parser's
-// to_interface_nettype does in the other direction. They are deliberately
-// exhaustive with no `default`: a new enumerator added to the yaml makes the
-// switch non-exhaustive, which -Wall -Werror turns into a compile error at
-// this exact spot rather than silently mapping the new value to NONE.
+// share (ADR-0002 §2.1); this switch bridges them, like the parser's
+// to_interface_nettype does in the other direction (the nettype bridge
+// lives in net_defaults.cpp). It is deliberately exhaustive with no
+// `default`: a new enumerator added to the yaml makes the switch
+// non-exhaustive, which -Wall -Werror turns into a compile error at this
+// exact spot rather than silently mapping the new value to NONE.
 AST::Module::LifetimeEnum to_module_lifetime(AST::Interface::LifetimeEnum lifetime)
 {
     switch(lifetime) {
@@ -37,39 +39,6 @@ AST::Module::LifetimeEnum to_module_lifetime(AST::Interface::LifetimeEnum lifeti
         return AST::Module::LifetimeEnum::STATIC;
     }
     return AST::Module::LifetimeEnum::NONE;
-}
-
-AST::Module::Default_nettypeEnum to_module_nettype(AST::Interface::Default_nettypeEnum nettype)
-{
-    switch(nettype) {
-    case AST::Interface::Default_nettypeEnum::WIRE:
-        return AST::Module::Default_nettypeEnum::WIRE;
-    case AST::Interface::Default_nettypeEnum::TRI:
-        return AST::Module::Default_nettypeEnum::TRI;
-    case AST::Interface::Default_nettypeEnum::TRI0:
-        return AST::Module::Default_nettypeEnum::TRI0;
-    case AST::Interface::Default_nettypeEnum::TRI1:
-        return AST::Module::Default_nettypeEnum::TRI1;
-    case AST::Interface::Default_nettypeEnum::TRIAND:
-        return AST::Module::Default_nettypeEnum::TRIAND;
-    case AST::Interface::Default_nettypeEnum::TRIOR:
-        return AST::Module::Default_nettypeEnum::TRIOR;
-    case AST::Interface::Default_nettypeEnum::TRIREG:
-        return AST::Module::Default_nettypeEnum::TRIREG;
-    case AST::Interface::Default_nettypeEnum::WAND:
-        return AST::Module::Default_nettypeEnum::WAND;
-    case AST::Interface::Default_nettypeEnum::WOR:
-        return AST::Module::Default_nettypeEnum::WOR;
-    case AST::Interface::Default_nettypeEnum::UWIRE:
-        return AST::Module::Default_nettypeEnum::UWIRE;
-    case AST::Interface::Default_nettypeEnum::SUPPLY0:
-        return AST::Module::Default_nettypeEnum::SUPPLY0;
-    case AST::Interface::Default_nettypeEnum::SUPPLY1:
-        return AST::Module::Default_nettypeEnum::SUPPLY1;
-    case AST::Interface::Default_nettypeEnum::NONE:
-        return AST::Module::Default_nettypeEnum::NONE;
-    }
-    return AST::Module::Default_nettypeEnum::NONE;
 }
 
 /// Member names of one interface: header ports plus the nets and variables
