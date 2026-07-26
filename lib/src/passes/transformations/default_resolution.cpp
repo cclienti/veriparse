@@ -2,10 +2,9 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/default_resolution.hpp>
 #include <veriparse/passes/transformations/net_defaults.hpp>
+#include <veriparse/passes/analysis/declaration_helpers.hpp>
 #include <veriparse/AST/node_cast.hpp>
 #include <veriparse/logger/logger.hpp>
-
-#include <functional>
 
 namespace Veriparse
 {
@@ -197,21 +196,12 @@ int DefaultResolution::resolve_port_kind(const AST::Port::Ptr &port,
         return 0;
     }
 
-    AST::Net::Ptr net = make_default_nettype_net(defnt, decl->get_filename(), decl->get_line());
+    AST::Net::Ptr net = make_default_nettype_net(defnt, implicit_net);
     if(!net) {
         LOG_ERROR_N(port) << "implicit net '" << implicit_net->get_name()
                           << "' but `default_nettype none is in effect";
         return 1;
     }
-    net->set_name(implicit_net->get_name());
-    net->set_type(type);
-    net->set_unpacked_dims(implicit_net->get_unpacked_dims());
-    net->set_cont_assign(implicit_net->get_cont_assign());
-    net->set_strength(implicit_net->get_strength());
-    net->set_ldelay(implicit_net->get_ldelay());
-    net->set_rdelay(implicit_net->get_rdelay());
-    net->set_is_vectored(implicit_net->get_is_vectored());
-    net->set_is_scalared(implicit_net->get_is_scalared());
     port->set_decl(net);
     return 0;
 }
@@ -290,40 +280,12 @@ std::set<std::string> DefaultResolution::declared_signal_names(const AST::Node::
         return names;
     }
 
-    // Same reach as the ModuleIONormalizer's declaration collector: a
-    // standalone Var/Net anywhere a declaration statement may sit, but
-    // never inside a Port wrapper (that is the direction declaration
-    // itself), a subroutine, or a process.
-    std::function<void(const AST::Node::Ptr &)> collect = [&names,
-                                                           &collect](const AST::Node::Ptr &node) {
-        if(!node) {
-            return;
-        }
-        if(node->is_node_type(AST::NodeType::Var) || node->is_node_category(AST::NodeType::Net)) {
-            names.insert(AST::cast_to<AST::Declaration>(node)->get_name());
-            return;
-        }
-        switch(node->get_node_type()) {
-        case AST::NodeType::Port:
-        case AST::NodeType::Function:
-        case AST::NodeType::Task:
-        case AST::NodeType::Initial:
-        case AST::NodeType::Always:
-        case AST::NodeType::AlwaysFF:
-        case AST::NodeType::AlwaysComb:
-        case AST::NodeType::AlwaysLatch:
-            return;
-        default:
-            break;
-        }
-        const AST::Node::ListPtr children = node->get_children();
-        for(const AST::Node::Ptr &child : *children) {
-            collect(child);
-        }
-    };
-
     for(const AST::Node::Ptr &item : *items) {
-        collect(item);
+        Analysis::for_each_standalone_decl(
+            item, nullptr,
+            [&names](const AST::Declaration::Ptr &decl, const AST::Node::Ptr & /*parent*/) {
+                names.insert(decl->get_name());
+            });
     }
     return names;
 }

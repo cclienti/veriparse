@@ -2,6 +2,7 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/module_io_normalizer.hpp>
 #include <veriparse/passes/transformations/net_defaults.hpp>
+#include <veriparse/passes/analysis/declaration_helpers.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -217,48 +218,17 @@ void ModuleIONormalizer::remove_module_variable(const std::string &variable,
                                                 AST::Declaration::ListPtr removed_variables,
                                                 AST::Node::Ptr node, AST::Node::Ptr parent)
 {
-    if(node) {
-        // A standalone net/var declaration (Var or any Net): collect it. Port
-        // wrappers are skipped below so their inner declarations are never picked
-        // up here.
-        if(node->is_node_type(AST::NodeType::Var) || node->is_node_category(AST::NodeType::Net)) {
-            AST::Declaration::Ptr var = AST::cast_to<AST::Declaration>(node);
-            if((var->get_name() == variable) && (parent)) {
+    Analysis::for_each_standalone_decl(
+        node, parent,
+        [&variable, &removed_variables](const AST::Declaration::Ptr &var,
+                                        const AST::Node::Ptr &var_parent) {
+            if((var->get_name() == variable) && (var_parent)) {
                 if(removed_variables) {
                     removed_variables->push_back(var);
                 }
-                parent->remove(node);
+                var_parent->remove(var);
             }
-        } else {
-            switch(node->get_node_type()) {
-            case AST::NodeType::Port:
-                break;
-            case AST::NodeType::Function:
-                break;
-            case AST::NodeType::Task:
-                break;
-            case AST::NodeType::Initial:
-                break;
-            case AST::NodeType::Always:
-                break;
-            case AST::NodeType::AlwaysFF:
-                break;
-            case AST::NodeType::AlwaysComb:
-                break;
-            case AST::NodeType::AlwaysLatch:
-                break;
-
-            default: {
-                AST::Node::ListPtr children = node->get_children();
-                for(AST::Node::Ptr &child : *children) {
-                    remove_module_variable(variable, removed_variables, child, node);
-                }
-            }
-            }
-        }
-    } else {
-        LOG_ERROR << "Empty node, parent is " << parent;
-    }
+        });
 }
 
 AST::Net::Ptr ModuleIONormalizer::create_default_net_type_variable(
