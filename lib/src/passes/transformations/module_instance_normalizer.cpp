@@ -292,18 +292,13 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
         }
 
         for(auto &port : *portlist) {
-            // Check argument value dimensions
             const auto &value = port->get_value();
 
             if(!value) {
                 // No port value, we go on with the next port.
                 continue;
             }
-            Analysis::Dimensions::DimList value_dims;
-            Analysis::Dimensions::analyze_expr(value, m_dim_map, value_dims);
 
-            // Check in the dimension in the module declaration for the
-            // corresponding port.
             const auto &arg = port->get_name();
 
             // An interface-typed formal is not sliced. A bare actual that
@@ -311,7 +306,9 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             // 1800-2017 §23.3.3.5), indexed with the element's own array
             // index. A scalar interface instance matches a single instance
             // port and is shared by every element as-is; so is an
-            // already-indexed or modport-qualified actual.
+            // already-indexed or modport-qualified actual. Checked before
+            // any dimension analysis: an interface instance is not a
+            // declared signal, so its actual has no dimensions to analyze.
             if(is_interface_port(module_decl, arg)) {
                 if(value->is_node_type(AST::NodeType::Identifier) &&
                    !AST::cast_to<AST::Identifier>(value)->get_hier()) {
@@ -338,6 +335,10 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
                 }
                 continue;
             }
+
+            // Check argument value dimensions.
+            Analysis::Dimensions::DimList value_dims;
+            Analysis::Dimensions::analyze_expr(value, m_dim_map, value_dims);
 
             auto itarg = module_dim_map.find(arg);
             if(itarg == module_dim_map.end()) {

@@ -507,8 +507,13 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
                 const auto new_name = identifier->get_name() + itfind->second;
                 identifier->set_name(new_name);
             } else {
-                LOG_ERROR_N(node) << "scope " << scope_str << " not found";
-                return 1;
+                // Not a block scope of this module (the map holds every
+                // block seen during the unroll walk): an instance path,
+                // an interface-port member, or another foreign hierarchical
+                // reference. Not this pass's jurisdiction — leave it for
+                // the flattener's scope matching to resolve or reject.
+                LOG_DEBUG_N(node) << "scope " << scope_str
+                                  << " is not a local block scope; reference left as written";
             }
         }
         // nothing more to recurse

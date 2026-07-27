@@ -34,11 +34,7 @@ int TransformationBase::recurse_in_childs(AST::Node::Ptr node, ProcessFunction f
 {
     int ret = 0;
     if(node) {
-        recurse(node, node->get_children(), function);
-        // AST::Node::ListPtr children = node->get_children();
-        // for (AST::Node::Ptr &child: *children) {
-        // 	ret += function(child, node);
-        // }
+        ret = recurse(node, node->get_children(), function);
     }
     return ret;
 }
