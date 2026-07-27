@@ -290,6 +290,25 @@ using token = Veriparse::Parser::VerilogParser::token;
 "!"    {return token::TK_LNOT;}
 "~"    {return token::TK_NOT;}
 
+	/* SystemVerilog assignment operators (IEEE 1800-2017 11.4.1) and
+	   increment/decrement (11.4.2), single tokens by maximal munch
+	   (ADR-0013). In Verilog mode each falls back to the 1364
+	   tokenization, so `a++b` still lexes as `a + (+b)` there. */
+"\+="   { if(m_sv_mode) return token::TK_PLUS_EQ;    yyless(1); return token::TK_PLUS; }
+"-="    { if(m_sv_mode) return token::TK_MINUS_EQ;   yyless(1); return token::TK_MINUS; }
+"\*="   { if(m_sv_mode) return token::TK_TIMES_EQ;   yyless(1); return token::TK_TIMES; }
+"/="    { if(m_sv_mode) return token::TK_DIVIDE_EQ;  yyless(1); return token::TK_DIVIDE; }
+"%="    { if(m_sv_mode) return token::TK_MOD_EQ;     yyless(1); return token::TK_MOD; }
+"\&="   { if(m_sv_mode) return token::TK_AND_EQ;     yyless(1); return token::TK_AND; }
+"\|="   { if(m_sv_mode) return token::TK_OR_EQ;      yyless(1); return token::TK_OR; }
+"\^="   { if(m_sv_mode) return token::TK_XOR_EQ;     yyless(1); return token::TK_XOR; }
+"<<<="  { if(m_sv_mode) return token::TK_LSHIFTA_EQ; yyless(3); return token::TK_LSHIFTA; }
+">>>="  { if(m_sv_mode) return token::TK_RSHIFTA_EQ; yyless(3); return token::TK_RSHIFTA; }
+"<<="   { if(m_sv_mode) return token::TK_LSHIFT_EQ;  yyless(2); return token::TK_LSHIFT; }
+">>="   { if(m_sv_mode) return token::TK_RSHIFT_EQ;  yyless(2); return token::TK_RSHIFT; }
+"\+\+"  { if(m_sv_mode) return token::TK_INCR;       yyless(1); return token::TK_PLUS; }
+"--"    { if(m_sv_mode) return token::TK_DECR;       yyless(1); return token::TK_MINUS; }
+
 "<<<"  {return token::TK_LSHIFTA;}
 ">>>"  {return token::TK_RSHIFTA;}
 "<<"   {return token::TK_LSHIFT;}
