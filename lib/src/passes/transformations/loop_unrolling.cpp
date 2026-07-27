@@ -459,10 +459,16 @@ int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string
     // Append the current dest mapping to the previous one.
     const std::string rename_suffix_mapping = rename_suffix_prev + "_" + rename_suffix;
 
-    // Insert the current mapping into the scope map.
+    // Insert the current mapping into the scope map. A same-named block may
+    // legally be seen twice: the alternative arms of a conditional generate
+    // share their block name (IEEE 1800-2017 §27.5 — at most one arm is
+    // instantiated), and this pass walks both because branch selection runs
+    // later in the pipeline. The arms derive the same mapping, so an equal
+    // re-insert is a no-op; only a *different* mapping for the same scope is
+    // a genuine collision.
     auto map_res = m_scope_map.emplace(verilog_scope, rename_suffix_mapping);
-    if(!map_res.second) {
-        LOG_ERROR << "scope already defined: " << verilog_scope;
+    if(!map_res.second && map_res.first->second != rename_suffix_mapping) {
+        LOG_ERROR << "scope " << verilog_scope << " already mapped to a different renaming";
         return 1;
     }
 

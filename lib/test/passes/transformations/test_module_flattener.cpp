@@ -147,6 +147,9 @@ TEST(PassesTransformation_ModuleFlattener, instance8) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, defparam4) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, deadcode6) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, scoped0) { TEST_CORE; }
+// Same-named blocks in the two arms of a conditional generate (§27.5):
+// legal, and walked by LoopUnrolling before branch selection.
+TEST(PassesTransformation_ModuleFlattener, genif_same_name0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; }
 // A runtime (non-constant) index into a split instance array cannot select a
 // unique flattened element: the flattener rejects it instead of leaving a
