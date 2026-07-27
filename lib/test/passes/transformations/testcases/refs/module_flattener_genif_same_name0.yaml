@@ -1,0 +1,1514 @@
+Source:
+  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+  line: 6
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+      line: 6
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+          line: 6
+          name: genif_same_name0_sub
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 6
+              name: clk
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 6
+              name: sel
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 6
+              name: a
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 6
+              name: b
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 6
+              name: q
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Param:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 7
+              is_local: false
+              name: OUTREG
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 7
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 7
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 7
+                  signing: NONE
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 8
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 8
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 9
+              name: sel
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: sel
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 9
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 10
+              name: a
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 10
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 10
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 10
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 10
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 10
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 11
+              name: b
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 11
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 11
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 11
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 12
+              name: q
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 12
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 12
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 12
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 12
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - GenerateStatement:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 14
+              items:
+              - IfStatement:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 15
+                  cond:
+                    NotEq:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 15
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 15
+                          name: OUTREG
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 15
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  true_statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 15
+                      scope: gen_sel
+                      statements:
+                      - Var:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 16
+                          is_var: false
+                          is_const: false
+                          lifetime: NONE
+                          name: q_r
+                          init:
+                            Rvalue: null
+                          type:
+                            RegType:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 16
+                              signing: NONE
+                              packed_dims:
+                              - RangeDim:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 16
+                                  left:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 16
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 3
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 16
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                      - Always:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 17
+                          senslist:
+                            Senslist:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 17
+                              list:
+                              - Sens:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 17
+                                  type: POSEDGE
+                                  sig:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 17
+                                      name: clk
+                                      hier:
+                                        HierName: null
+                          statement:
+                            Block:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 17
+                              scope: ''
+                              statements:
+                              - NonblockingSubstitution:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 18
+                                  left:
+                                    Lvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 18
+                                      var:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                          line: 18
+                                          name: q_r
+                                          hier:
+                                            HierName: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 18
+                                      var:
+                                        Cond:
+                                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                          line: 18
+                                          cond:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                              line: 18
+                                              name: sel
+                                              hier:
+                                                HierName: null
+                                          left:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                              line: 18
+                                              name: a
+                                              hier:
+                                                HierName: null
+                                          right:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                              line: 18
+                                              name: b
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
+                      - Assign:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 20
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 20
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 20
+                                  name: q
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 20
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 20
+                                  name: q_r
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                  false_statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 22
+                      scope: gen_sel
+                      statements:
+                      - Assign:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 23
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 23
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 23
+                                  name: q
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 23
+                              var:
+                                Cond:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 23
+                                  cond:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 23
+                                      name: sel
+                                      hier:
+                                        HierName: null
+                                  left:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 23
+                                      name: a
+                                      hier:
+                                        HierName: null
+                                  right:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                      line: 23
+                                      name: b
+                                      hier:
+                                        HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+          line: 28
+          name: genif_same_name0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 29
+              name: clk
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 30
+              name: sel
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: sel
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 31
+              name: a
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 31
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 31
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 31
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 32
+              name: b
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 32
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 32
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 32
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 33
+              name: q0
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: q0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 34
+              name: q1
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: q1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 34
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 34
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 34
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_clk
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_sel
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_a
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 10
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_b
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 11
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_q
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 12
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_clk
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 36
+                      name: clk
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_sel
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 36
+                      name: sel
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_a
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 36
+                      name: a
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_b
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 36
+                      name: b
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 36
+                      name: q0
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_q
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 23
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 23
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 23
+                      name: u0_q
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 23
+                  var:
+                    Cond:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 23
+                      cond:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 23
+                          name: u0_sel
+                          hier:
+                            HierName: null
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 23
+                          name: u0_a
+                          hier:
+                            HierName: null
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 23
+                          name: u0_b
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_clk
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_sel
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_a
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 10
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 10
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_b
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 11
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_q
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 12
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_clk
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 37
+                      name: clk
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_sel
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 37
+                      name: sel
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_a
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 37
+                      name: a
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_b
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 37
+                      name: b
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 37
+                      name: q1
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_q
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 16
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: u1_q_r
+              init:
+                Rvalue: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 16
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 16
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 16
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 16
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Always:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 17
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 17
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 17
+                      type: POSEDGE
+                      sig:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 17
+                          name: u1_clk
+                          hier:
+                            HierName: null
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 18
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 18
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 18
+                              name: u1_q_r
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                          line: 18
+                          var:
+                            Cond:
+                              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                              line: 18
+                              cond:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 18
+                                  name: u1_sel
+                                  hier:
+                                    HierName: null
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 18
+                                  name: u1_a
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                                  line: 18
+                                  name: u1_b
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_same_name0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 20
+                      name: u1_q
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_same_name0.v
+                      line: 20
+                      name: u1_q_r
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
