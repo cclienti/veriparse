@@ -3672,6 +3672,18 @@ casting_type:   integer_vector_type
                     c->set_size($1);
                     $$ = c;
                 }
+
+        |       TK_LPARENTHESIS expression TK_RPARENTHESIS
+                {
+                    // parenthesized constant size: `(AW + 1)'(x)` — A.8.4
+                    // constant_primary admits `( constant_mintypmax_expression )`
+                    // as a casting_type, the idiom for parameter-dependent
+                    // widths. Decisively a size cast: a type cannot be
+                    // parenthesized here (simple_type has no such form).
+                    auto c = std::make_shared<AST::SizeCast>(scanner.get_filename(), @1.begin.line);
+                    c->set_size($2);
+                    $$ = c;
+                }
         ;
 
 

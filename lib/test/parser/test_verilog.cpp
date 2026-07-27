@@ -311,6 +311,7 @@ TEST(VerilogParserTest, sv_ansi_ports0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_op_assign0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_assign_pattern0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_cast0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_cast1) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_net0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_funcret0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_data_type_port0) { TEST_CORE_SV; }
