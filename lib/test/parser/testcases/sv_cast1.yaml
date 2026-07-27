@@ -1,0 +1,379 @@
+Source:
+  filename: ../../test/parser/testcases/sv_cast1.sv
+  line: 6
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_cast1.sv
+      line: 6
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_cast1.sv
+          line: 6
+          name: sv_cast1
+          lifetime: NONE
+          default_nettype: WIRE
+          params:
+          - Param:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 6
+              is_local: false
+              name: AW
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 6
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 8
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 6
+                  signing: NONE
+          - Param:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 6
+              is_local: false
+              name: STRIDE_W
+              value:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 6
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                ImplicitType:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 6
+                  signing: NONE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 7
+              name: addr
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: addr
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 7
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 7
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 7
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 7
+                                  name: AW
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 7
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 7
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 8
+              name: stride
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: stride
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 8
+                          left:
+                            Minus:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 8
+                                  name: STRIDE_W
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 8
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 9
+              name: ea
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: ea
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 9
+                      signing: SIGNED
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 9
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 9
+                              name: AW
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Assign:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 11
+                      name: ea
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 11
+                  var:
+                    Plus:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 11
+                      left:
+                        SystemCall:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 11
+                          syscall: signed
+                          args:
+                          - Concat:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 11
+                              list:
+                              - IntConstN:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 11
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 0
+                              - Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 11
+                                  name: addr
+                                  hier:
+                                    HierName: null
+                      right:
+                        SizeCast:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 11
+                          size:
+                            Plus:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 11
+                              left:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 11
+                                  name: AW
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 11
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          expr:
+                            SystemCall:
+                              filename: ../../test/parser/testcases/sv_cast1.sv
+                              line: 11
+                              syscall: signed
+                              args:
+                              - Identifier:
+                                  filename: ../../test/parser/testcases/sv_cast1.sv
+                                  line: 11
+                                  name: stride
+                                  hier:
+                                    HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Var:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 13
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: w
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 15
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ../../test/parser/testcases/sv_cast1.sv
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 14
+                      name: w
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_cast1.sv
+                  line: 14
+                  var:
+                    SizeCast:
+                      filename: ../../test/parser/testcases/sv_cast1.sv
+                      line: 14
+                      size:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 14
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 16
+                      expr:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_cast1.sv
+                          line: 14
+                          name: addr
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
