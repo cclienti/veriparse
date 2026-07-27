@@ -63,6 +63,10 @@ enum class data_type_kind_t {
 // consumer resolves it to data_type_t::is_signed against its own default.
 enum class signing_t { NONE, SIGNED, UNSIGNED };
 
+// SystemVerilog assignment operator (IEEE 1800-2017 11.4.1), carried by the
+// grammar to the desugaring helper (ADR-0013).
+enum class assign_op_t { PLUS, MINUS, TIMES, DIVIDE, MOD, AND, OR, XOR, SLL, SRL, SLA, SRA };
+
 // Semantic carrier filled by the `data_type` grammar rule; build_variable()
 // turns it into the matching AST node.
 typedef struct {
@@ -269,6 +273,17 @@ AST::Member::ListPtr build_struct_members(const data_type_t &dt,
 AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
                                        const std::string &filename="", uint32_t line=0);
 
+// Desugar an operator assignment into its equivalent blocking assignment
+// (IEEE 1800-2017 11.4.1, ADR-0013): `lhs op= rhs` becomes
+// `lhs = <lhs-expr-clone> op (rhs)`.
+AST::BlockingSubstitution::Ptr make_op_assign(const AST::Lvalue::Ptr &lvalue, assign_op_t op,
+                                              const AST::Rvalue::Ptr &rvalue,
+                                              const std::string &filename="", uint32_t line=0);
+
+// Desugar `lhs++` / `++lhs` / `lhs--` / `--lhs` (11.4.2): `lhs op= 1`.
+AST::BlockingSubstitution::Ptr make_incdec(const AST::Lvalue::Ptr &lvalue, bool increment,
+                                           const std::string &filename="", uint32_t line=0);
+
 // Build a Port wrapping a directed declaration; `lengths` are the port
 // name's unpacked dimensions (A.1.3), landing on the declaration.
 AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
@@ -454,6 +469,21 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_MOD          "'%'"
 %token                  TK_COND         "'?'"
 %token                  TK_EQUALS       "'='"
+// SystemVerilog assignment operators (11.4.1) and inc/dec (11.4.2), ADR-0013.
+%token                  TK_PLUS_EQ      "'+='"
+%token                  TK_MINUS_EQ     "'-='"
+%token                  TK_TIMES_EQ     "'*='"
+%token                  TK_DIVIDE_EQ    "'/='"
+%token                  TK_MOD_EQ       "'%='"
+%token                  TK_AND_EQ       "'&='"
+%token                  TK_OR_EQ        "'|='"
+%token                  TK_XOR_EQ       "'^='"
+%token                  TK_LSHIFT_EQ    "'<<='"
+%token                  TK_RSHIFT_EQ    "'>>='"
+%token                  TK_LSHIFTA_EQ   "'<<<='"
+%token                  TK_RSHIFTA_EQ   "'>>>='"
+%token                  TK_INCR         "'++'"
+%token                  TK_DECR         "'--'"
 %token                  TK_PLUSCOLON    "'+:'"
 %token                  TK_MINUSCOLON   "'-:'"
 %token                  TK_AT           "'@'"
@@ -545,6 +575,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::ListPtr>                 typed_var_tf_decl
 %type   <data_type_kind_t>                   integer_vector_type integer_atom_type non_integer_type
 %type   <signing_t>                          signing
+%type   <assign_op_t>                        assignment_operator
 %type   <AST::Dimension::ListPtr>                packed_dimensions
 
 %type   <AST::GenerateStatement::Ptr>        generate
@@ -4151,6 +4182,51 @@ blocking_assignment:
                     $$->set_left($1);
                     $$->set_right($3);
                 }
+
+                // SystemVerilog operator assignment (IEEE 1800-2017 11.4.1)
+                // and increment/decrement statements (11.4.2), desugared to
+                // the equivalent blocking assignment (ADR-0013).
+        |       lvalue assignment_operator rvalue TK_SEMICOLON
+                {
+                    $$ = ParserHelpers::make_op_assign($1, $2, $3, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       lvalue TK_INCR TK_SEMICOLON
+                {
+                    $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       lvalue TK_DECR TK_SEMICOLON
+                {
+                    $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_INCR lvalue TK_SEMICOLON
+                {
+                    $$ = ParserHelpers::make_incdec($2, true, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_DECR lvalue TK_SEMICOLON
+                {
+                    $$ = ParserHelpers::make_incdec($2, false, scanner.get_filename(), @1.begin.line);
+                }
+        ;
+
+// The twelve SystemVerilog assignment operators (11.4.1), reduced to the
+// operation the desugaring applies.
+assignment_operator:
+                TK_PLUS_EQ      { $$ = assign_op_t::PLUS; }
+        |       TK_MINUS_EQ     { $$ = assign_op_t::MINUS; }
+        |       TK_TIMES_EQ     { $$ = assign_op_t::TIMES; }
+        |       TK_DIVIDE_EQ    { $$ = assign_op_t::DIVIDE; }
+        |       TK_MOD_EQ       { $$ = assign_op_t::MOD; }
+        |       TK_AND_EQ       { $$ = assign_op_t::AND; }
+        |       TK_OR_EQ        { $$ = assign_op_t::OR; }
+        |       TK_XOR_EQ       { $$ = assign_op_t::XOR; }
+        |       TK_LSHIFT_EQ    { $$ = assign_op_t::SLL; }
+        |       TK_RSHIFT_EQ    { $$ = assign_op_t::SRL; }
+        |       TK_LSHIFTA_EQ   { $$ = assign_op_t::SLA; }
+        |       TK_RSHIFTA_EQ   { $$ = assign_op_t::SRA; }
         ;
 
 nonblocking_assignment:
@@ -4473,32 +4549,44 @@ forpost:        lvalue TK_EQUALS rvalue
                     $$->set_right($3);
                 }
 
+                // SystemVerilog for_step forms (A.6.8): operator assignment
+                // and inc/dec, desugared like the statement forms (ADR-0013).
+        |       lvalue assignment_operator rvalue
+                {
+                    $$ = ParserHelpers::make_op_assign($1, $2, $3, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       lvalue TK_INCR
+                {
+                    $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       lvalue TK_DECR
+                {
+                    $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_INCR lvalue
+                {
+                    $$ = ParserHelpers::make_incdec($2, true, scanner.get_filename(), @1.begin.line);
+                }
+
+        |       TK_DECR lvalue
+                {
+                    $$ = ParserHelpers::make_incdec($2, false, scanner.get_filename(), @1.begin.line);
+                }
+
+                // Two-token `i + +` / `i - -` spellings: how `i++`/`i--`
+                // reach this rule in Verilog mode, where the single-token
+                // forms do not lex (ADR-0013 §2).
         |       lvalue TK_PLUS TK_PLUS
                 {
-                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
-                    AST::Rvalue::Ptr rv = std::make_shared<AST::Rvalue>(scanner.get_filename(), @1.begin.line);
-                    AST::Plus::Ptr plus = std::make_shared<AST::Plus>(scanner.get_filename(), @1.begin.line);
-                    AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
-                    one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
-                    plus->set_left($1->get_var()->clone());
-                    plus->set_right(AST::to_node(one));
-                    rv->set_var(AST::to_node(plus));
-                    $$->set_left($1);
-                    $$->set_right(rv);
+                    $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
                 }
 
         |       lvalue TK_MINUS TK_MINUS
                 {
-                    $$ = std::make_shared<AST::BlockingSubstitution>(scanner.get_filename(), @1.begin.line);
-                    AST::Rvalue::Ptr rv = std::make_shared<AST::Rvalue>(scanner.get_filename(), @1.begin.line);
-                    AST::Minus::Ptr minus = std::make_shared<AST::Minus>(scanner.get_filename(), @1.begin.line);
-                    AST::IntConstN::Ptr one = std::make_shared<AST::IntConstN>(scanner.get_filename(), @1.begin.line);
-                    one->set_base(10); one->set_size(-1); one->set_sign(false); one->set_value(1);
-                    minus->set_left($1->get_var()->clone());
-                    minus->set_right(AST::to_node(one));
-                    rv->set_var(AST::to_node(minus));
-                    $$->set_left($1);
-                    $$->set_right(rv);
+                    $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
                 }
         ;
 
@@ -6356,6 +6444,78 @@ namespace Veriparse {
                 // make_data_type already carries signing + packed dims and clones
                 // the named ref / inline def.
                 return make_data_type(dt, filename, line);
+            }
+
+            AST::BlockingSubstitution::Ptr make_op_assign(const AST::Lvalue::Ptr &lvalue,
+                                                          assign_op_t op,
+                                                          const AST::Rvalue::Ptr &rvalue,
+                                                          const std::string &filename,
+                                                          uint32_t line) {
+                const AST::Node::Ptr left = lvalue->get_var()->clone();
+                const AST::Node::Ptr right = rvalue->get_var();
+
+                AST::Node::Ptr expr;
+                switch(op) {
+                case assign_op_t::PLUS:
+                    expr = std::make_shared<AST::Plus>(left, right, filename, line);
+                    break;
+                case assign_op_t::MINUS:
+                    expr = std::make_shared<AST::Minus>(left, right, filename, line);
+                    break;
+                case assign_op_t::TIMES:
+                    expr = std::make_shared<AST::Times>(left, right, filename, line);
+                    break;
+                case assign_op_t::DIVIDE:
+                    expr = std::make_shared<AST::Divide>(left, right, filename, line);
+                    break;
+                case assign_op_t::MOD:
+                    expr = std::make_shared<AST::Mod>(left, right, filename, line);
+                    break;
+                case assign_op_t::AND:
+                    expr = std::make_shared<AST::And>(left, right, filename, line);
+                    break;
+                case assign_op_t::OR:
+                    expr = std::make_shared<AST::Or>(left, right, filename, line);
+                    break;
+                case assign_op_t::XOR:
+                    expr = std::make_shared<AST::Xor>(left, right, filename, line);
+                    break;
+                // `<<<` and `<<` build the same node in expressions; the
+                // compound forms follow (11.4.1 defines them by those
+                // operators).
+                case assign_op_t::SLL:
+                case assign_op_t::SLA:
+                    expr = std::make_shared<AST::Sll>(left, right, filename, line);
+                    break;
+                case assign_op_t::SRL:
+                    expr = std::make_shared<AST::Srl>(left, right, filename, line);
+                    break;
+                case assign_op_t::SRA:
+                    expr = std::make_shared<AST::Sra>(left, right, filename, line);
+                    break;
+                }
+
+                auto rv = std::make_shared<AST::Rvalue>(filename, line);
+                rv->set_var(expr);
+                auto subst = std::make_shared<AST::BlockingSubstitution>(filename, line);
+                subst->set_left(lvalue);
+                subst->set_right(rv);
+                return subst;
+            }
+
+            AST::BlockingSubstitution::Ptr make_incdec(const AST::Lvalue::Ptr &lvalue,
+                                                       bool increment,
+                                                       const std::string &filename,
+                                                       uint32_t line) {
+                auto one = std::make_shared<AST::IntConstN>(filename, line);
+                one->set_base(10);
+                one->set_size(-1);
+                one->set_sign(false);
+                one->set_value(1);
+                auto rv = std::make_shared<AST::Rvalue>(filename, line);
+                rv->set_var(AST::to_node(one));
+                return make_op_assign(lvalue, increment ? assign_op_t::PLUS : assign_op_t::MINUS,
+                                      rv, filename, line);
             }
 
             AST::Port::Ptr create_ioport_decls(direction_t direction, net_type_t net_type, signing_t signing,
