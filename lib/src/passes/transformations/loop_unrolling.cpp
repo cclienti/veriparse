@@ -255,7 +255,10 @@ std::string LoopUnrolling::loop_scope(const AST::Node::Ptr &body, const AST::Nod
         LOG_TRACE_N(loop) << "loop scope: " << scope;
     }
     if(scope.empty()) {
-        LOG_WARNING_N(loop) << "loop without named scope";
+        // An unnamed loop body is the normal case (a named block is only
+        // needed for hierarchical references into the loop); a generated
+        // unique scope serves the renaming.
+        LOG_DEBUG_N(loop) << "unnamed loop body, generating a unique scope";
         scope = Analysis::UniqueDeclaration::get_unique_identifier(scope, m_scope_declared);
     }
     return scope;
