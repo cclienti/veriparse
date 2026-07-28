@@ -176,7 +176,7 @@ Module:
           name: b
           default_value: null
           type:
-            ImplicitType:
+            IntegerType:
               filename: ../test/passes/transformations/testcases/loop_unrolling3.v
               line: 15
               signing: NONE

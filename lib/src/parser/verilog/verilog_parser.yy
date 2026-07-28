@@ -5625,7 +5625,11 @@ function_ioports_decl:
                 {
                     location loc;
                     std::string error_message;
-                    for(port_info_t &p: $2) p.direction = $1;
+                    // One direction keyword covers the whole declaration list; set it
+                    // on the first name only, so the rest ride the fully-bare
+                    // inherit-all path (one declaration, one shared type —
+                    // IEEE 1800-2017 13.3 / 1364-2005 10.2).
+                    if(!$2.empty()) $2.front().direction = $1;
                     auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
                                                                     false, loc, error_message);
                     if(!_ports) error(loc, error_message);
@@ -5924,7 +5928,11 @@ task_ioports_decl:
                 {
                     location loc;
                     std::string error_message;
-                    for(port_info_t &p: $2) p.direction = $1;
+                    // One direction keyword covers the whole declaration list; set it
+                    // on the first name only, so the rest ride the fully-bare
+                    // inherit-all path (one declaration, one shared type —
+                    // IEEE 1800-2017 13.3 / 1364-2005 10.2).
+                    if(!$2.empty()) $2.front().direction = $1;
                     auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
                                                                     false, loc, error_message);
                     if(!_ports) error(loc, error_message);
@@ -6640,6 +6648,7 @@ namespace Veriparse {
                                                 location &loc, std::string &error_message) {
                 auto list = std::make_shared<AST::Arg::List>();
                 direction_t last_dir = direction_t::INPUT;
+                AST::DataType::Ptr last_type;
                 for(const port_info_t &pinfo : port_list) {
                     direction_t dir = (pinfo.direction != direction_t::NONE) ? pinfo.direction
                                                                             : last_dir;
@@ -6657,18 +6666,31 @@ namespace Veriparse {
                     arg->set_name(pinfo.name);
                     arg->set_direction(to_arg_dir(dir));
 
+                    // Formal argument data type (IEEE 1800-2017 13.3): its
+                    // own when written; otherwise INHERITED from the previous
+                    // argument when both direction and type are omitted
+                    // (`input logic [1:0] a, b` — b is logic [1:0]); an
+                    // explicitly directed or first bare formal defaults to
+                    // the honest ImplicitType (1-bit logic to the analyses).
+                    AST::DataType::Ptr type;
                     if(pinfo.has_data_type) {
-                        arg->set_type(make_data_type(pinfo.data_type, filename, line));
+                        type = make_data_type(pinfo.data_type, filename, line);
                     } else if(!pinfo.type_name.empty()) {
-                        arg->set_type(make_named_type(pinfo.type_name, pinfo.type_package, filename, line));
-                    } else {
+                        type = make_named_type(pinfo.type_name, pinfo.type_package, filename, line);
+                    } else if(pinfo.signing != signing_t::NONE || pinfo.widths) {
                         auto t = std::make_shared<AST::ImplicitType>(filename, line);
                         if(pinfo.signing != signing_t::NONE) t->set_signing(to_signing(pinfo.signing));
                         if(pinfo.widths) t->set_packed_dims(AST::Dimension::clone_list(pinfo.widths));
-                        arg->set_type(t);
+                        type = t;
+                    } else if(pinfo.direction == direction_t::NONE && last_type) {
+                        type = AST::cast_to<AST::DataType>(last_type->clone());
+                    } else {
+                        type = std::make_shared<AST::ImplicitType>(filename, line);
                     }
+                    arg->set_type(type);
                     list->push_back(arg);
                     last_dir = dir;
+                    last_type = type;
                 }
                 return list;
             }
