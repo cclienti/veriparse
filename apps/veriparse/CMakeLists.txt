@@ -200,6 +200,31 @@ if(NOT WIN32)
       HARNESS ${_iface_hs_harness}
     )
 
+    # parmem3 — 3-bank prime-interleaved parallel memory (CRT addressing,
+    # dual load/store pair + linear side-B port); single-file testcase
+    # with its dpmemrf bank folded in. Exercises parenthesized size casts,
+    # compound assignments in constant functions, and same-named
+    # conditional-generate arms.
+    set(_parmem3_sources
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/parmem3/src/parmem3.sv)
+    set(_parmem3_harness
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/parmem3/cosim/test_parmem3.cpp)
+
+    add_cosim_test(
+      NAME test_cosim_parmem3_dut
+      TOP_MODULE parmem3
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_parmem3_sources}
+      HARNESS ${_parmem3_harness}
+    )
+    add_cosim_test(
+      NAME test_cosim_parmem3_flat
+      TOP_MODULE parmem3
+      VERIFLAT_ARGS --sv
+      VERILOG_SOURCES ${_parmem3_sources}
+      HARNESS ${_parmem3_harness}
+    )
+
     set(_type_param_pipe_sources
       ${CMAKE_CURRENT_SOURCE_DIR}/test/type_param_pipe/src/type_param_pipe.sv)
     set(_type_param_pipe_harness
