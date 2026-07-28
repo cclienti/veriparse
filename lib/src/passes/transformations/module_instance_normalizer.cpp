@@ -47,9 +47,22 @@ ModuleInstanceNormalizer::ModuleInstanceNormalizer(const Analysis::Module::Modul
 
 ModuleInstanceNormalizer::~ModuleInstanceNormalizer() {}
 
+void ModuleInstanceNormalizer::warn_module_not_found(const AST::Node::Ptr &instance,
+                                                     const std::string &module_name)
+{
+    // Several normalization stages visit the same unresolved instance; the
+    // missing definition is one fact — report it once per module name.
+    if(m_missing_modules.insert(module_name).second) {
+        LOG_WARNING_N(instance) << "Instantiated module " << module_name
+                                << " not found, keeping the instance";
+    }
+}
+
 int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     LOG_INFO_N(node) << "Normalizing module instances";
+
+    m_missing_modules.clear();
 
     LOG_DEBUG_N(node) << "Analyze declaration dimensions";
     int ret = Analysis::Dimensions::analyze_decls(node, m_dim_map);
@@ -235,11 +248,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
     if(itmod == m_modules_map.end()) {
         // The module is not found, we will keep the instance and we
         // must go on without raising an error.
-        LOG_WARNING_N(instance) << "Instantiated module "
-                                   ""
-                                << module_name
-                                << ""
-                                   " not found";
+        warn_module_not_found(instance, module_name);
         return 0;
     }
 
@@ -479,11 +488,7 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node,
     if(itm == m_modules_map.end()) {
         // The module is not found, we will keep the instance and we
         // must go on without raising an error.
-        LOG_WARNING_N(instance) << "Instantiated module "
-                                   ""
-                                << inst_module_str
-                                << ""
-                                   " not found";
+        warn_module_not_found(instance, inst_module_str);
         return 0;
     }
 
@@ -660,11 +665,7 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node,
     if(itm == m_modules_map.end()) {
         // The module is not found, we will keep the instance and we
         // must go on without raising an error.
-        LOG_WARNING_N(instance) << "Instantiated module "
-                                   ""
-                                << inst_module_str
-                                << ""
-                                   " not found";
+        warn_module_not_found(instance, inst_module_str);
         return 0;
     }
 
@@ -871,11 +872,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
     if(itmod == m_modules_map.end()) {
         // The module is not found, we will keep the instance and we
         // must go on without raising an error.
-        LOG_WARNING_N(instance) << "Instantiated module "
-                                   ""
-                                << module_name
-                                << ""
-                                   " not found";
+        warn_module_not_found(instance, module_name);
         return 0;
     }
 

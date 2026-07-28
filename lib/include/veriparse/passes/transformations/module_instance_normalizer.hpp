@@ -10,6 +10,7 @@
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 
 namespace Veriparse
@@ -99,12 +100,18 @@ private:
      */
     int collect_array_instances(const AST::Node::Ptr &node);
 
+    /// Warn that an instantiated module has no definition (the instance is
+    /// kept as a black box) — once per module name, several normalization
+    /// stages visit the same instance.
+    void warn_module_not_found(const AST::Node::Ptr &instance, const std::string &module_name);
+
 private:
     Analysis::Dimensions::DimMap m_dim_map;
     Analysis::Module::ModulesMap m_modules_map;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::map<std::string, AST::Defparam::Ptr> m_defparam_map;
     std::map<std::string, Analysis::Dimensions::DimInfo> m_array_instances;
+    std::set<std::string> m_missing_modules;
 };
 
 } // namespace Transformations
