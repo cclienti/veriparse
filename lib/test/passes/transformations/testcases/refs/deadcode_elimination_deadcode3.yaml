@@ -421,6 +421,37 @@ Source:
                       filename: ../test/passes/transformations/testcases/deadcode3.v
                       line: 13
                       signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/deadcode3.v
+                          line: 13
+                          left:
+                            Minus:
+                              filename: ../test/passes/transformations/testcases/deadcode3.v
+                              line: 13
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  name: WIDTH
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/deadcode3.v
+                                  line: 13
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/deadcode3.v
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               statements:
               - Block:
                   filename: ../test/passes/transformations/testcases/deadcode3.v

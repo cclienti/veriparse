@@ -63,6 +63,26 @@ Source:
                       filename: ../../test/parser/testcases/task1.v
                       line: 3
                       signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/task1.v
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 31
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/task1.v
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
               - Arg:
                   filename: ../../test/parser/testcases/task1.v
                   line: 3
