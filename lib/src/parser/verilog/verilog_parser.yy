@@ -275,14 +275,20 @@ AST::DataType::Ptr build_data_type_def(const data_type_t &dt,
 
 // Desugar an operator assignment into its equivalent blocking assignment
 // (IEEE 1800-2017 11.4.1, ADR-0013): `lhs op= rhs` becomes
-// `lhs = <lhs-expr-clone> op (rhs)`.
+// `lhs = <lhs-expr-clone> op (rhs)`. Returns null when the lvalue contains
+// a subroutine or system call: 11.4.1 evaluates a left-hand index once,
+// and the clone would evaluate it twice — the caller reports
+// op_assign_lvalue_call_error instead of mis-lowering.
 AST::BlockingSubstitution::Ptr make_op_assign(const AST::Lvalue::Ptr &lvalue, assign_op_t op,
                                               const AST::Rvalue::Ptr &rvalue,
                                               const std::string &filename="", uint32_t line=0);
 
 // Desugar `lhs++` / `++lhs` / `lhs--` / `--lhs` (11.4.2): `lhs op= 1`.
+// Same null contract as make_op_assign.
 AST::BlockingSubstitution::Ptr make_incdec(const AST::Lvalue::Ptr &lvalue, bool increment,
                                            const std::string &filename="", uint32_t line=0);
+
+extern const char *const op_assign_lvalue_call_error;
 
 // Build a Port wrapping a directed declaration; `lengths` are the port
 // name's unpacked dimensions (A.1.3), landing on the declaration.
@@ -3680,6 +3686,9 @@ casting_type:   integer_vector_type
                     // as a casting_type, the idiom for parameter-dependent
                     // widths. Decisively a size cast: a type cannot be
                     // parenthesized here (simple_type has no such form).
+                    // Constant-ness is not checked at parse time — the grammar
+                    // is uniformly lenient there (ranges use `expression` too);
+                    // a non-constant size fails at width evaluation.
                     auto c = std::make_shared<AST::SizeCast>(scanner.get_filename(), @1.begin.line);
                     c->set_size($2);
                     $$ = c;
@@ -4201,26 +4210,31 @@ blocking_assignment:
         |       lvalue assignment_operator rvalue TK_SEMICOLON
                 {
                     $$ = ParserHelpers::make_op_assign($1, $2, $3, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       lvalue TK_INCR TK_SEMICOLON
                 {
                     $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       lvalue TK_DECR TK_SEMICOLON
                 {
                     $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       TK_INCR lvalue TK_SEMICOLON
                 {
                     $$ = ParserHelpers::make_incdec($2, true, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       TK_DECR lvalue TK_SEMICOLON
                 {
                     $$ = ParserHelpers::make_incdec($2, false, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
         ;
 
@@ -4566,26 +4580,31 @@ forpost:        lvalue TK_EQUALS rvalue
         |       lvalue assignment_operator rvalue
                 {
                     $$ = ParserHelpers::make_op_assign($1, $2, $3, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       lvalue TK_INCR
                 {
                     $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       lvalue TK_DECR
                 {
                     $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       TK_INCR lvalue
                 {
                     $$ = ParserHelpers::make_incdec($2, true, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       TK_DECR lvalue
                 {
                     $$ = ParserHelpers::make_incdec($2, false, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
                 // Two-token `i + +` / `i - -` spellings: how `i++`/`i--`
@@ -4594,11 +4613,13 @@ forpost:        lvalue TK_EQUALS rvalue
         |       lvalue TK_PLUS TK_PLUS
                 {
                     $$ = ParserHelpers::make_incdec($1, true, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
 
         |       lvalue TK_MINUS TK_MINUS
                 {
                     $$ = ParserHelpers::make_incdec($1, false, scanner.get_filename(), @1.begin.line);
+                    if(!$$) error(@1, ParserHelpers::op_assign_lvalue_call_error);
                 }
         ;
 
@@ -6466,11 +6487,39 @@ namespace Veriparse {
                 return make_data_type(dt, filename, line);
             }
 
+            const char *const op_assign_lvalue_call_error =
+                "a subroutine or system call in the left-hand side of an assignment "
+                "operator or increment/decrement would be evaluated twice by its "
+                "expansion (IEEE 1800-2017 11.4.1); use a plain assignment";
+
+            // A call anywhere in the lvalue (typically an index expression):
+            // cloning it into the expansion's right-hand side would evaluate
+            // it twice, observably when the call has side effects.
+            static bool lvalue_contains_call(const AST::Node::Ptr &node) {
+                if(!node) {
+                    return false;
+                }
+                if(node->is_node_category(AST::NodeType::Call) ||
+                   node->is_node_type(AST::NodeType::SystemCall)) {
+                    return true;
+                }
+                const AST::Node::ListPtr children = node->get_children();
+                for(const AST::Node::Ptr &child : *children) {
+                    if(lvalue_contains_call(child)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             AST::BlockingSubstitution::Ptr make_op_assign(const AST::Lvalue::Ptr &lvalue,
                                                           assign_op_t op,
                                                           const AST::Rvalue::Ptr &rvalue,
                                                           const std::string &filename,
                                                           uint32_t line) {
+                if(lvalue_contains_call(AST::to_node(lvalue))) {
+                    return nullptr;
+                }
                 const AST::Node::Ptr left = lvalue->get_var()->clone();
                 const AST::Node::Ptr right = rvalue->get_var();
 
