@@ -1245,16 +1245,19 @@ std::string VerilogGenerator::render_sizecast(const AST::SizeCast::Ptr node) con
     std::string result;
     if(node) {
         const AST::Node::Ptr size = node->get_size();
-        std::string size_str =
-            StringUtils::remove_whitespace(StringUtils::delete_surrounding_brackets(render(size)));
-        // A non-primary size (`(AW + 1)'(x)`, A.8.4) must keep its
-        // parentheses: unparenthesized, `AW+1'(x)` re-parses as
-        // `AW + (1'(x))`.
-        const bool bare_size = size->is_node_type(AST::NodeType::Identifier) ||
-                               size->is_node_type(AST::NodeType::IntConst) ||
-                               size->is_node_type(AST::NodeType::IntConstN);
-        if(!bare_size) {
-            size_str = "(" + size_str + ")";
+        std::string size_str;
+        if(size) {
+            size_str = StringUtils::remove_whitespace(
+                StringUtils::delete_surrounding_brackets(render(size)));
+            // A non-primary size (`(AW + 1)'(x)`, A.8.4) must keep its
+            // parentheses: unparenthesized, `AW+1'(x)` re-parses as
+            // `AW + (1'(x))`.
+            const bool bare_size = size->is_node_type(AST::NodeType::Identifier) ||
+                                   size->is_node_type(AST::NodeType::IntConst) ||
+                                   size->is_node_type(AST::NodeType::IntConstN);
+            if(!bare_size) {
+                size_str = "(" + size_str + ")";
+            }
         }
         result = size_str + "'(" +
                  StringUtils::delete_surrounding_brackets(render(node->get_expr())) + ")";
