@@ -287,3 +287,15 @@ TEST(VerilogGeneratorTest, sv_func_void0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_enum_range0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_size_cast0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_type_op0) { TEST_CORE_SV; }
+
+// A SizeCast whose size child is unset (reachable through a hand-written
+// YAML AST — the importer only fills the keys present) must render the
+// degenerate text, never dereference the missing child.
+TEST(VerilogGeneratorTest, sizecast_without_size)
+{
+    auto cast = std::make_shared<AST::SizeCast>();
+    auto expr = std::make_shared<AST::Identifier>();
+    expr->set_name("x");
+    cast->set_expr(AST::to_node(expr));
+    EXPECT_EQ("'(x)", Generators::VerilogGenerator().render(AST::to_node(cast)));
+}
