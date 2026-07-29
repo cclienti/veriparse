@@ -50,6 +50,22 @@ void reset(Dut &dut, RstSetter set_rst, ClkSetter set_clk, bool active_high = tr
     set_rst(active_high ? 0 : 1);
 }
 
+// Deterministic 32-bit xorshift for stimulus generation: tiny,
+// header-only, and seed-stable across platforms and library versions —
+// randomized cosim runs must replay identically everywhere.
+struct Xorshift32
+{
+    uint32_t s;
+    explicit Xorshift32(uint32_t seed) : s(seed) {}
+    uint32_t next()
+    {
+        s ^= s << 13;
+        s ^= s >> 17;
+        s ^= s << 5;
+        return s;
+    }
+};
+
 template <std::size_t N> void wide_assign(VlWide<N> &dst, const std::array<uint32_t, N> &src)
 {
     for(std::size_t i = 0; i < N; ++i) {

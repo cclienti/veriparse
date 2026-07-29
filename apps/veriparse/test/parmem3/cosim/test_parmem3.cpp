@@ -37,6 +37,7 @@ constexpr int kAw = kDepth + 2;
 constexpr int kStrideW = 12;
 constexpr uint32_t kWords = 3u << kDepth; // 3 * 2^DEPTH linear words
 constexpr uint32_t kIdxMask = (1u << kDepth) - 1;
+constexpr uint32_t kEa1Mask = (1u << (kAw + 1)) - 1; // AW+1-bit wrapping EA1 adder
 
 int signed_stride(uint32_t raw)
 {
@@ -72,36 +73,49 @@ struct Parmem3Model
         bool conflict = false, oob0 = false, oob1 = false;
     };
 
-    static SideAComb comb_a(const SideAIn &in)
+    // The full side-A address decode — the model's single source of truth,
+    // shared by the flag path (comb_a) and the data path (tick_a).
+    struct SideADecode
     {
-        SideAComb c;
+        SideAComb comb;
+        bool ce0 = false, ce1 = false;
+        int bank0 = 0, bank1 = 0;
+        uint32_t idx0 = 0, idx1 = 0;
+    };
+
+    static SideADecode decode_a(const SideAIn &in)
+    {
+        SideADecode d;
         const int scorr = mod3(signed_stride(in.stride));
-        c.oob0 = in.en && ((in.addr >> (kAw - 2)) & 3u) == 3u;
-        // 13-bit wrapping sum, oob from the wrapped pattern's top bits
+        d.comb.oob0 = in.en && ((in.addr >> (kAw - 2)) & 3u) == 3u;
+        // AW+1-bit wrapping sum, oob from the wrapped pattern's top bits
         // (sign, or both top bits of the in-range field), like the RTL.
-        const uint32_t sum13 =
-            (in.addr + static_cast<uint32_t>(signed_stride(in.stride))) & 0x1fffu;
-        const bool neg = (sum13 >> kAw) & 1u;
-        const bool hi = ((sum13 >> (kAw - 1)) & 1u) && ((sum13 >> (kAw - 2)) & 1u);
-        c.oob1 = in.en && in.dual && (neg || hi);
-        c.conflict = in.en && in.dual && (scorr == 0);
-        return c;
+        const uint32_t sum = (in.addr + static_cast<uint32_t>(signed_stride(in.stride))) & kEa1Mask;
+        const bool neg = (sum >> kAw) & 1u;
+        const bool hi = ((sum >> (kAw - 1)) & 1u) && ((sum >> (kAw - 2)) & 1u);
+        d.comb.oob1 = in.en && in.dual && (neg || hi);
+        d.comb.conflict = in.en && in.dual && (scorr == 0);
+        d.ce0 = in.en && !d.comb.oob0;
+        d.ce1 = in.en && in.dual && !d.comb.oob1;
+        d.bank0 = mod3(static_cast<int>(in.addr));
+        d.bank1 = mod3(d.bank0 + scorr); // PARRES = 1
+        d.idx0 = in.addr & kIdxMask;
+        d.idx1 = sum & kIdxMask;
+        return d;
     }
+
+    static SideAComb comb_a(const SideAIn &in) { return decode_a(in).comb; }
 
     // One posedge clka with the given (already stable) inputs.
     void tick_a(const SideAIn &in)
     {
-        const SideAComb c = comb_a(in);
-        const bool ce0 = in.en && !c.oob0;
-        const bool ce1 = in.en && in.dual && !c.oob1;
-
-        const int bank0 = mod3(static_cast<int>(in.addr));
-        const int scorr = mod3(signed_stride(in.stride));
-        const int bank1 = mod3(bank0 + scorr); // PARRES = 1
-        const uint32_t idx0 = in.addr & kIdxMask;
-        const uint32_t sum13 =
-            (in.addr + static_cast<uint32_t>(signed_stride(in.stride))) & 0x1fffu;
-        const uint32_t idx1 = sum13 & kIdxMask;
+        const SideADecode d = decode_a(in);
+        const bool ce0 = d.ce0;
+        const bool ce1 = d.ce1;
+        const int bank0 = d.bank0;
+        const int bank1 = d.bank1;
+        const uint32_t idx0 = d.idx0;
+        const uint32_t idx1 = d.idx1;
 
         for(int b = 0; b < 3; ++b) {
             const bool sel0 = ce0 && (bank0 == b);
@@ -164,20 +178,6 @@ void tick_b(Vparmem3 &dut)
 {
     tick(dut, [&](int v) { dut.clkb = v; });
 }
-
-// xorshift PRNG: deterministic, seed-stable across platforms.
-struct Rng
-{
-    uint32_t s;
-    explicit Rng(uint32_t seed) : s(seed) {}
-    uint32_t next()
-    {
-        s ^= s << 13;
-        s ^= s >> 17;
-        s ^= s << 5;
-        return s;
-    }
-};
 
 void drive_a(Vparmem3 &dut, const Parmem3Model::SideAIn &in)
 {
@@ -378,7 +378,7 @@ TEST(Parmem3Cosim, RandomizedSoakAgainstReferenceModel)
     drive_b(dut, Parmem3Model::SideBIn{});
     dut.eval();
 
-    Rng rng(0xc0ffee11u);
+    Xorshift32 rng(0xc0ffee11u);
 
     for(int cycle = 0; cycle < 4000; ++cycle) {
         Parmem3Model::SideAIn a;
