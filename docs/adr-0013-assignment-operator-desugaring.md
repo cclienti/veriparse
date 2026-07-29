@@ -56,23 +56,33 @@ family is large enough that the leniency would be systematic rather
 than a single legacy quirk (the old two-token `i + +` for-step
 productions are kept for Verilog-mode compatibility only).
 
-## 3. The index-evaluated-once caveat — why it is moot here
+## 3. The index-evaluated-once caveat — reject the one observable case
 
 §11.4.1 evaluates a left-hand **index expression** once; the expansion
 clones the whole lvalue, evaluating any index twice. The two diverge
-only when evaluating the index has a side effect — i.e. only for
-**expression-embedded** inc/dec (`a[i++] += x`), which this ADR
-deliberately does not admit (§4). For every admitted form the lvalue is
-a plain variable/select whose double evaluation is observationally
-identical — exactly the clause's own `a[i] += 2` ⇔ `a[i] = a[i] + 2`
-example.
+exactly when evaluating the index is observable: expression-embedded
+inc/dec (`a[i++] += x`, not admitted — §4) and an index containing a
+**subroutine or system call** (`mem[next_idx()] += 1`, where a function
+advancing a static counter would fire twice, reading one element and
+writing another; `$random`-style system calls likewise). The admitted
+grammar *can* produce the second shape, so the parser **rejects** any
+operator assignment or inc/dec whose lvalue contains a `Call`-category
+or `SystemCall` node — a hard error telling the user to write the plain
+assignment — rather than mis-lowering it. For every other admitted form
+the lvalue is a plain variable/select whose double evaluation is
+observationally identical — exactly the clause's own `a[i] += 2` ⇔
+`a[i] = a[i] + 2` example.
+
+| Condition | Clause | Message shape |
+|---|---|---|
+| compound assignment / inc-dec lvalue contains a subroutine or system call | §11.4.1 | `a subroutine or system call in the left-hand side … would be evaluated twice by its expansion …; use a plain assignment` |
 
 ## 4. Not in scope
 
 - **Expression-embedded inc/dec** (`a[i++]`, `x = y++`) — §11.4.2 allows
-  them, the synthesizable subset does not need them, and they are the
-  one place the clone-based expansion would be wrong. They stay syntax
-  errors.
+  them, the synthesizable subset does not need them, and together with
+  the called-index shape §3 rejects they are where the clone-based
+  expansion would be wrong. They stay syntax errors.
 - **Operator assignment in for-init** (`for (i += 1; …)`) — not legal:
   §12.7.1 for_initialization admits only plain assignments.
 - **Nonblocking compound forms** — do not exist in the standard.
@@ -87,3 +97,21 @@ and task bodies), the four inc/dec statement forms, compound and
 inc/dec for-steps (procedural and generate), each locked to its
 desugared AST; Verilog-mode lexing of `a++b`/`i + +` unchanged by
 construction (SV-gated rules) and covered by the existing suites.
+
+Rejections are pinned by **death tests**
+(`lib/test/parser/test_verilog_rejections.cpp` — the parser's
+fatal-error path exits, so the parse runs in a child process and the
+exit code plus diagnostic are asserted): the §3 called-lvalue error, the
+§2 SV-mode `a--b` maximal-munch syntax error (with its Verilog-mode
+acceptance companion), and the §6 shared-list rejection.
+
+## 6. Related acceptance change — tf declaration lists
+
+The §13.3 formal-type-inheritance fix (same branch) also changed what a
+task/function **body declaration list** accepts: one direction keyword
+and one type cover the whole list (`input [1:0] a, b;` — §13.3 /
+1364-2005 §10.2), so a subsequent name carrying its **own** data type
+(`input reg [31:0] v, reg [15:0] a;`) is illegal in both standards and
+is now rejected ("missing port direction qualifier") where it
+previously parsed with the extra type silently taken. Recorded here
+because it is a removed acceptance; pinned by the §5 death tests.
