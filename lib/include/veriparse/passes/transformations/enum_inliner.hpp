@@ -31,7 +31,10 @@ namespace Transformations
 class EnumInliner : public TransformationBase
 {
 public:
-    using ReplaceMap = std::map<std::string, AST::IntConstN::Ptr>;
+    // An enum item's value is an IntConstN (a number) or, on a 4-state enum
+    // with an x/z item value (IEEE 1800-2017 §6.19), the IntConst literal that
+    // carries the unknown bits — both inline as the constant they are.
+    using ReplaceMap = std::map<std::string, AST::Constant::Ptr>;
 
 private:
     /**

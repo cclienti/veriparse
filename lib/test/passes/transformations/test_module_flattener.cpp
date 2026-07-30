@@ -150,6 +150,18 @@ TEST(PassesTransformation_ModuleFlattener, scoped0) { TEST_CORE; }
 // Same-named blocks in the two arms of a conditional generate (§27.5):
 // legal, and walked by LoopUnrolling before branch selection.
 TEST(PassesTransformation_ModuleFlattener, genif_same_name0) { TEST_CORE; }
+// Same-named arms of ONE conditional construct are legal whatever they
+// contain (§27.5): here inner named loops driven by different genvars, so the
+// two arms derive different rename suffixes for the same scope path.
+TEST(PassesTransformation_ModuleFlattener, genif_arms_genvar0) { TEST_CORE; }
+// Two DIFFERENT conditional constructs may not share a block name (§27.5) —
+// both are instantiated here, so the collision is a hard error.
+TEST(PassesTransformation_ModuleFlattener, genif_dup_scope0) { TEST_ERROR; }
+// A hierarchical reference into a dissolved loop scope with an out-of-range
+// index must be diagnosed, not emitted verbatim.
+TEST(PassesTransformation_ModuleFlattener, loop_dangling_ref0) { TEST_ERROR; }
+// A 4-state enum with x/z item values is legal (§6.19) and must flatten.
+TEST(PassesTransformation_ModuleFlattener, enum_x_value0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; }
 // A runtime (non-constant) index into a split instance array cannot select a
 // unique flattened element: the flattener rejects it instead of leaving a
