@@ -47,15 +47,22 @@ ModuleInstanceNormalizer::ModuleInstanceNormalizer(const Analysis::Module::Modul
 
 ModuleInstanceNormalizer::~ModuleInstanceNormalizer() {}
 
-void ModuleInstanceNormalizer::warn_module_not_found(const AST::Node::Ptr &instance,
-                                                     const std::string &module_name)
+AST::Module::Ptr ModuleInstanceNormalizer::find_module_or_warn(const AST::Node::Ptr &instance,
+                                                               const std::string &module_name)
 {
-    // Several normalization stages visit the same unresolved instance; the
-    // missing definition is one fact — report it once per module name.
+    const auto it = m_modules_map.find(module_name);
+    if(it != m_modules_map.end()) {
+        return it->second;
+    }
+    // A module with no definition is kept as a black box, so this is a
+    // warning, not an error. Several normalization stages visit the same
+    // instance, so the missing definition is reported once per module name
+    // per normalized module.
     if(m_missing_modules.insert(module_name).second) {
         LOG_WARNING_N(instance) << "Instantiated module " << module_name
                                 << " not found, keeping the instance";
     }
+    return nullptr;
 }
 
 int ModuleInstanceNormalizer::process(AST::Node::Ptr node, AST::Node::Ptr parent)
@@ -244,15 +251,12 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
     //-----------------------------------------------
 
     const auto &module_name = instance->get_module();
-    auto itmod = m_modules_map.find(module_name);
-    if(itmod == m_modules_map.end()) {
-        // The module is not found, we will keep the instance and we
-        // must go on without raising an error.
-        warn_module_not_found(instance, module_name);
+    const AST::Module::Ptr module_decl_or_null = find_module_or_warn(instance, module_name);
+    if(!module_decl_or_null) {
         return 0;
     }
 
-    const auto &module_decl = itmod->second;
+    const AST::Module::Ptr &module_decl = module_decl_or_null;
 
     Analysis::Dimensions::DimMap module_dim_map;
     int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);
@@ -484,15 +488,12 @@ int ModuleInstanceNormalizer::set_portarg_names(const AST::Node::Ptr &node,
 
     const auto &inst_module_str = instance->get_module();
 
-    auto itm = m_modules_map.find(inst_module_str);
-    if(itm == m_modules_map.end()) {
-        // The module is not found, we will keep the instance and we
-        // must go on without raising an error.
-        warn_module_not_found(instance, inst_module_str);
+    const AST::Module::Ptr module_decl_or_null = find_module_or_warn(instance, inst_module_str);
+    if(!module_decl_or_null) {
         return 0;
     }
 
-    const auto &module_decl = itm->second;
+    const AST::Module::Ptr &module_decl = module_decl_or_null;
     auto decl_portnames = Analysis::Module::get_port_names(module_decl);
 
     //-----------------------------------------------
@@ -661,15 +662,12 @@ int ModuleInstanceNormalizer::set_paramarg_names(const AST::Node::Ptr &node,
 
     const auto &inst_module_str = instance->get_module();
 
-    auto itm = m_modules_map.find(inst_module_str);
-    if(itm == m_modules_map.end()) {
-        // The module is not found, we will keep the instance and we
-        // must go on without raising an error.
-        warn_module_not_found(instance, inst_module_str);
+    const AST::Module::Ptr module_decl_or_null = find_module_or_warn(instance, inst_module_str);
+    if(!module_decl_or_null) {
         return 0;
     }
 
-    const auto &module_decl = itm->second;
+    const AST::Module::Ptr &module_decl = module_decl_or_null;
     // Value and type parameters interleaved in declaration order: positional
     // actuals bind across both kinds (§23.10).
     auto decl_paramlist = Analysis::Module::get_parameter_decl_nodes(module_decl);
@@ -868,15 +866,12 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
     //-----------------------------------------------
 
     const auto &module_name = instance->get_module();
-    auto itmod = m_modules_map.find(module_name);
-    if(itmod == m_modules_map.end()) {
-        // The module is not found, we will keep the instance and we
-        // must go on without raising an error.
-        warn_module_not_found(instance, module_name);
+    const AST::Module::Ptr module_decl_or_null = find_module_or_warn(instance, module_name);
+    if(!module_decl_or_null) {
         return 0;
     }
 
-    const auto &module_decl = itmod->second;
+    const AST::Module::Ptr &module_decl = module_decl_or_null;
 
     Analysis::Dimensions::DimMap module_dim_map;
     int ret = Analysis::Dimensions::analyze_decls(module_decl, module_dim_map);

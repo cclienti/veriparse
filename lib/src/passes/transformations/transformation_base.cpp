@@ -12,13 +12,21 @@ namespace Transformations
 int TransformationBase::recurse(AST::Node::Ptr parent, AST::Node::ListPtr node_list,
                                 ProcessFunction function)
 {
-    int ret = 0;
     if(node_list) {
         for(const auto &node : *node_list) {
-            ret += function(node, parent);
+            // First error wins: the walk stops instead of transforming the
+            // remaining siblings of a tree already known to be failing, so
+            // the diagnostic names the root cause rather than trailing a
+            // cascade of errors derived from it. (Returning the code as-is
+            // also keeps a negative return code from cancelling a positive
+            // one, which summing did.)
+            const int ret = function(node, parent);
+            if(ret) {
+                return ret;
+            }
         }
     }
-    return ret;
+    return 0;
 }
 
 int TransformationBase::recurse_in_childs(AST::Node::Ptr node)
