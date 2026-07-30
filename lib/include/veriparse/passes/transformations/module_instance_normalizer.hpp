@@ -100,10 +100,12 @@ private:
      */
     int collect_array_instances(const AST::Node::Ptr &node);
 
-    /// Warn that an instantiated module has no definition (the instance is
-    /// kept as a black box) — once per module name, several normalization
+    /// The definition of an instantiated module, or null after warning that
+    /// it has no definition (the instance is kept as a black box). The warning
+    /// fires once per module name per normalized module: several normalization
     /// stages visit the same instance.
-    void warn_module_not_found(const AST::Node::Ptr &instance, const std::string &module_name);
+    AST::Module::Ptr find_module_or_warn(const AST::Node::Ptr &instance,
+                                         const std::string &module_name);
 
 private:
     Analysis::Dimensions::DimMap m_dim_map;
