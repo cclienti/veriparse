@@ -27,6 +27,15 @@ private:
     using Range = std::pair<std::string, std::vector<AST::Node::Ptr>>;
     using RangePtr = std::shared_ptr<Range>;
     using ScopeMap = std::map<std::string, std::string>;
+
+    /// What claimed a scope path: its renaming, plus the conditional-generate
+    /// arm it came from (null outside one) and that arm's construct.
+    struct ScopeOwner
+    {
+        std::string rename_suffix;
+        const AST::Node *arm = nullptr;
+        const AST::Node *construct = nullptr;
+    };
     using FunctionMap = Analysis::Module::FunctionMap;
 
 public:
@@ -50,7 +59,10 @@ private:
      *
      * @return zero on success.
      */
-    int unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state);
+    /// @param arm  the innermost enclosing conditional-generate arm, or null
+    ///             outside one — see map_scope for what it decides.
+    int unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state,
+               const AST::Node *arm = nullptr);
 
     /**
      * @brief Prepare a loop body that uses break/continue for unrolling (§3.2),
@@ -82,7 +94,8 @@ private:
      */
     int unroll_iteration(const AST::Node::Ptr &loop, const AST::Node::ListPtr &stmts,
                          const std::string &src_scope, const std::string &scope_state,
-                         const std::string &dest_scope, const AST::Node::ListPtr &unrolled_stmts);
+                         const std::string &dest_scope, const AST::Node::ListPtr &unrolled_stmts,
+                         const AST::Node *arm = nullptr);
 
     /**
      * @brief Install the unrolled statements in place of @p loop, lowering any
@@ -108,10 +121,18 @@ private:
      * The scope of map keep tracks of how identifiers are renamed
      * depending on scope hierarchy.
      *
+     * A scope path may legally be mapped twice: the alternative arms of ONE
+     * conditional generate construct share their block names (IEEE 1800-2017
+     * §27.5 — at most one arm is instantiated), and this pass walks every arm
+     * because branch selection runs later. @p arm identifies the enclosing
+     * arm, so a re-map is accepted only when it comes from a *different arm of
+     * the same construct*; two distinct constructs (or plain blocks) sharing a
+     * name stay a hard error, whatever renaming each derives.
+     *
      * @return zero on success.
      */
     int map_scope(const std::string &verilog_scope, const std::string &scope_state,
-                  const std::string &rename_suffix);
+                  const std::string &rename_suffix, const AST::Node *arm = nullptr);
 
     /**
      * @brief Evaluate a ForStatement Node.
@@ -143,6 +164,8 @@ private:
 private:
     Analysis::UniqueDeclaration::IdentifierSet m_scope_declared;
     ScopeMap m_scope_map;
+    std::map<std::string, ScopeOwner> m_scope_owner;
+    std::map<const AST::Node *, const AST::Node *> m_arm_construct;
     FunctionMap m_function_map;
 };
 

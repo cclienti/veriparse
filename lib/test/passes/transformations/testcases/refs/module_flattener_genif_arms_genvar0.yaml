@@ -1,0 +1,988 @@
+Source:
+  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+  line: 5
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+      line: 5
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+          line: 5
+          name: genif_arms_genvar0_sub
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 5
+              name: c
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 5
+              name: q
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Param:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 6
+              is_local: false
+              name: SEL
+              value:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 6
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 6
+                  signing: NONE
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 7
+              name: c
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 7
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 7
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 8
+              name: q
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Genvar:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 10
+              name: i
+          - Genvar:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 10
+              name: k
+          - GenerateStatement:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 11
+              items:
+              - IfStatement:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 12
+                  cond:
+                    NotEq:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 12
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 12
+                          name: SEL
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 12
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                  true_statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 12
+                      scope: gen_sel
+                      statements:
+                      - ForStatement:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 13
+                          pre:
+                            BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 13
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 13
+                                      name: i
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 13
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          cond:
+                            LessThan:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 13
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  name: i
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 2
+                          post:
+                            BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 13
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 13
+                                      name: i
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 13
+                                  var:
+                                    Plus:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 13
+                                      left:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 13
+                                          name: i
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        IntConstN:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 13
+                                          base: 10
+                                          size: -1
+                                          sign: false
+                                          value: 1
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          statement:
+                            Block:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 13
+                              scope: b
+                              statements:
+                              - Assign:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 14
+                                  left:
+                                    Lvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 14
+                                      var:
+                                        Pointer:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 14
+                                          ptr:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                              line: 14
+                                              name: i
+                                              hier:
+                                                HierName: null
+                                          var:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                              line: 14
+                                              name: q
+                                              hier:
+                                                HierName: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 14
+                                      var:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 14
+                                          name: c
+                                          hier:
+                                            HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
+                  false_statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 17
+                      scope: gen_sel
+                      statements:
+                      - ForStatement:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 18
+                          pre:
+                            BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 18
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 18
+                                      name: k
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 18
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          cond:
+                            LessThan:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 18
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  name: k
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 2
+                          post:
+                            BlockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 18
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 18
+                                      name: k
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 18
+                                  var:
+                                    Plus:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 18
+                                      left:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 18
+                                          name: k
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        IntConstN:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 18
+                                          base: 10
+                                          size: -1
+                                          sign: false
+                                          value: 1
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          statement:
+                            Block:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 18
+                              scope: b
+                              statements:
+                              - Assign:
+                                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                  line: 19
+                                  left:
+                                    Lvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 19
+                                      var:
+                                        Pointer:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 19
+                                          ptr:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                              line: 19
+                                              name: k
+                                              hier:
+                                                HierName: null
+                                          var:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                              line: 19
+                                              name: q
+                                              hier:
+                                                HierName: null
+                                  right:
+                                    Rvalue:
+                                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                      line: 19
+                                      var:
+                                        Unot:
+                                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                          line: 19
+                                          right:
+                                            Identifier:
+                                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                                              line: 19
+                                              name: c
+                                              hier:
+                                                HierName: null
+                                  ldelay:
+                                    DelayStatement: null
+                                  rdelay:
+                                    DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+          line: 25
+          name: genif_arms_genvar0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 26
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 27
+              name: q0
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: q0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 27
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 28
+              name: q1
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: q1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 28
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 28
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                              line: 28
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_c
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_q
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 8
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_c
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 30
+                      name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 30
+                      name: q0
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_q
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 19
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 19
+                  var:
+                    Pointer:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 19
+                      ptr:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 19
+                          name: u0_q
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 19
+                  var:
+                    Unot:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 19
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 19
+                          name: u0_c
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 19
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 19
+                  var:
+                    Pointer:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 19
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 19
+                          name: u0_q
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 19
+                  var:
+                    Unot:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 19
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 19
+                          name: u0_c
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_c
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_q
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 8
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_c
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 31
+                      name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 31
+                      name: q1
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_q
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 14
+                  var:
+                    Pointer:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 14
+                      ptr:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 14
+                          name: u1_q
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 14
+                      name: u1_c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 14
+                  var:
+                    Pointer:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 14
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                          line: 14
+                          name: u1_q
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/genif_arms_genvar0.v
+                      line: 14
+                      name: u1_c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

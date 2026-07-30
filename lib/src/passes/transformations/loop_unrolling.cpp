@@ -9,6 +9,7 @@
 #include <veriparse/logger/logger.hpp>
 
 #include <iterator>
+#include <set>
 
 namespace Veriparse
 {
@@ -179,6 +180,53 @@ AST::Node::ListPtr body_statement_list(const AST::Node::Ptr &body)
     stmts->push_back(body);
     return stmts;
 }
+
+/// The alternative arms of a conditional generate construct: the branches of
+/// an if, or the per-item statements of a case. Empty for any other node. Only
+/// arms of ONE construct may share a block name (IEEE 1800-2017 §27.5).
+std::set<const AST::Node *> conditional_arms(const AST::Node::Ptr &node)
+{
+    std::set<const AST::Node *> arms;
+    if(node->is_node_type(AST::NodeType::IfStatement)) {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(node);
+        if(ifs->get_true_statement()) {
+            arms.insert(ifs->get_true_statement().get());
+        }
+        if(ifs->get_false_statement()) {
+            arms.insert(ifs->get_false_statement().get());
+        }
+    } else if(node->is_node_category(AST::NodeType::CaseStatement)) {
+        const auto &cases = AST::cast_to<AST::CaseStatement>(node)->get_caselist();
+        if(cases) {
+            for(const AST::Case::Ptr &c : *cases) {
+                if(c && c->get_statement()) {
+                    arms.insert(c->get_statement().get());
+                }
+            }
+        }
+    }
+    return arms;
+}
+
+/// True when @p scope_str indexes a block that WAS unrolled — its
+/// `name[` stem matches a mapped scope — yet this exact path was never
+/// created. Such a reference (out-of-range index, misspelled sibling of a
+/// real one) can never bind: the block no longer exists after unrolling.
+bool names_unrolled_scope(const std::string &scope_str,
+                          const std::map<std::string, std::string> &scope_map)
+{
+    const std::size_t bracket = scope_str.find('[');
+    if(bracket == std::string::npos) {
+        return false;
+    }
+    const std::string stem = scope_str.substr(0, bracket + 1);
+    for(const auto &entry : scope_map) {
+        if(entry.first.compare(0, stem.size(), stem) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
 } // namespace
 
 LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) : m_function_map(function_map) {}
@@ -267,10 +315,10 @@ std::string LoopUnrolling::loop_scope(const AST::Node::Ptr &body, const AST::Nod
 int LoopUnrolling::unroll_iteration(const AST::Node::Ptr &loop, const AST::Node::ListPtr &stmts,
                                     const std::string &src_scope, const std::string &scope_state,
                                     const std::string &dest_scope,
-                                    const AST::Node::ListPtr &unrolled_stmts)
+                                    const AST::Node::ListPtr &unrolled_stmts, const AST::Node *arm)
 {
     const std::string new_scope_state = scope_state + src_scope + ".";
-    if(map_scope(new_scope_state, scope_state, dest_scope)) {
+    if(map_scope(new_scope_state, scope_state, dest_scope, arm)) {
         LOG_ERROR_N(loop) << "error during scope mapping";
         return 1;
     }
@@ -279,8 +327,8 @@ int LoopUnrolling::unroll_iteration(const AST::Node::Ptr &loop, const AST::Node:
     // list, so the block — not the pre-recursion @p stmts pointer — is what gets
     // spliced.
     const auto &block_tmp = std::make_shared<AST::Block>(stmts, src_scope);
-    auto recurse_fct = [this, &new_scope_state](AST::Node::Ptr n, AST::Node::Ptr p) {
-        return unroll(n, p, new_scope_state);
+    auto recurse_fct = [this, &new_scope_state, arm](AST::Node::Ptr n, AST::Node::Ptr p) {
+        return unroll(n, p, new_scope_state, arm);
     };
     if(recurse(block_tmp, stmts, recurse_fct)) {
         return 1;
@@ -310,7 +358,8 @@ int LoopUnrolling::install_unrolled(const AST::Node::Ptr &parent, const AST::Nod
     return 0;
 }
 
-int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state)
+int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std::string scope_state,
+                          const AST::Node *arm)
 {
     if(!node) {
         return 0;
@@ -366,7 +415,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
                 annotate.run(block);
 
                 if(unroll_iteration(node, stmts_copy, src_scope, scope_state, dest_scope,
-                                    unrolled_stmts)) {
+                                    unrolled_stmts, arm)) {
                     return 1;
                 }
             }
@@ -411,7 +460,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
                 const std::string src_scope = scope + "[" + loop_value + "]";
 
                 if(unroll_iteration(node, stmts_copy, src_scope, scope_state, loop_value,
-                                    unrolled_stmts)) {
+                                    unrolled_stmts, arm)) {
                     return 1;
                 }
             }
@@ -432,20 +481,38 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
         }
 
         new_scope_state.append(scope + ".");
-        if(map_scope(new_scope_state, scope_state, "")) {
+        if(map_scope(new_scope_state, scope_state, "", arm)) {
             LOG_ERROR_N(node) << "error during scope mapping";
             return 1;
         }
     }
 
-    auto recurse_fct = [this, &new_scope_state](AST::Node::Ptr n, AST::Node::Ptr p) {
-        return unroll(n, p, new_scope_state);
+    // Descending into a conditional: its branches are the ARMS of one
+    // construct (§27.5) and may share their block names. Register each arm
+    // with its construct so map_scope can tell a sibling-arm re-claim from a
+    // real collision; the condition operands are not arms.
+    const std::set<const AST::Node *> arms = conditional_arms(node);
+    if(!arms.empty()) {
+        for(const AST::Node *a : arms) {
+            m_arm_construct[a] = node.get();
+        }
+        const AST::Node::ListPtr children = node->get_children();
+        int ret = 0;
+        for(const AST::Node::Ptr &child : *children) {
+            const AST::Node *child_arm = (child && arms.count(child.get())) ? child.get() : arm;
+            ret += unroll(child, node, new_scope_state, child_arm);
+        }
+        return ret;
+    }
+
+    auto recurse_fct = [this, &new_scope_state, arm](AST::Node::Ptr n, AST::Node::Ptr p) {
+        return unroll(n, p, new_scope_state, arm);
     };
     return recurse_in_childs(node, recurse_fct);
 }
 
 int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string &scope_state,
-                             const std::string &rename_suffix)
+                             const std::string &rename_suffix, const AST::Node *arm)
 {
     // Find scope mapping of the current state.
     std::string rename_suffix_prev;
@@ -462,18 +529,33 @@ int LoopUnrolling::map_scope(const std::string &verilog_scope, const std::string
     // Append the current dest mapping to the previous one.
     const std::string rename_suffix_mapping = rename_suffix_prev + "_" + rename_suffix;
 
-    // Insert the current mapping into the scope map. A same-named block may
-    // legally be seen twice: the alternative arms of a conditional generate
-    // share their block name (IEEE 1800-2017 §27.5 — at most one arm is
-    // instantiated), and this pass walks both because branch selection runs
-    // later in the pipeline. The arms derive the same mapping, so an equal
-    // re-insert is a no-op; only a *different* mapping for the same scope is
-    // a genuine collision.
-    auto map_res = m_scope_map.emplace(verilog_scope, rename_suffix_mapping);
-    if(!map_res.second && map_res.first->second != rename_suffix_mapping) {
-        LOG_ERROR << "scope " << verilog_scope << " already mapped to a different renaming";
-        return 1;
+    // Insert the current mapping into the scope map. A scope path may legally
+    // be claimed twice: the alternative arms of ONE conditional generate
+    // construct share their block names (IEEE 1800-2017 §27.5 — at most one
+    // arm is instantiated), and this pass walks every arm because branch
+    // selection runs later in the pipeline. Structural arm identity decides
+    // it, not the derived renaming: arms may hold arbitrarily different
+    // content (so their renamings legitimately differ), while two distinct
+    // constructs — or plain blocks — sharing a name is a genuine collision
+    // whatever renaming each happens to derive.
+    const AST::Node *construct = arm ? m_arm_construct[arm] : nullptr;
+    auto owner = m_scope_owner.find(verilog_scope);
+    if(owner != m_scope_owner.end()) {
+        const bool sibling_arm = arm && owner->second.arm && owner->second.arm != arm &&
+                                 construct && owner->second.construct == construct;
+        if(!sibling_arm) {
+            LOG_ERROR << "scope " << verilog_scope << " is already declared in this scope";
+            return 1;
+        }
+        // A sibling arm's claim: only one arm survives branch selection, so
+        // keep the mapping of the arm being walked.
+        m_scope_map[verilog_scope] = rename_suffix_mapping;
+        owner->second = ScopeOwner{rename_suffix_mapping, arm, construct};
+        return 0;
     }
+
+    m_scope_map.emplace(verilog_scope, rename_suffix_mapping);
+    m_scope_owner.emplace(verilog_scope, ScopeOwner{rename_suffix_mapping, arm, construct});
 
     return 0;
 }
@@ -515,12 +597,20 @@ int LoopUnrolling::rename_scoped_identifiers(AST::Node::Ptr node, AST::Node::Ptr
                 identifier->set_hier(nullptr);
                 const auto new_name = identifier->get_name() + itfind->second;
                 identifier->set_name(new_name);
+            } else if(names_unrolled_scope(scope_str, m_scope_map)) {
+                // The stem names a block this pass just unrolled, but this
+                // exact path was never created — an out-of-range index or a
+                // misspelling. The block is gone, so nothing downstream can
+                // bind it: diagnose it here, where the source scope is known.
+                LOG_ERROR_N(node) << "hierarchical reference to '" << scope_str
+                                  << "' names no scope of the unrolled block";
+                return 1;
             } else {
                 // Not a block scope of this module (the map holds every
                 // block seen during the unroll walk): an instance path,
                 // an interface-port member, or another foreign hierarchical
-                // reference. Not this pass's jurisdiction — leave it for
-                // the flattener's scope matching to resolve or reject.
+                // reference. Not this pass's jurisdiction — the flattener's
+                // scope matching handles it.
                 LOG_DEBUG_N(node) << "scope " << scope_str
                                   << " is not a local block scope; reference left as written";
             }
