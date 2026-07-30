@@ -50,13 +50,17 @@ int EnumInliner::collect_enum_items(const AST::Node::Ptr &node)
                     continue;
                 }
                 const auto &val = item->get_value();
-                if(!val || val->get_node_type() != AST::NodeType::IntConstN) {
+                // IntConstN is the elaborated number; IntConst is an x/z
+                // literal kept as written (§6.19). Anything else means
+                // elaboration did not run or could not fold the value.
+                if(!val || !(val->get_node_type() == AST::NodeType::IntConstN ||
+                             val->get_node_type() == AST::NodeType::IntConst)) {
                     LOG_ERROR_N(item)
                         << "enum item '" << item->get_name() << "': missing or non-constant value"
                         << " (run EnumElaboration first)";
                     return 1;
                 }
-                m_replace_map[item->get_name()] = AST::cast_to<AST::IntConstN>(val);
+                m_replace_map[item->get_name()] = AST::cast_to<AST::Constant>(val);
             }
         }
         // Do not recurse into EnumDef children
@@ -91,7 +95,7 @@ int EnumInliner::replace_identifiers(AST::Node::Ptr node, AST::Node::Ptr parent)
         if(!id->get_hier() && !id->get_scope()) {
             auto it = m_replace_map.find(id->get_name());
             if(it != m_replace_map.end() && parent) {
-                auto replacement = AST::cast_to<AST::IntConstN>(it->second->clone());
+                auto replacement = AST::cast_to<AST::Constant>(it->second->clone());
                 parent->replace(node, replacement);
                 return 0;
             }

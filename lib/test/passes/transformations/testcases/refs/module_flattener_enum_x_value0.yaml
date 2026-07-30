@@ -1,0 +1,382 @@
+Source:
+  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+  line: 5
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+      line: 5
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+          line: 5
+          name: enum_x_value0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 5
+              name: s
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: s
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 5
+              name: ok
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: ok
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 5
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 5
+              name: bad
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: bad
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 5
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 5
+              name: st_o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: st_o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: st
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 6
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 6
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 6
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 6
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - AlwaysComb:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 9
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 9
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 9
+                      type: ALL
+                      sig: null
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 10
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 10
+                              name: st
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 10
+                          var:
+                            Cond:
+                              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                              line: 10
+                              cond:
+                                Eq:
+                                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                                  line: 10
+                                  left:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                                      line: 10
+                                      name: s
+                                      hier:
+                                        HierName: null
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                                      line: 10
+                                      base: 2
+                                      size: 2
+                                      sign: false
+                                      value: 1
+                              left:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                                  line: 6
+                                  base: 2
+                                  size: 2
+                                  sign: false
+                                  value: 1
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                                  line: 6
+                                  base: 2
+                                  size: 2
+                                  sign: false
+                                  value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 13
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 13
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 13
+                      name: ok
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 13
+                  var:
+                    Eq:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 13
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 13
+                          name: st
+                          hier:
+                            HierName: null
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 6
+                          base: 2
+                          size: 2
+                          sign: false
+                          value: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 14
+                      name: bad
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 14
+                  var:
+                    Eql:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 14
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 14
+                          name: st
+                          hier:
+                            HierName: null
+                      right:
+                        IntConst:
+                          filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                          line: 6
+                          value: 2'bxx
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+              line: 15
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 15
+                      name: st_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/enum_x_value0.sv
+                      line: 15
+                      name: st
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

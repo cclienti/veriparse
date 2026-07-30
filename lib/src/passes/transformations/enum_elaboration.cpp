@@ -41,6 +41,7 @@ int EnumElaboration::elaborate_enumdef(const AST::EnumType::Ptr &enumdef)
     }
 
     mpz_class counter(0);
+    bool unknown_value = false;
 
     for(const AST::EnumItem::Ptr &item : *items) {
         if(!item) {
@@ -50,13 +51,26 @@ int EnumElaboration::elaborate_enumdef(const AST::EnumType::Ptr &enumdef)
         const auto &val = item->get_value();
 
         if(val) {
-            // Explicit value — must be an IntConstN after ConstantFolding
-            if(val->get_node_type() != AST::NodeType::IntConstN) {
+            // Explicit value. An IntConstN carries a number the auto-increment
+            // can continue from; an IntConst is an unknown-bearing literal
+            // (x/z bits never fold to a number), which IEEE 1800-2017 §6.19
+            // allows on a 4-state enum — it stays as written, and §6.19 makes
+            // an *unassigned* name after it the error instead.
+            if(val->get_node_type() == AST::NodeType::IntConstN) {
+                counter = AST::cast_to<AST::IntConstN>(val)->get_value();
+            } else if(val->get_node_type() == AST::NodeType::IntConst) {
+                unknown_value = true;
+                continue;
+            } else {
                 LOG_ERROR_N(item) << "enum item '" << item->get_name()
                                   << "': explicit value is not a constant after folding";
                 return 1;
             }
-            counter = AST::cast_to<AST::IntConstN>(val)->get_value();
+        } else if(unknown_value) {
+            LOG_ERROR_N(item) << "enum item '" << item->get_name()
+                              << "': an unassigned name may not follow an item with an "
+                                 "x/z value (IEEE 1800-2017 6.19)";
+            return 1;
         } else {
             // Auto-increment — inject IntConstN
             auto injected = std::make_shared<AST::IntConstN>(
