@@ -410,8 +410,15 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
                     value_outer_is_big ? (slice_msb - width_div + 1) : (slice_msb + width_div - 1);
 
                 if(slice_msb < 0 || slice_lsb < 0) {
+                    // Defensive: with a valid actual range the smallest slice
+                    // bound is `lsb + width_div - 1`, so this cannot trigger
+                    // (a negative declared bound is already rejected by the
+                    // dimension analysis). Should the invariant ever break,
+                    // fail here — continuing would emit a part-select with
+                    // negative bounds and still report success.
                     LOG_ERROR_N(port) << "bad instance index during instance array splitting, "
                                          "negative range in port argument";
+                    return 1;
                 }
 
                 value_dims.list.front().msb = slice_msb;
