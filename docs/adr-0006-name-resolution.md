@@ -289,25 +289,17 @@ is accepted.
   **implemented by ADR-0012** (`DefaultResolution`): context-local, no symbol
   table, run design-wide after this pass; the parse-only tools do not run it,
   preserving round-trip fidelity.
-- **Effective subroutine lifetime** (§13.3.1/§13.4.2) — same default-resolution
-  family: a `Function`/`Task` with `lifetime: NONE` inherits the enclosing
-  `module`/`interface`/`package` default (itself `NONE` ⇒ **static**). The AST
-  already round-trips all of these tri-state (that is why `Interface.lifetime`
-  exists); nothing *resolves* them yet. This matters before evaluation /
-  flattening ever relies on lifetime semantics: a **static** subroutine's locals
-  persist across calls and are shared, so inlining or folding one as if its
-  locals were fresh is unsound in general. (`FunctionEvaluation` is safe today
-  only because a *constant* function is evaluated as elaboration does — fresh
-  frame per call, §13.4.3.) The future pass tags every subroutine with its
-  effective lifetime (e.g. resolving `NONE` to the inherited value) so
-  `FunctionEvaluation`/`ModuleFlattener` can check `AUTOMATIC` explicitly
-  instead of assuming it. **Known parser gap to close first** (small, standalone
-  fix): the module header lifetime is modelled (`Module.lifetime`) but not
-  parsed — `moduledef` has no lifetime slot, so `module automatic m;`
-  (A.1.2: `module_keyword [ lifetime ] module_identifier`, §23.2.1) is a syntax
-  error today and `Module.lifetime` is always `NONE`, while `package` and
-  `interface` already parse theirs. Same three-production nonterminal as
-  `interface_lifetime`; a prerequisite for resolving inherited lifetimes.
+- **Effective subroutine lifetime** (§13.3.1/§13.4.2) — **implemented by
+  ADR-0012 §8** (2026-07-30): a `Function`/`Task` with `lifetime: NONE`
+  now takes the enclosing `module`/`interface`/`package` default (itself
+  `NONE` ⇒ **static**), made explicit on every subroutine so
+  `FunctionEvaluation`/`ModuleFlattener` check `AUTOMATIC` instead of
+  assuming it. The two parser gaps this needed are closed with it: the
+  module header lifetime (A.1.2 `module_keyword [ lifetime ]
+  module_identifier`, which `package`/`interface` already parsed) and the
+  `static` spelling of a subroutine lifetime (A.2.6 `lifetime ::= static |
+  automatic`) — the latter being how one overrides an `automatic`
+  enclosing scope.
 - **Hierarchical (`.`) resolution** (`hier` axis, `u1.t()` calls, `disable`
   targets). Partially exists today, and stays where it is:
   `ModuleFlattener::replace_scoped_identifiers` resolves **downward

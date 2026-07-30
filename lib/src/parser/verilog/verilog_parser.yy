@@ -63,6 +63,28 @@ enum class data_type_kind_t {
 // consumer resolves it to data_type_t::is_signed against its own default.
 enum class signing_t { NONE, SIGNED, UNSIGNED };
 
+// Declaration lifetime as written (A.2.6); NONE = unwritten, resolved against
+// the enclosing declaration by a later pass (IEEE 1800-2017 §13.3.1).
+enum class lifetime_t { NONE, AUTOMATIC, STATIC };
+
+inline AST::Function::LifetimeEnum to_function_lifetime(lifetime_t l)
+{
+    switch(l) {
+    case lifetime_t::AUTOMATIC: return AST::Function::LifetimeEnum::AUTOMATIC;
+    case lifetime_t::STATIC:    return AST::Function::LifetimeEnum::STATIC;
+    default:                    return AST::Function::LifetimeEnum::NONE;
+    }
+}
+
+inline AST::Task::LifetimeEnum to_task_lifetime(lifetime_t l)
+{
+    switch(l) {
+    case lifetime_t::AUTOMATIC: return AST::Task::LifetimeEnum::AUTOMATIC;
+    case lifetime_t::STATIC:    return AST::Task::LifetimeEnum::STATIC;
+    default:                    return AST::Task::LifetimeEnum::NONE;
+    }
+}
+
 // SystemVerilog assignment operator (IEEE 1800-2017 11.4.1), carried by the
 // grammar to the desugaring helper (ADR-0013).
 enum class assign_op_t { PLUS, MINUS, TIMES, DIVIDE, MOD, AND, OR, XOR, SLL, SRL, SLA, SRA };
@@ -723,7 +745,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <AST::Disable::Ptr>                  disable
 %type   <AST::Node::Ptr>                     jump_statement
-%type   <bool>                               automatic
+%type   <lifetime_t>                         subroutine_lifetime
 %type   <AST::Typedef::Ptr>                  typedef_decl
 %type   <AST::EnumType::Ptr>                  enum_def
 %type   <AST::EnumItem::ListPtr>             enum_items
@@ -5418,15 +5440,14 @@ sysarg:         expression {$$ = $1;}
         ;
 
 
-function:       TK_FUNCTION automatic function_rettype_name function_ports_block function_statements TK_ENDFUNCTION
+function:       TK_FUNCTION subroutine_lifetime function_rettype_name function_ports_block function_statements TK_ENDFUNCTION
                 {
                     // function_rettype_name already carries the return type AND name
                     // (factored so a user-type return is LR(1) without a type table).
                     $$ = $3;
                     $$->set_filename(scanner.get_filename());
                     $$->set_line(@1.begin.line);
-                    $$->set_lifetime($2 ? AST::Function::LifetimeEnum::AUTOMATIC
-                                        : AST::Function::LifetimeEnum::NONE);
+                    $$->set_lifetime(to_function_lifetime($2));
                     $$->set_args($4);
                     $$->set_statements($5);
                 }
@@ -5792,12 +5813,11 @@ function_args:  function_args TK_COMMA expression
         ;
 
 
-task:           TK_TASK automatic TK_IDENTIFIER task_ports_block task_statements TK_ENDTASK
+task:           TK_TASK subroutine_lifetime TK_IDENTIFIER task_ports_block task_statements TK_ENDTASK
                 {
                     $$ = std::make_shared<AST::Task>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_lifetime($2 ? AST::Task::LifetimeEnum::AUTOMATIC
-                                        : AST::Task::LifetimeEnum::NONE);
+                    $$->set_lifetime(to_task_lifetime($2));
                     $$->set_args($4);
                     $$->set_statements($5);
                 }
@@ -6246,14 +6266,23 @@ single_statement:
         ;
 
 
-automatic:      %empty
+// Declaration lifetime of a subroutine (A.2.6: `lifetime ::= static |
+// automatic`); NONE when unwritten, so the enclosing default applies
+// (IEEE 1800-2017 §13.3.1).
+subroutine_lifetime:
+                %empty
                 {
-                    $$ = false;
+                    $$ = lifetime_t::NONE;
                 }
 
         |       TK_AUTOMATIC
                 {
-                    $$ = true;
+                    $$ = lifetime_t::AUTOMATIC;
+                }
+
+        |       TK_STATIC
+                {
+                    $$ = lifetime_t::STATIC;
                 }
         ;
 
