@@ -163,6 +163,9 @@ TEST(PassesTransformation_ModuleFlattener, loop_dangling_ref0) { TEST_ERROR; }
 // A 4-state enum with x/z item values is legal (§6.19) and must flatten.
 TEST(PassesTransformation_ModuleFlattener, enum_x_value0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; }
+// Instance array whose elements take several bits each: split_array slices the
+// actual with a part-select instead of indexing it (the width_div > 1 path).
+TEST(PassesTransformation_ModuleFlattener, instance_array_slice0) { TEST_CORE; }
 // A runtime (non-constant) index into a split instance array cannot select a
 // unique flattened element: the flattener rejects it instead of leaving a
 // dangling hierarchical reference.
