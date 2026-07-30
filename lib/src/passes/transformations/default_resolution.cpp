@@ -80,20 +80,22 @@ int DefaultResolution::resolve_source(const AST::Node::Ptr &source)
 int DefaultResolution::resolve_module(const AST::Module::Ptr &module)
 {
     return resolve_module_like(module->get_params(), module->get_ports(), module->get_items(),
-                               module->get_default_nettype());
+                               module->get_default_nettype(), module->get_lifetime());
 }
 
 int DefaultResolution::resolve_interface(const AST::Interface::Ptr &interface)
 {
     return resolve_module_like(interface->get_params(), interface->get_ports(),
                                interface->get_items(),
-                               to_module_nettype(interface->get_default_nettype()));
+                               to_module_nettype(interface->get_default_nettype()),
+                               to_module_lifetime(interface->get_lifetime()));
 }
 
 int DefaultResolution::resolve_module_like(const AST::Declaration::ListPtr &params,
                                            const AST::Port::ListPtr &ports,
                                            const AST::Node::ListPtr &items,
-                                           AST::Module::Default_nettypeEnum defnt)
+                                           AST::Module::Default_nettypeEnum defnt,
+                                           AST::Module::LifetimeEnum lifetime)
 {
     int ret = 0;
     static const std::set<std::string> no_names;
@@ -108,21 +110,21 @@ int DefaultResolution::resolve_module_like(const AST::Declaration::ListPtr &para
             ret += resolve_port_kind(port, defnt, no_names);
             const AST::Node::ListPtr children = port->get_children();
             for(const AST::Node::Ptr &child : *children) {
-                ret += resolve_body(child, defnt, no_names);
+                ret += resolve_body(child, defnt, no_names, lifetime);
             }
         }
     }
 
     if(params) {
         for(const AST::Declaration::Ptr &param : *params) {
-            ret += resolve_body(param, defnt, no_names);
+            ret += resolve_body(param, defnt, no_names, lifetime);
         }
     }
 
     if(items) {
         const std::set<std::string> declared = declared_signal_names(items);
         for(const AST::Node::Ptr &item : *items) {
-            ret += resolve_body(item, defnt, declared);
+            ret += resolve_body(item, defnt, declared, lifetime);
         }
     }
     return ret;
@@ -208,7 +210,8 @@ int DefaultResolution::resolve_port_kind(const AST::Port::Ptr &port,
 
 int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
                                     AST::Module::Default_nettypeEnum defnt,
-                                    const std::set<std::string> &declared, bool in_subroutine)
+                                    const std::set<std::string> &declared,
+                                    AST::Module::LifetimeEnum lifetime, bool in_subroutine)
 {
     if(!node) {
         return 0;
@@ -238,9 +241,15 @@ int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
 
     const bool subroutine = in_subroutine || node->is_node_type(AST::NodeType::Function) ||
                             node->is_node_type(AST::NodeType::Task);
+    if(!in_subroutine && subroutine) {
+        // Outermost subroutine of this declaration: it inherits the enclosing
+        // lifetime. A nested one (in_subroutine) already sits under a resolved
+        // parent — SV has no nested subroutine declarations anyway.
+        resolve_subroutine_lifetime(node, lifetime);
+    }
     const AST::Node::ListPtr children = node->get_children();
     for(const AST::Node::Ptr &child : *children) {
-        ret += resolve_body(child, defnt, declared, subroutine);
+        ret += resolve_body(child, defnt, declared, lifetime, subroutine);
     }
     return ret;
 }
@@ -271,6 +280,30 @@ void DefaultResolution::resolve_decl_type(const AST::Declaration::Ptr &decl)
     }
 
     decl->set_type(make_logic_type(type));
+}
+
+void DefaultResolution::resolve_subroutine_lifetime(const AST::Node::Ptr &node,
+                                                    AST::Module::LifetimeEnum lifetime)
+{
+    // §13.3.1/§13.4.2: a subroutine defaults to static; it is automatic when
+    // it says so, or when the enclosing declaration does. An enclosing NONE
+    // is itself static, so the effective value is always one of the two.
+    const bool enclosing_auto = lifetime == AST::Module::LifetimeEnum::AUTOMATIC;
+
+    if(node->is_node_type(AST::NodeType::Function)) {
+        const auto &function = AST::cast_to<AST::Function>(node);
+        if(function->get_lifetime() == AST::Function::LifetimeEnum::NONE) {
+            function->set_lifetime(enclosing_auto ? AST::Function::LifetimeEnum::AUTOMATIC
+                                                  : AST::Function::LifetimeEnum::STATIC);
+        }
+        return;
+    }
+
+    const auto &task = AST::cast_to<AST::Task>(node);
+    if(task->get_lifetime() == AST::Task::LifetimeEnum::NONE) {
+        task->set_lifetime(enclosing_auto ? AST::Task::LifetimeEnum::AUTOMATIC
+                                          : AST::Task::LifetimeEnum::STATIC);
+    }
 }
 
 std::set<std::string> DefaultResolution::declared_signal_names(const AST::Node::ListPtr &items)

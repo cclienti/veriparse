@@ -42,6 +42,12 @@ AST::Net::Ptr make_default_nettype_net(AST::Module::Default_nettypeEnum defnt,
  */
 AST::Module::Default_nettypeEnum to_module_nettype(AST::Interface::Default_nettypeEnum nettype);
 
+/**
+ * @brief Map an interface's lifetime onto the identical Module enum (the
+ * two enums are generated per-node from the same yaml property).
+ */
+AST::Module::LifetimeEnum to_module_lifetime(AST::Interface::LifetimeEnum lifetime);
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse

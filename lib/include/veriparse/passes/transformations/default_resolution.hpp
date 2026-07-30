@@ -65,9 +65,12 @@ private:
     /// ports, then the parameter and body walks.
     int resolve_module(const AST::Module::Ptr &module);
     int resolve_interface(const AST::Interface::Ptr &interface);
+    /// @param lifetime  the enclosing declaration's lifetime, which its
+    ///                   subroutines inherit when they state none.
     int resolve_module_like(const AST::Declaration::ListPtr &params,
                             const AST::Port::ListPtr &ports, const AST::Node::ListPtr &items,
-                            AST::Module::Default_nettypeEnum defnt);
+                            AST::Module::Default_nettypeEnum defnt,
+                            AST::Module::LifetimeEnum lifetime);
 
     /// §23.2.2.3 directions over the ANSI header port list: a first (or
     /// fresh-group) directionless port defaults to inout, a subsequent one
@@ -91,7 +94,14 @@ private:
     /// — so the §23.2.2.3 kind rules stop at the subroutine boundary and
     /// the formal stays as parsed.
     int resolve_body(const AST::Node::Ptr &node, AST::Module::Default_nettypeEnum defnt,
-                     const std::set<std::string> &declared, bool in_subroutine = false);
+                     const std::set<std::string> &declared, AST::Module::LifetimeEnum lifetime,
+                     bool in_subroutine = false);
+
+    /// IEEE 1800-2017 §13.3.1/§13.4.2: a subroutine that states no lifetime
+    /// takes the enclosing declaration's; an enclosing NONE means static.
+    /// Makes the effective value explicit so consumers stop assuming one.
+    void resolve_subroutine_lifetime(const AST::Node::Ptr &node,
+                                     AST::Module::LifetimeEnum lifetime);
 
     /// §6.8 (and §6.20.2 for parameters): materialize a declaration's
     /// ImplicitType as logic, preserving signing and packed dims.

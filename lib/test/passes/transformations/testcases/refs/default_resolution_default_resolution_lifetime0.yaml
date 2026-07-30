@@ -1,0 +1,585 @@
+Source:
+  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+  line: 5
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+      line: 5
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+          line: 5
+          name: default_resolution_lifetime0_auto
+          lifetime: AUTOMATIC
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 5
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 5
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 5
+              name: o
+              direction: OUTPUT
+              decl:
+                Var:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 5
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: o
+                  init:
+                    Rvalue: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 5
+                      signing: NONE
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 7
+              name: inherits_auto
+              lifetime: AUTOMATIC
+              return_type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 7
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 7
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 7
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 8
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 8
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 8
+                          name: inherits_auto
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 8
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 8
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 11
+              name: states_static
+              lifetime: STATIC
+              return_type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 11
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 11
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 11
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 12
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 12
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 12
+                          name: states_static
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 12
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 12
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 14
+              name: inherits_auto_task
+              lifetime: AUTOMATIC
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 14
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 14
+                      signing: NONE
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 14
+                  is_var: false
+                  direction: OUTPUT
+                  name: y
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 14
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 15
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 15
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 15
+                          name: y
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 15
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 15
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 17
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 17
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 17
+                      name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+          line: 20
+          name: default_resolution_lifetime0_static
+          lifetime: STATIC
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 20
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 20
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 20
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 20
+              name: o
+              direction: OUTPUT
+              decl:
+                Var:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 20
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: o
+                  init:
+                    Rvalue: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 20
+                      signing: NONE
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 21
+              name: inherits_static
+              lifetime: STATIC
+              return_type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 21
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 21
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 21
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 22
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 22
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 22
+                          name: inherits_static
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 22
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 22
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 24
+              name: states_auto
+              lifetime: AUTOMATIC
+              return_type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 24
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 24
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 24
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 25
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 25
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 25
+                          name: states_auto
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 25
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 25
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 27
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 27
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 27
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 27
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 27
+                      name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+          line: 31
+          name: default_resolution_lifetime0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 31
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 31
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 31
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 31
+              name: o
+              direction: OUTPUT
+              decl:
+                Var:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 31
+                  is_var: false
+                  is_const: false
+                  lifetime: NONE
+                  name: o
+                  init:
+                    Rvalue: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 31
+                      signing: NONE
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 32
+              name: defaults_static
+              lifetime: STATIC
+              return_type:
+                IntType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 32
+                  signing: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 32
+                  is_var: false
+                  direction: INPUT
+                  name: x
+                  default_value: null
+                  type:
+                    IntType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 32
+                      signing: NONE
+              statements:
+              - BlockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 33
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 33
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 33
+                          name: defaults_static
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 33
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                          line: 33
+                          name: x
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+              line: 35
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 35
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 35
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                  line: 35
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_lifetime0.sv
+                      line: 35
+                      name: c
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

@@ -261,18 +261,41 @@ the `var` port grammar.
 | `var` port whose direction defaults to `inout` | §23.2.2.3 | *(parser-gated, §3.2/§5 — lands with the `var` port grammar)* |
 | first port has a kind/type but no direction (Verilog mode; SV mode admits it per §3.1) | 1364-2005 §12.3.4 | (diagnosed by the parser — unchanged in Verilog mode) |
 
-## 8. Not in scope — effective subroutine lifetime
+## 8. Effective subroutine lifetime
 
-ADR-0006 §8 bundles "effective lifetime" into the same family, and it
-belongs in this pass eventually. It is deferred here because it has a
-**parser prerequisite**: `Module.lifetime` is modelled but not parsed
-(`module automatic m;` is a syntax error today, while `package` and
-`interface` parse theirs), so "inherit the enclosing default" has nothing
-to inherit *from* for modules. Sequence: close the parser gap (small,
-standalone — the same three-production nonterminal as
-`interface_lifetime`), then extend this pass to tag every `Function`/`Task`
-with its effective lifetime so `FunctionEvaluation`/`ModuleFlattener` can
-check `AUTOMATIC` explicitly instead of assuming it.
+*(Deferred at first writing on a parser prerequisite; implemented
+2026-07-30 once that gap closed.)*
+
+IEEE 1800-2017 §13.3.1/§13.4.2: a task or function defined in a module,
+interface or package **defaults to static**; it is automatic when it
+says so itself, or when the enclosing declaration is declared
+`automatic`. The pass makes that effective value explicit on every
+subroutine, so consumers check `AUTOMATIC` instead of assuming it.
+
+The prerequisite was that `Module.lifetime` was modelled but never
+parsed (`module automatic m;` was a syntax error while `package` and
+`interface` parsed theirs), so a module had no lifetime to inherit
+*from*. Closing it also exposed a second gap in the same family: a
+subroutine could only be written `automatic`, never `static`, though
+A.2.6 admits `lifetime ::= static | automatic` — which is exactly how
+one overrides an `automatic` enclosing scope. Both now parse and
+round-trip.
+
+Resolution rule, applied to the outermost subroutine of each
+declaration (SV has no nested subroutine declarations):
+
+| written on the subroutine | enclosing declaration | effective |
+|---|---|---|
+| `automatic` / `static` | anything | as written |
+| nothing | `automatic` | `AUTOMATIC` |
+| nothing | `static` or unwritten | `STATIC` |
+
+Note the resolution is deliberately *conservative-compatible*:
+`Analysis::Function::is_like_automatic` already refused to evaluate a
+function it could not prove safe (no locals, or locals that are exactly
+its inputs), so nothing that used to fold stops folding — the explicit
+tag simply replaces a structural guess with the standard's answer where
+the source states one.
 
 ## 9. Pass placement & structure
 

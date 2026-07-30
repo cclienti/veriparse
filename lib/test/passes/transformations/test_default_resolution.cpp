@@ -72,6 +72,9 @@ TEST(PassesTransformation_DefaultResolution, default_resolution_mh0) { TEST_CORE
 // Old-style task/function formals are variables (§13.3/§13.4): the port
 // rules stop at the subroutine boundary — no net kind, no `none error.
 TEST(PassesTransformation_DefaultResolution, default_resolution_tf0) { TEST_CORE_SV; }
+// Effective subroutine lifetime (§13.3.1/§13.4.2): own if stated, else the
+// enclosing declaration's, else static.
+TEST(PassesTransformation_DefaultResolution, default_resolution_lifetime0) { TEST_CORE_SV; }
 // `default_nettype none: an implicit net is a hard error (§22.8).
 TEST(PassesTransformation_DefaultResolution, default_resolution_none0) { TEST_ERROR_SV; }
 // Verilog mode: net kinds resolve, implicit types stay (1364 in, 1364 out).

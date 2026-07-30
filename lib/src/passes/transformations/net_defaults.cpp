@@ -64,6 +64,19 @@ AST::Net::Ptr make_default_nettype_net(AST::Module::Default_nettypeEnum defnt,
     return net;
 }
 
+AST::Module::LifetimeEnum to_module_lifetime(AST::Interface::LifetimeEnum lifetime)
+{
+    switch(lifetime) {
+    case AST::Interface::LifetimeEnum::NONE:
+        return AST::Module::LifetimeEnum::NONE;
+    case AST::Interface::LifetimeEnum::AUTOMATIC:
+        return AST::Module::LifetimeEnum::AUTOMATIC;
+    case AST::Interface::LifetimeEnum::STATIC:
+        return AST::Module::LifetimeEnum::STATIC;
+    }
+    return AST::Module::LifetimeEnum::NONE;
+}
+
 // The generated per-node enums are identical value lists that astgen cannot
 // share (ADR-0002 §2.1); this switch bridges them, like the parser's
 // to_interface_nettype does in the other direction. It is deliberately
