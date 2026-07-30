@@ -147,9 +147,22 @@ std::string VerilogGenerator::render_module(const AST::Module::Ptr node) const
 {
     std::string result;
     if(node) {
-        result = module_like_to_string("module " + StringUtils::escape(node->get_name()),
-                                       node->get_params(), node->get_ports(), node->get_items(),
-                                       "endmodule");
+        // A.1.2 places the lifetime between the keyword and the name, like
+        // an interface's or a package's.
+        std::string header = "module ";
+        switch(node->get_lifetime()) {
+        case AST::Module::LifetimeEnum::AUTOMATIC:
+            header += "automatic ";
+            break;
+        case AST::Module::LifetimeEnum::STATIC:
+            header += "static ";
+            break;
+        default:
+            break;
+        }
+        header += StringUtils::escape(node->get_name());
+        result = module_like_to_string(header, node->get_params(), node->get_ports(),
+                                       node->get_items(), "endmodule");
     }
     return result;
 }

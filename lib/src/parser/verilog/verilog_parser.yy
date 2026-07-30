@@ -553,6 +553,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::Ptr>                     definition
 %type   <AST::Module::Ptr>                   moduledef
 %type   <AST::Interface::Ptr>                interfacedef
+%type   <AST::Module::LifetimeEnum>          module_lifetime
 %type   <AST::Interface::LifetimeEnum>       interface_lifetime
 %type   <AST::Node::ListPtr>                 modport_decl modport_items
 %type   <AST::Modport::Ptr>                  modport_item
@@ -983,46 +984,50 @@ pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
         ;
 
 
-moduledef:      TK_MODULE modulename module_imports params_block ports_block items TK_ENDMODULE
+moduledef:      TK_MODULE module_lifetime modulename module_imports params_block ports_block items TK_ENDMODULE
                 {
                     // SV allows package imports in the module header; they import
                     // into module scope, so prepend them to the items.
-                    $6->splice($6->begin(), *$3);
+                    $7->splice($7->begin(), *$4);
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_name($2);
-                    $$->set_params($4);
+                    $$->set_lifetime($2);
+                    $$->set_name($3);
+                    $$->set_params($5);
+                    $$->set_ports($6);
+                    $$->set_items($7);
+                }
+
+        |       TK_MODULE module_lifetime modulename module_imports ports_block items TK_ENDMODULE
+                {
+                    $6->splice($6->begin(), *$4);
+                    $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
+                    $$->set_default_nettype(scanner.get_default_nettype());
+                    $$->set_lifetime($2);
+                    $$->set_name($3);
                     $$->set_ports($5);
                     $$->set_items($6);
                 }
 
-        |       TK_MODULE modulename module_imports ports_block items TK_ENDMODULE
+        |       TK_MODULE module_lifetime modulename module_imports params_block ports_block TK_ENDMODULE
                 {
-                    $5->splice($5->begin(), *$3);
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_name($2);
-                    $$->set_ports($4);
-                    $$->set_items($5);
+                    $$->set_lifetime($2);
+                    $$->set_name($3);
+                    $$->set_params($5);
+                    $$->set_ports($6);
+                    if (!$4->empty()) $$->set_items($4);
                 }
 
-        |       TK_MODULE modulename module_imports params_block ports_block TK_ENDMODULE
+        |       TK_MODULE module_lifetime modulename module_imports ports_block TK_ENDMODULE
                 {
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_name($2);
-                    $$->set_params($4);
+                    $$->set_lifetime($2);
+                    $$->set_name($3);
                     $$->set_ports($5);
-                    if (!$3->empty()) $$->set_items($3);
-                }
-
-        |       TK_MODULE modulename module_imports ports_block TK_ENDMODULE
-                {
-                    $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
-                    $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_name($2);
-                    $$->set_ports($4);
-                    if (!$3->empty()) $$->set_items($3);
+                    if (!$4->empty()) $$->set_items($4);
                 }
         ;
 
@@ -1104,6 +1109,27 @@ interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports par
 
 // Optional interface lifetime, same model as package_lifetime: NONE
 // (unspecified, i.e. static), AUTOMATIC or STATIC; stored so it round-trips.
+// Declaration lifetime of a module (IEEE 1800-2017 §13.3.1; A.1.2 puts it
+// between the keyword and the identifier). Subroutines defined inside inherit
+// it when they state none — the effective lifetime is resolved by a pass.
+module_lifetime:
+                %empty
+                {
+                    $$ = AST::Module::LifetimeEnum::NONE;
+                }
+
+        |       TK_AUTOMATIC
+                {
+                    $$ = AST::Module::LifetimeEnum::AUTOMATIC;
+                }
+
+        |       TK_STATIC
+                {
+                    $$ = AST::Module::LifetimeEnum::STATIC;
+                }
+        ;
+
+
 interface_lifetime:
                 %empty
                 {
