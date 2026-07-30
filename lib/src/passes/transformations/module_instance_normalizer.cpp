@@ -55,12 +55,20 @@ AST::Module::Ptr ModuleInstanceNormalizer::find_module_or_warn(const AST::Node::
         return it->second;
     }
     // A module with no definition is kept as a black box, so this is a
-    // warning, not an error. Several normalization stages visit the same
-    // instance, so the missing definition is reported once per module name
-    // per normalized module.
-    if(m_missing_modules.insert(module_name).second) {
-        LOG_WARNING_N(instance) << "Instantiated module " << module_name
-                                << " not found, keeping the instance";
+    // warning, not an error. Every instance of it is worth naming — the user
+    // needs each site — but the four normalization stages all visit the same
+    // instance, so the key is the instance, not the module: one warning per
+    // instantiation site instead of one per stage per site.
+    std::string instance_name;
+    if(instance && instance->is_node_type(AST::NodeType::Instance)) {
+        instance_name = AST::cast_to<AST::Instance>(instance)->get_name();
+    }
+    if(m_missing_modules.insert(module_name + '\0' + instance_name).second) {
+        // Name the instance: sites unrolled from one generate loop share a
+        // source line, so the location alone does not tell them apart.
+        LOG_WARNING_N(instance) << "Instantiated module " << module_name << " not found, keeping "
+                                << (instance_name.empty() ? std::string("the instance")
+                                                          : "instance '" + instance_name + "'");
     }
     return nullptr;
 }
