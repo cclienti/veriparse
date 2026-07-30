@@ -102,8 +102,8 @@ private:
 
     /// The definition of an instantiated module, or null after warning that
     /// it has no definition (the instance is kept as a black box). The warning
-    /// fires once per module name per normalized module: several normalization
-    /// stages visit the same instance.
+    /// fires once per instantiation site: every site is named, but the several
+    /// normalization stages that visit one instance report it only once.
     AST::Module::Ptr find_module_or_warn(const AST::Node::Ptr &instance,
                                          const std::string &module_name);
 
@@ -113,6 +113,7 @@ private:
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::map<std::string, AST::Defparam::Ptr> m_defparam_map;
     std::map<std::string, Analysis::Dimensions::DimInfo> m_array_instances;
+    /// Sites already warned about, keyed "<module>\0<instance>".
     std::set<std::string> m_missing_modules;
 };
 
