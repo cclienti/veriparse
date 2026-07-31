@@ -19,6 +19,36 @@ namespace Transformations
 namespace
 {
 
+/// A package's subroutine takes the package's lifetime when it states none,
+/// and static when the package states none either (IEEE 1800-2017 §13.3.1).
+/// Applied before inlining moves the item out of its package.
+void stamp_package_subroutine_lifetime(const AST::Node::Ptr &item,
+                                       AST::Package::LifetimeEnum package_lifetime)
+{
+    const bool automatic = package_lifetime == AST::Package::LifetimeEnum::AUTOMATIC;
+
+    if(item->is_node_type(AST::NodeType::Function)) {
+        const auto &function = AST::cast_to<AST::Function>(item);
+        if(function->get_lifetime() == AST::Function::LifetimeEnum::NONE) {
+            function->set_lifetime(automatic ? AST::Function::LifetimeEnum::AUTOMATIC
+                                             : AST::Function::LifetimeEnum::STATIC);
+        }
+        return;
+    }
+    if(item->is_node_type(AST::NodeType::Task)) {
+        const auto &task = AST::cast_to<AST::Task>(item);
+        if(task->get_lifetime() == AST::Task::LifetimeEnum::NONE) {
+            task->set_lifetime(automatic ? AST::Task::LifetimeEnum::AUTOMATIC
+                                         : AST::Task::LifetimeEnum::STATIC);
+        }
+    }
+}
+
+} // namespace
+
+namespace
+{
+
 /// The compilation-unit scope name (`$unit::`), modelled as a pseudo-package.
 const char *const UNIT_SCOPE = "$unit";
 
@@ -186,6 +216,14 @@ int PackageInliner::collect(const AST::Node::Ptr &source)
         entry.package = pkg;
         bool duplicate = false;
         if(pkg->get_items()) {
+            // A package's subroutines inherit its lifetime (IEEE 1800-2017
+            // §13.3.1), and inlining is where that context is lost: once an
+            // item is spliced into an importing module it would inherit that
+            // module's lifetime instead. Resolve it here, while the package
+            // is still its enclosing declaration.
+            for(const AST::Node::Ptr &item : *pkg->get_items()) {
+                stamp_package_subroutine_lifetime(item, pkg->get_lifetime());
+            }
             for(const AST::Node::Ptr &item : *pkg->get_items()) {
                 ScopeTable::for_each_bound_name(
                     item, [&entry, &pkg, &item, &duplicate](const std::string &name) {

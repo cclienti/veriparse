@@ -121,7 +121,7 @@ Source:
               filename: ../test/passes/transformations/testcases/package_inliner_func.sv
               line: 5
               name: dbl
-              lifetime: NONE
+              lifetime: STATIC
               return_type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/package_inliner_func.sv

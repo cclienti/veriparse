@@ -324,6 +324,7 @@ TEST(VerilogParserTest, sv_var0) { TEST_CORE_SV; }
 // [lifetime] qualifier (static/automatic) on a data declaration, stacking with
 // const/var, carried by DataModifier.lifetime (IEEE 1800-2017 §6.21).
 TEST(VerilogParserTest, sv_lifetime0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_lifetime1) { TEST_CORE_SV; }
 
 // [const][var] on named/scoped types (CustomTypeVar in a DataModifier) plus the
 // factored implicit branch (`var g, h`, `var i [2:0]`).

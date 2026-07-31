@@ -1,0 +1,111 @@
+Source:
+  filename: ../../test/parser/testcases/sv_lifetime1.sv
+  line: 4
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_lifetime1.sv
+      line: 4
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/sv_lifetime1.sv
+          line: 4
+          name: sv_lifetime1
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_lifetime1.sv
+              line: 5
+              is_var: false
+              is_const: false
+              lifetime: STATIC
+              name: a
+              init:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 5
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_lifetime1.sv
+                      line: 5
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 2
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 5
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_lifetime1.sv
+              line: 6
+              is_var: false
+              is_const: false
+              lifetime: AUTOMATIC
+              name: b
+              init:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 6
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_lifetime1.sv
+                      line: 6
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 3
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 6
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_lifetime1.sv
+              line: 7
+              is_var: true
+              is_const: false
+              lifetime: STATIC
+              name: c
+              init:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 7
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_lifetime1.sv
+                      line: 7
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 4
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 7
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_lifetime1.sv
+              line: 8
+              is_var: false
+              is_const: true
+              lifetime: STATIC
+              name: d
+              init:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 8
+                  var:
+                    IntConstN:
+                      filename: ../../test/parser/testcases/sv_lifetime1.sv
+                      line: 8
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 5
+              type:
+                IntType:
+                  filename: ../../test/parser/testcases/sv_lifetime1.sv
+                  line: 8
+                  signing: NONE
