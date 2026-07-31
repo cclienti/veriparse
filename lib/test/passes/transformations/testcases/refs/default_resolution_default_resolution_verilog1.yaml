@@ -1,0 +1,495 @@
+Source:
+  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+  line: 4
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+      line: 4
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+          line: 4
+          name: default_resolution_verilog1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 4
+              name: c
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 4
+              name: q
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 5
+              name: c
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 5
+                  is_vectored: false
+                  is_scalared: false
+                  name: c
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 5
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 6
+              name: q
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 6
+                  is_vectored: false
+                  is_scalared: false
+                  name: q
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 7
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: r
+              init:
+                Rvalue: null
+              type:
+                RegType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 7
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 7
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 7
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Task:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 9
+              name: t
+              lifetime: NONE
+              statements:
+              - Port:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 10
+                  name: u
+                  direction: INPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 10
+                      is_vectored: false
+                      is_scalared: false
+                      name: u
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 10
+                          signing: NONE
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 10
+                              left:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 10
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 10
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                  expr: null
+              - Port:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 11
+                  name: o
+                  direction: OUTPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 11
+                      is_vectored: false
+                      is_scalared: false
+                      name: o
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 11
+                          signing: NONE
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 11
+                              left:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 11
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 11
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                  expr: null
+              - Block:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 12
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 13
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 13
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 13
+                              name: o
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 13
+                          var:
+                            Unot:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 13
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 13
+                                  name: u
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 17
+              name: f
+              lifetime: NONE
+              return_type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 17
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 17
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 17
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 3
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 17
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - Port:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 18
+                  name: u
+                  direction: INPUT
+                  decl:
+                    ImplicitNet:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 18
+                      is_vectored: false
+                      is_scalared: false
+                      name: u
+                      cont_assign:
+                        Rvalue: null
+                      strength:
+                        Strength: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                      type:
+                        ImplicitType:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 18
+                          signing: NONE
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 18
+                              left:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 18
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 3
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 18
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                  expr: null
+              - Block:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 19
+                  scope: ''
+                  statements:
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 20
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 20
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 20
+                              name: f
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 20
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 20
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 20
+                                  name: u
+                                  hier:
+                                    HierName: null
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 20
+                                  base: 10
+                                  size: 4
+                                  sign: false
+                                  value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 24
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 24
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 24
+                      type: NONE
+                      sig:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 24
+                          name: c
+                          hier:
+                            HierName: null
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 24
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 25
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 25
+                          name: t
+                          args:
+                          - Concat:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 25
+                              list:
+                              - IntConstN:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 25
+                                  base: 2
+                                  size: 3
+                                  sign: false
+                                  value: 0
+                              - Identifier:
+                                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                                  line: 25
+                                  name: c
+                                  hier:
+                                    HierName: null
+                          - Identifier:
+                              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                              line: 25
+                              name: r
+                              hier:
+                                HierName: null
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+              line: 28
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 28
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 28
+                      name: q
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                  line: 28
+                  var:
+                    FunctionCall:
+                      filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                      line: 28
+                      name: f
+                      args:
+                      - Identifier:
+                          filename: ../test/passes/transformations/testcases/default_resolution_verilog1.v
+                          line: 28
+                          name: r
+                          hier:
+                            HierName: null
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

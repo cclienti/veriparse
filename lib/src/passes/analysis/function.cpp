@@ -69,6 +69,21 @@ std::vector<std::string> Function::get_variable_names(AST::Node::Ptr node)
 
 bool Function::is_like_automatic(const AST::Function::Ptr &node)
 {
+    // §13.3.1: "Specific local variables can be declared ... as static within
+    // an automatic task" — such a local keeps its value between calls, so the
+    // subroutine is stateful whatever its own lifetime says, and evaluating a
+    // call as if the frame were fresh would be wrong.
+    // Bind the list before iterating: `*get_variable_nodes(node)` in the
+    // range expression would let the returned shared_ptr die at the end of
+    // the full-expression, leaving the loop walking freed memory.
+    const AST::Declaration::ListPtr locals = Function::get_variable_nodes(node);
+    for(const auto &var : *locals) {
+        if(var->is_node_type(AST::NodeType::Var) &&
+           AST::cast_to<AST::Var>(var)->get_lifetime() == AST::Var::LifetimeEnum::STATIC) {
+            return false;
+        }
+    }
+
     if(node->get_lifetime() == AST::Function::LifetimeEnum::AUTOMATIC) {
         return true;
     }

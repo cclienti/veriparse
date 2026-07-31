@@ -241,10 +241,13 @@ int DefaultResolution::resolve_body(const AST::Node::Ptr &node,
 
     const bool subroutine = in_subroutine || node->is_node_type(AST::NodeType::Function) ||
                             node->is_node_type(AST::NodeType::Task);
-    if(!in_subroutine && subroutine) {
+    if(m_sv_mode && !in_subroutine && subroutine) {
         // Outermost subroutine of this declaration: it inherits the enclosing
         // lifetime. A nested one (in_subroutine) already sits under a resolved
         // parent — SV has no nested subroutine declarations anyway.
+        // SV mode only, like the type materialization (§2.1): 1364-2005 has
+        // no subroutine `static` keyword (A.2.6 is `task [automatic]`), so
+        // stamping one would make the output stop being Verilog.
         resolve_subroutine_lifetime(node, lifetime);
     }
     const AST::Node::ListPtr children = node->get_children();

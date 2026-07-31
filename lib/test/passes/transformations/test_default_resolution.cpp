@@ -79,3 +79,6 @@ TEST(PassesTransformation_DefaultResolution, default_resolution_lifetime0) { TES
 TEST(PassesTransformation_DefaultResolution, default_resolution_none0) { TEST_ERROR_SV; }
 // Verilog mode: net kinds resolve, implicit types stay (1364 in, 1364 out).
 TEST(PassesTransformation_DefaultResolution, default_resolution_verilog0) { TEST_CORE_VERILOG; }
+// Verilog mode has no subroutine `static` keyword: the resolution must not
+// stamp one, or the output stops being 1364-2005.
+TEST(PassesTransformation_DefaultResolution, default_resolution_verilog1) { TEST_CORE_VERILOG; }

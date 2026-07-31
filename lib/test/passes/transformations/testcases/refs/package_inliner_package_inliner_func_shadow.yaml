@@ -64,7 +64,7 @@ Source:
               filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv
               line: 4
               name: f
-              lifetime: NONE
+              lifetime: STATIC
               return_type:
                 IntegerType:
                   filename: ../test/passes/transformations/testcases/package_inliner_func_shadow.sv

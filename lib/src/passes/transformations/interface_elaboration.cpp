@@ -21,13 +21,6 @@ namespace Transformations
 namespace
 {
 
-// The generated per-node enums are identical value lists that astgen cannot
-// share (ADR-0002 §2.1); this switch bridges them, like the parser's
-// to_interface_nettype does in the other direction (the nettype bridge
-// lives in net_defaults.cpp). It is deliberately exhaustive with no
-// `default`: a new enumerator added to the yaml makes the switch
-// non-exhaustive, which -Wall -Werror turns into a compile error at this
-// exact spot rather than silently mapping the new value to NONE.
 /// Member names of one interface: header ports plus the nets and variables
 /// its body binds (§25.10 objects), collected into `members`. Enumerators go
 /// into `enumerators` instead: they are constants, not aliasable signals, so

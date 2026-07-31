@@ -1129,8 +1129,6 @@ interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports par
         ;
 
 
-// Optional interface lifetime, same model as package_lifetime: NONE
-// (unspecified, i.e. static), AUTOMATIC or STATIC; stored so it round-trips.
 // Declaration lifetime of a module (IEEE 1800-2017 §13.3.1; A.1.2 puts it
 // between the keyword and the identifier). Subroutines defined inside inherit
 // it when they state none — the effective lifetime is resolved by a pass.
@@ -1142,6 +1140,14 @@ module_lifetime:
 
         |       TK_AUTOMATIC
                 {
+                    // `automatic` is a 1364-2005 keyword (on subroutines), so
+                    // the scanner returns it in both modes and this production
+                    // must reject it itself: a module header lifetime is SV
+                    // only (A.1.2), and 1364 has no such form.
+                    if(!scanner.get_sv_mode()) {
+                        error(@1, "a module lifetime requires SystemVerilog "
+                                  "(IEEE 1800-2017 A.1.2)");
+                    }
                     $$ = AST::Module::LifetimeEnum::AUTOMATIC;
                 }
 
@@ -1152,6 +1158,8 @@ module_lifetime:
         ;
 
 
+// Optional interface lifetime, same model as package_lifetime: NONE
+// (unspecified, i.e. static), AUTOMATIC or STATIC; stored so it round-trips.
 interface_lifetime:
                 %empty
                 {
