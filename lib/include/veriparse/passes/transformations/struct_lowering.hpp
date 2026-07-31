@@ -59,6 +59,9 @@ private:
         std::uint64_t msb{0};
         std::uint64_t lsb{0};
         bool is_signed{false};
+        /// Members overlay one another (§7.3.1) instead of stacking, so
+        /// they cannot be concatenated from an assignment pattern.
+        bool is_union{false};
         SelKind sel{SelKind::none};
         std::int64_t range_left{0};
         std::int64_t range_right{0};
@@ -70,6 +73,11 @@ private:
     {
         std::uint64_t width{0};
         bool is_signed{false};
+        /// As MemberInfo::is_union, for the declaration's own type.
+        bool is_union{false};
+        /// The declaration carries unpacked dimensions: an assignment
+        /// pattern over it gives one value per ELEMENT, not per member.
+        bool is_array{false};
         std::map<std::string, MemberInfo> members;
     };
 
@@ -138,6 +146,40 @@ private:
     /// guessed. Does nothing when @p assign's target is not a lowered
     /// aggregate.
     int lower_assignment_pattern(const AST::Node::Ptr &assign);
+
+    /// Same, for a pattern in a declaration's initializer.
+    int lower_declaration_pattern(const AST::Var::Ptr &var);
+
+    /// Members of one aggregate, first-at-the-MSBs (§7.2.1). The map is
+    /// keyed by name, so descending msb recovers the declaration order a
+    /// positional pattern follows.
+    static std::vector<std::pair<std::string, const MemberInfo *>>
+    ordered_members(const std::map<std::string, MemberInfo> &members);
+
+    /// Lower @p pattern against the member set it targets, returning the
+    /// equivalent concatenation (members first-at-the-MSBs, §7.2.1) or null
+    /// after reporting why it cannot be lowered. @p path names the target
+    /// for diagnostics.
+    AST::Node::Ptr lower_pattern_over(const AST::AssignmentPattern::Ptr &pattern,
+                                      const std::map<std::string, MemberInfo> &members,
+                                      const std::string &path);
+
+    /// One member's value: a nested pattern lowers against that member's own
+    /// layout, anything else is sized to the member (§10.9 assigns, whereas
+    /// a concat element keeps its own width).
+    AST::Node::Ptr lower_member_value(const AST::Node::Ptr &value, const MemberInfo &info,
+                                      const std::string &path);
+
+    /// `default:` reaching a member: applied recursively to each member of a
+    /// substructure (§10.9.2), sized to the member otherwise.
+    AST::Node::Ptr apply_default(const AST::Node::Ptr &value, const MemberInfo &info,
+                                 const std::string &path);
+
+    /// The member set an assignment-pattern target denotes: the declaration's
+    /// own for a bare name, or a nested member's for a hierarchical one.
+    /// Null (without diagnostic) when the target is not a lowered aggregate.
+    const std::map<std::string, MemberInfo> *pattern_target(const AST::Identifier::Ptr &target,
+                                                            std::string &path, bool &rejected);
 
     /**
      * @brief Rewrite one hier identifier to a part-select when its root

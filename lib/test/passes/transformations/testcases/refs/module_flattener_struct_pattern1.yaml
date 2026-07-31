@@ -1,0 +1,669 @@
+Source:
+  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+  line: 8
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+      line: 8
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+          line: 8
+          name: struct_pattern1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 8
+              name: x
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 3
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 8
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 8
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 11
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 9
+              name: n
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: n
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 11
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 9
+              name: m
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: m
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 13
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: deflt
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 11
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 11
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 11
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 13
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: nested
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 11
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 11
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 11
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 14
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: memtgt
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 11
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 11
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 11
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 11
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 17
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 17
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 17
+                      name: deflt
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 17
+                  var:
+                    Concat:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 17
+                      list:
+                      - Concat:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 17
+                          list:
+                          - SizeCast:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 17
+                              size:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 17
+                                  base: 10
+                                  size: -1
+                                  sign: true
+                                  value: 4
+                              expr:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 17
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          - SizeCast:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 17
+                              size:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 17
+                                  base: 10
+                                  size: -1
+                                  sign: true
+                                  value: 4
+                              expr:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 17
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                      - SizeCast:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 17
+                          size:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 17
+                              base: 10
+                              size: -1
+                              sign: true
+                              value: 4
+                          expr:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 17
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 19
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 19
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 19
+                      name: nested
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 19
+                  var:
+                    Concat:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 19
+                      list:
+                      - Concat:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 19
+                          list:
+                          - SizeCast:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 19
+                              size:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 19
+                                  base: 10
+                                  size: -1
+                                  sign: true
+                                  value: 4
+                              expr:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 19
+                                  name: x
+                                  hier:
+                                    HierName: null
+                          - SizeCast:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 19
+                              size:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 19
+                                  base: 10
+                                  size: -1
+                                  sign: true
+                                  value: 4
+                              expr:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                                  line: 19
+                                  base: 16
+                                  size: 4
+                                  sign: false
+                                  value: 2
+                      - SizeCast:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 19
+                          size:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 19
+                              base: 10
+                              size: -1
+                              sign: true
+                              value: 4
+                          expr:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 19
+                              base: 16
+                              size: 4
+                              sign: false
+                              value: 3
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 21
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 21
+                  var:
+                    Partselect:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 21
+                      msb:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 21
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 11
+                      lsb:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 21
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 4
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 21
+                          name: memtgt
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 21
+                  var:
+                    Concat:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 21
+                      list:
+                      - SizeCast:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 21
+                          size:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 21
+                              base: 10
+                              size: -1
+                              sign: true
+                              value: 4
+                          expr:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 21
+                              base: 16
+                              size: 4
+                              sign: false
+                              value: 4
+                      - SizeCast:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 21
+                          size:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 21
+                              base: 10
+                              size: -1
+                              sign: true
+                              value: 4
+                          expr:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                              line: 21
+                              base: 16
+                              size: 4
+                              sign: false
+                              value: 5
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 23
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 23
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 23
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 23
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 23
+                      name: deflt
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 24
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 24
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 24
+                      name: n
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 24
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 24
+                      name: nested
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+              line: 25
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 25
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 25
+                      name: m
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                  line: 25
+                  var:
+                    Partselect:
+                      filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                      line: 25
+                      msb:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 25
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 11
+                      lsb:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 25
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 4
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/struct_pattern1.sv
+                          line: 25
+                          name: memtgt
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

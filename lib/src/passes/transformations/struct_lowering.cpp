@@ -123,6 +123,10 @@ int StructLowering::register_decl(const AST::Declaration::Ptr &decl)
     if(!vec) {
         return 1;
     }
+    // An assignment pattern over an arrayed declaration gives one value per
+    // element, not per member; record it so the lowering can tell them apart.
+    const auto &dims = decl->get_unpacked_dims();
+    m_scopes.back()[decl->get_name()].is_array = dims && !dims->empty();
     decl->set_type(vec);
     return 0;
 }
@@ -140,6 +144,7 @@ AST::DataType::Ptr StructLowering::lower_type(const AST::DataType::Ptr &type,
 
     Layout layout;
     layout.is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
+    layout.is_union = type->is_node_type(AST::NodeType::UnionType);
     if(compute_layout(type, name, layout.width, layout.members)) {
         return nullptr;
     }
@@ -293,6 +298,7 @@ int StructLowering::member_width(const AST::Member::Ptr &member, std::uint64_t &
         }
         info.is_signed = type->get_signing() == AST::DataType::SigningEnum::SIGNED;
         info.sel = SelKind::none;
+        info.is_union = type->is_node_type(AST::NodeType::UnionType);
         return compute_layout(type, member->get_name(), width, info.members);
     }
 
@@ -344,10 +350,285 @@ int StructLowering::member_width(const AST::Member::Ptr &member, std::uint64_t &
     return 0;
 }
 
+std::vector<std::pair<std::string, const StructLowering::MemberInfo *>>
+StructLowering::ordered_members(const std::map<std::string, MemberInfo> &members)
+{
+    std::vector<std::pair<std::string, const MemberInfo *>> ordered;
+    ordered.reserve(members.size());
+    for(const auto &entry : members) {
+        ordered.emplace_back(entry.first, &entry.second);
+    }
+    std::sort(ordered.begin(), ordered.end(),
+              [](const auto &a, const auto &b) { return a.second->msb > b.second->msb; });
+    return ordered;
+}
+
+AST::Node::Ptr StructLowering::apply_default(const AST::Node::Ptr &value, const MemberInfo &info,
+                                             const std::string &path)
+{
+    // §10.9.2: "For unmatched structure members, the type and default
+    // specifiers are applied recursively ... to each member of the
+    // substructure" — a nested aggregate takes the default in every one of
+    // its own members, not once over its total width.
+    if(info.members.empty()) {
+        const auto &sized =
+            std::make_shared<AST::SizeCast>(value->get_filename(), value->get_line());
+        sized->set_size(make_const(info.msb - info.lsb + 1, value));
+        sized->set_expr(value->clone());
+        return AST::to_node(sized);
+    }
+
+    if(info.is_union) {
+        LOG_ERROR_N(value) << "'" << path
+                           << "': a packed union member cannot take a pattern default: its "
+                              "members overlay one another (IEEE 1800-2017 7.3.1)";
+        return nullptr;
+    }
+
+    const auto &values = std::make_shared<AST::Node::List>();
+    for(const auto &entry : ordered_members(info.members)) {
+        const AST::Node::Ptr sub = apply_default(value, *entry.second, path + "." + entry.first);
+        if(!sub) {
+            return nullptr;
+        }
+        values->push_back(sub);
+    }
+    const auto &concat = std::make_shared<AST::Concat>(value->get_filename(), value->get_line());
+    concat->set_list(values);
+    return AST::to_node(concat);
+}
+
+AST::Node::Ptr StructLowering::lower_member_value(const AST::Node::Ptr &value,
+                                                  const MemberInfo &info, const std::string &path)
+{
+    if(value->is_node_type(AST::NodeType::AssignmentPattern)) {
+        // A nested pattern lowers against the member's own layout; left
+        // as-is it would face a vector operand and mean something else.
+        if(info.members.empty()) {
+            LOG_ERROR_N(value) << "'" << path
+                               << "': an assignment pattern cannot initialize a non-aggregate "
+                                  "member";
+            return nullptr;
+        }
+        return lower_pattern_over(AST::cast_to<AST::AssignmentPattern>(value), info.members, path);
+    }
+
+    // §10.9: a pattern entry assigns — extended or truncated to the member —
+    // whereas a concat element keeps its own width.
+    const auto &sized = std::make_shared<AST::SizeCast>(value->get_filename(), value->get_line());
+    sized->set_size(make_const(info.msb - info.lsb + 1, value));
+    sized->set_expr(value->clone());
+    return AST::to_node(sized);
+}
+
+AST::Node::Ptr StructLowering::lower_pattern_over(const AST::AssignmentPattern::Ptr &pattern,
+                                                  const std::map<std::string, MemberInfo> &members,
+                                                  const std::string &path)
+{
+    if(pattern->get_times()) {
+        LOG_ERROR_N(pattern) << "'" << path
+                             << "': a replicated assignment pattern is not supported yet";
+        return nullptr;
+    }
+
+    const AST::Node::ListPtr items = pattern->get_items();
+    if(!items || items->empty()) {
+        LOG_ERROR_N(pattern) << "'" << path << "': an empty assignment pattern";
+        return nullptr;
+    }
+
+    const auto ordered = ordered_members(members);
+
+    // Syntax 10-5 makes a pattern either all-positional or all-keyed; mixing
+    // them would leave the meaning to whichever entry is applied last.
+    std::map<std::string, AST::Node::Ptr> by_member;
+    AST::Node::Ptr default_value;
+    std::size_t positional = 0;
+    bool saw_keyed = false;
+    bool saw_positional = false;
+
+    for(const AST::Node::Ptr &item : *items) {
+        if(item->is_node_type(AST::NodeType::PatternItem)) {
+            const auto &entry = AST::cast_to<AST::PatternItem>(item);
+            if(entry->get_is_default()) {
+                default_value = entry->get_value();
+                continue;
+            }
+            saw_keyed = true;
+            const auto &key = entry->get_key();
+            if(!key || !key->is_node_type(AST::NodeType::Identifier)) {
+                LOG_ERROR_N(item) << "'" << path
+                                  << "': only member-name keys are supported in an assignment "
+                                     "pattern over a struct";
+                return nullptr;
+            }
+            const auto &key_id = AST::cast_to<AST::Identifier>(key);
+            const auto &key_hier = key_id->get_hier();
+            if(key_hier && key_hier->get_labellist() && !key_hier->get_labellist()->empty()) {
+                // §10.9.2: "The named member shall be at the top level of the
+                // structure; a member with the same name in some level of
+                // substructure shall not be set."
+                LOG_ERROR_N(item) << "'" << path
+                                  << "': a pattern key names a member at the top level of the "
+                                     "structure, not a nested one (IEEE 1800-2017 10.9.2)";
+                return nullptr;
+            }
+            const std::string member = key_id->get_name();
+            auto found = members.find(member);
+            if(found == members.end()) {
+                LOG_ERROR_N(item) << "'" << path << "' has no member '" << member << "'";
+                return nullptr;
+            }
+            by_member[member] = entry->get_value();
+            continue;
+        }
+
+        saw_positional = true;
+        if(positional >= ordered.size()) {
+            LOG_ERROR_N(item) << "'" << path
+                              << "': the assignment pattern has more entries than members";
+            return nullptr;
+        }
+        by_member[ordered[positional].first] = item;
+        ++positional;
+    }
+
+    if(saw_keyed && saw_positional) {
+        LOG_ERROR_N(pattern) << "'" << path
+                             << "': an assignment pattern is either positional and keyed, not "
+                                "both (IEEE 1800-2017 Syntax 10-5)";
+        return nullptr;
+    }
+
+    const auto &values = std::make_shared<AST::Node::List>();
+    for(const auto &entry : ordered) {
+        auto it = by_member.find(entry.first);
+        AST::Node::Ptr lowered;
+        if(it != by_member.end()) {
+            lowered = lower_member_value(it->second, *entry.second, path + "." + entry.first);
+        } else if(default_value) {
+            lowered = apply_default(default_value, *entry.second, path + "." + entry.first);
+        } else {
+            LOG_ERROR_N(pattern) << "'" << path << "': the assignment pattern gives no value for "
+                                 << "member '" << entry.first << "'";
+            return nullptr;
+        }
+        if(!lowered) {
+            return nullptr;
+        }
+        values->push_back(lowered);
+    }
+
+    const auto &concat =
+        std::make_shared<AST::Concat>(pattern->get_filename(), pattern->get_line());
+    concat->set_list(values);
+    return AST::to_node(concat);
+}
+
+const std::map<std::string, StructLowering::MemberInfo> *
+StructLowering::pattern_target(const AST::Identifier::Ptr &target, std::string &path,
+                               bool &rejected)
+{
+    rejected = false;
+    // A hierarchical identifier keeps the ROOT in its first hier label and
+    // its own name as the last path element (`memtgt.i` is name "i", labels
+    // ["memtgt"]) — the same shape rewrite_access resolves.
+    const auto &hier = target->get_hier();
+    const auto &labels = hier ? hier->get_labellist() : nullptr;
+    const bool hierarchical = labels && !labels->empty();
+    const std::string root = hierarchical ? labels->front()->get_name() : target->get_name();
+
+    const Layout *layout = lookup(root);
+    if(!layout) {
+        return nullptr;
+    }
+    path = root;
+
+    if(layout->is_array) {
+        // One value per element, not per member — a different lowering.
+        LOG_ERROR_N(target) << "'" << path
+                            << "': an assignment pattern over an array of aggregates is not "
+                               "supported yet";
+        rejected = true;
+        return nullptr;
+    }
+    if(layout->is_union) {
+        LOG_ERROR_N(target) << "'" << path
+                            << "': an assignment pattern over a packed union is not supported: "
+                               "its members overlay one another (IEEE 1800-2017 7.3.1), so there "
+                               "is no concatenation to lower to";
+        rejected = true;
+        return nullptr;
+    }
+
+    // A hierarchical target names a member; walk to its own layout.
+    if(!hierarchical) {
+        return &layout->members;
+    }
+
+    const std::map<std::string, MemberInfo> *level = &layout->members;
+    const MemberInfo *info = nullptr;
+    for(auto it = std::next(labels->begin());; ++it) {
+        const std::string name = (it == labels->end()) ? target->get_name() : (*it)->get_name();
+        auto found = level->find(name);
+        if(found == level->end()) {
+            LOG_ERROR_N(target) << "'" << path << "' has no member '" << name << "'";
+            rejected = true;
+            return nullptr;
+        }
+        info = &found->second;
+        path += "." + name;
+        level = &info->members;
+        if(it == labels->end()) {
+            break;
+        }
+    }
+
+    if(info->members.empty()) {
+        LOG_ERROR_N(target) << "'" << path
+                            << "': an assignment pattern cannot initialize a non-aggregate member";
+        rejected = true;
+        return nullptr;
+    }
+    if(info->is_union) {
+        LOG_ERROR_N(target) << "'" << path
+                            << "': an assignment pattern over a packed union is not supported "
+                               "(IEEE 1800-2017 7.3.1)";
+        rejected = true;
+        return nullptr;
+    }
+    return &info->members;
+}
+
+int StructLowering::lower_declaration_pattern(const AST::Var::Ptr &var)
+{
+    const auto &init = var->get_init();
+    if(!init || !init->get_var() ||
+       !init->get_var()->is_node_type(AST::NodeType::AssignmentPattern)) {
+        return 0;
+    }
+    const Layout *layout = lookup(var->get_name());
+    if(!layout) {
+        return 0;
+    }
+    if(layout->is_array || layout->is_union) {
+        LOG_ERROR_N(var) << "'" << var->get_name()
+                         << "': an assignment pattern over an array of aggregates or a packed "
+                            "union is not supported yet";
+        return 1;
+    }
+
+    const AST::Node::Ptr lowered = lower_pattern_over(
+        AST::cast_to<AST::AssignmentPattern>(init->get_var()), layout->members, var->get_name());
+    if(!lowered) {
+        return 1;
+    }
+    init->set_var(lowered);
+    return 0;
+}
+
 int StructLowering::lower_assignment_pattern(const AST::Node::Ptr &assign)
 {
-    // The target must be a bare identifier naming a declaration this pass
-    // lowered; anything else (a select, a non-aggregate) keeps its pattern.
     const auto &left = AST::cast_to<AST::Assign>(assign)->get_left();
     const auto &right = AST::cast_to<AST::Assign>(assign)->get_right();
     if(!left || !right || !left->get_var() || !right->get_var()) {
@@ -357,100 +638,21 @@ int StructLowering::lower_assignment_pattern(const AST::Node::Ptr &assign)
        !right->get_var()->is_node_type(AST::NodeType::AssignmentPattern)) {
         return 0;
     }
-    const auto &target = AST::cast_to<AST::Identifier>(left->get_var());
-    if(target->get_hier() && !target->get_hier()->get_labellist()->empty()) {
-        return 0;
-    }
-    const Layout *layout = lookup(target->get_name());
-    if(!layout) {
-        return 0;
+
+    std::string path;
+    bool rejected = false;
+    const auto *members =
+        pattern_target(AST::cast_to<AST::Identifier>(left->get_var()), path, rejected);
+    if(!members) {
+        return rejected ? 1 : 0;
     }
 
-    const auto &pattern = AST::cast_to<AST::AssignmentPattern>(right->get_var());
-    if(pattern->get_times()) {
-        LOG_ERROR_N(pattern) << "'" << target->get_name()
-                             << "': a replicated assignment pattern is not supported yet";
+    const AST::Node::Ptr lowered =
+        lower_pattern_over(AST::cast_to<AST::AssignmentPattern>(right->get_var()), *members, path);
+    if(!lowered) {
         return 1;
     }
-
-    // Members first-at-the-MSBs (§7.2.1): the map is keyed by name, so
-    // descending msb recovers the declaration order the pattern follows.
-    std::vector<std::pair<std::string, const MemberInfo *>> ordered;
-    for(const auto &entry : layout->members) {
-        ordered.emplace_back(entry.first, &entry.second);
-    }
-    std::sort(ordered.begin(), ordered.end(),
-              [](const auto &a, const auto &b) { return a.second->msb > b.second->msb; });
-
-    const AST::Node::ListPtr items = pattern->get_items();
-    if(!items || items->empty()) {
-        LOG_ERROR_N(pattern) << "'" << target->get_name() << "': an empty assignment pattern";
-        return 1;
-    }
-
-    // Resolve each member's value: `default:` covers every member, a keyed
-    // entry names one, and bare entries fill in declaration order.
-    std::map<std::string, AST::Node::Ptr> by_member;
-    AST::Node::Ptr default_value;
-    std::size_t positional = 0;
-    for(const AST::Node::Ptr &item : *items) {
-        if(item->is_node_type(AST::NodeType::PatternItem)) {
-            const auto &entry = AST::cast_to<AST::PatternItem>(item);
-            if(entry->get_is_default()) {
-                default_value = entry->get_value();
-                continue;
-            }
-            const auto &key = entry->get_key();
-            if(!key || !key->is_node_type(AST::NodeType::Identifier)) {
-                LOG_ERROR_N(item) << "'" << target->get_name()
-                                  << "': only member-name keys are supported in an assignment "
-                                     "pattern over a struct";
-                return 1;
-            }
-            const std::string member = AST::cast_to<AST::Identifier>(key)->get_name();
-            if(layout->members.find(member) == layout->members.end()) {
-                LOG_ERROR_N(item) << "'" << target->get_name() << "' has no member '" << member
-                                  << "'";
-                return 1;
-            }
-            by_member[member] = entry->get_value();
-            continue;
-        }
-        if(positional >= ordered.size()) {
-            LOG_ERROR_N(item) << "'" << target->get_name()
-                              << "': the assignment pattern has more entries than members";
-            return 1;
-        }
-        by_member[ordered[positional].first] = item;
-        ++positional;
-    }
-
-    // Build the concatenation, most significant member first. Each value is
-    // sized to its member: a pattern entry assigns like an assignment
-    // (extended or truncated to the target member, §10.9), whereas a concat
-    // element keeps its own width — `'{default: 1'b0}` over 4-bit members
-    // must widen to 4'b0 per member, not contribute a single bit.
-    const auto &values = std::make_shared<AST::Node::List>();
-    for(const auto &entry : ordered) {
-        auto it = by_member.find(entry.first);
-        const AST::Node::Ptr value = (it != by_member.end()) ? it->second : default_value;
-        if(!value) {
-            LOG_ERROR_N(pattern) << "'" << target->get_name() << "': the assignment pattern "
-                                 << "gives no value for member '" << entry.first << "'";
-            return 1;
-        }
-        const std::uint64_t member_width = entry.second->msb - entry.second->lsb + 1;
-        const auto &sized =
-            std::make_shared<AST::SizeCast>(value->get_filename(), value->get_line());
-        sized->set_size(make_const(member_width, value));
-        sized->set_expr(value->clone());
-        values->push_back(AST::to_node(sized));
-    }
-
-    const auto &concat =
-        std::make_shared<AST::Concat>(pattern->get_filename(), pattern->get_line());
-    concat->set_list(values);
-    right->set_var(AST::to_node(concat));
+    right->set_var(lowered);
     return 0;
 }
 
@@ -532,9 +734,15 @@ int StructLowering::rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &pa
         int ret = 0;
         // An assignment pattern lowers against the target it is assigned to,
         // so it is handled here — before the walk reaches the pattern, whose
-        // entries are then rewritten in place inside the concatenation.
+        // entries are then rewritten in place inside the concatenation. Both
+        // positions a pattern can hold over an aggregate are covered: the
+        // right-hand side of an assignment, and a declaration's initializer
+        // (a net with an aggregate data type does not parse, so a net's
+        // cont_assign is not reachable for one).
         if(node->is_node_category(AST::NodeType::Assign)) {
             ret |= lower_assignment_pattern(node);
+        } else if(node->is_node_type(AST::NodeType::Var)) {
+            ret |= lower_declaration_pattern(AST::cast_to<AST::Var>(node));
         }
         const AST::Node::ListPtr children = node->get_children();
         for(const AST::Node::Ptr &child : *children) {

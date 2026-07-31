@@ -9,8 +9,7 @@
   member-access reference survives into flattening. Explicitly **not** in
   scope: unpacked structs/unions (rejected loudly — a lowering gap, not a
   synthesis restriction, §5), tagged unions,
-  assignment patterns (`'{...}` — they DO parse; that they are not lowered
-  is a live defect, §5), the `type()` operator
+  the `type()` operator
   over struct types, and struct-typed subroutine arguments beyond what the
   vector lowering gives for free.
 - **Normative reference** — IEEE 1800-2017, verified against
@@ -115,13 +114,45 @@ ADR-0009 made typedef'd ports concrete before binding.
 | unpacked `struct` declaration type | hard error `'v': an unpacked struct is not supported yet…`. **Not a synthesis restriction** — the construct is legal and synthesizable; it is *this* lowering that needs a defined bit layout (§7.2.1) an unpacked aggregate lacks. NB the same check also guards a genuinely illegal case: an unpacked aggregate nested in a packed one (§7.2.1 requires packed members to be integral) | field-splitting pass (per-member variables + access rewrite) |
 | unpacked `union` declaration type | hard error `'v': an unpacked union is not supported yet…`. Field splitting is **not** the answer here: §7.3 makes an unpacked union one storage location read back through any member type, so per-member variables would change behaviour | needs a storage-aliasing model, not field splitting |
 | `union tagged` | hard error — but **unreachable**: `tagged` is not a scanner keyword, so such a union never parses. Note §7.3.2 gives a *packed* tagged union a standard layout (tag bits + widest member, tag towards the MSBs), so it is lowerable by the same vector mapping once it parses | scanner keyword, then this pass |
-| assignment patterns `'{...}` | **parse today** (`AST::AssignmentPattern`) but no pass lowers them: the declaration becomes a vector while the pattern is re-emitted verbatim, so veriflat reports success and emits output a simulator rejects. **Live defect**, not a deferral | lower to a concat against the member layout, in this pass |
+| assignment patterns `'{...}` | **lowered** (§5.1): positional, member-keyed and `default:` forms, over the whole declaration or one of its members, as an assignment RHS or a declaration initializer. Replicated patterns, array-of-aggregate and packed-union targets, mixed positional/keyed entries and nested keys are rejected loudly | replication and array patterns |
 | struct literal in a cast (`T'{...}`) | not parsed today — unchanged | with assignment patterns |
 | member select on a function *call* result (`f(x).m`) | not parsed today — unchanged | needs expression typing |
 | `$bits` over a struct type | whatever `$bits` support exists today; after lowering the operand is a vector | — |
 | packed array of aggregates (`struct packed {..} [1:0] v`, as a declaration or member type) | hard error — per-element member maps would be needed; lowering at a single-element width would silently truncate | element-indexed layout maps |
 | select into a multi-packed-dim member (`s.words[1]` on `logic [1:0][7:0] words`) | hard error — an element select is not a bit select; whole-member access stays supported | element-aware select folding |
 | indexed part-select on an ascending member | hard error — the sweep direction inverts | — |
+
+### 5.1 Assignment-pattern lowering
+
+A pattern targets an aggregate whose declaration has become a vector, so it
+lowers with it into the concatenation that vector expects: members
+most-significant-first (§7.2.1), positional entries in declaration order,
+member-keyed entries reordered to it, `default:` filling the rest. Each value
+is sized to its member, since a pattern entry *assigns* — extended or
+truncated to the member (§10.9) — whereas a concat element keeps its own
+width.
+
+Two rules make the lowering recursive rather than flat:
+
+- a member's value may itself be a pattern, which lowers against that
+  member's own layout;
+- `default:` reaching an aggregate member is applied **recursively to each of
+  its sub-members** (§10.9.2: "the type and default specifiers are applied
+  recursively ... to each member of the substructure"), not once over the
+  member's total width — `'{default: 1'b1}` over `{{a,b} i; c}` is `12'h111`,
+  not `12'h011`.
+
+Positions: an assignment's right-hand side (continuous or procedural) and a
+declaration's initializer. A net with an aggregate data type does not parse,
+so a net's `cont_assign` is not reachable for one.
+
+Rejected rather than guessed, each with its own diagnostic: a replicated
+pattern; a target that is an array of aggregates (one value per *element*, a
+different lowering) or a packed union (members overlay one another, §7.3.1,
+so there is no concatenation to lower to); a pattern mixing positional and
+keyed entries (Syntax 10-5 admits one or the other); a key naming a nested
+member (§10.9.2 requires a top-level one); a pattern against a non-aggregate
+member; and a member left without a value.
 
 ## 6. Errors
 
@@ -131,6 +162,13 @@ ADR-0009 made typedef'd ports concrete before binding.
 | unpacked union as a declaration type | §7.3 | `'v': an unpacked union is not supported yet: it has no defined bit layout to lower to a vector, and its members share one storage location (IEEE 1800-2017 7.3), so they cannot be lowered to separate signals either` |
 | packed union members of differing widths | §7.3.1 | `packed union 'v': members have differing widths` |
 | member path names no member | §7.2 | `'v' has no member 'f'` |
+| replicated assignment pattern | §10.9 | `'v': a replicated assignment pattern is not supported yet` |
+| pattern over an array of aggregates | §10.9 | `'v': an assignment pattern over an array of aggregates is not supported yet` |
+| pattern over a packed union | §7.3.1 | `'v': an assignment pattern over a packed union is not supported: its members overlay one another …` |
+| pattern mixing positional and keyed entries | Syntax 10-5 | `'v': an assignment pattern is either positional and keyed, not both …` |
+| pattern key naming a nested member | §10.9.2 | `'v': a pattern key names a member at the top level of the structure, not a nested one …` |
+| pattern against a non-aggregate member | §10.9 | `'v.f': an assignment pattern cannot initialize a non-aggregate member` |
+| member left without a value | §10.9 | `'v': the assignment pattern gives no value for member 'f'` |
 | member width not constant after folding | §7.2.1 | `struct member 'f': the width is not constant` |
 | tagged union (unreachable — `tagged` does not parse) | §7.3.2 | `'v': a tagged union is not supported yet (IEEE 1800-2017 7.3.2)` |
 
