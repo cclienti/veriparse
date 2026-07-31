@@ -9,6 +9,8 @@
 #include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/logger/logger.hpp>
 #include <gtest/gtest.h>
+#include <fstream>
+#include <iterator>
 
 using namespace Veriparse;
 
@@ -134,6 +136,22 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     Passes::Analysis::UniqueDeclaration::seed(0);                                                  \
     ASSERT_TRUE(modules_map.count(test_name) == 1);                                                \
     ASSERT_NE(0, flattener.run(modules_map[test_name]))
+
+// Same as TEST_ERROR_SV, and additionally pins the diagnostic the user reads:
+// a rejection's message is a documented contract (the ADR error catalogues),
+// so a reword must not drift from it silently. The sinks are dropped first so
+// the log file this test wrote is flushed and closed before it is read back.
+#define TEST_ERROR_SV_MSG(expected)                                                                \
+    TEST_ERROR_SV;                                                                                 \
+    Logger::remove_all_sinks();                                                                    \
+    do {                                                                                           \
+        std::ifstream _log(test_string + ".log");                                                  \
+        ASSERT_TRUE(_log.good()) << "no log file for " << test_string;                             \
+        const std::string _text((std::istreambuf_iterator<char>(_log)),                            \
+                                std::istreambuf_iterator<char>());                                 \
+        EXPECT_NE(std::string::npos, _text.find(expected))                                         \
+            << "diagnostic does not contain \"" << (expected) << "\"";                             \
+    } while(0)
 
 TEST(PassesTransformation_ModuleFlattener, instance0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance1) { TEST_CORE; }
@@ -282,7 +300,18 @@ TEST(PassesTransformation_ModuleFlattener, struct_idxsel0) { TEST_CORE_SV; }
 // A struct-typed function return lowers; `fname.member` writes resolve.
 TEST(PassesTransformation_ModuleFlattener, struct_func_ret0) { TEST_CORE_SV; }
 // Aggregate error catalogue (ADR-0011 §6).
-TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0) { TEST_ERROR_SV; }
+// The rejections below pin their diagnostic: each says what is unsupported and
+// why, and none claims the user's RTL is illegal when it is merely unhandled.
+TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0)
+{
+    TEST_ERROR_SV_MSG("unpacked struct is not supported yet");
+}
+// §7.3: an unpacked union shares one storage location, so the field-splitting
+// lowering promised for structs cannot apply to it.
+TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked_union0)
+{
+    TEST_ERROR_SV_MSG("unpacked union is not supported yet");
+}
 TEST(PassesTransformation_ModuleFlattener, struct_err_member0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_err_union_width0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_err_packed_array0) { TEST_ERROR_SV; }

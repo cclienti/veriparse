@@ -165,11 +165,36 @@ int StructLowering::compute_layout(const AST::DataType::Ptr &type, const std::st
     const bool is_packed = is_union ? AST::cast_to<AST::UnionType>(type)->get_is_packed()
                                     : AST::cast_to<AST::StructType>(type)->get_is_packed();
     if(is_union && AST::cast_to<AST::UnionType>(type)->get_is_tagged()) {
-        LOG_ERROR_N(type) << "tagged union is not synthesizable (IEEE 1800-2017 7.3.2)";
+        // §7.3.2 gives a PACKED tagged union a standard bit layout (tag bits
+        // plus the widest member, tag towards the MSBs), so it is lowerable by
+        // the same vector mapping — merely unimplemented, like the unpacked
+        // forms below. Unreachable today: `tagged` is not a scanner keyword,
+        // so such a union never parses.
+        LOG_ERROR_N(type) << "'" << decl_name
+                          << "': a tagged union is not supported yet (IEEE 1800-2017 7.3.2)";
         return 1;
     }
     if(!is_packed) {
-        LOG_ERROR_N(type) << "unpacked struct/union is not synthesizable here";
+        // Not a language restriction in either case: the construct is legal
+        // and synthesizable, it is this vector lowering that needs a defined
+        // bit layout (§7.2.1) an unpacked aggregate does not have. What could
+        // replace it differs, hence two messages: an unpacked STRUCT could be
+        // split into one signal per member (ADR-0011 §5), while an unpacked
+        // UNION is a single storage location read back through any member
+        // type (§7.3) — splitting it would change behaviour, so no such
+        // lowering is promised for it.
+        if(is_union) {
+            LOG_ERROR_N(type) << "'" << decl_name
+                              << "': an unpacked union is not supported yet: it has no defined "
+                                 "bit layout to lower to a vector, and its members share one "
+                                 "storage location (IEEE 1800-2017 7.3), so they cannot be "
+                                 "lowered to separate signals either";
+        } else {
+            LOG_ERROR_N(type) << "'" << decl_name
+                              << "': an unpacked struct is not supported yet: it has no defined "
+                                 "bit layout to lower to a vector (IEEE 1800-2017 7.2), and "
+                                 "lowering it member by member is not implemented";
+        }
         return 1;
     }
 
