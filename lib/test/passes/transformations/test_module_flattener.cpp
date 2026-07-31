@@ -305,6 +305,29 @@ TEST(PassesTransformation_ModuleFlattener, struct_func_ret0) { TEST_CORE_SV; }
 // An assignment pattern against a packed aggregate must lower with the
 // declaration it targets (§10.9), not survive into the output.
 TEST(PassesTransformation_ModuleFlattener, struct_pattern0) { TEST_CORE_SV; }
+// Nested aggregates: recursive `default:` (§10.9.2), a nested pattern value,
+// and a pattern targeting a member rather than the whole declaration.
+TEST(PassesTransformation_ModuleFlattener, struct_pattern1) { TEST_CORE_SV; }
+// A pattern also appears as a declaration initializer and a net's continuous
+// assignment, and must lower there too.
+TEST(PassesTransformation_ModuleFlattener, struct_pattern_init0) { TEST_CORE_SV; }
+// Forms with no correct lowering are rejected, never concatenated blindly.
+TEST(PassesTransformation_ModuleFlattener, struct_err_pattern_union0)
+{
+    TEST_ERROR_SV_MSG("packed union");
+}
+TEST(PassesTransformation_ModuleFlattener, struct_err_pattern_array0)
+{
+    TEST_ERROR_SV_MSG("array");
+}
+TEST(PassesTransformation_ModuleFlattener, struct_err_pattern_mixed0)
+{
+    TEST_ERROR_SV_MSG("positional and keyed");
+}
+TEST(PassesTransformation_ModuleFlattener, struct_err_pattern_hierkey0)
+{
+    TEST_ERROR_SV_MSG("top level");
+}
 TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0)
 {
     TEST_ERROR_SV_MSG("unpacked struct is not supported yet");
