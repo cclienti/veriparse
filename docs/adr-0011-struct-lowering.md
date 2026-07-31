@@ -7,8 +7,10 @@
   declaration type to its equivalent packed vector** and **rewrites member
   accesses to part-selects**, so no `StructType`/`UnionType` and no
   member-access reference survives into flattening. Explicitly **not** in
-  scope: unpacked structs/unions (rejected loudly, §7), tagged unions,
-  assignment patterns (`'{...}`, not parsed today), the `type()` operator
+  scope: unpacked structs/unions (rejected loudly — a lowering gap, not a
+  synthesis restriction, §5), tagged unions,
+  assignment patterns (`'{...}` — they DO parse; that they are not lowered
+  is a live defect, §5), the `type()` operator
   over struct types, and struct-typed subroutine arguments beyond what the
   vector lowering gives for free.
 - **Normative reference** — IEEE 1800-2017, verified against
@@ -110,9 +112,10 @@ ADR-0009 made typedef'd ports concrete before binding.
 
 | Feature | v1 behavior | Future home |
 |---|---|---|
-| unpacked `struct`/`union` declaration type | hard error `unpacked struct/union is not synthesizable here` (today: silently mis-handled downstream) | field-splitting pass (per-member variables + access rewrite) |
-| `union tagged` | hard error | — |
-| assignment patterns `'{...}` | not parsed today — unchanged | grammar + this pass (constant concat lowering) |
+| unpacked `struct` declaration type | hard error `'v': an unpacked struct is not supported yet…`. **Not a synthesis restriction** — the construct is legal and synthesizable; it is *this* lowering that needs a defined bit layout (§7.2.1) an unpacked aggregate lacks. NB the same check also guards a genuinely illegal case: an unpacked aggregate nested in a packed one (§7.2.1 requires packed members to be integral) | field-splitting pass (per-member variables + access rewrite) |
+| unpacked `union` declaration type | hard error `'v': an unpacked union is not supported yet…`. Field splitting is **not** the answer here: §7.3 makes an unpacked union one storage location read back through any member type, so per-member variables would change behaviour | needs a storage-aliasing model, not field splitting |
+| `union tagged` | hard error — but **unreachable**: `tagged` is not a scanner keyword, so such a union never parses. Note §7.3.2 gives a *packed* tagged union a standard layout (tag bits + widest member, tag towards the MSBs), so it is lowerable by the same vector mapping once it parses | scanner keyword, then this pass |
+| assignment patterns `'{...}` | **parse today** (`AST::AssignmentPattern`) but no pass lowers them: the declaration becomes a vector while the pattern is re-emitted verbatim, so veriflat reports success and emits output a simulator rejects. **Live defect**, not a deferral | lower to a concat against the member layout, in this pass |
 | struct literal in a cast (`T'{...}`) | not parsed today — unchanged | with assignment patterns |
 | member select on a function *call* result (`f(x).m`) | not parsed today — unchanged | needs expression typing |
 | `$bits` over a struct type | whatever `$bits` support exists today; after lowering the operand is a vector | — |
@@ -124,11 +127,12 @@ ADR-0009 made typedef'd ports concrete before binding.
 
 | Condition | Clause | Message shape |
 |---|---|---|
-| unpacked struct/union as a declaration type | §7.2 | `unpacked struct/union is not synthesizable here` |
+| unpacked struct as a declaration type | §7.2 | `'v': an unpacked struct is not supported yet: it has no defined bit layout to lower to a vector (IEEE 1800-2017 7.2), and lowering it member by member is not implemented` |
+| unpacked union as a declaration type | §7.3 | `'v': an unpacked union is not supported yet: it has no defined bit layout to lower to a vector, and its members share one storage location (IEEE 1800-2017 7.3), so they cannot be lowered to separate signals either` |
 | packed union members of differing widths | §7.3.1 | `packed union 'v': members have differing widths` |
 | member path names no member | §7.2 | `'v' has no member 'f'` |
 | member width not constant after folding | §7.2.1 | `struct member 'f': the width is not constant` |
-| tagged union | §7.3.2 | `tagged union is not synthesizable` |
+| tagged union (unreachable — `tagged` does not parse) | §7.3.2 | `'v': a tagged union is not supported yet (IEEE 1800-2017 7.3.2)` |
 
 ## 7. Pass placement & structure
 
