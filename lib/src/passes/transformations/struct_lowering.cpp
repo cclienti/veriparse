@@ -7,6 +7,9 @@
 #include <veriparse/misc/math.hpp>
 #include <veriparse/logger/logger.hpp>
 
+#include <algorithm>
+#include <vector>
+
 namespace Veriparse
 {
 namespace Passes
@@ -341,6 +344,116 @@ int StructLowering::member_width(const AST::Member::Ptr &member, std::uint64_t &
     return 0;
 }
 
+int StructLowering::lower_assignment_pattern(const AST::Node::Ptr &assign)
+{
+    // The target must be a bare identifier naming a declaration this pass
+    // lowered; anything else (a select, a non-aggregate) keeps its pattern.
+    const auto &left = AST::cast_to<AST::Assign>(assign)->get_left();
+    const auto &right = AST::cast_to<AST::Assign>(assign)->get_right();
+    if(!left || !right || !left->get_var() || !right->get_var()) {
+        return 0;
+    }
+    if(!left->get_var()->is_node_type(AST::NodeType::Identifier) ||
+       !right->get_var()->is_node_type(AST::NodeType::AssignmentPattern)) {
+        return 0;
+    }
+    const auto &target = AST::cast_to<AST::Identifier>(left->get_var());
+    if(target->get_hier() && !target->get_hier()->get_labellist()->empty()) {
+        return 0;
+    }
+    const Layout *layout = lookup(target->get_name());
+    if(!layout) {
+        return 0;
+    }
+
+    const auto &pattern = AST::cast_to<AST::AssignmentPattern>(right->get_var());
+    if(pattern->get_times()) {
+        LOG_ERROR_N(pattern) << "'" << target->get_name()
+                             << "': a replicated assignment pattern is not supported yet";
+        return 1;
+    }
+
+    // Members first-at-the-MSBs (§7.2.1): the map is keyed by name, so
+    // descending msb recovers the declaration order the pattern follows.
+    std::vector<std::pair<std::string, const MemberInfo *>> ordered;
+    for(const auto &entry : layout->members) {
+        ordered.emplace_back(entry.first, &entry.second);
+    }
+    std::sort(ordered.begin(), ordered.end(),
+              [](const auto &a, const auto &b) { return a.second->msb > b.second->msb; });
+
+    const AST::Node::ListPtr items = pattern->get_items();
+    if(!items || items->empty()) {
+        LOG_ERROR_N(pattern) << "'" << target->get_name() << "': an empty assignment pattern";
+        return 1;
+    }
+
+    // Resolve each member's value: `default:` covers every member, a keyed
+    // entry names one, and bare entries fill in declaration order.
+    std::map<std::string, AST::Node::Ptr> by_member;
+    AST::Node::Ptr default_value;
+    std::size_t positional = 0;
+    for(const AST::Node::Ptr &item : *items) {
+        if(item->is_node_type(AST::NodeType::PatternItem)) {
+            const auto &entry = AST::cast_to<AST::PatternItem>(item);
+            if(entry->get_is_default()) {
+                default_value = entry->get_value();
+                continue;
+            }
+            const auto &key = entry->get_key();
+            if(!key || !key->is_node_type(AST::NodeType::Identifier)) {
+                LOG_ERROR_N(item) << "'" << target->get_name()
+                                  << "': only member-name keys are supported in an assignment "
+                                     "pattern over a struct";
+                return 1;
+            }
+            const std::string member = AST::cast_to<AST::Identifier>(key)->get_name();
+            if(layout->members.find(member) == layout->members.end()) {
+                LOG_ERROR_N(item) << "'" << target->get_name() << "' has no member '" << member
+                                  << "'";
+                return 1;
+            }
+            by_member[member] = entry->get_value();
+            continue;
+        }
+        if(positional >= ordered.size()) {
+            LOG_ERROR_N(item) << "'" << target->get_name()
+                              << "': the assignment pattern has more entries than members";
+            return 1;
+        }
+        by_member[ordered[positional].first] = item;
+        ++positional;
+    }
+
+    // Build the concatenation, most significant member first. Each value is
+    // sized to its member: a pattern entry assigns like an assignment
+    // (extended or truncated to the target member, §10.9), whereas a concat
+    // element keeps its own width — `'{default: 1'b0}` over 4-bit members
+    // must widen to 4'b0 per member, not contribute a single bit.
+    const auto &values = std::make_shared<AST::Node::List>();
+    for(const auto &entry : ordered) {
+        auto it = by_member.find(entry.first);
+        const AST::Node::Ptr value = (it != by_member.end()) ? it->second : default_value;
+        if(!value) {
+            LOG_ERROR_N(pattern) << "'" << target->get_name() << "': the assignment pattern "
+                                 << "gives no value for member '" << entry.first << "'";
+            return 1;
+        }
+        const std::uint64_t member_width = entry.second->msb - entry.second->lsb + 1;
+        const auto &sized =
+            std::make_shared<AST::SizeCast>(value->get_filename(), value->get_line());
+        sized->set_size(make_const(member_width, value));
+        sized->set_expr(value->clone());
+        values->push_back(AST::to_node(sized));
+    }
+
+    const auto &concat =
+        std::make_shared<AST::Concat>(pattern->get_filename(), pattern->get_line());
+    concat->set_list(values);
+    right->set_var(AST::to_node(concat));
+    return 0;
+}
+
 int StructLowering::rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &parent,
                             bool in_lvalue)
 {
@@ -416,8 +529,14 @@ int StructLowering::rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &pa
     }
 
     default: {
-        const AST::Node::ListPtr children = node->get_children();
         int ret = 0;
+        // An assignment pattern lowers against the target it is assigned to,
+        // so it is handled here — before the walk reaches the pattern, whose
+        // entries are then rewritten in place inside the concatenation.
+        if(node->is_node_category(AST::NodeType::Assign)) {
+            ret |= lower_assignment_pattern(node);
+        }
+        const AST::Node::ListPtr children = node->get_children();
         for(const AST::Node::Ptr &child : *children) {
             ret |= rewrite(child, node, in_lvalue);
         }

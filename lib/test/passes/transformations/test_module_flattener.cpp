@@ -302,6 +302,9 @@ TEST(PassesTransformation_ModuleFlattener, struct_func_ret0) { TEST_CORE_SV; }
 // Aggregate error catalogue (ADR-0011 §6).
 // The rejections below pin their diagnostic: each says what is unsupported and
 // why, and none claims the user's RTL is illegal when it is merely unhandled.
+// An assignment pattern against a packed aggregate must lower with the
+// declaration it targets (§10.9), not survive into the output.
+TEST(PassesTransformation_ModuleFlattener, struct_pattern0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, struct_err_unpacked0)
 {
     TEST_ERROR_SV_MSG("unpacked struct is not supported yet");

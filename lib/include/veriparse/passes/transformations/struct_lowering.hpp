@@ -131,6 +131,14 @@ private:
      */
     int rewrite(const AST::Node::Ptr &node, const AST::Node::Ptr &parent, bool in_lvalue);
 
+    /// Lower an assignment pattern assigned to a lowered aggregate (§10.9)
+    /// into the concatenation its target vector expects: members ordered
+    /// first-at-the-MSBs (§7.2.1). Positional, member-keyed and
+    /// `default:` forms are handled; anything else is rejected rather than
+    /// guessed. Does nothing when @p assign's target is not a lowered
+    /// aggregate.
+    int lower_assignment_pattern(const AST::Node::Ptr &assign);
+
     /**
      * @brief Rewrite one hier identifier to a part-select when its root
      * binds to a lowered declaration. Folds a directly enclosing
