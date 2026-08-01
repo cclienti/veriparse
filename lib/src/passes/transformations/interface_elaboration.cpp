@@ -66,7 +66,7 @@ void collect_members(const AST::Interface::Ptr &interface, std::set<std::string>
 /// same interface) and record its visible member set.
 int collect_modport(const AST::Modport::Ptr &modport, const std::string &interface_name,
                     const std::set<std::string> &members,
-                    std::map<std::string, std::set<std::string>> &modports)
+                    std::map<std::string, InterfaceElaboration::Design::ModportMembers> &modports)
 {
     if(modports.count(modport->get_name()) != 0) {
         LOG_ERROR_N(modport) << "modport '" << modport->get_name() << "' already declared in '"
@@ -74,7 +74,7 @@ int collect_modport(const AST::Modport::Ptr &modport, const std::string &interfa
         return 1;
     }
 
-    std::set<std::string> visible;
+    InterfaceElaboration::Design::ModportMembers visible;
     const auto &ports = modport->get_ports();
     if(ports) {
         for(const AST::ModportPort::Ptr &mp_port : *ports) {
@@ -85,7 +85,14 @@ int collect_modport(const AST::Modport::Ptr &modport, const std::string &interfa
                     << "' does not declare (IEEE 1800-2017 25.5)";
                 return 1;
             }
-            visible.insert(mp_port->get_name());
+            // emplace() keeps the first entry, so a repeated name would pick
+            // a direction by source order and decide §4.1 silently.
+            if(!visible.emplace(mp_port->get_name(), mp_port->get_direction()).second) {
+                LOG_ERROR_N(mp_port)
+                    << "modport '" << modport->get_name() << "' lists '" << mp_port->get_name()
+                    << "' more than once (IEEE 1800-2017 25.5)";
+                return 1;
+            }
         }
     }
 
@@ -257,7 +264,13 @@ struct PortRewrite
     /// interface element (.c(bus.tx) → base bus, extra tx).
     std::vector<std::string> extra_labels;
     std::string iface;
-    const std::set<std::string> *visible{nullptr};
+    /// Every member the interface declares; the visible set when no modport
+    /// qualifies the port.
+    const std::set<std::string> *members{nullptr};
+    /// The modport's members with their directions, null unless a modport
+    /// qualifies the port. Its keys are then the visible set, and its values
+    /// decide what an access may do (§25.5).
+    const InterfaceElaboration::Design::ModportMembers *modport_members{nullptr};
     std::string modport;
     /// The formal carries unpacked dims: references must be indexed.
     bool arrayed{false};
@@ -279,8 +292,16 @@ struct PortRewrite
 /// port name: a per-port sequence of full-tree passes would re-capture an
 /// earlier rewrite whose base coincides with a later port name (a port named
 /// like another port's actual).
+/// @param writing the node sits in a target position — an assignment lvalue,
+/// or the base of one. Indices are excluded by the recursion below: they are
+/// read whatever they index.
+///
+/// Analysis::Lvalue answers a similar question but cannot serve here: it treats
+/// an Identifier as a leaf, so an identifier nested in a hier label — the index
+/// of an arrayed interface port — lands in neither its driven nor its read
+/// list, which is exactly the position this walk has to classify.
 int rewrite_port_refs(const AST::Node::Ptr &node,
-                      const std::map<std::string, PortRewrite> &rewrites)
+                      const std::map<std::string, PortRewrite> &rewrites, bool writing)
 {
     if(!node) {
         return 0;
@@ -332,7 +353,16 @@ int rewrite_port_refs(const AST::Node::Ptr &node,
             }
 
             if(labels->size() == 1) {
-                if(rw.visible->count(identifier->get_name()) == 0) {
+                // One lookup: its iterator answers both visibility and, on a
+                // modport-qualified port, the direction check below.
+                const auto mp_it =
+                    rw.modport_members
+                        ? rw.modport_members->find(identifier->get_name())
+                        : InterfaceElaboration::Design::ModportMembers::const_iterator{};
+                const bool listed = rw.modport_members
+                                        ? mp_it != rw.modport_members->end()
+                                        : rw.members->count(identifier->get_name()) != 0;
+                if(!listed) {
                     const auto en_it = rw.design->enumerators.find(rw.iface);
                     if(en_it != rw.design->enumerators.end() &&
                        en_it->second.count(identifier->get_name()) != 0) {
@@ -351,6 +381,19 @@ int rewrite_port_refs(const AST::Node::Ptr &node,
                             << "modport '" << rw.modport << "' of interface '" << rw.iface
                             << "' (IEEE 1800-2017 25.10)";
                     }
+                    return 1;
+                }
+
+                // §25.5: the directions are declared as if inside the module,
+                // so an input may be read and never driven. An output stays
+                // readable, exactly as a module's own output is.
+                if(writing && rw.modport_members &&
+                   mp_it->second == AST::ModportPort::DirectionEnum::INPUT) {
+                    LOG_ERROR_N(node)
+                        << "'" << identifier->get_name() << "' is an input of modport '"
+                        << rw.modport << "' of interface '" << rw.iface
+                        << "' and cannot be driven through port '" << rw.port_name
+                        << "' (IEEE 1800-2017 25.5)";
                     return 1;
                 }
             } else {
@@ -419,10 +462,29 @@ int rewrite_port_refs(const AST::Node::Ptr &node,
     }
 
     int ret = 0;
+
+    // An Lvalue opens a target position; an Indirect (bit/part select) keeps
+    // only its `var` in it, since msb/lsb/ptr are read to locate the target.
+    const bool opens_target = node->is_node_type(AST::NodeType::Lvalue);
+    const AST::Node::Ptr indirect_var = (writing && node->is_node_category(AST::NodeType::Indirect))
+                                            ? AST::cast_to<AST::Indirect>(node)->get_var()
+                                            : nullptr;
+
+    // An Identifier is itself the target; everything below it only addresses
+    // that target — the hier labels and, on an arrayed interface port, the
+    // index each carries. `p[q.sel].rdy = x` writes rdy and *reads* q.sel.
+    const bool children_address = node->is_node_category(AST::NodeType::Identifier);
+
     const AST::Node::ListPtr children = node->get_children();
     if(children) {
         for(const AST::Node::Ptr &child : *children) {
-            ret |= rewrite_port_refs(child, rewrites);
+            bool child_writes = writing || opens_target;
+            if(children_address) {
+                child_writes = false;
+            } else if(indirect_var) {
+                child_writes = (child == indirect_var);
+            }
+            ret |= rewrite_port_refs(child, rewrites, child_writes);
         }
     }
     return ret;
@@ -662,15 +724,14 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
         }
 
         const auto members_it = design.members.find(iface);
-        const std::set<std::string> &visible =
-            effective.empty() ? members_it->second : modports_it->second.at(effective);
 
         PortRewrite rewrite;
         rewrite.port_name = port_name;
         rewrite.base = base;
         rewrite.extra_labels = extra_labels;
         rewrite.iface = iface;
-        rewrite.visible = &visible;
+        rewrite.members = &members_it->second;
+        rewrite.modport_members = effective.empty() ? nullptr : &modports_it->second.at(effective);
         rewrite.modport = effective;
         rewrite.arrayed = arrayed;
         rewrite.chained = chained;
@@ -686,7 +747,7 @@ int InterfaceElaboration::bind_interface_ports(const AST::Instance::Ptr &instanc
     }
 
     // Single rewrite pass over the child once every port's target is known.
-    if(!rewrites.empty() && rewrite_port_refs(child, rewrites)) {
+    if(!rewrites.empty() && rewrite_port_refs(child, rewrites, false)) {
         return 1;
     }
 

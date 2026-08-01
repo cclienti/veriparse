@@ -43,10 +43,18 @@ public:
         Analysis::Module::ModulesMap pseudo_modules;
 
         /**
-         * @brief Interface name → modport name → member names the modport
-         * lists (the visible set through a modport-qualified port).
+         * @brief The members one modport lists, each with the direction it
+         * declares. The key set is the visible set through a
+         * modport-qualified port; the direction restricts what may be done
+         * with each (IEEE 1800-2017 §25.5 — declared as if inside the
+         * module, so an input is readable and never drivable).
          */
-        std::map<std::string, std::map<std::string, std::set<std::string>>> modports;
+        using ModportMembers = std::map<std::string, AST::ModportPort::DirectionEnum>;
+
+        /**
+         * @brief Interface name → modport name → the members it lists.
+         */
+        std::map<std::string, std::map<std::string, ModportMembers>> modports;
 
         /**
          * @brief Interface name → member names (header ports plus body

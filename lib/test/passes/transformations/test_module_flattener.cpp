@@ -204,6 +204,35 @@ TEST(PassesTransformation_ModuleFlattener, iface_err_module_in_iface0) { TEST_ER
 TEST(PassesTransformation_ModuleFlattener, iface_err_top_port0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_bad_modport0) { TEST_ERROR_SV; }
 
+// Driving a member the modport declares input (§25.5): the directions are
+// declared as if inside the module, so an input may be read and never driven.
+TEST(PassesTransformation_ModuleFlattener, iface_err_modport_input_assign0)
+{
+    TEST_ERROR_SV_MSG("is an input of modport");
+}
+TEST(PassesTransformation_ModuleFlattener, iface_err_modport_input_proc0)
+{
+    TEST_ERROR_SV_MSG("is an input of modport");
+}
+// A select does not launder the direction: the target is still the member.
+TEST(PassesTransformation_ModuleFlattener, iface_err_modport_input_select0)
+{
+    TEST_ERROR_SV_MSG("is an input of modport");
+}
+// Listing a member twice leaves its direction undefined — rejected, not
+// resolved by source order.
+TEST(PassesTransformation_ModuleFlattener, iface_err_modport_dup0)
+{
+    TEST_ERROR_SV_MSG("more than once");
+}
+// An arrayed port carries its index on the hier label, outside any Indirect.
+// The index is a read, so the §25.5 check must stay silent and the real
+// limitation — the non-constant index — must be what is reported.
+TEST(PassesTransformation_ModuleFlattener, iface_modport_array_idx0)
+{
+    TEST_ERROR_SV_MSG("non-constant index");
+}
+
 // A SystemVerilog logic variable accepts a child-output connection
 // (continuous assignment to a variable, IEEE 1800-2017 §10.3.2).
 TEST(PassesTransformation_ModuleFlattener, logic_out0) { TEST_CORE_SV; }
@@ -351,6 +380,10 @@ TEST(PassesTransformation_ModuleFlattener, iface_port0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_alias_capture0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_modport0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_modport1) { TEST_CORE_SV; }
+
+// Modport directions (§25.5): reading an output is legal, as is an input used
+// as the index of a written lvalue — an index is a read, whatever it indexes.
+TEST(PassesTransformation_ModuleFlattener, iface_modport_dirs0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_chain0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_out0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }

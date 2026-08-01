@@ -181,11 +181,51 @@ here as closing part of the ADR-0006 §8 gap list.
   "shall be declared by the same interface"; a modport "shall not implicitly
   declare new ports") — validated at `prepare()`.
 
-**Deferred: direction enforcement** (writing a member the modport declares
-`input`). The rewrite walk (§3 step 3) visits every access with lvalue context
-recoverable, so v2 adds the check in place — named future home:
-`InterfaceElaboration::bind_interface_ports`. Until then a direction violation
-lowers to a multiple-driver conflict that Verilator/synthesis reports.
+### 4.1 Direction enforcement — implemented
+
+*(Deferred at first writing; landed 2026-08-01 where §4 predicted, in the §3
+step-3 rewrite walk.)*
+
+§25.5 settles what to enforce: *"The keyword `modport` indicates that the
+directions are declared as if inside the module."* A member the modport
+declares `input` therefore behaves like a module input — readable, never
+drivable — while an `output` stays readable, exactly as a module's own output
+is. The rule is thus a single one: **driving a member declared `input` through
+the port is a hard error.** Reading anything visible stays legal, and `inout`
+permits both.
+
+Two things this needs, both in the rewrite walk:
+
+- **Directions, not just names.** `Design::modports` maps each modport's
+  members to the direction it declares, rather than holding a bare name set.
+  The key set is still the §4 visible set, so the §25.10 visibility check is
+  unchanged; the values are what §4.1 reads.
+- **Write context, excluding indices.** The walk carries a `writing` flag:
+  an `Lvalue` opens it, and an `Indirect` (bit- or part-select) keeps only its
+  `var` child in it. An index is a *read* whatever it indexes, so
+  `p.data[p.idx] <= 1'b1` with `idx` an input of the modport is legal and must
+  not be flagged — `iface_modport_dirs0` pins exactly that, together with
+  reading an `output`.
+
+**Still deferred, and wider than one shape**: the walk opens write context on
+an `AST::Lvalue` and nowhere else, so a modport `input` reaching *any other
+driver* is accepted in silence. Two reachable cases:
+
+- an **output formal of a subroutine** called in the same module —
+  `task set(output logic o); … endtask` then `set(p.ack);` flattens to
+  `u_set(bus_ack);`, driving a member declared `input` with no diagnostic.
+  Catching it means resolving the callee and mapping positional arguments onto
+  its formals, where one `Arg` may declare several names; a partial version
+  would reject legal code, which is worse than the current gap;
+- an **output formal of an instantiated module** (`sub u(.o(p.sig))`), which
+  needs the submodule's port directions at bind time — not resolved here.
+
+Neither lowers to a downstream multiple-driver report, contrary to what this
+section first claimed: the flattener rejects a hierarchical output actual
+whose base is an interface *port* outright (`hierarchical output actual
+'p.req' does not name an interface member`), even when the member is an
+`output` and the connection is legal. That rejection is its own limitation,
+independent of §4.1.
 
 ## 5. Decision 5 — interface arrays
 
@@ -258,7 +298,7 @@ an interface.
 | **External** access to interface subroutines (`p.method()`, `bus.method()`; modport import/export) | §25.7 | **internal** `function`/`task` declarations in the body are *allowed* — they ride the module-body machinery (constant ones fold away via `FunctionEvaluation`; survivors splice legally as `bus_fname`); only *external* access through a port or instance is rejected (a subroutine name is not in the member set — §3 rewrite errors "not a member"); modport import/export entries not parsed (ADR-0002 §7) | member-set entry + call-label rewrite in `bind_interface_ports` |
 | Generic interface port (`module m(interface i)`) | §25.3.3 | not parsed (ADR-0002 §7) | resolve at connection, then §3 |
 | Modport expressions (`.a(expr)`) | §25.5.4 | not parsed (ADR-0002 §7) | substitution in the §3 rewrite |
-| Modport direction enforcement | §25.5 | visibility only (§4) | v2 check in `bind_interface_ports` |
+| Modport direction enforcement | §25.5 | **implemented** (§4.1): driving a member declared `input` through an assignment lvalue is a hard error. Remaining hole: any *other* driver — an `output` formal of a subroutine, or of an instantiated module — is still accepted silently | callee/submodule formal directions at bind time |
 | Non-identical array ranges in connection | §23.3.3.5 | range-mismatch error | index remapping |
 | Virtual interfaces | §25.9 | already rejected pre-flatten (ADR-0007) | — |
 
