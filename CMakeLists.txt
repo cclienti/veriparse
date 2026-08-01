@@ -8,6 +8,11 @@ include (${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 enable_testing()
 
+# Serialises the link edges that carry gtest test discovery; see the comment on
+# JOB_POOL_LINK in lib/test/CMakeLists.txt for what it protects against. Ninja
+# only. Declared here so the pool exists before any target joins it.
+set_property(GLOBAL APPEND PROPERTY JOB_POOLS gtest_discovery=1)
+
 
 ########################################
 ### git revision
