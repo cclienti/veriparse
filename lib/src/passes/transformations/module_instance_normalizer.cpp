@@ -948,6 +948,18 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
         // Generate the declaration
         auto itdecl = module_dim_map.find(port->get_name());
         if(itdecl == module_dim_map.end()) {
+            // analyze_decls() leaves out any declaration whose bounds did not
+            // fold, so absence here has two very different causes. Say which:
+            // blaming a missing port for an unevaluated width sends the reader
+            // hunting for a typo in a name that is spelled correctly.
+            const std::vector<std::string> iodirs = Analysis::Module::get_iodir_names(module_decl);
+            if(std::find(iodirs.begin(), iodirs.end(), port->get_name()) != iodirs.end()) {
+                LOG_ERROR_N(port) << "port '" << port->get_name() << "' of module '"
+                                  << module_decl->get_name()
+                                  << "' has no constant width at this point: its dimensions "
+                                  << "do not evaluate";
+                return 1;
+            }
             LOG_ERROR_N(port) << "port not found in module definition";
             return 1;
         }
