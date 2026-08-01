@@ -76,6 +76,33 @@ inline AST::Function::LifetimeEnum to_function_lifetime(lifetime_t l)
     }
 }
 
+inline AST::Module::LifetimeEnum to_module_decl_lifetime(lifetime_t l)
+{
+    switch(l) {
+    case lifetime_t::AUTOMATIC: return AST::Module::LifetimeEnum::AUTOMATIC;
+    case lifetime_t::STATIC:    return AST::Module::LifetimeEnum::STATIC;
+    default:                    return AST::Module::LifetimeEnum::NONE;
+    }
+}
+
+inline AST::Interface::LifetimeEnum to_interface_decl_lifetime(lifetime_t l)
+{
+    switch(l) {
+    case lifetime_t::AUTOMATIC: return AST::Interface::LifetimeEnum::AUTOMATIC;
+    case lifetime_t::STATIC:    return AST::Interface::LifetimeEnum::STATIC;
+    default:                    return AST::Interface::LifetimeEnum::NONE;
+    }
+}
+
+inline AST::Package::LifetimeEnum to_package_lifetime(lifetime_t l)
+{
+    switch(l) {
+    case lifetime_t::AUTOMATIC: return AST::Package::LifetimeEnum::AUTOMATIC;
+    case lifetime_t::STATIC:    return AST::Package::LifetimeEnum::STATIC;
+    default:                    return AST::Package::LifetimeEnum::NONE;
+    }
+}
+
 inline AST::Task::LifetimeEnum to_task_lifetime(lifetime_t l)
 {
     switch(l) {
@@ -575,8 +602,6 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Node::Ptr>                     definition
 %type   <AST::Module::Ptr>                   moduledef
 %type   <AST::Interface::Ptr>                interfacedef
-%type   <AST::Module::LifetimeEnum>          module_lifetime
-%type   <AST::Interface::LifetimeEnum>       interface_lifetime
 %type   <AST::Node::ListPtr>                 modport_decl modport_items
 %type   <AST::Modport::Ptr>                  modport_item
 %type   <AST::ModportPort::ListPtr>          modport_port_list
@@ -587,7 +612,6 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Import::Ptr>                   import_item
 %type   <AST::Identifier::Ptr>                scoped_ref
 %type   <std::string>                        package_scope
-%type   <AST::Package::LifetimeEnum>         package_lifetime
 %type   <data_qualifiers_t>                  data_qualifiers data_qualifier
 %type   <implicit_type_t>                    implicit_signing_or_dims
 %type   <id_dims_tail_t>                     id_dims_tail
@@ -745,7 +769,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 
 %type   <AST::Disable::Ptr>                  disable
 %type   <AST::Node::Ptr>                     jump_statement
-%type   <lifetime_t>                         subroutine_lifetime
+%type   <lifetime_t>                         declaration_lifetime
 %type   <AST::Typedef::Ptr>                  typedef_decl
 %type   <AST::EnumType::Ptr>                  enum_def
 %type   <AST::EnumItem::ListPtr>             enum_items
@@ -842,56 +866,37 @@ definition:     moduledef
 
         // The optional `automatic` lifetime is accepted but not modelled (it has
         // no effect on the synthesizable subset). `static` is the default.
-packagedef:     TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
+packagedef:     TK_PACKAGE declaration_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_package_lifetime($2));
                     $$->set_items($5);
                 }
 
-        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE declaration_lifetime TK_IDENTIFIER TK_SEMICOLON items TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_package_lifetime($2));
                     $$->set_items($5);
                 }
 
-        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
+        |       TK_PACKAGE declaration_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_package_lifetime($2));
                 }
 
-        |       TK_PACKAGE package_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
+        |       TK_PACKAGE declaration_lifetime TK_IDENTIFIER TK_SEMICOLON TK_ENDPACKAGE TK_COLON TK_IDENTIFIER
                 {
                     $$ = std::make_shared<AST::Package>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_package_lifetime($2));
                 }
         ;
 
-
-// Optional package lifetime: NONE (unspecified, i.e. static), AUTOMATIC or
-// STATIC. Stored on the Package node so it round-trips.
-package_lifetime:
-                %empty
-                {
-                    $$ = AST::Package::LifetimeEnum::NONE;
-                }
-
-        |       TK_AUTOMATIC
-                {
-                    $$ = AST::Package::LifetimeEnum::AUTOMATIC;
-                }
-
-        |       TK_STATIC
-                {
-                    $$ = AST::Package::LifetimeEnum::STATIC;
-                }
-        ;
 
 
 import_decl:    TK_IMPORT import_list TK_SEMICOLON
@@ -1006,47 +1011,71 @@ pragma:         pragma TK_COMMA TK_IDENTIFIER TK_EQUALS expression
         ;
 
 
-moduledef:      TK_MODULE module_lifetime modulename module_imports params_block ports_block items TK_ENDMODULE
+moduledef:      TK_MODULE declaration_lifetime modulename module_imports params_block ports_block items TK_ENDMODULE
                 {
                     // SV allows package imports in the module header; they import
                     // into module scope, so prepend them to the items.
                     $7->splice($7->begin(), *$4);
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_lifetime($2);
+                    // A module header lifetime is SystemVerilog only (A.1.2);
+                    // `automatic` is a 1364 keyword, so this must be checked here.
+                    if($2 != lifetime_t::NONE && !scanner.get_sv_mode()) {
+                        error(@2, "a module lifetime requires SystemVerilog "
+                                  "(IEEE 1800-2017 A.1.2)");
+                    }
+                    $$->set_lifetime(to_module_decl_lifetime($2));
                     $$->set_name($3);
                     $$->set_params($5);
                     $$->set_ports($6);
                     $$->set_items($7);
                 }
 
-        |       TK_MODULE module_lifetime modulename module_imports ports_block items TK_ENDMODULE
+        |       TK_MODULE declaration_lifetime modulename module_imports ports_block items TK_ENDMODULE
                 {
                     $6->splice($6->begin(), *$4);
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_lifetime($2);
+                    // A module header lifetime is SystemVerilog only (A.1.2);
+                    // `automatic` is a 1364 keyword, so this must be checked here.
+                    if($2 != lifetime_t::NONE && !scanner.get_sv_mode()) {
+                        error(@2, "a module lifetime requires SystemVerilog "
+                                  "(IEEE 1800-2017 A.1.2)");
+                    }
+                    $$->set_lifetime(to_module_decl_lifetime($2));
                     $$->set_name($3);
                     $$->set_ports($5);
                     $$->set_items($6);
                 }
 
-        |       TK_MODULE module_lifetime modulename module_imports params_block ports_block TK_ENDMODULE
+        |       TK_MODULE declaration_lifetime modulename module_imports params_block ports_block TK_ENDMODULE
                 {
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_lifetime($2);
+                    // A module header lifetime is SystemVerilog only (A.1.2);
+                    // `automatic` is a 1364 keyword, so this must be checked here.
+                    if($2 != lifetime_t::NONE && !scanner.get_sv_mode()) {
+                        error(@2, "a module lifetime requires SystemVerilog "
+                                  "(IEEE 1800-2017 A.1.2)");
+                    }
+                    $$->set_lifetime(to_module_decl_lifetime($2));
                     $$->set_name($3);
                     $$->set_params($5);
                     $$->set_ports($6);
                     if (!$4->empty()) $$->set_items($4);
                 }
 
-        |       TK_MODULE module_lifetime modulename module_imports ports_block TK_ENDMODULE
+        |       TK_MODULE declaration_lifetime modulename module_imports ports_block TK_ENDMODULE
                 {
                     $$ = std::make_shared<AST::Module>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(scanner.get_default_nettype());
-                    $$->set_lifetime($2);
+                    // A module header lifetime is SystemVerilog only (A.1.2);
+                    // `automatic` is a 1364 keyword, so this must be checked here.
+                    if($2 != lifetime_t::NONE && !scanner.get_sv_mode()) {
+                        error(@2, "a module lifetime requires SystemVerilog "
+                                  "(IEEE 1800-2017 A.1.2)");
+                    }
+                    $$->set_lifetime(to_module_decl_lifetime($2));
                     $$->set_name($3);
                     $$->set_ports($5);
                     if (!$4->empty()) $$->set_items($4);
@@ -1083,99 +1112,52 @@ modulename:     TK_IDENTIFIER
         // header shape (imports, #(params), ports) and the module item grammar
         // for the body, so an interface body is traversed exactly like a module
         // body. Modports are body items (§25.5).
-interfacedef:   TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports params_block ports_block items endinterface_tail
+interfacedef:   TK_INTERFACE declaration_lifetime TK_IDENTIFIER module_imports params_block ports_block items endinterface_tail
                 {
                     $7->splice($7->begin(), *$4);
                     $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_interface_decl_lifetime($2));
                     $$->set_params($5);
                     $$->set_ports($6);
                     $$->set_items($7);
                 }
 
-        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports ports_block items endinterface_tail
+        |       TK_INTERFACE declaration_lifetime TK_IDENTIFIER module_imports ports_block items endinterface_tail
                 {
                     $6->splice($6->begin(), *$4);
                     $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_interface_decl_lifetime($2));
                     $$->set_ports($5);
                     $$->set_items($6);
                 }
 
-        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports params_block ports_block endinterface_tail
+        |       TK_INTERFACE declaration_lifetime TK_IDENTIFIER module_imports params_block ports_block endinterface_tail
                 {
                     $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_interface_decl_lifetime($2));
                     $$->set_params($5);
                     $$->set_ports($6);
                     if (!$4->empty()) $$->set_items($4);
                 }
 
-        |       TK_INTERFACE interface_lifetime TK_IDENTIFIER module_imports ports_block endinterface_tail
+        |       TK_INTERFACE declaration_lifetime TK_IDENTIFIER module_imports ports_block endinterface_tail
                 {
                     $$ = std::make_shared<AST::Interface>(scanner.get_filename(), @1.begin.line);
                     $$->set_default_nettype(ParserHelpers::to_interface_nettype(scanner.get_default_nettype()));
                     $$->set_name($3);
-                    $$->set_lifetime($2);
+                    $$->set_lifetime(to_interface_decl_lifetime($2));
                     $$->set_ports($5);
                     if (!$4->empty()) $$->set_items($4);
                 }
         ;
 
 
-// Declaration lifetime of a module (IEEE 1800-2017 §13.3.1; A.1.2 puts it
-// between the keyword and the identifier). Subroutines defined inside inherit
-// it when they state none — the effective lifetime is resolved by a pass.
-module_lifetime:
-                %empty
-                {
-                    $$ = AST::Module::LifetimeEnum::NONE;
-                }
-
-        |       TK_AUTOMATIC
-                {
-                    // `automatic` is a 1364-2005 keyword (on subroutines), so
-                    // the scanner returns it in both modes and this production
-                    // must reject it itself: a module header lifetime is SV
-                    // only (A.1.2), and 1364 has no such form.
-                    if(!scanner.get_sv_mode()) {
-                        error(@1, "a module lifetime requires SystemVerilog "
-                                  "(IEEE 1800-2017 A.1.2)");
-                    }
-                    $$ = AST::Module::LifetimeEnum::AUTOMATIC;
-                }
-
-        |       TK_STATIC
-                {
-                    $$ = AST::Module::LifetimeEnum::STATIC;
-                }
-        ;
-
-
-// Optional interface lifetime, same model as package_lifetime: NONE
-// (unspecified, i.e. static), AUTOMATIC or STATIC; stored so it round-trips.
-interface_lifetime:
-                %empty
-                {
-                    $$ = AST::Interface::LifetimeEnum::NONE;
-                }
-
-        |       TK_AUTOMATIC
-                {
-                    $$ = AST::Interface::LifetimeEnum::AUTOMATIC;
-                }
-
-        |       TK_STATIC
-                {
-                    $$ = AST::Interface::LifetimeEnum::STATIC;
-                }
-        ;
 
 
 // The optional `endinterface : name` end label is accepted and dropped (same
@@ -5448,7 +5430,7 @@ sysarg:         expression {$$ = $1;}
         ;
 
 
-function:       TK_FUNCTION subroutine_lifetime function_rettype_name function_ports_block function_statements TK_ENDFUNCTION
+function:       TK_FUNCTION declaration_lifetime function_rettype_name function_ports_block function_statements TK_ENDFUNCTION
                 {
                     // function_rettype_name already carries the return type AND name
                     // (factored so a user-type return is LR(1) without a type table).
@@ -5821,7 +5803,7 @@ function_args:  function_args TK_COMMA expression
         ;
 
 
-task:           TK_TASK subroutine_lifetime TK_IDENTIFIER task_ports_block task_statements TK_ENDTASK
+task:           TK_TASK declaration_lifetime TK_IDENTIFIER task_ports_block task_statements TK_ENDTASK
                 {
                     $$ = std::make_shared<AST::Task>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($3);
@@ -6274,10 +6256,14 @@ single_statement:
         ;
 
 
-// Declaration lifetime of a subroutine (A.2.6: `lifetime ::= static |
-// automatic`); NONE when unwritten, so the enclosing default applies
-// (IEEE 1800-2017 §13.3.1).
-subroutine_lifetime:
+// The optional lifetime of any declaration that can carry one — module
+// (A.1.2), interface, package and subroutine (A.2.6: `lifetime ::= static |
+// automatic`). NONE when unwritten, so the enclosing default applies
+// (IEEE 1800-2017 §13.3.1). Each use site converts to its own generated
+// enum; the module sites additionally reject it outside SystemVerilog,
+// since `automatic` is a 1364 keyword the scanner returns in both modes
+// but a module header lifetime is SV-only.
+declaration_lifetime:
                 %empty
                 {
                     $$ = lifetime_t::NONE;
