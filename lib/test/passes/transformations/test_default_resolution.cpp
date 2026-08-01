@@ -75,6 +75,9 @@ TEST(PassesTransformation_DefaultResolution, default_resolution_tf0) { TEST_CORE
 // Effective subroutine lifetime (§13.3.1/§13.4.2): own if stated, else the
 // enclosing declaration's, else static.
 TEST(PassesTransformation_DefaultResolution, default_resolution_lifetime0) { TEST_CORE_SV; }
+// The same rule through an interface: §13.3.1 names interfaces alongside
+// modules and packages as the enclosing declarations a subroutine inherits.
+TEST(PassesTransformation_DefaultResolution, default_resolution_lifetime1) { TEST_CORE_SV; }
 // `default_nettype none: an implicit net is a hard error (§22.8).
 TEST(PassesTransformation_DefaultResolution, default_resolution_none0) { TEST_ERROR_SV; }
 // Verilog mode: net kinds resolve, implicit types stay (1364 in, 1364 out).
