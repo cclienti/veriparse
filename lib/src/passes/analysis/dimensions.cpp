@@ -91,8 +91,13 @@ bool Dimensions::extract_range(const AST::Node::Ptr &msb_node, const AST::Node::
     const bool msb_valid = Transformations::ExpressionEvaluation().evaluate_node(msb_node, msb);
     const bool lsb_valid = Transformations::ExpressionEvaluation().evaluate_node(lsb_node, lsb);
 
+    // A bound that does not fold is an ordinary answer, not an anomaly: a
+    // parametric declaration has no constant width until its parameters are
+    // inlined, and analyze_decls() below simply skips such declarations.
+    // Reporting belongs to the callers that actually need the width — they
+    // name the member, alias or type parameter concerned. Returning false is
+    // the whole answer here.
     if(!msb_valid || !lsb_valid) {
-        LOG_WARNING_N(msb_node) << "cannot evaluate dimension range";
         return false;
     }
 
@@ -128,7 +133,8 @@ bool Dimensions::extract_dimension(const AST::Dimension::Ptr &dimension, Packing
         const auto &size_dim = AST::cast_to<AST::SizeDim>(dimension);
         mpz_class size;
         if(!Transformations::ExpressionEvaluation().evaluate_node(size_dim->get_size(), size)) {
-            LOG_WARNING_N(dimension) << "cannot evaluate dimension size";
+            // Same contract as extract_range(): a non-constant size is an
+            // answer, and the caller owns the diagnostic.
             return false;
         }
 
