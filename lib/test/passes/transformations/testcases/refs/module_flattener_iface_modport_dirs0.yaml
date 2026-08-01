@@ -1,0 +1,1043 @@
+Source:
+  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+          line: 1
+          name: dirs_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 2
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 2
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: idx
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: flag
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 4
+                  signing: NONE
+          - Modport:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 5
+              name: master
+              ports:
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 5
+                  name: data
+                  direction: OUTPUT
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 5
+                  name: idx
+                  direction: INPUT
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 5
+                  name: flag
+                  direction: INOUT
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+          line: 13
+          name: dirs_master
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 13
+              name: p
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 13
+                  is_var: false
+                  direction: NONE
+                  name: p
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 13
+                      name: dirs_if
+                      modport: master
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 13
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 13
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 13
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 13
+              name: drive
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 13
+                  is_vectored: false
+                  is_scalared: false
+                  name: drive
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 13
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 14
+              name: echo
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 14
+                  is_vectored: false
+                  is_scalared: false
+                  name: echo
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 14
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 14
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 14
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 14
+              name: seen
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 14
+                  is_vectored: false
+                  is_scalared: false
+                  name: seen
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 14
+                      signing: NONE
+              expr: null
+          items:
+          - Always:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 16
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 16
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 16
+                      type: POSEDGE
+                      sig:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 16
+                          name: clk
+                          hier:
+                            HierName: null
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 16
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 17
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 17
+                          var:
+                            Pointer:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 17
+                              ptr:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                  line: 17
+                                  name: idx
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                      line: 17
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                          line: 17
+                                          name: p
+                                          loop: null
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                  line: 17
+                                  name: data
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                      line: 17
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                          line: 17
+                                          name: p
+                                          loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 17
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 17
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 20
+                      name: echo
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 20
+                      name: data
+                      hier:
+                        HierName:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 20
+                          labellist:
+                          - HierLabel:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 20
+                              name: p
+                              loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 21
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 21
+                      name: flag
+                      hier:
+                        HierName:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 21
+                          labellist:
+                          - HierLabel:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 21
+                              name: p
+                              loop: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 21
+                      name: drive
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 22
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 22
+                      name: seen
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 22
+                      name: flag
+                      hier:
+                        HierName:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 22
+                          labellist:
+                          - HierLabel:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 22
+                              name: p
+                              loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+          line: 26
+          name: iface_modport_dirs0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 26
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 26
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 26
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 26
+              name: drive
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 26
+                  is_vectored: false
+                  is_scalared: false
+                  name: drive
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 26
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 27
+              name: echo
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 27
+                  is_vectored: false
+                  is_scalared: false
+                  name: echo
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 27
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 27
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 27
+              name: seen
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 27
+                  is_vectored: false
+                  is_scalared: false
+                  name: seen
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 27
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 2
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 2
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_idx
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 2
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_flag
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 4
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 13
+              is_vectored: false
+              is_scalared: false
+              name: u_m_clk
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 13
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 13
+              is_vectored: false
+              is_scalared: false
+              name: u_m_drive
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 13
+                  signing: NONE
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 14
+              is_vectored: false
+              is_scalared: false
+              name: u_m_echo
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 14
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 14
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 14
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 14
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 14
+              is_vectored: false
+              is_scalared: false
+              name: u_m_seen
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 14
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u_m_clk
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 31
+                      name: clk
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u_m_drive
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 31
+                      name: drive
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 31
+                      name: echo
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u_m_echo
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 31
+                      name: seen
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u_m_seen
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Always:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 16
+              senslist:
+                Senslist:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 16
+                  list:
+                  - Sens:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 16
+                      type: POSEDGE
+                      sig:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 16
+                          name: u_m_clk
+                          hier:
+                            HierName: null
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 17
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 17
+                          var:
+                            Pointer:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 17
+                              ptr:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                  line: 17
+                                  name: bus_idx
+                                  hier:
+                                    HierName: null
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                                  line: 17
+                                  name: bus_data
+                                  hier:
+                                    HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                          line: 17
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                              line: 17
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 20
+                      name: u_m_echo
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 20
+                      name: bus_data
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 21
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 21
+                      name: bus_flag
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 21
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 21
+                      name: u_m_drive
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+              line: 22
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 22
+                      name: u_m_seen
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                  line: 22
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_modport_dirs0.sv
+                      line: 22
+                      name: bus_flag
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
