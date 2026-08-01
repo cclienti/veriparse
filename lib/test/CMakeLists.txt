@@ -39,6 +39,7 @@ foreach(subdir ${SUBDIRS})
     target_link_libraries(${testname} veriparse_static GTest::gtest GTest::gtest_main)
     set_target_properties(${testname} PROPERTIES JOB_POOL_LINK gtest_discovery)
     gtest_discover_tests(${testname} PROPERTIES LABELS "unittest")
+    list(APPEND test_binaries $<TARGET_FILE:${testname}>)
   endif()
 endforeach()
 
@@ -46,8 +47,12 @@ endforeach()
 # against a binary that does not define them (they pass without running), cases
 # defined but registered nowhere (they never run), or a case registered twice.
 # Runs as a test so it executes after discovery, with the configuring cmake.
+# The binary paths come from the targets themselves: a multi-config generator
+# puts the executables under a per-configuration subdirectory and leaves
+# same-named project files behind, so they cannot be found by globbing.
 add_test(NAME gtest_discovery_consistency
          COMMAND ${CMAKE_COMMAND} -DTEST_BIN_DIR=${CMAKE_CURRENT_BINARY_DIR}
+                 "-DTEST_BINARIES=$<JOIN:${test_binaries},|>"
                  -P ${CMAKE_SOURCE_DIR}/scripts/check_test_discovery.cmake)
 set_tests_properties(gtest_discovery_consistency PROPERTIES LABELS "unittest")
 

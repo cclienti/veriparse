@@ -11,17 +11,27 @@
 # the set it reports itself, and fails on any difference. Run it as a test so it
 # executes after discovery, with the cmake that produced the build tree:
 #
-#   cmake -DTEST_BIN_DIR=<dir> -P scripts/check_test_discovery.cmake
+#   cmake -DTEST_BIN_DIR=<dir> -DTEST_BINARIES=<a>|<b>|... \
+#         -P scripts/check_test_discovery.cmake
+#
+# TEST_BINARIES comes from $<TARGET_FILE:...>, pipe-separated: the binaries
+# cannot be found by globbing, because a multi-config generator puts them in a
+# per-configuration subdirectory while leaving same-named project files in the
+# directory itself.
 
 cmake_minimum_required(VERSION 3.15)
 
 if(NOT DEFINED TEST_BIN_DIR)
   message(FATAL_ERROR "TEST_BIN_DIR must be set")
 endif()
+if(NOT DEFINED TEST_BINARIES)
+  message(FATAL_ERROR "TEST_BINARIES must be set")
+endif()
 
 # --- what each *_tests.cmake registers, keyed by the binary it invokes --------
 
-file(GLOB tests_files "${TEST_BIN_DIR}/*_tests.cmake")
+# Recursive: a multi-config generator writes them under the configuration.
+file(GLOB_RECURSE tests_files "${TEST_BIN_DIR}/*_tests.cmake")
 set(seen_exes "")
 
 foreach(tests_file IN LISTS tests_files)
@@ -43,19 +53,18 @@ endforeach()
 
 list(REMOVE_DUPLICATES seen_exes)
 
-# --- every test binary present, so one registered nowhere is caught too ------
+# --- every test binary, so one registered nowhere is caught too --------------
 
-file(GLOB candidates "${TEST_BIN_DIR}/test_veriparse_*")
-set(binaries "")
-foreach(candidate IN LISTS candidates)
-  if(NOT candidate MATCHES "\\.(cmake|json|xml|dbg)$" AND NOT IS_DIRECTORY "${candidate}")
-    list(APPEND binaries "${candidate}")
+string(REPLACE "|" ";" binaries "${TEST_BINARIES}")
+if(binaries STREQUAL "")
+  message(FATAL_ERROR "TEST_BINARIES is empty")
+endif()
+
+foreach(binary IN LISTS binaries)
+  if(NOT EXISTS "${binary}")
+    message(FATAL_ERROR "test binary not built: ${binary}")
   endif()
 endforeach()
-
-if(binaries STREQUAL "")
-  message(FATAL_ERROR "no test binary found in ${TEST_BIN_DIR}")
-endif()
 
 # --- compare, per binary -----------------------------------------------------
 
