@@ -138,6 +138,9 @@ ast-check: ast-gen
 	  || { echo "Generated AST is stale vs verilog_ast.yaml — run 'make ast-gen' and commit."; exit 1; }
 
 dev-clean:
+	@find "${abspath ${DEV_BUILD_DIR}}" -maxdepth 1 -mindepth 1 ! -path "${abspath ${DEV_BUILD_DIR}}/env" -exec rm -rf '{}' \;
+
+dev-distclean:
 	-$(MAMBA) env remove -y -p $(CONDA_DEV_ENV_PATH)
 	rm -rf $(DEV_BUILD_DIR) $(COVERAGE_BUILD_DIR)
 
@@ -177,7 +180,7 @@ clean:
 # Common Rules
 ##################################################################
 
-distclean: clean dev-clean
+distclean: clean dev-distclean
 
 print-%:
 	@echo $*=$($*)
