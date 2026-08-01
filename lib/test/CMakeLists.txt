@@ -42,6 +42,15 @@ foreach(subdir ${SUBDIRS})
   endif()
 endforeach()
 
+# Catches a discovery that no longer matches the binaries — cases registered
+# against a binary that does not define them (they pass without running), cases
+# defined but registered nowhere (they never run), or a case registered twice.
+# Runs as a test so it executes after discovery, with the configuring cmake.
+add_test(NAME gtest_discovery_consistency
+         COMMAND ${CMAKE_COMMAND} -DTEST_BIN_DIR=${CMAKE_CURRENT_BINARY_DIR}
+                 -P ${CMAKE_SOURCE_DIR}/scripts/check_test_discovery.cmake)
+set_tests_properties(gtest_discovery_consistency PROPERTIES LABELS "unittest")
+
 add_subdirectory(cosim)
 
 add_custom_target(run_tests)
