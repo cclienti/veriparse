@@ -27,14 +27,22 @@ alias, `TypeParamInliner` the type parameter, `ModuleInstanceNormalizer` the
 port. A caller must therefore distinguish *absent because unmeasurable* from
 *absent because undeclared* before blaming either.
 
-**An empty `DimList` is a 1-bit value, not a missing measurement.**
-`extract_arrays()` drops width-1 dimensions, so the two are indistinguishable
-by inspection: `is_fully_packed()` is vacuously true and `packed_width()`
-answers 1. The **return code** is the only signal that a width is known, and
-`analyze_expr()` fails on any expression it has no rule for rather than
-answering an empty list. Reading "unknown" as "one bit" is how a 16-bit
-expression came to be assigned to an 8-bit wire, with an instance array driven
-unsliced and the flatten reporting success.
+**An empty `DimList` is a 1-bit value.** `extract_arrays()` drops width-1
+dimensions, so an expression `analyze_expr()` has no rule for contributes the
+same empty list a genuine 1-bit value does — and that reading is right far more
+often than it is wrong: an operator result usually *is* one bit, and
+`Concat`/`Repeat` compose the total from it correctly. Failing instead would
+reject `{8{a & b}}`, whose width is unambiguous.
+
+The consequence is that a caller cannot trust a width to be *measured*, only to
+be *plausible*. So a caller that must act on it checks the width it ends up
+with against what the construct allows, rather than against nothing:
+`ModuleInstanceNormalizer` applies IEEE 1364-2005 §7.1.6 to instance arrays —
+equal to the port connects to each instance, port×N part-selects per instance,
+and "too many or too few bits to connect to all the instances shall be
+considered an error". Skipping that last case is how a 24-bit value came to be
+truncated into an 8-bit wire that every element then read, with the flatten
+reporting success.
 
 ---
 

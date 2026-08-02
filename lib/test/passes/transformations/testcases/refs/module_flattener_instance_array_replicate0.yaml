@@ -1,0 +1,1280 @@
+Source:
+  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+  line: 11
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+      line: 11
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+          line: 11
+          name: instance_array_replicate0_leaf1
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 11
+              name: en
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 11
+              name: o
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 12
+              name: en
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 12
+                  is_vectored: false
+                  is_scalared: false
+                  name: en
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 12
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 13
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 13
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 13
+                      signing: NONE
+              expr: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: en
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+          line: 17
+          name: instance_array_replicate0_leaf8
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 17
+              name: d
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 17
+              name: o
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 18
+              name: d
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 18
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 18
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 18
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 18
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 18
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 19
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 19
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 19
+                      signing: NONE
+              expr: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 20
+                          name: d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+          line: 23
+          name: instance_array_replicate0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 24
+              name: a
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 25
+              name: b
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: b
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 26
+              name: o1
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: o1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 26
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 26
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 26
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 27
+              name: o8
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: o8
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 27
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 27
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 29
+              is_vectored: false
+              is_scalared: false
+              name: u1_en
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  signing: NONE
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 29
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      name: u1_en
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  var:
+                    And:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      left:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          name: a
+                          hier:
+                            HierName: null
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          name: b
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 29
+              is_vectored: false
+              is_scalared: false
+              name: u1_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 29
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      name: o1
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 29
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      name: u1_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u10_en
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u10_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u10_en
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      name: u1_en
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          name: u1_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u10_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: u10_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: u10_en
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u11_en
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u11_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u11_en
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 29
+                      name: u1_en
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 29
+                          name: u1_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u11_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 14
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: u11_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 14
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 14
+                      name: u11_en
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 30
+              is_vectored: false
+              is_scalared: false
+              name: u8_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 30
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      name: u8_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  var:
+                    Repeat:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      value:
+                        Concat:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          list:
+                          - And:
+                              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                              line: 30
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                                  line: 30
+                                  name: a
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                                  line: 30
+                                  name: b
+                                  hier:
+                                    HierName: null
+                      times:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 8
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 30
+              is_vectored: false
+              is_scalared: false
+              name: u8_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 30
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      name: o8
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 30
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      name: u8_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u80_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 18
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u80_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u80_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      name: u8_d
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          name: u8_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u80_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      name: u80_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 20
+                          name: u80_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u81_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 18
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 18
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u81_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u81_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 30
+                      name: u8_d
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 30
+                          name: u8_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u81_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      name: u81_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                  line: 20
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                      line: 20
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_replicate0.v
+                          line: 20
+                          name: u81_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

@@ -74,6 +74,16 @@ void report_unmeasured_port(const AST::Node::Ptr &at, const AST::Module::Ptr &mo
                     << "' has no constant width at this point: its dimensions do not evaluate";
 }
 
+/// The other half of the same miss: the module has no such port at all. One
+/// wording, so the two sites cannot drift apart again, and it names the port —
+/// a line number alone does not say which of several connections is wrong.
+void report_undeclared_port(const AST::Node::Ptr &at, const AST::Module::Ptr &module_decl,
+                            const std::string &port_name)
+{
+    LOG_ERROR_N(at) << "module '" << module_decl->get_name() << "' has no port named '" << port_name
+                    << "'";
+}
+
 } // namespace
 
 ModuleInstanceNormalizer::ModuleInstanceNormalizer(const Analysis::Module::ModulesMap &modules_map)
@@ -404,8 +414,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
                 if(declares_io(module_decl, arg)) {
                     report_unmeasured_port(port, module_decl, arg);
                 } else {
-                    LOG_ERROR_N(port)
-                        << "cannot find port '" << arg << "' in module '" << module_name << "'";
+                    report_undeclared_port(port, module_decl, arg);
                 }
                 return 1;
             }
@@ -429,21 +438,49 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             auto value_outer_msb = value_dims.outer_msb();
             auto value_outer_is_big = value_dims.outer_is_big();
 
-            // Say what the user got wrong, with both counts. The unit follows
-            // the outer dimension: an unpacked one distributes elements, a
-            // packed one distributes bits. Captured before the slicing below
-            // mutates value_dims.
-            const char *const unit =
-                (!value_dims.list.empty() && !value_dims.list.front().is_packed) ? "element(s)"
-                                                                                 : "bit(s)";
-            const std::string spread = "the value connected to port '" + arg +
-                                       "' of instance array '" + instance->get_name() + "' holds " +
-                                       std::to_string(value_outer_width) + " " + unit + " for " +
-                                       std::to_string(array_dim.width) + " instance(s)";
+            // Say what the user got wrong, with both counts. "bit(s)" only
+            // when the outer dimension IS the whole width — a single packed
+            // dimension. Any other shape counts multi-bit elements, so
+            // `logic [3:0][7:0]` holds 4 elements of 8 bits, never "4 bits".
+            // Captured before the slicing below mutates value_dims, and built
+            // only where it is reported: this loop runs per port per element.
+            const bool outer_is_whole_width =
+                value_dims.list.size() == 1 && value_dims.list.front().is_packed;
+            const std::size_t outer_count = value_outer_width;
+            const std::size_t instance_count = array_dim.width;
+            const std::string arg_name = arg;
+            const std::string inst_name = instance->get_name();
+            const auto spread = [&] {
+                return "the value connected to port '" + arg_name + "' of instance array '" +
+                       inst_name + "' holds " + std::to_string(outer_count) +
+                       (outer_is_whole_width ? " bit(s) for " : " element(s) for ") +
+                       std::to_string(instance_count) + " instance(s)";
+            };
+
+            // Both split branches below reach the same two failures once the
+            // per-instance share is known: it is still an aggregate the port
+            // cannot take, or a packed value of the wrong width. Reporting the
+            // width when the packing is what failed prints two equal numbers
+            // and explains nothing, so they stay separate — in one place.
+            const auto report_share_mismatch = [&]() -> bool {
+                if(!value_dims.is_fully_packed()) {
+                    LOG_ERROR_N(port)
+                        << spread() << ": each instance would take an aggregate, not the single "
+                        << "packed value port '" << arg_name << "' expects";
+                    return true;
+                }
+                if(value_dims.packed_width() != arg_dims.packed_width()) {
+                    LOG_ERROR_N(port)
+                        << spread() << ": each instance would take " << value_dims.packed_width()
+                        << " bit(s) but the port is " << arg_dims.packed_width() << " bit(s) wide";
+                    return true;
+                }
+                return false;
+            };
 
             std::size_t width_mod = value_outer_width % array_dim.width;
             if(width_mod != 0 || value_dims.list.size() == 0) {
-                LOG_ERROR_N(port) << spread << ": the outer dimension must divide evenly across "
+                LOG_ERROR_N(port) << spread() << ": the outer dimension must divide evenly across "
                                   << "the instance array";
                 return 1;
             }
@@ -452,20 +489,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             if(width_div == 1) {
                 // We just have to pop a dimension, because we will add a pointer node.
                 value_dims.list.pop_front();
-                // Two distinct failures: the per-instance share is still an
-                // aggregate the port cannot take, or it is a packed value of
-                // the wrong width. Reporting the width when the packing is
-                // what failed prints two equal numbers and explains nothing.
-                if(!value_dims.is_fully_packed()) {
-                    LOG_ERROR_N(port)
-                        << spread << ": each instance would take an aggregate, not the single "
-                        << "packed value port '" << arg << "' expects";
-                    return 1;
-                }
-                if(value_dims.packed_width() != arg_dims.packed_width()) {
-                    LOG_ERROR_N(port)
-                        << spread << ": each instance would take " << value_dims.packed_width()
-                        << " bit(s) but the port is " << arg_dims.packed_width() << " bit(s) wide";
+                if(report_share_mismatch()) {
                     return 1;
                 }
 
@@ -498,20 +522,7 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
                 value_dims.list.front().lsb = slice_lsb;
                 value_dims.list.front().width = width_div;
 
-                // Two distinct failures: the per-instance share is still an
-                // aggregate the port cannot take, or it is a packed value of
-                // the wrong width. Reporting the width when the packing is
-                // what failed prints two equal numbers and explains nothing.
-                if(!value_dims.is_fully_packed()) {
-                    LOG_ERROR_N(port)
-                        << spread << ": each instance would take an aggregate, not the single "
-                        << "packed value port '" << arg << "' expects";
-                    return 1;
-                }
-                if(value_dims.packed_width() != arg_dims.packed_width()) {
-                    LOG_ERROR_N(port)
-                        << spread << ": each instance would take " << value_dims.packed_width()
-                        << " bit(s) but the port is " << arg_dims.packed_width() << " bit(s) wide";
+                if(report_share_mismatch()) {
                     return 1;
                 }
 
@@ -1013,13 +1024,11 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
         const auto &id_str = Analysis::UniqueDeclaration::get_unique_identifier(
             instance->get_name() + "_" + port->get_name(), m_declared);
 
-        // The return is the only signal that the width is known: an empty
-        // DimList means a 1-bit value just as much as it means no measurement,
-        // since extract_arrays drops width-1 dimensions.
         Analysis::Dimensions::DimList port_value_dims;
-        const bool value_measured =
-            Analysis::Dimensions::analyze_expr(port_value, m_dim_map, port_value_dims) == 0;
-        if(value_measured && !port_value_dims.is_fully_packed()) {
+        if(Analysis::Dimensions::analyze_expr(port_value, m_dim_map, port_value_dims)) {
+            return 1;
+        }
+        if(!port_value_dims.is_fully_packed()) {
             continue;
         }
 
@@ -1031,7 +1040,7 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
             if(declares_io(module_decl, port->get_name())) {
                 report_unmeasured_port(port, module_decl, port->get_name());
             } else {
-                LOG_ERROR_N(port) << "port not found in module definition";
+                report_undeclared_port(port, module_decl, port->get_name());
             }
             return 1;
         }
@@ -1043,19 +1052,27 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
             return 1;
         }
 
-        // The actual's width is what decides slice-vs-replicate across the
-        // elements of an instance array, and nothing else here needs it. So an
-        // unmeasured width is only fatal when the instance is arrayed: there,
-        // guessing picks one of two different netlists.
-        if(!value_measured) {
-            LOG_ERROR_N(port) << "cannot determine the width of the value connected to port '"
-                              << port->get_name() << "' of instance array '" << instance->get_name()
-                              << "': it decides whether the value is split across the elements "
-                              << "or driven into each. Assign it to a named signal first";
-            return 1;
-        }
-        if((decl_dims.packed_width() * array_dim.width) == port_value_dims.packed_width()) {
+        // IEEE 1364-2005 §7.1.6 decides by bit length: equal to the port
+        // connects the expression to each instance, the array width times the
+        // port takes a part-select per instance, and "too many or too few bits
+        // to connect to all the instances shall be considered an error". That
+        // third case used to fall through both branches, sizing the buffer wire
+        // from the port alone: the value was truncated into it and every
+        // element read the same bits, with the flatten reporting success.
+        const std::size_t port_width = decl_dims.packed_width();
+        const std::size_t value_width = port_value_dims.packed_width();
+        if(value_width == port_width * array_dim.width) {
             decl_dims.list.push_front(array_dim);
+        } else if(value_width != port_width) {
+            LOG_ERROR_N(port) << "the value connected to port '" << port->get_name()
+                              << "' of instance array '" << instance->get_name() << "' is "
+                              << value_width << " bit(s) for " << array_dim.width
+                              << " instance(s) of an " << port_width
+                              << " bit(s) port: connecting all the instances needs either "
+                              << port_width << " bit(s), driven into each, or "
+                              << port_width * array_dim.width
+                              << " bit(s), split across them (IEEE 1364-2005 7.1.6)";
+            return 1;
         }
 
         const auto &decl = Analysis::Dimensions::generate_decl(
