@@ -263,19 +263,21 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
         // the callers that need a width say what they could not size. Trace it
         // at debug level so the skip is at least findable — absence in the map
         // is otherwise indistinguishable from a name that was never declared.
+        // Named the way the map below keys it, so the trace points at the
+        // entry a caller will find missing.
+        const std::string io_name =
+            io_decl->get_name().empty() ? io->get_name() : io_decl->get_name();
         if(!extract_arrays(io_decl->get_unpacked_dims(), Packing::unpacked, dims)) {
-            LOG_DEBUG_N(io) << "'" << io_decl->get_name()
+            LOG_DEBUG_N(io) << "'" << io_name
                             << "': unpacked dimensions do not evaluate, left unsized";
             continue;
         }
         if(!extract_packed_type(io_decl->get_type(), Packing::packed, dims)) {
-            LOG_DEBUG_N(io) << "'" << io_decl->get_name()
+            LOG_DEBUG_N(io) << "'" << io_name
                             << "': packed dimensions do not evaluate, left unsized";
             continue;
         }
 
-        const std::string io_name =
-            io_decl->get_name().empty() ? io->get_name() : io_decl->get_name();
         auto ret = dim_map.insert(std::make_pair(io_name, dims));
         if(!ret.second) {
             LOG_ERROR_N(io) << "'" << io_name << "' already defined!";
@@ -337,7 +339,12 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
             const std::size_t cst_len = cst->get_value().size();
 
             DimInfo dim;
-            dim.msb = (cst_len == 0) ? 8 : cst_len * 8 - 1;
+            // §3.6: one 8-bit ASCII value per character. The empty string has
+            // no character, and a zero-width dimension is not representable,
+            // so it takes the single null byte every tool gives it — 8 bits.
+            // It used to take msb 8, i.e. 9 bits, which matches no reading at
+            // all and went unnoticed while nothing compared the width.
+            dim.msb = (cst_len == 0) ? 7 : cst_len * 8 - 1;
             dim.lsb = 0;
             dim.width = dim.msb - dim.lsb + 1;
             dim.is_big = true;
@@ -606,12 +613,14 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
         } break;
 
         default:
-            // No case for this expression: the width is unknown, and saying so
-            // matters. Returning 0 here left `dims` empty, which is also how a
-            // 1-bit value is represented — so callers read "unknown" as "one
-            // bit" and sized wires from it.
-            LOG_DEBUG_N(node) << "no width rule for this expression";
-            return 1;
+            // No width rule for this expression: it contributes the empty
+            // DimList, which reads as one bit. That is right far more often
+            // than it is wrong — an operator result usually *is* one bit, and
+            // Concat/Repeat compose the total from it correctly. Callers that
+            // cannot act on a possibly-wrong width check the width they end up
+            // with against what the construct allows, rather than treating
+            // "no rule" as fatal here.
+            break;
         }
     }
 

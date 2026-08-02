@@ -141,8 +141,10 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 // a rejection's message is a documented contract (the ADR error catalogues),
 // so a reword must not drift from it silently. The sinks are dropped first so
 // the log file this test wrote is flushed and closed before it is read back.
-#define TEST_ERROR_SV_MSG(expected)                                                                \
-    TEST_ERROR_SV;                                                                                 \
+// Read the run's log back and assert it carries `expected`. Shared by the
+// Verilog and SystemVerilog variants below, which differ only in which parse
+// and flatten they run first.
+#define EXPECT_LOG_CONTAINS(expected)                                                              \
     Logger::remove_all_sinks();                                                                    \
     do {                                                                                           \
         std::ifstream _log(test_string + ".log");                                                  \
@@ -153,18 +155,14 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
             << "diagnostic does not contain \"" << (expected) << "\"";                             \
     } while(0)
 
-// Same read-back as TEST_ERROR_SV_MSG, for a plain Verilog case.
+#define TEST_ERROR_SV_MSG(expected)                                                                \
+    TEST_ERROR_SV;                                                                                 \
+    EXPECT_LOG_CONTAINS(expected)
+
+// The plain Verilog counterpart of TEST_ERROR_SV_MSG.
 #define TEST_ERROR_MSG(expected)                                                                   \
     TEST_ERROR;                                                                                    \
-    Logger::remove_all_sinks();                                                                    \
-    do {                                                                                           \
-        std::ifstream _log(test_string + ".log");                                                  \
-        ASSERT_TRUE(_log.good()) << "no log file for " << test_string;                             \
-        const std::string _text((std::istreambuf_iterator<char>(_log)),                            \
-                                std::istreambuf_iterator<char>());                                 \
-        EXPECT_NE(std::string::npos, _text.find(expected))                                         \
-            << "diagnostic does not contain \"" << (expected) << "\"";                             \
-    } while(0)
+    EXPECT_LOG_CONTAINS(expected)
 
 TEST(PassesTransformation_ModuleFlattener, instance0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance1) { TEST_CORE; }
@@ -198,10 +196,18 @@ TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; 
 // actual with a part-select instead of indexing it (the width_div > 1 path).
 TEST(PassesTransformation_ModuleFlattener, instance_array_slice0) { TEST_CORE; }
 
-// An instance-array actual whose width cannot be measured leaves slice-vs-
-// replicate undecidable. Refuse it instead of assuming one bit, which used to
-// truncate the value and hand every element the same bits.
-TEST(PassesTransformation_ModuleFlattener, instance_array_unmeasured0) { TEST_ERROR; }
+// §7.1.6 decides by bit length: equal to the port connects to each instance,
+// different part-selects per instance, and anything that fits neither "shall be
+// considered an error". These pin the three outcomes.
+TEST(PassesTransformation_ModuleFlattener, instance_array_replicate0) { TEST_CORE; }
+TEST(PassesTransformation_ModuleFlattener, instance_array_badwidth0)
+{
+    TEST_ERROR_MSG("24 bit(s) for 2 instance(s) of an 8 bit(s) port");
+}
+TEST(PassesTransformation_ModuleFlattener, instance_array_unmeasured0)
+{
+    TEST_ERROR_MSG("for 2 instance(s) of an 8 bit(s) port");
+}
 // The measurable counterpart still slices, and an unmeasurable actual on a
 // non-arrayed instance stays legal — there the width decides nothing.
 TEST(PassesTransformation_ModuleFlattener, instance_array_measured0) { TEST_CORE; }
