@@ -258,10 +258,19 @@ int Dimensions::analyze_decls(const AST::Node::Ptr &node, DimMap &dim_map)
         DimList dims;
         dims.decl = DimList::Decl::io;
 
+        // A declaration whose bounds do not fold is left out of the map rather
+        // than reported: on a parametric module that is the normal state, and
+        // the callers that need a width say what they could not size. Trace it
+        // at debug level so the skip is at least findable — absence in the map
+        // is otherwise indistinguishable from a name that was never declared.
         if(!extract_arrays(io_decl->get_unpacked_dims(), Packing::unpacked, dims)) {
+            LOG_DEBUG_N(io) << "'" << io_decl->get_name()
+                            << "': unpacked dimensions do not evaluate, left unsized";
             continue;
         }
         if(!extract_packed_type(io_decl->get_type(), Packing::packed, dims)) {
+            LOG_DEBUG_N(io) << "'" << io_decl->get_name()
+                            << "': packed dimensions do not evaluate, left unsized";
             continue;
         }
 
@@ -369,7 +378,12 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
                 dims = it->second;
                 return 0;
             }
-            LOG_ERROR_N(id) << "declaration of " << name << " not found";
+            // analyze_decls() also leaves out declarations whose bounds do not
+            // fold, so the name may well be declared: say both, rather than
+            // assert the one that sends the reader looking for a typo.
+            LOG_ERROR_N(id) << "no width known for '" << name
+                            << "': it is either undeclared here, or declared with dimensions "
+                            << "that do not evaluate";
             return 1;
         } break;
 
@@ -592,7 +606,12 @@ int Dimensions::analyze_expr(const AST::Node::Ptr &node, const DimMap &dim_map, 
         } break;
 
         default:
-            break;
+            // No case for this expression: the width is unknown, and saying so
+            // matters. Returning 0 here left `dims` empty, which is also how a
+            // 1-bit value is represented — so callers read "unknown" as "one
+            // bit" and sized wires from it.
+            LOG_DEBUG_N(node) << "no width rule for this expression";
+            return 1;
         }
     }
 

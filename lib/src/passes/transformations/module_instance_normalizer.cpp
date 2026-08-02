@@ -38,6 +38,42 @@ bool is_interface_port(const AST::Module::Ptr &module_decl, const std::string &p
     return false;
 }
 
+/// True when @p module_decl declares an io named @p name, keyed the way
+/// Dimensions::analyze_decls keys its map — the declaration's own name when it
+/// has one, the port's otherwise. Using any other rule would answer "declared"
+/// for a name the map was never going to hold, and the caller would then blame
+/// the wrong cause for the miss.
+bool declares_io(const AST::Module::Ptr &module_decl, const std::string &name)
+{
+    const auto &io_nodes = Analysis::Module::get_iodir_nodes(module_decl);
+    if(!io_nodes) {
+        return false;
+    }
+    for(const AST::Port::Ptr &io : *io_nodes) {
+        const auto &io_decl = io->get_decl();
+        if(!io_decl) {
+            continue;
+        }
+        const std::string io_name =
+            io_decl->get_name().empty() ? io->get_name() : io_decl->get_name();
+        if(io_name == name) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// The one explanation for a name that a module declares yet
+/// Dimensions::analyze_decls left out of its map: the declaration's bounds did
+/// not fold, so it was skipped. Naming the port instead sends the reader
+/// hunting for a typo in a name that is spelled correctly.
+void report_unmeasured_port(const AST::Node::Ptr &at, const AST::Module::Ptr &module_decl,
+                            const std::string &port_name)
+{
+    LOG_ERROR_N(at) << "port '" << port_name << "' of module '" << module_decl->get_name()
+                    << "' has no constant width at this point: its dimensions do not evaluate";
+}
+
 } // namespace
 
 ModuleInstanceNormalizer::ModuleInstanceNormalizer(const Analysis::Module::ModulesMap &modules_map)
@@ -363,8 +399,14 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
 
             auto itarg = module_dim_map.find(arg);
             if(itarg == module_dim_map.end()) {
-                LOG_ERROR_N(port) << "cannot find port '" << arg << "' in module '" << module_name
-                                  << "'";
+                // Same two causes as in replace_port_affectation: a name the
+                // module does not declare, or one whose width did not fold.
+                if(declares_io(module_decl, arg)) {
+                    report_unmeasured_port(port, module_decl, arg);
+                } else {
+                    LOG_ERROR_N(port)
+                        << "cannot find port '" << arg << "' in module '" << module_name << "'";
+                }
                 return 1;
             }
             const auto &arg_dims = itarg->second;
@@ -938,10 +980,13 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
         const auto &id_str = Analysis::UniqueDeclaration::get_unique_identifier(
             instance->get_name() + "_" + port->get_name(), m_declared);
 
-        // Analyze port_value against decl.
+        // The return is the only signal that the width is known: an empty
+        // DimList means a 1-bit value just as much as it means no measurement,
+        // since extract_arrays drops width-1 dimensions.
         Analysis::Dimensions::DimList port_value_dims;
-        Analysis::Dimensions::analyze_expr(port_value, m_dim_map, port_value_dims);
-        if(!port_value_dims.is_fully_packed()) {
+        const bool value_measured =
+            Analysis::Dimensions::analyze_expr(port_value, m_dim_map, port_value_dims) == 0;
+        if(value_measured && !port_value_dims.is_fully_packed()) {
             continue;
         }
 
@@ -949,18 +994,12 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
         auto itdecl = module_dim_map.find(port->get_name());
         if(itdecl == module_dim_map.end()) {
             // analyze_decls() leaves out any declaration whose bounds did not
-            // fold, so absence here has two very different causes. Say which:
-            // blaming a missing port for an unevaluated width sends the reader
-            // hunting for a typo in a name that is spelled correctly.
-            const std::vector<std::string> iodirs = Analysis::Module::get_iodir_names(module_decl);
-            if(std::find(iodirs.begin(), iodirs.end(), port->get_name()) != iodirs.end()) {
-                LOG_ERROR_N(port) << "port '" << port->get_name() << "' of module '"
-                                  << module_decl->get_name()
-                                  << "' has no constant width at this point: its dimensions "
-                                  << "do not evaluate";
-                return 1;
+            // fold, so absence here has two very different causes. Say which.
+            if(declares_io(module_decl, port->get_name())) {
+                report_unmeasured_port(port, module_decl, port->get_name());
+            } else {
+                LOG_ERROR_N(port) << "port not found in module definition";
             }
-            LOG_ERROR_N(port) << "port not found in module definition";
             return 1;
         }
 
@@ -971,6 +1010,17 @@ int ModuleInstanceNormalizer::replace_port_affectation(const AST::Node::Ptr &nod
             return 1;
         }
 
+        // The actual's width is what decides slice-vs-replicate across the
+        // elements of an instance array, and nothing else here needs it. So an
+        // unmeasured width is only fatal when the instance is arrayed: there,
+        // guessing picks one of two different netlists.
+        if(!value_measured) {
+            LOG_ERROR_N(port) << "cannot determine the width of the value connected to port '"
+                              << port->get_name() << "' of instance array '" << instance->get_name()
+                              << "': it decides whether the value is split across the elements "
+                              << "or driven into each. Assign it to a named signal first";
+            return 1;
+        }
         if((decl_dims.packed_width() * array_dim.width) == port_value_dims.packed_width()) {
             decl_dims.list.push_front(array_dim);
         }

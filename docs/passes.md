@@ -17,6 +17,25 @@ Analyzes signal and array dimensions within a module.
 - Produces a `DimMap` (signal name → `DimList`) via `analyze_decls()`.
 - Can also analyze expression dimensions (`analyze_expr()`) and generate a declaration AST node from a `DimList` (`generate_decl()`).
 
+**Diagnostic contract.** A width that does not fold is an *answer*, not an
+anomaly: a parametric module has no constant width until its parameters are
+inlined, so the extraction predicates report nothing and `analyze_decls()`
+simply leaves the declaration out of the map (traced at debug level). Saying
+what could not be sized, and why it mattered, belongs to the caller that needed
+the width — `StructLowering` names the struct member, `TypedefInliner` the
+alias, `TypeParamInliner` the type parameter, `ModuleInstanceNormalizer` the
+port. A caller must therefore distinguish *absent because unmeasurable* from
+*absent because undeclared* before blaming either.
+
+**An empty `DimList` is a 1-bit value, not a missing measurement.**
+`extract_arrays()` drops width-1 dimensions, so the two are indistinguishable
+by inspection: `is_fully_packed()` is vacuously true and `packed_width()`
+answers 1. The **return code** is the only signal that a width is known, and
+`analyze_expr()` fails on any expression it has no rule for rather than
+answering an empty list. Reading "unknown" as "one bit" is how a 16-bit
+expression came to be assigned to an 8-bit wire, with an instance array driven
+unsliced and the flatten reporting success.
+
 ---
 
 ### `Module`
