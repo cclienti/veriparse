@@ -153,6 +153,19 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
             << "diagnostic does not contain \"" << (expected) << "\"";                             \
     } while(0)
 
+// Same read-back as TEST_ERROR_SV_MSG, for a plain Verilog case.
+#define TEST_ERROR_MSG(expected)                                                                   \
+    TEST_ERROR;                                                                                    \
+    Logger::remove_all_sinks();                                                                    \
+    do {                                                                                           \
+        std::ifstream _log(test_string + ".log");                                                  \
+        ASSERT_TRUE(_log.good()) << "no log file for " << test_string;                             \
+        const std::string _text((std::istreambuf_iterator<char>(_log)),                            \
+                                std::istreambuf_iterator<char>());                                 \
+        EXPECT_NE(std::string::npos, _text.find(expected))                                         \
+            << "diagnostic does not contain \"" << (expected) << "\"";                             \
+    } while(0)
+
 TEST(PassesTransformation_ModuleFlattener, instance0) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance1) { TEST_CORE; }
 TEST(PassesTransformation_ModuleFlattener, instance2) { TEST_CORE; }
@@ -192,6 +205,18 @@ TEST(PassesTransformation_ModuleFlattener, instance_array_unmeasured0) { TEST_ER
 // The measurable counterpart still slices, and an unmeasurable actual on a
 // non-arrayed instance stays legal — there the width decides nothing.
 TEST(PassesTransformation_ModuleFlattener, instance_array_measured0) { TEST_CORE; }
+
+// An unpacked actual is distributed one element per instance, so its outer
+// dimension must match the instance range. Both mismatches say so with the
+// two counts, rather than describing where the split gave up.
+TEST(PassesTransformation_ModuleFlattener, instance_array_unpacked_more0)
+{
+    TEST_ERROR_MSG("holds 4 element(s) for 2 instance(s)");
+}
+TEST(PassesTransformation_ModuleFlattener, instance_array_unpacked_fewer0)
+{
+    TEST_ERROR_MSG("holds 2 element(s) for 4 instance(s)");
+}
 // A runtime (non-constant) index into a split instance array cannot select a
 // unique flattened element: the flattener rejects it instead of leaving a
 // dangling hierarchical reference.

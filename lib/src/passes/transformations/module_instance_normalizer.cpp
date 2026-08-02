@@ -429,9 +429,22 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             auto value_outer_msb = value_dims.outer_msb();
             auto value_outer_is_big = value_dims.outer_is_big();
 
+            // Say what the user got wrong, with both counts. The unit follows
+            // the outer dimension: an unpacked one distributes elements, a
+            // packed one distributes bits. Captured before the slicing below
+            // mutates value_dims.
+            const char *const unit =
+                (!value_dims.list.empty() && !value_dims.list.front().is_packed) ? "element(s)"
+                                                                                 : "bit(s)";
+            const std::string spread = "the value connected to port '" + arg +
+                                       "' of instance array '" + instance->get_name() + "' holds " +
+                                       std::to_string(value_outer_width) + " " + unit + " for " +
+                                       std::to_string(array_dim.width) + " instance(s)";
+
             std::size_t width_mod = value_outer_width % array_dim.width;
             if(width_mod != 0 || value_dims.list.size() == 0) {
-                LOG_ERROR_N(port) << "Bad outer dimension, cannot split instance array";
+                LOG_ERROR_N(port) << spread << ": the outer dimension must divide evenly across "
+                                  << "the instance array";
                 return 1;
             }
 
@@ -439,10 +452,20 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
             if(width_div == 1) {
                 // We just have to pop a dimension, because we will add a pointer node.
                 value_dims.list.pop_front();
-                if(!value_dims.is_fully_packed() ||
-                   value_dims.packed_width() != arg_dims.packed_width()) {
+                // Two distinct failures: the per-instance share is still an
+                // aggregate the port cannot take, or it is a packed value of
+                // the wrong width. Reporting the width when the packing is
+                // what failed prints two equal numbers and explains nothing.
+                if(!value_dims.is_fully_packed()) {
                     LOG_ERROR_N(port)
-                        << "could not index the port value with the declared instance array";
+                        << spread << ": each instance would take an aggregate, not the single "
+                        << "packed value port '" << arg << "' expects";
+                    return 1;
+                }
+                if(value_dims.packed_width() != arg_dims.packed_width()) {
+                    LOG_ERROR_N(port)
+                        << spread << ": each instance would take " << value_dims.packed_width()
+                        << " bit(s) but the port is " << arg_dims.packed_width() << " bit(s) wide";
                     return 1;
                 }
 
@@ -475,10 +498,20 @@ int ModuleInstanceNormalizer::split_array(const AST::Node::Ptr &node, const AST:
                 value_dims.list.front().lsb = slice_lsb;
                 value_dims.list.front().width = width_div;
 
-                if(!value_dims.is_fully_packed() ||
-                   value_dims.packed_width() != arg_dims.packed_width()) {
+                // Two distinct failures: the per-instance share is still an
+                // aggregate the port cannot take, or it is a packed value of
+                // the wrong width. Reporting the width when the packing is
+                // what failed prints two equal numbers and explains nothing.
+                if(!value_dims.is_fully_packed()) {
                     LOG_ERROR_N(port)
-                        << "could not index the port value with the declared instance array";
+                        << spread << ": each instance would take an aggregate, not the single "
+                        << "packed value port '" << arg << "' expects";
+                    return 1;
+                }
+                if(value_dims.packed_width() != arg_dims.packed_width()) {
+                    LOG_ERROR_N(port)
+                        << spread << ": each instance would take " << value_dims.packed_width()
+                        << " bit(s) but the port is " << arg_dims.packed_width() << " bit(s) wide";
                     return 1;
                 }
 
