@@ -1,0 +1,1010 @@
+Source:
+  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+  line: 8
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+      line: 8
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+          line: 8
+          name: instance_array_measured0_leaf
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 8
+              name: d
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 8
+              name: o
+              direction: NONE
+              decl:
+                Declaration: null
+              expr: null
+          items:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 9
+              name: d
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 9
+                  is_vectored: false
+                  is_scalared: false
+                  name: d
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 9
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 10
+              name: o
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 10
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 10
+                      signing: NONE
+              expr: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 11
+                          name: d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+          line: 14
+          name: instance_array_measured0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 15
+              name: x
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: x
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 15
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 15
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 15
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 16
+              name: y
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 16
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 15
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 17
+              name: o
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: o
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 17
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 17
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 17
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 18
+              name: single
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ''
+                  line: 0
+                  is_vectored: false
+                  is_scalared: false
+                  name: single
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ''
+                      line: 0
+                      signing: NONE
+              expr: null
+          items:
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 20
+              is_vectored: false
+              is_scalared: false
+              name: u_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      name: u_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      name: x
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 20
+              is_vectored: false
+              is_scalared: false
+              name: u_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 20
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      name: o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 20
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 20
+                      name: u_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 9
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u0_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          name: u_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          name: u_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      name: u0_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 11
+                          name: u0_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 9
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: u1_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          name: u_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Pointer:
+                      filename: ''
+                      line: 0
+                      ptr:
+                        IntConstN:
+                          filename: ''
+                          line: 0
+                          base: 10
+                          size: -1
+                          sign: true
+                          value: 1
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 20
+                          name: u_o
+                          hier:
+                            HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      name: u1_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 11
+                          name: u1_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: v_d
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 9
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 9
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - WireNet:
+              filename: ''
+              line: 0
+              is_vectored: false
+              is_scalared: false
+              name: v_o
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                ImplicitType:
+                  filename: ''
+                  line: 0
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: v_d
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    And:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 22
+                      left:
+                        Partselect:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 22
+                          msb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          lsb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              name: x
+                              hier:
+                                HierName: null
+                      right:
+                        Partselect:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 22
+                          msb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          lsb:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                              line: 22
+                              name: y
+                              hier:
+                                HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 22
+                      name: single
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: v_o
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+              line: 11
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      name: v_o
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                  line: 11
+                  var:
+                    Uxor:
+                      filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                      line: 11
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/instance_array_measured0.v
+                          line: 11
+                          name: v_d
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

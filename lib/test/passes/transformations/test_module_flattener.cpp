@@ -184,6 +184,14 @@ TEST(PassesTransformation_ModuleFlattener, instance_array_scoped0) { TEST_CORE; 
 // Instance array whose elements take several bits each: split_array slices the
 // actual with a part-select instead of indexing it (the width_div > 1 path).
 TEST(PassesTransformation_ModuleFlattener, instance_array_slice0) { TEST_CORE; }
+
+// An instance-array actual whose width cannot be measured leaves slice-vs-
+// replicate undecidable. Refuse it instead of assuming one bit, which used to
+// truncate the value and hand every element the same bits.
+TEST(PassesTransformation_ModuleFlattener, instance_array_unmeasured0) { TEST_ERROR; }
+// The measurable counterpart still slices, and an unmeasurable actual on a
+// non-arrayed instance stays legal — there the width decides nothing.
+TEST(PassesTransformation_ModuleFlattener, instance_array_measured0) { TEST_CORE; }
 // A runtime (non-constant) index into a split instance array cannot select a
 // unique flattened element: the flattener rejects it instead of leaving a
 // dangling hierarchical reference.
