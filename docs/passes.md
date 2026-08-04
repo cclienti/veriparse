@@ -208,10 +208,20 @@ Removes `generate`/`endgenerate` wrapper blocks when their content can be safely
 ---
 
 ### `LoopUnrolling`
-Statically unrolls `for` and `repeat` loops whose bounds/counts are constant.
+Statically unrolls `for` loops whose bounds and step are constant, and
+`repeat (N)` loops whose count folds to a constant.
 
-- Evaluates loop bounds via `ExpressionEvaluation`.
-- Renames loop-body variables with a unique suffix per iteration to avoid collisions.
+- Evaluates loop bounds and `repeat` counts via `ExpressionEvaluation`; a
+  loop whose bounds, condition or count does not fold is warned about and
+  left intact rather than partially unrolled.
+- Lowers `break`/`continue` (ADR-0005 §3.2): `continue` is rewritten into the
+  body before unrolling, each iteration guarding its own remainder; `break` is
+  lowered across the flat unrolled list afterwards. A body mixing both, or
+  using either in a shape the lowering does not cover, is **not** unrolled —
+  the pass warns and leaves the loop intact (the mixed/nested forms deferred
+  by ADR-0005 §3.2.1).
+- Renames loop-body variables with a unique suffix per iteration to avoid
+  collisions; an unnamed body gets a generated unique scope for the renaming.
 - Tracks scope renaming via `ScopeMap` and fixes scoped identifiers after unrolling.
 - Accepts an optional `FunctionMap`.
 
