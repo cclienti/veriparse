@@ -51,6 +51,8 @@ Queries the module-level AST for declarations and structure.
 
 Key static getters:
 - **Modules:** `get_module_nodes`, `get_module_dictionary`
+- **Interfaces:** `get_interface_nodes`, `get_interface_dictionary` (ADR-0002,
+  consumed by `InterfaceElaboration`)
 - **Ports/IO:** `get_port_nodes`, `get_iodir_nodes`, `get_input_nodes`, `get_output_nodes`, `get_inout_nodes`
 - **Parameters:** `get_parameter_nodes`, `get_localparam_nodes`
 - **Variables:** `get_variable_nodes`, `get_variable_nodes_within_module`
@@ -93,8 +95,10 @@ Extracts identifier argument nodes/names from a `SystemCall`.
 
 ---
 
-### `TaskCall`
-Extracts identifier argument nodes/names from a `TaskCall`.
+### `Call`
+Extracts identifier argument nodes/names from any Call-category node — the
+neutral `Call` the parser produces, plus its `FunctionCall` and `TaskCall`
+refinements (ADR-0006 re-tags the first into the other two).
 
 ---
 
@@ -203,7 +207,20 @@ Evaluates `if`/`case` conditions that are constant after folding and replaces th
 ---
 
 ### `GenerateRemoval`
-Removes `generate`/`endgenerate` wrapper blocks when their content can be safely inlined (i.e. the generate block contains only items, no parameterized loops or conditionals that remain unresolved).
+Removes a `generate`/`endgenerate` wrapper by splicing its items into the
+parent, but only once nothing inside it still needs elaborating.
+
+- Removable means: the subtree holds no `if`, `for`, `while`, `repeat` or
+  `case` form left at *generate* level — those are what `BranchSelection` and
+  `LoopUnrolling` were supposed to have resolved, so one surviving there means
+  the generate is not ready to inline.
+- The scan **stops at** `Initial`, `Always`/`AlwaysFF`/`AlwaysComb`/
+  `AlwaysLatch`, `Task` and `Function`. Control flow inside a process or a
+  subroutine is ordinary procedural code, not generate structure, and does not
+  block removal — a generate holding an `always` full of `if`s is removable.
+- The `GenerateStatement` case does not recurse: `process()` handles the node
+  and returns, so a generate nested inside another is not examined during the
+  same visit. Only `run()`'s single top-down walk is performed.
 
 ---
 
@@ -249,7 +266,10 @@ Propagates constant values of local variables through a procedural block.
 
 - Maintains a `StateMap` (variable name → current constant value).
 - Replaces rvalues with their folded constant when the state is known.
-- Handles `if`, `for`, `while`, `repeat` statements.
+- Handles `if`, `for`, `while`, `repeat` statements. No `case` form is folded.
+- Jump-aware (ADR-0005): `break`, `continue` and `return` set an interpreter
+  flow state that halts the enclosing sequence, so constants are not
+  propagated past a jump.
 - Accepts an optional `FunctionMap`.
 
 ---
@@ -283,7 +303,10 @@ Renames all declared identifiers in a module using a regex search/replace patter
 ---
 
 ### `AnnotateScope`
-Renames all scope labels (named block names) in a module using a regex search/replace pattern.
+Renames all scope labels (named block names) in a module using a regex
+search/replace pattern, and rewrites the `HierLabel` nodes of hierarchical
+references through the same dictionary, so `blk.sig` still resolves after the
+block has been renamed.
 
 ---
 
