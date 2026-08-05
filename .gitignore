@@ -27,7 +27,17 @@ __pycache__/
 ### Generated files
 conda/environment.yml
 docs/*.md
-# ADRs are hand-written design records, not generated — keep them tracked.
+# ADRs and the design notes they are built from are hand-written records, not
+# generated — keep them tracked. ADR-0014 carries its decisions over from
+# docs/imperative-fsm-design.md, so that note has to be readable by anyone
+# reviewing the ADR.
 !docs/adr-*.md
+!docs/imperative-fsm-design.md
+# No PDF is committed. docs/ holds working copies of the IEEE standards and of
+# the papers ADR-0014 §C.7 cites; all of them are third-party, redistribution-
+# restricted, and the standards are multi-megabyte besides — they have twice
+# been swept into a commit by an over-broad `git add`. §C.7 identifies each
+# source by full citation and DOI so a reader fetches their own copy.
+*.pdf
 pkg-build/
 conda/build/
