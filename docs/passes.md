@@ -206,7 +206,7 @@ Removes `generate`/`endgenerate` wrapper blocks when their content can be safely
 ---
 
 ### `LoopUnrolling`
-Statically unrolls `for` loops whose bounds and step are constant.
+Statically unrolls `for` and `repeat` loops whose bounds/counts are constant.
 
 - Evaluates loop bounds via `ExpressionEvaluation`.
 - Renames loop-body variables with a unique suffix per iteration to avoid collisions.
