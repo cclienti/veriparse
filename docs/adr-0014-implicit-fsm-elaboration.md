@@ -6,10 +6,11 @@
 - **Origin**: This ADR formalises `docs/imperative-fsm-design.md`, the
   design note that groomed the approach against two RS232 examples. That
   note's decisions carry over unless stated otherwise; §3 records the one
-  it reverses (attributes) and §7.2 the one it corrects (bounded loops).
+  it reverses (attributes), and §7.2 splits the bounded-loop question the
+  note left whole — `repeat` counts, `for` unrolls.
 - **Scope**: A per-module pass that compiles a **multi-cycle imperative
-  process** — an `always`/`initial` body carrying its own `@(posedge clk)`
-  controls, the style a firmware engineer bit-banging a GPIO would write —
+  process** — an `initial` body carrying its own `@(posedge clk)` controls,
+  the style a firmware engineer bit-banging a GPIO would write —
   into an explicit synthesizable **FSMD** (finite state machine with
   datapath): a state register, an `always_ff`, and the per-state actions.
   The input is *already scheduled*: the author placed the edge waits, so
@@ -17,17 +18,24 @@
   pipelining. Explicitly **not** in scope: general HLS (§15), multi-clock
   processes, `fork`/`join`, datapath generation, and memory inference
   policy.
-- **Home**: a new tool, `vericomp`, not `veriflat`. The transformation
+- **Home**: a new tool, `verilower`, not `veriflat`. The transformation
   compiles behaviour into structure, which is a different job from
   flattening a hierarchy, and §13 records that it is the first of a family
-  — the CFG construction and liveness analysis below are generic, only the
+  — the CFG construction and dataflow checks below are generic, only the
   RTL emission is FSM-specific.
 - **Hard constraint, inherited unchanged**: the source must run as-is in
   any conforming simulator. Anything that would require veriparse to run
   before a behavioural simulation is rejected — this rules out a custom
   block keyword and any "one statement = one cycle" scheme.
 - **Normative reference** — IEEE 1800-2017, verified against
-  `docs/1800-2017.pdf`:
+  `docs/1800-2017.pdf`. No PDF is committed: the standards and the §C.7
+  papers alike are third-party and redistribution-restricted, so `.gitignore`
+  refuses them all and a reader supplies their own copies. What the repository
+  owes them instead is identification precise enough to fetch — a full
+  citation and a DOI per entry (§C.7) — which is why the clause list below
+  and §C.7's records are written out rather than left as file names. The
+  `docs/imperative-fsm-design.md` note this ADR derives from is *not* a
+  publication and is tracked. The clauses used:
   - **§9.2.1** — *"An initial procedure shall execute only once, and its
     activity shall cease when the statement has finished."*
   - **§9.2.2** — *"All forms of always procedures repeat continuously
@@ -40,6 +48,9 @@
     and it is also the source of the §9 deadlock rejection.
   - **§9.4.2** — event control; *"A posedge shall be detected on the
     transition from 0 to x, z, or 1, and from x or z to 1"*.
+  - **§9.4.2.3** — conditional event controls, the `iff` form §5.3 uses to
+    carry a chip enable.
+  - **§9.3.4** — block names, which §10.1 uses to name states.
   - **§10.4.1 / §10.4.2** — blocking vs nonblocking procedural
     assignments; §6 turns their difference into the storage decision.
   - **§12.7** — loop statements (`for`, `while`, `repeat`, `forever`).
@@ -52,6 +63,22 @@
     widen that subset: it *translates* a process out of the unsynthesizable
     region into it, and §9 rejects what it cannot translate. The output
     must satisfy ADR-0007 unchanged.
+
+    **`verilower` therefore runs `SynthesizableCheck` on its output, never on
+    its input**, and that is not a detail: the input is a process suspending
+    on edge waits, which is precisely what the subset excludes — §1's whole
+    premise. Running the check first would reject every design this tool
+    exists for. ADR-0007 §1.2 already makes the pass a per-tool opt-in
+    (`veriflat` runs it, `veridump`/`veriobf` do not); `verilower` runs it,
+    after this pass.
+
+    §9's table is consequently **not** a second copy of ADR-0007's blacklist.
+    It answers a different question — *can this marked process be compiled?*
+    — at the one point where `SynthesizableCheck` cannot be asked. Where a
+    row names something non-synthesizable anywhere (`#delay`, `fork`, a
+    system task in a design file), the general verdict stays ADR-0007's and
+    grows there additively per its §2.1; this ADR claims only the marked
+    process.
   - **ADR-0005 §3.2.1** deferred mixed/nested jump lowering behind a flag
     scheme. `break`/`continue` are nevertheless **in scope here** (§8):
     once states are explicit a jump is an edge in the CFG, which is
@@ -60,6 +87,18 @@
     (`DefaultResolution`) run before this pass, so every variable §6
     classifies already has an explicit type, net kind, direction and a
     defined bit layout.
+
+    **The two do not arrive by the same route, and `verilower` has to supply
+    the second itself.** `StructLowering` is inside `ResolveModule`, so it
+    comes free with the pipeline of §10.3. `DefaultResolution` is not: it is
+    a whole-design pass invoked from the driver
+    (`apps/veriparse/veriflat/src/main.cpp`, `run_design`), alongside
+    `NameResolution`. A new tool that only calls `ResolveModule` would run
+    this pass over variables that still have no resolved default net kind or
+    direction, and §6's classification would be reading fields nobody had
+    filled in. `verilower`'s driver must reproduce veriflat's design-level
+    preamble before descending into modules; phase 2 lands that driver, not
+    just the pass.
 
 ## 1. Problem — the scheduled description is not synthesizable, and the RTL is not simulable against it
 
@@ -71,16 +110,20 @@ surrounding signals, ceremony at every boundary.
 Sequential control logic is naturally written as a *program over time*:
 
 ```systemverilog
-always begin
-  @(posedge clk);
+(* veriparse_fsm *)
+initial begin
   done <= 1'b0;
   acc  <= 8'd0;
-  while (!start) @(posedge clk);
-  acc <= 8'd1;
   @(posedge clk);
-  acc <= acc + 8'd2;
-  @(posedge clk);
-  done <= 1'b1;
+  forever begin
+    while (!start) @(posedge clk);
+    acc <= 8'd1;
+    @(posedge clk);
+    acc <= acc + 8'd2;
+    @(posedge clk);
+    done <= 1'b1;
+    @(posedge clk);
+  end
 end
 ```
 
@@ -100,31 +143,122 @@ agree.
 > adds an I2C byte write for what a second protocol exercises. Reading
 > those first is the shortest route into the rules below.
 
-## 2. Decision 1 — the construct is the intent
+## 2. Decision 1 — the author marks the process; the construct says which kind
 
-The pass detects two source patterns; no keyword and no *required*
-annotation participates in the decision.
+`docs/imperative-fsm-design.md` made the construct itself the signal: an
+`always` or `initial` carrying edge waits *is* an FSM, no annotation. That
+is reversed here, because the shape is not exclusive to hardware intent —
+it is also the shape of every testbench ever written:
 
-| Source construct | Meaning | Terminal behaviour |
-|---|---|---|
-| `always begin @… @… end` | perpetual FSM | last segment transitions back to the first |
-| `initial begin @… @… end` | one-shot sequence | last segment self-loops (terminal state) |
-| `initial forever begin … end` | perpetual | the `forever` back-edge (§7.3) makes it so; accepted, redundant |
+```systemverilog
+initial begin
+  cnt = 0;
+  repeat (8) @(posedge clk);        // an Initial, EventStatements,
+  $display(...); $finish;           // one edge, one signal
+end
+```
 
-This is exactly the §9.2.1 / §9.2.2 distinction, so the terminal behaviour
-is read off the standard rather than invented.
+Under a shape-only rule that is a schedulable process. §9 rejects the
+system tasks, so *this* block would at least fail loudly — but it would
+fail loudly on a file the tool was never asked to touch, which is its own
+defect. And the stimulus generator beside it that drives its signals with
+plain assignments between edge waits carries nothing for §9 to catch:
+`verilower` would compile it into an `always_ff`.
+And the hazard is sharpest for exactly the construct this ADR compiles:
+nearly every `initial` with edge waits in existence is testbench.
 
-An `Always` with a **non-empty** `senslist` (`always @(posedge clk)`,
-`always_ff`, `always_comb`) is already RTL and is **left untouched** — this
-pass does not rewrite existing hardware descriptions.
+It is also, plainly, the rule §3 asks for applied to itself: *deciding
+whether a block should become hardware* is the largest guess in this
+design, and exempting it from §3's second rule was inconsistent.
 
-A module item is a **schedulable process** when it is an `Always` with an
-empty `senslist`, or an `Initial`, whose body contains at least one
+> **A process is compiled only if it carries `(* veriparse_fsm *)`.**
+> Anything unmarked is left exactly as it is.
+
+The marker is namespaced by the **project**, not by the tool: it lives in
+the user's RTL, which is the most expensive place to churn a name, while
+`verilower` is a binary name and the least stable identifier in the system.
+The pass lives in the library and nothing stops another front end invoking
+it. This is Verilator's convention (`/* verilator lint_off */`) rather
+than a per-executable one.
+
+Requiring it costs nothing on the hard constraint: §5.12 attributes are
+ignored by any tool that does not recognise them, so the source still runs
+as-is, marked or not.
+
+**The construct still carries meaning — just not the opt-in.** Within a
+marked process it decides the terminal behaviour, read off §9.2.1/§9.2.2
+rather than invented:
+
+| Marked construct | Meaning | Terminal behaviour | Reset |
+|---|---|---|---|
+| `(* veriparse_fsm *) initial begin … @…; forever begin … end end` — **canonical** | perpetual FSM | the `forever` back-edge (§7.3) | preamble is the reset branch; every register it writes is reset (§5.1) |
+| `(* veriparse_fsm *) initial begin @… @… end` | one-shot sequence | the last segment enters an added empty **hold state** — a self-loop on the segment itself would replay its action every cycle, where §9.2.1 says the activity has ceased | as above |
+
+**`initial` is the only accepted construct**, and `always` is refused rather
+than supported: `always begin BODY end` is exactly `initial forever begin
+BODY end` minus the one-time region — two spellings of one thing, one of
+them lossy. §15.1 keeps the full argument and the measurement behind it.
+
+The old objection to `initial`, that it reads as testbench, is answered by
+the mark rather than by the keyword: nothing is compiled without
+`(* veriparse_fsm *)`, so the construct no longer carries that risk on its
+own.
+
+**What the `forever` is, and what it is not.** It is only the back-edge:
+§7.3 lowers `forever` and a `while` whose condition never folds false to
+the same thing — checked, `forever` and `while (1)` produce the same
+machine. Nothing rests on the keyword.
+
+What the canonical form actually buys is `initial`'s **one-time region** —
+everything above the loop: the reset values above the first wait, then any
+number of one-shot startup states, each run exactly once (§5.1 walks the
+boundary). It is what `always` cannot express — its preamble runs on every
+lap — and the reason §15 refuses the construct rather than merely
+discouraging it.
+
+Dropping the loop entirely is legal and is the one-shot row above: without a
+back-edge, §9.2.1 ends the process and the machine parks in the hold state.
+
+A marked module item is a **schedulable process** when it is an `Initial`
+whose body contains at least one
 `EventStatement`, and where every `EventStatement` carries exactly one
-`Sens` of the same edge type over the same single-bit signal. One clock,
-one edge, per process; §9 rejects the rest. A module may hold several
-schedulable processes plus ordinary RTL; each yields its own independent
-state register and `always_ff`.
+`Sens` of the same edge — `posedge` or `negedge`, never a level sensitivity
+(`@(sig)`) — over the same single-bit signal, and, when
+present, the same `iff` condition on that `Sens`, which is how a chip enable
+is written (§5.3). One clock,
+one edge, per process; §9 rejects the rest, and a *marked* process that
+fails any of these is an error rather than a silent skip — the mark says
+the author meant it. So is a mark on anything that cannot be a schedulable
+process at all: a module item that is not a process, or an `initial` with
+no wait. A module may hold several schedulable processes plus
+ordinary RTL; each yields its own independent state register and
+`always_ff`.
+
+**No `Always` is ever a candidate**, and the two reasons differ. One with a
+**non-empty** `senslist` and no `EventStatement` (`always @(posedge clk)`,
+`always_ff`, `always_comb`) is already RTL, left untouched: this
+pass does not rewrite existing hardware descriptions. Marked anyway, it
+draws a **warning** — *"the mark has no effect: this process is already
+RTL"* — and stays untouched. It is the one misplaced mark that warns
+rather than errors, because it is the one where nothing is lost: the
+process means the same thing with or without the tool, so the author needs
+the signal, not a broken build. One with waits in its
+body is refused instead — an empty senslist because §15 takes the construct
+out of the language this pass reads, and a non-empty one because it is
+neither RTL nor compilable, `always @(posedge clk or negedge rst_n) begin …
+@(posedge clk); … end` being the shape anyone reaches for on being told the
+reset is not in the source, which §5.2 shows cannot work.
+
+Both are errors when marked, never silent skips, and both messages carry the
+rewrite: wrap the body in `initial forever` and, for the second, drop the
+senslist. Falling through a marked process in silence would leave the author
+with no signal at all.
+
+**Discoverability.** An unmarked process of schedulable shape gets one
+**informational** note — *"looks like an implicit FSM; mark it with
+`(* veriparse_fsm *)` to compile it"* — so a first user is not left
+wondering why nothing happened. Info, never a warning: pointing the tool
+at a file that also holds a testbench must stay quiet.
 
 ## 3. Decision 2 — attributes are optional hints, never load-bearing
 
@@ -139,6 +273,24 @@ tool-specific hints. It is also not new syntax to the audience: Vivado,
 Quartus and Yosys already steer synthesis this way (`fsm_encoding`,
 `ram_style`, `async_reg`).
 
+Every attribute this ADR defines is prefixed `veriparse_`, and
+`fsm_encoding` is exactly why: Vivado and Quartus both already define that
+name with their own values. An unprefixed `fsm_encoding` here would either
+be reinterpreted by them or silently pick up a value meant for them. The
+prefix is on the *hints* as well as on the §2 marker, because a convention
+that namespaces only some of them leaves a reader unable to tell which are
+ours.
+
+The `fsm_` infix is deliberately **not** repeated in the hints: the marker
+already says which transformation is being asked for, and §13 expects
+others. `veriparse_reset` will mean something to a pipeline lowering;
+`veriparse_fsm_reset` would not.
+
+§2's `veriparse_fsm` is a different kind of thing from what follows: it is
+the **opt-in**, deciding whether a process is compiled at all. The rules
+below govern the **hints** — attributes that steer a compilation the author
+has already asked for.
+
 The rule that keeps the note's intent intact is therefore not "no
 attributes" but two:
 
@@ -152,8 +304,9 @@ attributes" but two:
 > keeps paying for; an attribute turns it into a decision the author took.
 
 The second rule is why the reset signal is hinted rather than divined
-(§5), why the unroll-or-count choice on a bounded loop is the author's
-(§7.2), and why state names are written rather than generated (§10.1). It
+(§5), why an author who wants a counter machine writes the counter rather
+than the pass inferring one (§7.2, §7.3), and why state names are written
+rather than generated (§10.1). It
 also sets the bar for anything added later: a new heuristic ships as an
 attribute first, and only becomes a default once there is evidence the
 default is right.
@@ -166,13 +319,15 @@ non-empty), so nothing is lost on output.
 
 | Attribute | Effect | Default when absent |
 |---|---|---|
-| `fsm_reset = "<port>"` | names the reset input | inferred (§5) |
-| `fsm_reset_level = 0\|1` | active level | `1`, or `0` when the name ends in `_n` |
-| `fsm_reset_kind = "sync"\|"async"` | reset flavour of the generated `always_ff` | `"sync"` |
-| `fsm_encoding = "binary"\|"one_hot"\|"gray"` | state encoding | `"binary"` |
-| `fsm_prefix = "<id>"` | prefix for generated declarations | `__fsm` (§10) |
-| `fsm_unroll` on a bounded loop | unroll into consecutive states instead of a counter | counter (§7.2) |
-| `fsm_state = "<name>"` | names the state a segment becomes | ordinal (§10.1) |
+| `veriparse_fsm` (§2, the opt-in, not a hint) | compiles this process | the process is left untouched |
+| `veriparse_reset = "<port>"` | names the reset input | inferred (§5) |
+| `veriparse_reset_level = 0\|1` | active level | `1`, or `0` when the name ends in `_n` |
+| `veriparse_reset_kind = "sync"\|"async"` | reset flavour of the generated `always_ff` | `"sync"` |
+| `veriparse_encoding = "binary"\|"one_hot"\|"gray"` | state encoding | `"binary"` |
+| `veriparse_prefix = "<id>"` | prefix for generated declarations | `__fsm` (§10) |
+
+The three reset hints govern the whole reset branch, which under §5 is the
+init segment plus the state register.
 
 ## 4. Decision 3 — the state model: cut at every `EventStatement`
 
@@ -194,8 +349,8 @@ thing.
   taken effect in the current state; execution resumes in the successor
   segment after the edge.* It emits no logic — it is consumed as the
   transition.
-- The statements **before the first** cut point form the **init segment**
-  (§5), not an ordinary state.
+- The statements **before the first** cut point form the **init segment**,
+  which is not an ordinary state: §5 turns it into the reset branch.
 - `IfStatement`/`CaseStatement` fork the graph; loops close a back-edge
   (§7); `break`/`continue` are edges (§8). A branch whose arms contain no
   cut point stays a plain conditional inside one segment's action and
@@ -203,84 +358,449 @@ thing.
 - Branches of unequal length are **not padded**: each takes the cycles it
   needs and the last state of each arm transitions to the same merge state.
 
+**The dispatch idiom.** A `case` whose selector is a register the process
+itself steers is legal input and needs no rule beyond the ones above:
+
+```systemverilog
+forever begin
+  case (state)                    // dispatch on the ENTRY value (§6.1)
+    IDLE: begin … state <= S0; end
+    S0:   begin …                 // arms may hold cut points and
+            @(posedge clk);       // take several cycles
+            … state <= IDLE;
+          end
+  endcase
+  @(posedge clk);
+end
+```
+
+The dispatch reads the selector's entry value (§6.1 rule 4), §6's commit
+rule governs its updates — the new value is seen at the *next* dispatch,
+after a wait, never in the same cycle — and §6/§9 force a reset value into
+the preamble, since the first lap reads the selector before writing it. It
+is how a **computed jump** is written in structured control: the loop
+closes on a single dispatch point and the branch on data reaches any arm,
+which is the shape a command processor with multi-cycle handlers wants.
+
+Two consequences are worth knowing before reaching for it. With no cut
+point inside the arms and one closing wait, the whole lap is one segment,
+the `case` is if-converted (§C.3), and the output is exactly the classic
+`always_ff` FSM the author could have written directly — faithful, and
+nothing gained. With cut points inside the arms, the generated machine
+carries **two** state registers — `__fsm_state` for the position inside
+the arms, the author's selector for the next dispatch — overlapping
+without being redundant: correct by construction, not minimal. v1 leaves
+it that way; §15 records the v2 flattening that fuses them.
+
 ## 5. Decision 4 — reset: the init segment, with the signal inferred or hinted
 
-The init segment (§4) executes once at time zero in simulation — exactly
-when reset is asserted in a real system — and becomes the **reset branch**
-of the generated `always_ff`, with the state register reset to the first
-segment. One piece of source means the right thing in both worlds.
+The init segment (§4) executes at time zero in simulation — exactly when
+reset is asserted in a real system — and supplies the **reset branch** of
+the generated `always_ff`, with the state register reset to the first
+segment's state.
 
-This convention is not invented here. A SystemC `SC_CTHREAD` — a thread
-suspended by a clock, carrying `wait()` calls that span cycles, and
-synthesised into an FSM by commercial HLS — is written with exactly this
-shape: a **reset preamble** ahead of the first `wait()`. Two designs
-arriving independently at the same convention is the strongest argument
-available for it.
+**That works because an `initial` preamble runs exactly once** (§9.2.1), so
+the reset values are one piece of source with one job. An `always` preamble
+runs at time zero *and again on every wrap-around*, so it cannot also be a
+set of reset values — §15.1 carries the argument and the measurement.
+
+The convention is not invented here — SystemC's `SC_CTHREAD` reaches the
+same reset-preamble shape from C++, which §14 records as the strongest
+argument available for it.
 
 The reset *signal* cannot be derived from behavioural source, so:
 
-1. if `fsm_reset` is present (§3), it names the port;
+1. if `veriparse_reset` is present (§3), it names the port;
 2. otherwise the pass looks for exactly one single-bit module **input**
    whose name matches `rst_n`, `resetn`, `aresetn`, `rst`, `reset`
    (case-insensitive), taking its active level from the `_n` suffix;
 3. if there is no match, or more than one, that is an **error** naming the
-   candidates and pointing at `fsm_reset`.
+   candidates and pointing at `veriparse_reset`.
 
 Rule (2) keeps the note's "no pragma required" property true for ordinary
 designs — both RS232 examples in §11 declare `rst_n` and need no attribute
 — while (3) refuses to guess. An unresettable state register is a
 synthesis defect, so silence is not an option in either direction.
 
-## 6. Decision 5 — storage from liveness; `=` in the source is not a mistake
+### 5.1 `initial` — the preamble is the reset branch
 
-**Rule.** A variable assigned in one segment and read in a segment
-reachable from it *across at least one cut point* is live across an edge
-and becomes a **register**. A variable whose every definition-to-use chain
-stays within one segment is a combinational temporary local to that
-segment's action. Loop counters and `repeat` countdowns (§7) are registers
-by construction.
+It runs once, so it is the reset action and nothing else: the generated
+`always_ff` opens with `if (!rst_n)` carrying the preamble's assignments
+verbatim, the state register going to the first segment's state. Every
+register the preamble writes gets a reset value; no state is spent on it
+and the machine is doing useful work on the first cycle out of reset.
+Appendix A relies on exactly that, and §A.3's "eleven states, not twelve"
+is this rule paying for itself.
 
-The imperative style writes `=` throughout — it is the natural form inside
-`initial`, and both RS232 examples use it exclusively. That is **not** a
-defect to warn about. The pass translates:
+It is well-defined for free. A preamble that *reads* a variable it has not
+itself assigned would be reading an uninitialised value at time zero, and
+§6 already makes that an error — so an `initial` reset branch cannot
+accidentally depend on state that reset does not establish.
 
-- assignments to **module-level signals** and to **cross-state registers**
-  become nonblocking (`<=`) in the generated `always_ff`, which is what
-  gives the FSM the same cycle-by-cycle behaviour the source had under
-  §10.4.2;
-- assignments to **pure intra-state temporaries** stay blocking inside
-  their state's action, where §10.4.1 straight-line semantics are exactly
-  what is wanted.
+The preamble needs a cut point after it before the loop writes the same
+registers again — §6's commit rule, nothing more — but **where that cut point
+sits is free**: before the `forever`, or as the first statement of its body.
+The two are the same thing once the loop closes, and neither spelling is
+preferred. What is *not* free is the boundary between reset values and the
+rest, and it is easy to write past by accident:
 
-A source that already uses `<=` is unaffected: its targets are live across
-a cut by construction and land in the same place.
+```systemverilog
+initial begin
+  p;                     // before the first cut point → the reset branch
+  @(posedge clk);
+  q;                     // after it, still before the forever → NOT reset
+  forever begin … end
+end
+```
 
-A variable **read before assigned** on the first path out of reset takes
-its value from the init segment. If it has none, that is an error, not an
-`x`: the behavioural source would propagate `x` while the synthesized
-register would come up at whatever reset gives it, and the two would
-disagree exactly where debugging is hardest.
+`q` does run exactly once — measured, not assumed — but as the action of the
+state the first cut point enters, not as a reset value: it lands one cycle
+after reset instead of during it, and it costs a state, because that state
+differs from the one the lap re-enters (whose action is the `forever` body's
+head alone). Everything meant as a reset value goes **above** the first
+wait. What sits between the two is a one-time startup step — there may be
+several, each costing one state — which is a different thing and
+occasionally the thing wanted.
+
+```systemverilog
+(* veriparse_fsm *)                            // rst_n inferred, no hint needed
+initial begin
+  tick <= 1'b0;  n <= 8'd0;                    // preamble — runs ONCE
+  @(posedge clk);
+  forever begin
+    begin : COUNT  n <= n + 8'd1; tick <= 1'b0; @(posedge clk); end
+    begin : TICK   tick <= 1'b1;                @(posedge clk); end
+  end
+end
+```
+
+```systemverilog
+localparam [0:0] COUNT = 1'd0, TICK = 1'd1;
+logic [0:0] __fsm_state;
+
+always_ff @(posedge clk)
+  if (!rst_n) begin
+    tick        <= 1'b0;                       // the preamble, verbatim:
+    n           <= 8'd0;                       // BOTH registers get a reset
+    __fsm_state <= COUNT;
+  end
+  else case (__fsm_state)
+    COUNT: begin n <= n + 8'd1; tick <= 1'b0; __fsm_state <= TICK;  end
+    TICK:  begin tick <= 1'b1;                __fsm_state <= COUNT; end
+  endcase
+```
+
+Two states, no cycle spent on the preamble, and the `forever` back-edge
+(§7.3) is what makes it perpetual — the wrap segment re-enters `COUNT`,
+whose action it already is, so it costs nothing. Run against its source
+under Verilator with reset released before the first edge, the FSM matches
+**sample for sample, at zero offset**: the reset branch puts every register
+where time zero left the reference. A longer hold changes only the §11
+alignment offset — the reference keeps running while the FSM is held, so it
+leads by exactly the hold.
+
+### 5.2 Why the reset cannot be written in the source at all
+
+**Nothing outside a suspended multi-wait process can re-enter it.** That one
+property is why the reset values have to come from the preamble, why the
+reference is unresettable (§11), and why the two familiar spellings below
+both fail. It is stated once here; everything else points at it.
+
+*As an `if` at the top* — `if (!rst_n) … else …` opening the process. A
+multi-wait process is entered **once** and runs forever, suspending at each
+wait, so the `if` executes **once**, at time zero, not every cycle. To be
+tested each cycle it would have to enclose every wait, and its `else` would
+then have to resume at whichever point the process had reached, which
+program order does not provide.
+
+*As a sensitivity list* — `always @(posedge clk or negedge rst_n) begin …
+@(posedge clk); … end` (§2 makes it an error). `always @(E) S` is
+`always begin @(E); S; end`: the senslist is a wait *statement at the top of
+the loop*, not a guard on the body, so while the body is suspended on an
+internal wait nothing is waiting on `E` and the edge is lost. Measured
+rather than reasoned — a reset pulse delivered mid-body moves neither
+`always @(negedge rst_n)` nor `always @(posedge clk or negedge rst_n)`;
+both run the body to its end regardless. The second is worse than useless:
+it *enters* on whichever event comes first, normally the clock, then
+re-enters and replays its "reset" every time the body completes. Verilog
+has no preemption of a running process except `disable`, which §9 forbids.
+
+What the familiar shape actually is, is a **single-cycle** process:
+`always_ff @(posedge clk or negedge rst_n) if (!rst_n) … else …` re-enters
+from the top every cycle precisely because it has no internal waits. §2
+leaves it untouched — it is this pass's *output* form, not its input.
+
+**Sync versus async** is likewise not observable in the behavioural source
+— seeing an asynchronous reset would require it in the sensitivity of
+*every* wait. It is a property of the generated flop, which is why it is
+`veriparse_reset_kind` and not something the source is asked to express.
+
+### 5.3 Chip enable — in the source, never an attribute
+
+A clock enable qualifies every transition: while it is low the machine
+holds. Nothing above expresses that, and the gap is real — most real
+designs have one.
+
+**It cannot be an attribute, and the reason generalises.** The reset hints
+work because they annotate a *signal*, never a value: what the registers
+come up holding is decided by the source's own init segment (§5.1), so the
+attribute changes nothing the behavioural source does. An enable changes **when the machine
+advances**, which is observable behaviour. Annotate it, and the reference
+keeps advancing while `en` is low where the generated FSM holds — the
+differential cosim of §11 fails, and teaching the reference about the
+attribute would break the hard constraint that the source runs as-is.
+
+So it is written, using the notation the standard already provides
+(§9.4.2.3, conditional event control):
+
+```systemverilog
+(* veriparse_fsm *)
+initial forever begin
+  @(posedge clk iff en);
+  ...
+  @(posedge clk iff en);
+  ...
+end
+```
+
+`@(posedge clk iff en)` means *wait for a posedge of clk at which `en`
+holds*, and maps onto `always_ff @(posedge clk) if (en)` directly. It
+simulates: Verilator 5.050 accepts it, so the behavioural reference honours
+the enable too and the cosim exercises it.
+
+**The reset branch goes outside the enable, not inside it.** The mapping
+above says where the `case` goes; taken as the whole shape of the process it
+would nest §5's synchronous reset under `if (en)` and give a state register
+that cannot be reset while the enable is low — a machine that comes out of
+reset only if something else is already running it. So the emission is
+
+```systemverilog
+always_ff @(posedge clk)
+  if (!rst_n)   <reset action>       // never gated
+  else if (en)  case (state) … endcase
+```
+
+and for `veriparse_reset_kind = "async"` the question does not arise: the
+reset is in the sensitivity list and already outside everything.
+
+**The cosim cannot arbitrate this one, and it is worth saying so where the
+rule is stated.** Both nestings were built and compared against the
+reference: the one with the reset placed *inside* the enable reports
+**fewer** divergences, not more. Not because it is better hardware — because
+the reference does not read the reset signal at all (§11), so a machine that
+resets less agrees with it more readily. The measurement answers a different
+question from the one asked.
+
+**Synthesis answers the right one.** Through Yosys, an 8-bit register with a
+synchronous reset and an enable:
+
+| | `if (!rst_n) … else if (en) …` | `if (en) begin if (!rst_n) … end` |
+|---|---|---|
+| generic cell | `$sdffe` | `$sdffce` |
+| `synth_xilinx` | 8 × `FDRE`, 8 × `INV` | 8 × `FDRE`, **8 × `LUT2`** |
+| `synth_ice40` | 8 × `SB_DFFESR` | 8 × `SB_DFFESR`, **1 × `SB_LUT4`** |
+
+The flop primitives on both targets carry a synchronous reset that is *not*
+gated by the clock enable, so "reset only while enabled" has to be built out
+of fabric — a LUT per bit on Xilinx. Reset outside the enable is what the
+primitive already does, and costs nothing beyond the inverter on `rst_n`.
+That is the reason the rule is normative rather than stylistic, and phase 3
+pins the emitted shape with a structural golden.
+
+Putting the two together — the §5.1 machine with `iff en` on each of its
+two waits — the emission becomes:
+
+```systemverilog
+localparam [0:0] COUNT = 1'd0, TICK = 1'd1;
+logic [0:0] __fsm_state;
+
+always_ff @(posedge clk)
+  if (!rst_n) begin                       // outside the enable: the machine
+    tick        <= 1'b0;                  // leaves reset whether or not
+    n           <= 8'd0;                  // anything is running it
+    __fsm_state <= COUNT;
+  end
+  else if (en) case (__fsm_state)         // one gate, every transition
+    COUNT: begin n <= n + 8'd1; tick <= 1'b0; __fsm_state <= TICK;  end
+    TICK:  begin tick <= 1'b1;                __fsm_state <= COUNT; end
+  endcase
+```
+
+The enable costs exactly one `else if`: it qualifies the `case` and nothing
+else, because §2's uniformity means there is one condition to apply rather
+than one per state. Run against its source with `en` toggling irregularly
+over 300 cycles, the two agree on every cycle — the reference honours the
+enable through `iff`, so this half of the emission *is* differentially
+checkable, unlike the reset placement above.
+
+It needs **no new concept**: §2 already requires every wait in a process to
+carry the same edge on the same signal. The rule extends to *and the same
+`iff` condition, if any*, and the enable falls out of the uniformity that
+is already there.
+
+**Disagreement is an error** — waits some of which carry a condition and
+some of which do not, or which carry different ones. Two conditions are the
+same when their expressions are structurally equal after the passes that
+ran before this one, so `en` and `en` agree while `en` and `en == 1'b1` do
+not; that is a coarse test and deliberately so, since the alternative is
+proving expressions equivalent.
+
+**The two disagreements are one rule but not one mistake, and the
+diagnostic must tell them apart.** *Some waits qualified and some bare* is
+overwhelmingly an oversight — the author added `iff en` while editing and
+missed one — and it is the dangerous one, because the obvious repair a tool
+might make silently is to gate the missing wait too, which would change the
+machine. So the message names the odd wait out by line and lists the ones
+that disagree with it, rather than reporting a generic mismatch: *"`@(posedge
+clk)` at line 41 carries no `iff`, while the waits at lines 33, 37 and 45
+carry `iff en`"*. *Different conditions* is likelier to be deliberate, and
+its message points at §15's per-state enable rather than at a typo.
+
+Neither is ever repaired by guessing. An enable is observable behaviour
+(above), so inserting or dropping one changes what the source means, and
+§3 rule 1 leaves no attribute with which to say "I meant it".
+
+Worth being accurate about *why* it is refused, though: a machine whose
+states are gated differently is not nonsense. It is a state-dependent clock
+enable, and it is occasionally what someone wants — an idle state that
+samples regardless of `en`, say. It is refused because it is a **different
+feature** with its own per-state enable logic, not because it has no
+meaning, and §15 records it as such rather than as an impossibility.
+
+**Parser prerequisite**: veriparse does not currently parse `iff` — a
+conditional field on **`Sens`**, not on `Senslist`. Annex A.6.5 binds the
+qualifier to each event term, not to the list:
+
+```
+event_expression ::= [ edge_identifier ] expression [ iff expression ]
+                   | event_expression or event_expression | …
+```
+
+and §9.2.2.4's own example is `always_ff @(posedge clock iff reset == 0 or
+posedge reset)`, where one term carries a condition and the other does not.
+A field on `Senslist` could not represent that: it would either fail to
+parse or hoist one term's condition onto every term, silently changing the
+sensitivity. Putting it on `Sens` costs nothing here — §2 requires exactly
+one `Sens` per wait anyway — and is the shape that does not have to be
+redone the first time a multi-term `iff` appears. It joins the §7.2
+`LoopUnrolling` guard and the §10.1 `ScopeElevator` guard in phase 1.
+
+## 6. Decision 5 — the author says which is which: `<=` is a register, `=` is combinational
+
+**Rule.** The two assignment forms mean in the source exactly what they mean
+in the RTL this pass emits, and the author picks:
+
+- **`x <= v` is a register.** The value is committed at the next edge, so
+  `x` survives the cycle and becomes a flop in the generated `always_ff`.
+- **`x = v` is combinational.** It names a value *within* one cycle, and it
+  must not outlive it: reads of `x` see the new value immediately (§10.4.1),
+  which is what makes the imperative style read in program order.
+
+An earlier draft inferred this instead — every target classified by liveness,
+`=` accepted throughout and silently promoted to `<=` wherever a chain
+crossed a cut point. That is a guess about intent where the language already
+has a notation for it, and §3 rule 2 says a guess becomes a question. The
+author writes what they mean, and the pass **checks** rather than divines.
+
+**And the check is scoping, not liveness**, which is what makes the rule
+cheap to state and impossible to get subtly wrong: an `=` target must be
+**declared in a scope that contains no cut point**. Then every read of it is
+in the same segment as every write by construction, it cannot outlive the
+cycle, and whether the declaration is static or automatic stops mattering.
+SystemVerilog gives the notation without ceremony — §9.3.1, *"an unnamed
+block creates a new hierarchy scope only if it directly contains a block item
+declaration"*, and Annex A makes the label optional:
+
+```systemverilog
+@(posedge clk);
+begin
+  logic [8:0] sum;
+  sum = a + b;              // combinational, and it dies at this `end`
+  q  <= sum[7:0];           // registered, and it crosses the next edge
+end
+```
+
+An `=` to anything else — a module-level signal, or a variable whose
+declaring scope spans a cut point — is an **error** naming the target and
+pointing at `<=`. Nothing is silently promoted, and a reader can tell a
+register from a wire by looking at the declaration rather than by running
+the analysis in their head.
+
+**There is no exception, and the `for` step is not one.** In a clocked
+system an `=` that crosses an edge has no meaning to give it, so the rule is
+absolute for the author's variables. A `for` index is not one of those: it
+is loop control the construct owns, and unrolling consumes it — each
+replicated iteration carries the index as a constant (§7.2), so the blocking
+step never reaches the FSM at all. The `repeat` count is the same kind of
+thing with no name, and the countdown implementing it is the pass's own
+**induced variable** (§7.2, §C.3): storage by construction, outside the
+liveness question by definition.
+
+An author who wants a live counter — one register, not one state per
+iteration — writes it themselves (§7.3 shows the idiom), and then it is an
+ordinary variable taking `<=` like any other. What they may not do is write
+`=` to something that has to survive the edge — there is nothing for the
+pass to build out of that.
+
+**Every `<=` must be committed**, and that is the rule the discipline needs
+to be worth anything. A nonblocking assignment schedules a value for the
+next edge; if a second `<=` to the same register runs before that edge, the
+first never takes effect — it was written and never committed. So **on any
+one path through a segment there is at most one `<=` per register**, which
+in §C.1's terms is simply that `s_p` holds one update per target rather
+than the last of several. Two of them on one path is an **error**.
+
+The rule is not about where the wait sits. A `forever` body may open with
+its `@(posedge clk)` or close with one — the loop makes those the same
+thing — and neither spelling is preferred. What matters is only that a cut
+point separates any two writes to the same register.
+
+**The idiom is to guard, not to separate.** A write that belongs to only
+one path goes under the condition that selects that path, so each path
+commits once; inserting a wait between two unconditional writes also obeys
+the rule but says something different about the machine, and usually not
+what was meant. Appendix A shows the guarded form.
+
+This is stricter than the standard, which defines the double write (§10.4.2:
+the last in a time step wins) rather than forbidding it. The reason for
+being stricter is that the definition is not what simulators deliver: an
+earlier RS232 transmitter that closed a frame with an unconditional
+`busy <= 1'b0` and opened the next with `busy <= 1'b1` in the same cycle was
+measured to give opposite answers on Verilator and on Icarus/ModelSim — the
+same file, the same testbench. A source whose meaning depends on that is not
+a specification, which is what §1 asks it to be.
+
+A register of the process **read before assigned** on the first path out of
+reset takes its value from the init segment — the rule is about storage the
+process itself writes; inputs and signals driven by other processes are
+simply reads. If it has none, the behavioural source
+would propagate `x` while the synthesized register comes up at whatever
+reset gives it, and the two disagree exactly where debugging is hardest —
+so the pass says so, and loudly: the init segment is the reset branch
+(§5.1), a value it cannot supply is unrecoverable, and there is no later
+lap to make the read meaningful. It is an **error**.
 
 ### 6.1 Within-segment semantics — translation is substitution, not rewriting
 
-"Translate `=` into `<=`" is the right slogan and the wrong algorithm.
-Rewriting each assignment in place inverts the source's meaning, because
-§10.4.1 and §10.4.2 differ precisely on what a *later statement in the
-same segment* sees:
+§6 makes the author name each form, so the pass never has to rewrite one
+into the other. What it must still do is **substitute**, because a blocking
+write and a nonblocking one disagree on what a *later statement in the same
+segment* sees (§10.4.1 vs §10.4.2), and the emitted RTL has only the
+nonblocking form to say it with.
 
-```systemverilog
-acc = acc + 1;
-q   = acc;        // blocking: q takes the NEW acc
-```
-
-emitted naively as `acc <= acc + 1; q <= acc;` gives `q` the **old** `acc`
-— off by one cycle, and silent.
+After §6 and §7.2 exactly one kind of blocking write reaches a segment: an
+`=` to a scope-local temporary. It never survives the cycle, so it is
+substituted into its uses and vanishes — no flip-flop, only the value it
+named. (An earlier draft also had to substitute the `for` index forward — a
+register stepped blocking by the construct, off by one when read naively.
+§7.2's replication removed the case: each unrolled iteration reads its
+index as a constant.)
 
 **Rule.** A segment is straight-line code executed in one cycle, so the
 pass evaluates it symbolically and emits, per target, a single nonblocking
 assignment carrying that target's **final value at the end of the
-segment**. The example above yields `acc <= acc + 1; q <= acc + 1;`. Two
-environments are threaded through the segment:
+segment**. Segment-local `=` targets vanish entirely into the values they
+name. Two environments are threaded through the segment:
 
 - the **pre-edge** environment — the value every register held when the
   state was entered. Reads of a target that has only been written by `<=`
@@ -292,16 +812,20 @@ environments are threaded through the segment:
 Four consequences worth stating, because each is a place a
 straightforward implementation goes wrong:
 
-1. **Repeated assignment.** Several `=` to one target collapse to the last
-   one *after* substitution. Several `<=` to one target also keep the
-   last, per the §10.4.2 ordering within a time step.
-2. **Partial targets.** `data[i] = rx;` updates one slice and leaves the
-   rest holding. The environments therefore track **per-slice** values,
-   not whole variables; a whole-variable model would silently drop the
-   surviving bits. RS232 RX depends on this.
-3. **Mixing the two forms on one target inside a process is an error.**
-   `x = …` and `x <= …` reaching the same variable is a race in the
-   source, so there is no meaning to preserve — reject rather than pick.
+1. **Repeated assignment.** Several `=` to one local collapse to the last
+   after substitution — that is the whole point of a combinational name.
+   Several `<=` to one register on one path do **not** collapse: §6 makes
+   them an error, because the first was never committed. Branches are not
+   repetition — `if (c) x <= a; else x <= b;` is one write per path.
+2. **Partial targets.** `bits[i] <= rx;` updates one slice and leaves the
+   rest holding, and a scope-local `=` can do the same. The environments
+   and `s_p` therefore track **per-slice** values, not whole variables; a
+   whole-variable model would silently drop the surviving bits. RS232 RX
+   depends on this.
+3. **Mixing the two forms on one target is an error**, and §6 makes it one
+   twice over: `x = …` and `x <= …` reaching the same variable is a race in
+   the source *and* a contradiction about whether `x` is a wire or a flop.
+   Reject rather than pick.
 4. **Sampling point.** Signals a segment *reads* resolve to the values
    sampled at the edge that entered the state, which is precisely
    `always_ff` RHS sampling. This is what makes the two descriptions agree
@@ -310,10 +834,16 @@ straightforward implementation goes wrong:
    process is already a race in the behavioural source, and the pass does
    not invent a resolution for it.
 
-The rule also explains why §6's classification is safe: a target whose
+The rule also explains why §6's discipline is safe: a target whose
 final value never leaves the segment was only ever a name for a
 subexpression, so substitution removes it entirely and no flip-flop is
 inferred.
+
+This is not a local invention. It is how the FSMD literature characterises
+a path: by the condition under which it is taken and by what it leaves in
+each variable, both read against the values held on entry — which is the
+rule above, in other words. **Appendix C** gives it its notation and builds
+the algorithm and the data structures on it.
 
 ## 7. Decision 6 — loops
 
@@ -321,35 +851,76 @@ inferred.
 
 Untouched. `LoopUnrolling` and the folding passes already own them.
 
-### 7.2 Bounded loops *containing* a cut point — counter, not unroll
+### 7.2 Bounded loops *containing* a cut point — `repeat` counts, `for` unrolls
 
 `repeat (N) @(posedge clk);` with `N` constant becomes **one state with a
-countdown register**, exiting at zero. A `for` with constant bounds whose
-body contains a cut point becomes a **group of states plus an
-iteration-counter register**, with a loop edge until the bound is reached.
+countdown register**, exiting at zero. The countdown is a pure
+implementation choice, not a guess: a `repeat` body has no index, so its
+`N` iterations are indistinguishable, and `N` copies of the same state —
+what an unguarded `LoopUnrolling` would make of the RS232 example's
+`repeat (BAUD_DIV)` at `BAUD_DIV = 100`, one hundred of them — describe
+the same machine at `N` times the cost. Nothing observable hangs on it.
 
-Neither is unrolled. This **corrects** the placement sketch in
-`docs/imperative-fsm-design.md`, which put the pass after `LoopUnrolling`
-while also specifying counters: `LoopUnrolling` handles `RepeatStatement`
-and `ForStatement` today, so on the note's own RS232 TX example
-`repeat (BAUD_DIV) @(posedge clk)` with `BAUD_DIV = 100` it would emit
-**100 states** instead of one state and a counter.
+A bounded `for` is different, and this **reverses** an earlier draft of
+this ADR, which compiled it to one state plus an induced index register.
+The iterations of a `for` are *distinguishable* — the index names them — so
+counter-versus-unroll changes the machine's structure, and the counter form
+conjures a register the author never declared: the silent guess §3 rule 2
+forbids, made about the one thing §6 says the author names. A bounded `for`
+containing a cut point therefore **unrolls into consecutive states** —
+which is the only meaning `for` has anywhere else in veriparse (§7.1), and
+a wait in the body is no reason for the same keyword to describe a
+different machine. Appendix A's `DATA` loop yields `DATA_0 … DATA_7`, one
+counter state per copy, each reading its bit at a constant index. An author
+who wants the one-state machine writes its register — §7.3 shows the
+idiom — and nothing is lost but the guess.
+
+The countdown holds `N-1 … 0`, so its width is `$clog2(N)` bits — except at
+`N = 1`, where `$clog2(1)` is 0 and `logic [$clog2(N)-1:0]` is the illegal
+range `[-1:0]`. `repeat (1) @(posedge clk)` needs no countdown at all: it is
+a single wait, one state, one edge out. **So `N = 1` induces no counter**,
+and the width rule applies only from `N = 2` up. Appendix A.2's
+`logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;` is the form for a `BAUD_DIV` of
+two or more, not a template to expand blindly.
 
 **Prerequisite change, with its own commit and test:** `LoopUnrolling`
-must skip any loop whose body contains an `EventStatement`, leaving it
-intact for this pass. Loops without cut points keep unrolling exactly as
-today. That single guard makes the ordering in §11 safe.
+must not unroll a **`RepeatStatement`** whose body contains an
+`EventStatement`, leaving it intact for this pass. Three things about that
+guard are easy to get wrong and are therefore normative here:
 
-**Which of the two the author gets is theirs to choose** (§3 rule 2). A
-counter is right for `repeat (BAUD_DIV)`; four states in a row may well
-beat one state plus an index register for `for (i = 0; i < 4; i++)`, and
-nothing in the source says which. `fsm_unroll` on the loop selects
-unrolling; absent it, the counter is the default because it is the choice
-that cannot explode.
+- **It covers `repeat` only — a bounded `for` keeps unrolling**, cut point
+  in the body or not, because that unrolling is the mechanism the `for`
+  rule above rides on: `LoopUnrolling` already substitutes the index
+  constant into every replicated copy and uniquifies the copy's
+  declarations and scopes, so the body reaching the CFG builder holds no
+  bounded `for` at all — eight copies with `data[3]`-style constant reads,
+  each with its still-rolled `repeat` inside — and the pass needs no `for`
+  handling of its own.
+- **It must still recurse into the body.** `LoopUnrolling::unroll` returns
+  from `install_unrolled` on a `For`/`Repeat` node, so a guard that simply
+  returns without unrolling never visits the body — and an unrollable loop
+  *nested inside* a guarded `repeat` would stay rolled, in exactly the
+  shape §7.1 and §C.4 step 1 assume is already gone. The guard skips the
+  unrolling of *this* loop and keeps descending.
+- **It is unconditional, not restricted to marked processes**, and that is
+  a deliberate change to a shared pass. Restricting it would mean teaching
+  `LoopUnrolling` about `veriparse_fsm`, which is the coupling §13 exists to
+  avoid. The blast radius is small: unrolling `repeat (N) @(posedge clk)`
+  produces `N` copies of a timing control inside a process, which no
+  downstream tool can synthesize either way, so nothing that was working
+  stops working. The test says so rather than the reader assuming it.
+
+Loops without cut points keep unrolling exactly as today. That guard makes
+the pipeline ordering of §10.3 safe.
+
+A `for` whose bound does **not** fold to a constant can be neither
+replicated nor given an invented index register, so it is an **error**
+(§9), and the message carries the rewrite: §7.3's explicit-counter
+`while`.
 
 ### 7.3 Data-dependent loops containing a cut point
 
-`while (cond) …`, `forever …`, and a `for` whose bound does not fold become
+`while (cond) …` and `forever …` become
 a real **back-edge**: the segment ending at the loop's cut point
 re-evaluates `cond` and either re-enters the loop's first segment or
 proceeds to its successor. The canonical form
@@ -365,69 +936,277 @@ A loop containing **no** cut point and no static exit inside a schedulable
 process is rejected: §9.2.2.1 names it a simulation deadlock, and it has no
 hardware meaning either.
 
+**The explicit-counter idiom.** The one-state machine §7.2 refuses to infer
+is written, not lost — the author declares the register, and the loop
+becomes data-dependent, which is exactly this section:
+
+```systemverilog
+logic [3:0] i;                              // 4 bits: the exit value 8 must
+…                                           // be representable, or `i < 8`
+initial begin                               // never fails
+  tx <= 1'b1; busy <= 1'b0; i <= 4'd0;      // reset value: §6 requires one
+  @(posedge clk);
+  forever begin
+    …
+    begin : DATA
+      while (i < 8) begin
+        tx <= data[i[2:0]];                 // entry value — no substitution
+        i  <= i + 4'd1;                     // committed once per path (§6)
+        repeat (BAUD_DIV) @(posedge clk);
+      end
+    end
+    begin : STOP
+      tx <= 1'b1; i <= 4'd0;                // re-arm HERE, not only in reset
+      repeat (BAUD_DIV) @(posedge clk);
+    end
+  end
+end
+```
+
+Two details are load-bearing, and both are decisions the tool would
+otherwise have taken silently, which is why §3 rule 2 wants them in the
+source. The register is **4 bits, not 3**: a 3-bit `i` wraps and the exit
+test never fails. And the re-arm sits **in `STOP`, not only in the
+preamble**: reset it once and the second, back-to-back frame enters `DATA`
+with `i == 8` and skips it entirely — precisely the frame-chaining case
+§A.3 records as the one that catches translation bugs.
+
 ## 8. Decision 7 — `break` and `continue` are CFG edges
 
 `continue` transitions to the first state of the innermost enclosing loop;
 `break` transitions to the first state *after* it. Both are in scope for
 v1 — the note's RS232 RX example depends on `continue`, and once states are
 explicit a jump is just an edge, needing none of the flag lowering
-ADR-0005 §3.2.1 deferred. A `break`/`continue` in a loop containing **no**
+ADR-0005 §3.2.1 deferred. The loops in question are the ones the CFG still
+sees — `while`, `forever`, a guarded `repeat`; in a bounded `for` the jumps
+are `LoopUnrolling`'s business, lowered across the unrolled sequence as
+today (ADR-0005 §3.2). A `break`/`continue` in a loop containing **no**
 cut point is not this pass's business and is left to the existing passes.
+
+**That delegation can fail, and §7.1 and §7.2 assume it did not.**
+`LoopUnrolling` refuses the mixed and nested jump forms ADR-0005 §3.2.1
+deferred — it warns and leaves the loop intact rather than unrolling it
+wrongly. So a loop it refused — with or without a cut point in the body —
+inside a marked process reaches the CFG builder still rolled, in a shape
+§7.1 or §7.2 expected to be gone.
+This pass neither worsens nor repairs that; what it must do is **notice**,
+and say the loop could not be flattened and why, rather than treat a
+surviving loop as a cut-point loop and build a back-edge for it.
 
 ## 9. Errors — rejected loudly, never silently mis-lowered
 
-| Condition | Why | Clause |
+References are marked `IEEE §…` for a clause of IEEE 1800-2017 and `ADR §…`
+for a section of this document; the two numbering schemes overlap and an
+unmarked column has already been misread once.
+
+| Condition | Why | Reference |
 |---|---|---|
-| cut points over different signals, or mixed `POSEDGE`/`NEGEDGE`, in one process | multi-clock scheduling is out of scope; picking one would mis-compile | §9.4.2 |
+| cut points over different signals, mixed `POSEDGE`/`NEGEDGE`, or a level sensitivity (`@(sig)`) in one process | multi-clock scheduling is out of scope, and a level wait is no clock at all; picking one would mis-compile | IEEE §9.4.2 |
+| cut points **some carrying an `iff` and some bare** | almost always an oversight, and not repairable by guessing: adding or dropping an enable changes the machine. Names the odd wait out and the ones it disagrees with (ADR §5.3) | IEEE §9.4.2.3 |
+| cut points carrying **different** `iff` conditions | v1 takes a *uniform* enable, which is what a chip enable is; gating states differently is a separate feature, not a variant of this one (ADR §5.3, §15) | IEEE §9.4.2.3 |
+| a marked `Always` whose body holds an `EventStatement` | `always` is not compiled (ADR §15): with an empty senslist it is a degenerate spelling of `initial forever`, and with a non-empty one it is neither RTL nor compilable, the senslist being a wait at the top of the loop that cannot preempt a suspended body (ADR §5.2). The message carries the rewrite | IEEE §9.2.1, §9.2.2 |
 | `DelayStatement` (`#d`) in a schedulable process | simulation timing with no static hardware meaning | — |
-| `WaitStatement` / level-sensitive control | not an edge; no boundary to cut at | §9.4.3 |
-| `fork`/`join`, `disable` | concurrent or abortive control flow the state model cannot express | §9.3.2 |
-| cut point inside a called `function`/`task` | not visible in the process body; v1 does not inline to find it | §13 |
-| loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | §9.2.2.1 |
-| reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | §5 |
-| variable read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug | §6 |
-| a target written by two schedulable processes, or by one and any other process | §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse | §9.2.2.4 |
+| a system **task** in a marked process (`$display`, `$finish`, `$fatal`, `$monitor`, …) | no hardware meaning; reaching one means the mark landed on testbench code | IEEE §20.2, §20.10 |
+| a system **function** outside the constant/query subset below | same reason, minus the ones every synthesis flow accepts | IEEE §20 |
+| `WaitStatement` / level-sensitive control | not an edge; no boundary to cut at | IEEE §9.4.3 |
+| `fork`/`join` | concurrent control flow the state model cannot express | IEEE §9.3.2 |
+| `disable` | abortive control flow the state model cannot express | IEEE §9.6.2 |
+| cut point inside a called `function`/`task` | not visible in the process body; v1 does not inline to find it | ADR §13 |
+| loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
+| a bounded `for` containing a cut point whose bound does not fold | it can be neither replicated nor given an invented index register (ADR §7.2); the message carries §7.3's explicit-counter rewrite | ADR §7.2, §7.3 |
+| the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
+| reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
+| a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
+| a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse | IEEE §9.2.2.4 |
 | two concurrent statements in one imperative block | outside the sequential model | — |
+
+**System functions are not system tasks, and the row above must not be
+written as if they were.** `$clog2`, `$bits`, `$size`, `$left`/`$right`,
+`$signed`/`$unsigned` (IEEE §20.5–§20.8) are elaboration-time or purely
+combinational, every synthesis flow accepts them, `ExpressionEvaluation`
+already folds three of them, and Appendix A.2's pre-fold listing writes
+`logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;`. Rejecting them would have the
+pass refuse on input a construct its own listings write on output, and §3 rule 1
+leaves no attribute to escape with. They are therefore **accepted**; a
+system function outside that subset is rejected by the second row.
 
 ## 10. Generated form, naming, and pass placement
 
-Output is plain `always_ff` with an explicit state enum and a
-`case (state)`, plus the inferred counter and index registers — accepted by
-every downstream tool. Enumerators carry the source line so a waveform is
+Output is a plain `always_ff` with a `case (state)`, one **`localparam` per
+state**, a vector state register, and the inferred countdown registers —
+accepted by every downstream tool.
+
+**Not a `typedef enum`, and the reason is the pipeline position.** The
+obvious emission is `typedef enum logic [1:0] {…} __fsm_state_t;`, and it is
+wrong here: §10.3 puts this pass after `EnumElaboration`, `EnumInliner` and
+`TypedefInliner` have all run, and nothing re-runs them. A typedef or an
+enum created at that point survives into `ConstantFolding`,
+`VariableFolding`, `DeadcodeElimination` and `ModuleFlattener`, none of
+which handle either — the flattener has no `Typedef` or `Enum` case at all.
+That is precisely the breakage ADR-0009 was written to remove, and
+reintroducing it from the far end of the pipeline would be a silent
+regression on any design carrying a marked process. So the pass emits what
+the pipeline downstream of it already understands:
+
+```systemverilog
+localparam [3:0] __fsm_WAIT_SEND = 4'd0;
+…
+logic [3:0] __fsm_state;
+```
+
+`localparam` is the right carrier rather than a bare literal:
+`LocalparamInliner` runs at the *head* of `ResolveModule`, so a localparam
+introduced here is never inlined away, and the generated RTL stays
+readable. Written without a data type it is also `local_parameter_declaration`
+in IEEE 1364-2005 §A.2.1.1, so the state constants survive a Verilog output
+target unchanged — the state *register* follows whatever net kind the mode
+already gives every other declaration, and the process is emitted as plain
+`always @(posedge clk)` there, `always_ff` being SV-only. The symbolic decode a waveform needs
+comes from the state map (§10.2), which has to be emitted anyway since the
+encoding is not recoverable from the RTL.
+
+Each `localparam` carries the source line of its segment so a waveform is
 readable.
 
-Generated declarations take the `fsm_prefix` (default `__fsm`), settling
+**The output is post-resolution, and the listings show the pre-fold form.**
+§10.3's slot means every pass ahead of it has already run: parameters
+inlined, constants folded — which is precisely what makes `repeat
+(BAUD_DIV)` a constant bound in the first place. The module `verilower`
+writes is therefore **de-parametrized**, like everything the resolution
+pipeline emits: its `BAUD_DIV` is `100` everywhere and the countdown is
+declared `logic [6:0]`. Appendix A.2 keeps the parameter symbolic because a
+listing is for reading; the structural golden pins the folded form.
+
+Generated declarations take the `veriparse_prefix` (default `__fsm`), settling
 the note's open question on collisions: readable in a waveform, safe
-against user identifiers. A collision remaining after prefixing is an
+against user identifiers. A module holding several marked processes gets an
+ordinal in the default — `__fsm0`, `__fsm1`, in source order — because §2
+allows the plural and one shared prefix would make the allowed case collide
+by construction. A collision remaining after prefixing is an
 error, not a silent rename.
 
-### 10.1 Naming the states
+### 10.1 Naming the states — SystemVerilog block labels
 
-A generated name (`__fsm_state_47`) is useless in a waveform, and the pass
-has no way to invent a good one — §3 rule 2 applies, so the author writes
-it. Two candidate spellings, to settle before phase 2:
+A generated name (`__fsm_state_47`) is useless in a waveform and the pass
+cannot invent a good one, so §3 rule 2 applies: the author writes it. The
+notation is the **block label** the language already has (§9.3.4), not an
+attribute — it is legal, simulable, and *names the code* instead of
+annotating it. `Block.scope` already carries it through the parser, so
+there is no grammar work.
 
-- **an attribute** on the segment's first statement, uniform with every
-  other hint here;
-- **a SystemVerilog block label**, `begin : IDLE`, which is already legal,
-  already simulable, and names the code rather than annotating it.
+```systemverilog
+@(posedge clk);
+begin : IDLE
+  ...
+end
+```
 
-The label is the nicer notation and costs no new syntax, but block scope
-and segment boundaries are different things — a labelled block can hold
-several cut points, or none. The likely answer is to accept a label *when
-the block is exactly one segment* and fall back to the attribute
-otherwise; that has to be checked against a real design before it goes in.
+Placing the label **after** the wait is what makes it work: the block then
+delimits the segment instead of overlapping it by accident.
 
-Unnamed states keep an ordinal, so naming is incremental: name the four
-that matter and leave the rest.
+**The rule is about the graph, not about cut points.** A label names the
+states of the sub-CFG it delimits: one state takes the name, several take
+it as a stem with an index. Saying instead "a label names one state when
+it contains no cut point" is tempting and wrong — it rejects the commonest
+shape there is:
+
+```systemverilog
+begin : START
+  tx <= 1'b0;
+  repeat (BAUD_DIV) @(posedge clk);   // a cut point, inside the label
+end
+```
+
+That block is **one** state — the counter state of §7.2, the wait being how
+it exits — and every phase of Appendix A's transmitter is written this way:
+A.1 carries one label per phase, and they are where A.2's `__fsm_WAIT_SEND`,
+`__fsm_START`, `__fsm_STOP` and the `__fsm_DATA_k` family come from. Under the graph rule
+it just works, with no special case: `repeat` and `while` each yield one
+state, so their label names it.
+
+A label over a sub-CFG of **several** states gives them the stem with an
+ordinal:
+
+```systemverilog
+begin : SEND_BIT
+  sda_out <= byte_out[nbit - 4'd1]; repeat (T_LOW)  @(posedge clk);
+  scl     <= 1'b1;                  repeat (T_HIGH) @(posedge clk);
+end
+```
+
+yields `SEND_BIT_0`, `SEND_BIT_1`. Nested labels compose outward-in, and
+that is the way out of the ordinals when they are not good enough: Appendix
+B's bit loop labels the body `BIT` and its two halves `LOW` and `HIGH`, so
+the states come out `BIT_LOW` and `BIT_HIGH` rather than `BIT_0`/`BIT_1` —
+which is what one wants for a protocol phase, and why the composition rule
+earns its place.
+
+Replication (§7.2) needs no rule of its own: Appendix A's `DATA` label
+wraps the eight unrolled copies of its loop body, and the per-copy scopes
+`LoopUnrolling` already uniquifies give the counter states their ordinals —
+`DATA_0 … DATA_7`.
+
+Naming is incremental: an unlabelled segment keeps an ordinal, so the
+states that matter get names and the rest do not.
+
+**The init segment is not a state and cannot be named.** It is the reset
+branch (§5.1), so a label on it would point at nothing. That is the
+fold-away case below with one difference worth a distinct diagnostic: a
+folded state could have existed, whereas this one never could, so the pass
+**warns** and points at §5.1 rather than silently dropping the name.
+
+**Prerequisite change, with its own commit and test: `ScopeElevator` must
+keep the label.** As it stands the naming scheme above cannot work at all,
+and it is worth being exact about why rather than discovering it in phase 8.
+`ScopeElevator` (`lib/src/passes/transformations/scope_elevator.cpp`, the
+`Block` case) splices a named block into its parent whenever that parent is
+a `Block` — it renames the block's declarations to `<scope>__<name>` to keep
+them unique, records the mapping, then calls `pickup_statements` and the
+`Block` node, with its `scope` string, is gone. §10.3 places this pass
+*after* `ScopeElevator`, and every labelled block in this ADR — the `IDLE`
+example above, `START`, `SEND_BIT`, every phase of Appendix A — is nested
+inside its process's outer `begin`/`end`. All of them would be spliced away
+before the CFG is built, so every state would fall back to its ordinal and
+the author would get `__fsm_state_0/1/2…`, the exact waveform this section
+exists to prevent, with no diagnostic saying the labels were dropped.
+
+The guard is narrow and mirrors §7.2's: inside a process marked
+`(* veriparse_fsm *)`, `ScopeElevator` still **renames** a named block's
+declarations exactly as today — that is what keeps two `int i` in two
+segments apart, and this pass needs it — but **skips the splice**, leaving
+the `Block` node and its `scope` in place. Everything else, marked or not,
+elevates as it does today. The block is consumed by this pass along with the
+rest of the process body, so no downstream pass ever sees a surviving named
+block and the invariant `ScopeElevator` exists to establish is unbroken.
+
+**Two things to check in phase 2 rather than assume.** A named block is a
+*scope* (§9.3.4), so declarations inside it are local — which is exactly
+what §6's scoping check reads — and the interaction with the renaming above
+has to be exercised before labels are advertised. And a label whose states all fold
+away leaves a name pointing at nothing; the state map (§10.2) must simply
+not list it, rather than emit an entry with no encoding.
 
 ### 10.2 The state map
 
 The encoding is an implementation choice the source does not contain, so
-it must be emitted, not reverse-engineered from the RTL. `vericomp` writes
+it must be emitted, not reverse-engineered from the RTL. `verilower` writes
 a **JSON state map** beside the output: per process, the state variable's
 name and width, then per state its encoded value, its name, and the source
 line its segment starts at.
+
+**It also records what the reset does, and that is not a convenience.** §1
+rests on the source being the specification, and reset is the one thing the
+source does not state: nothing in the behavioural text names `rst_n`, says
+which registers it clears, or to what. A reviewer would have to re-derive it
+from §5's rule, the construct in use, and an inventory of what the preamble
+writes. So the map carries it — the signal, its active level and kind, and
+the list of registers the reset branch actually writes:
+
+The list is everything the author put **above the first cut point**, plus
+the state register the pass adds implicitly — the author never writes that
+one, and §5.1 is where it comes from. A register the design expected to come
+up reset and that is absent from the list is exactly what this makes
+reviewable.
 
 JSON is the canonical form and nothing else is generated from inside the
 tool. Waveform viewers each want their own file — GTKWave a translate
@@ -451,7 +1230,14 @@ so §7.1 loops are already flat; and **before** the second
 FSM is folded and cleaned by the passes that already own that work, which
 is the note's "before flatten/dead-code keeps the output clean".
 
-Two interactions to **verify in phase 2 rather than assume**:
+The slot is downstream of every pass that normalises declarations, which is
+what forces the `localparam` form of §10 and the `ScopeElevator` guard of
+§10.1 — two bills the position inherits rather than chooses, both due in
+phase 2. Paying them is still cheaper than moving the pass earlier: ahead of
+`ScopeElevator` the body would hold rolled §7.1 loops and generate
+structure, and the CFG would be built over the wrong thing.
+
+Two further interactions to **verify in phase 2 rather than assume**:
 `VariableFolding` and `DeadcodeElimination` both already walk
 `WhileStatement`, and neither was written with a suspended process in mind.
 If either mishandles a body containing an `EventStatement`, the fix belongs
@@ -462,15 +1248,48 @@ in that pass with its own test.
 The property motivating the design is that **the input is simulable**, so
 the golden model is free.
 
-- Verilator 5.050 (the pinned toolchain) elaborates the behavioural form
-  under `--timing`; the generated FSM needs no such flag.
+- Verilator 5.050 — the version the dev environment resolves to today;
+  `conda/environment.yml` lists `verilator` without a pin — elaborates the
+  behavioural form under `--timing`; the generated FSM needs no such flag.
+  The floor the Makefile rule that writes `conda/environment.yml` must emit
+  is **`verilator >=5.050`, and it is semantic, not cosmetic**: earlier 5.x
+  versions execute `<=` in an `initial` process as `=` — their own
+  `INITIALDLY` warning says so — which corrupts the golden model twice
+  over. The reference's outputs move to the *active* region of the edge
+  (measured on 5.046 as a systematic one-region lead at every bit boundary
+  against a same-edge comparator), and a segment reading a register it has
+  itself `<=`-written sees the new value where IEEE §10.4.2 delivers the
+  old one. 5.050 implements the standard's semantics. The floor is the fix,
+  not the sampling point: the comparator stays on **posedge**, reading the
+  values NBA-committed at the previous edge — the one convention that also
+  survives a post-P&R netlist in the DUT slot, where mid-cycle sampling
+  assumes settling margins real delays can violate.
 - A cosim test builds **both** and drives them from **one** testbench,
   comparing outputs cycle by cycle — the harness shape `veriflat` already
   uses, with the behavioural source in the reference slot.
+- **Reset is asserted at time zero only; the testbench must not pulse it
+  again mid-run.** The reference cannot honour one — §5.2's property, not a
+  weakness of the plan — so a mid-run reset would report a divergence that
+  is not a defect, and the harness simply does not issue one. The §11.1
+  equivalence statement reads "from the release of reset onwards", which is
+  all it ever claimed.
+- **The comparison is aligned, not simultaneous.** The reset branch carries
+  the preamble, so the FSM leaves reset already in the reference's time-zero
+  state — but the reference started at time zero regardless, so it is ahead
+  by however long reset was held. The two agree value for value at a
+  constant offset equal to that hold, and the harness aligns on it rather
+  than comparing raw sample indices. Measured at holds of 0, 1, 2, 3, 5 and
+  7 cycles: the superposition is exact at the hold every time.
+- A testbench that instead **holds every input at its idle value until
+  reset releases** makes the offset unobservable — the reference's state is
+  then invariant over the hold — and may compare raw sample indices. Either
+  convention is sound; the harness states which one it uses rather than
+  aligning by accident.
 - The two RS232 examples from the design note are the primary corpus: TX
-  exercises `forever`, `while`, `repeat`, a `for` with a cut point and a
-  shared counter; RX adds input sampling and `continue`. Between them they
-  cover every row of §7 and §8.
+  exercises `forever`, `while`, `repeat`, an unrolled `for` with a cut
+  point and a shared countdown; RX adds input sampling and `continue`.
+  With Appendix B's explicit-counter loop they cover every row of §7 and
+  §8.
 - Structural goldens (YAML + generated Verilog) pin the encoding and the
   state decode, in the existing house style.
 
@@ -489,13 +1308,28 @@ operation across one. Source and generated FSMD therefore have *the same
 control structure*, and the bisimulation relation is the **identity on
 states** — by construction, not by proof.
 
+**One honest gap, found by reading the sources rather than summarising
+them.** That literature defines a *computation* as a finite walk from the
+reset state back to itself with no intermediary return, and equivalence
+between computations characterised that way. **The line falls between
+perpetual and one-shot**, which since §15 is the only distinction left: an
+`initial … forever` matches the model, being the non-terminating outer loop
+from reset the definition assumes, while a **one-shot** `initial` does not —
+it parks in the §2 hold state and never returns to reset, so a
+"computation" in that sense does not exist for it. The identity-bisimulation argument still holds
+state by state, but the equivalence statement for a one-shot has to be
+phrased differently — agreement on every path up to entering the terminal
+state — and this ADR does not yet do that. It is a hole in the argument,
+not in the transformation, and it belongs to whoever writes phase 6.
+
 What remains to be argued is strictly smaller: that the transformation
 *within* one segment is faithful. That is exactly §6.1's substitution
 rule — final value per target, pre-edge environment for reads of
 nonblocking-assigned variables, per-slice tracking for partial writes.
 Restating the obligation this way is worth more than any amount of extra
 testing: it says which single page of reasoning the correctness of the
-pass rests on.
+pass rests on. §C.6 notes that the same framing makes a path-by-path
+self-check cheap, since there is no bisimulation left to search for.
 
 ### 11.2 Coverage as the adequacy criterion
 
@@ -510,6 +1344,10 @@ complete:
 - every `break`/`continue` edge (§8) taken;
 - for a counter state (§7.2), the first and last iteration.
 
+The reset branch sits outside this list and is reported as such rather than
+counted covered: it is exercised once, at time zero, and never again — §11
+forbids a second pulse — so it is pinned by the structural golden.
+
 Uncovered items are reported, not silently tolerated. Constrained-random
 stimulus over the process inputs runs on top of the directed cases to
 reach what they miss.
@@ -520,29 +1358,70 @@ says the datapath transformation was exercised on every one of them.
 
 ## 12. Phasing (each lands green) & test plan
 
-1. **Prerequisite** — the §7.2 `LoopUnrolling` guard, own commit and test.
-2. **Straight-line.** `Always`, no branches, no loops: cut, segment, state
-   register, `always_ff`, reset (§5). Golden + a 3-state cosim. Lands the
-   §11 harness and the §10 interaction checks.
-3. **Branches** — `IfStatement`/`CaseStatement` with cut points in one or
+1. **Prerequisites**, each its own commit and test — the §7.2
+   `LoopUnrolling` guard (a `repeat` whose body holds an `EventStatement`
+   is left rolled, still recursing into its body; bounded `for` keeps
+   unrolling); the §10.1 `ScopeElevator` guard (rename but do not
+   splice a named block inside a marked process); and the §5.3 grammar
+   addition for `iff` (conditional event control, IEEE §9.4.2.3): a
+   condition field on **`Sens`**, with parser and generator round-trip, the
+   round-trip covering the multi-term form
+   `@(posedge clk iff en or posedge rst)` that a field on `Senslist` could
+   not represent.
+2. **Straight-line.** A one-shot `initial`, no branches, no loops, no
+   `forever`: cut, segment, state register, `always_ff`, the §5.1 reset
+   branch and the terminal hold state. Golden + a 3-state cosim, aligned on
+   the offset §11 defines. Lands the
+   §11 harness with its §11.2 coverage baseline — every segment entered,
+   every CFG edge taken — the §10 interaction checks, and the `verilower`
+   driver —
+   including the design-level `NameResolution`/`DefaultResolution` preamble
+   the pass depends on and `ResolveModule` does not supply, plus
+   `SynthesizableCheck` on the output.
+3. **Chip enable.** Phase 1 only parses `iff`; this is where it becomes a
+   machine. The §2 uniformity check across the waits, the §5.3 emission —
+   reset outside the enable, one gate over the whole `case` — and the
+   structural golden that pins that nesting. It comes before branches and
+   loops because it fixes the shape of the `always_ff` they will fill, and
+   it is small once the straight-line emission exists. The golden wants a
+   **synthesis check beside it**: §5.3's rule is normative on measured cell
+   counts, so the check that produced them belongs in CI, and
+   `conda/environment.yml` should carry `yosys` for the same reason §11 asks
+   it to carry a Verilator floor.
+4. **Branches** — `IfStatement`/`CaseStatement` with cut points in one or
    more arms, unequal lengths, merge state.
-4. **Loops** — §7.2 counters, then §7.3 back-edges, then §8 jumps. RS232 TX
-   becomes a cosim test here.
-5. **`Initial`** — one-shot with the terminal state; RS232 RX joins.
-6. **Diagnostics** — the whole §9 table, one `TEST_ERROR_SV` each.
-7. **Hints and the state map** — the §3 table beyond `fsm_reset`
-   (encoding, prefix, `fsm_unroll`), the §10.1 naming decision, and the
-   §10.2 JSON, with a `wavedisp` description consuming it end to end.
+5. **Loops** — §7.2 countdowns and unrolled `for` groups, then §7.3
+   back-edges, then §8 jumps, and the §11.2 coverage instrumentation grows
+   to the constructs that finally need it: back-edges taken *and* not taken,
+   `break`/`continue` edges, and the first and last iteration of a counter
+   state.
+6. **Perpetual** — the `initial … forever` form (§2) on the §7.3 back-edge,
+   and the multi-cycle one-time prologue above the loop. RS232 TX and RX
+   land as cosim tests here — TX is itself perpetual, so its cosim cannot
+   arrive earlier.
+7. **Diagnostics** — the whole §9 table, one `TEST_ERROR_SV` each.
+8. **Hints and the state map** — the §3 table beyond `veriparse_reset`
+   (encoding, prefix), the §10.1 naming decision
+   including the init-segment diagnostic, and the §10.2 JSON, with a `wavedisp`
+   description consuming it end to end.
+
+**Why the perpetual form lands late.** Phase 2 compiles a one-shot
+`initial` — the smallest vehicle for the cut/segment/emit machinery, with no
+back-edge to close — and the `forever` that makes a machine perpetual
+arrives only in phase 6, on the §7.3 loop lowering the phases before it
+build. Nothing earlier should be shipped as ready for a design, since almost
+every real FSM is perpetual.
 
 ## 13. Beyond FSMs — what the structure has to allow
 
-`vericomp` is named for a family, not for this pass. The FSM lowering is
+`verilower` is named for the operation the family shares — **lowering**
+behaviour into structure — not for this pass. The FSM lowering is
 the first behavioural transformation, and others will want the same front
 half, so the split is structural from the start:
 
 - **generic** — building the CFG from a suspended process, cutting it at
-  the timing controls, computing liveness across the cuts, and the
-  within-segment substitution of §6.1. None of this mentions state
+  the timing controls, running §6's dataflow checks across the cuts, and
+  the within-segment substitution of §6.1. None of this mentions state
   registers;
 - **FSM-specific** — state allocation and encoding, the `always_ff` and
   `case` emission, the state map.
@@ -561,8 +1440,10 @@ Positioning, so that later choices can be argued against something.
   synthesised into an FSM by commercial HLS (Catapult, Stratus). The
   design here converges on the same shape from Verilog instead of C++,
   which is where the value is: the source stays Verilog, so it stays
-  simulable by the tools already in the flow. §5's reset convention is
-  theirs, arrived at independently.
+  simulable by the tools already in the flow. §5.1's reset convention — a
+  one-time preamble supplying the reset values — is theirs, arrived at
+  independently — and for the same reason, a clocked thread being entered
+  once rather than restarted every lap.
 - **HLS proper** (Catapult, Stratus; CIRCT's Calyx and Handshake dialects
   in the open-source world) *schedules*: it decides which operation goes
   in which cycle, statically or dynamically. That is the part deliberately
@@ -586,20 +1467,49 @@ Positioning, so that later choices can be argued against something.
 |---|---|---|
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
-| Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `fsm_encoding` value beside binary/one-hot/gray |
+| Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | Counter splitting | one shared countdown per process, re-initialised on entry | post-v1 optimisation, if routing says so |
+| Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
 | Cut point inside a `function`/`task` | hard error (§9) | subroutine inlining before the cut walk |
-| Loop count from a non-constant expression not captured at entry | hard error | capture-at-entry lowering |
+| Loop count from a non-constant expression not captured at entry | hard error (§9), the message carrying §7.3's explicit-counter idiom | capture-at-entry lowering |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
+| Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
+| A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
+| Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
+
+### 15.1 Why `always` is refused rather than supported
+
+It was specified and then removed, so the reasoning is kept here rather than
+rediscovered. `always` is not a second construct: **`always begin BODY end`
+is exactly `initial forever begin BODY end`** — checked cycle for cycle — so
+supporting it would be two spellings of one thing, and the rewrite is one
+line the error message can carry.
+
+It is also the lossy spelling, and that is what settles it. The reset values
+come from the region *above* the loop (§5.1), and an `always` has no such
+region: its preamble sits inside the lap and runs again on every
+wrap-around — measured rather than assumed, `always begin n = n+100;
+@(posedge clk); n = n+1; end` reaching 403 after three edges, four
+preambles against three increments.
+Compiled anyway, it would need the preamble to become a once-entered **init
+state** — costing a cycle out of reset, resetting only the state register,
+and leaving every other inferred register to come up unreset — plus its own
+naming rule, its own coverage case, and a second branch in the algorithm.
+An `initial` gives all of it for free, and gives a one-time prologue of any
+length besides (§2), which `always` cannot express at all.
+
+A v2 has nothing to gain by adding it back. What would be worth revisiting
+is the opposite: whether the terminal `initial` (no loop) earns its place,
+since §11.1 records that the equivalence argument does not yet cover it.
 
 ## Appendix A — Worked example: RS232 transmitter
 
 Every rule above, on one design. The source is the TX from
 `docs/imperative-fsm-design.md`; the RTL beside it is what this ADR
 specifies the pass must produce, so it doubles as the acceptance criterion
-for phase 4.
+for phase 6.
 
 ### A.1 Before — the behavioural source
 
@@ -610,19 +1520,30 @@ module rs232_tx #(parameter int BAUD_DIV = 100) (
   input  logic       send,
   output logic       tx, busy
 );
+  (* veriparse_fsm *)
   initial begin
-    tx = 1'b1; busy = 1'b0;                    // init segment  -> reset branch
+    tx <= 1'b1; busy <= 1'b0;                  // init segment  -> reset branch
     @(posedge clk);
     forever begin                              // back-edge
-      while (!send) @(posedge clk);            // wait state
-      busy = 1'b1;
-      tx = 1'b0; repeat (BAUD_DIV) @(posedge clk);   // counter state
-      for (int i = 0; i < 8; i = i + 1) begin        // counter + index
-        tx = data[i];
-        repeat (BAUD_DIV) @(posedge clk);
+      begin : WAIT_SEND
+        if (!send) begin                       // guarded, so each path commits
+          busy <= 1'b0;                        // `busy` once (§6): `busy` only
+          while (!send) @(posedge clk);        // falls if we really stop
+        end
       end
-      tx = 1'b1; repeat (BAUD_DIV) @(posedge clk);
-      busy = 1'b0;
+      busy <= 1'b1;
+      begin : START
+        tx <= 1'b0; repeat (BAUD_DIV) @(posedge clk);  // counter state
+      end
+      begin : DATA
+        for (int i = 0; i < 8; i = i + 1) begin        // unrolled (§7.2):
+          tx <= data[i];                               // 8 states, `i` a
+          repeat (BAUD_DIV) @(posedge clk);            // constant per copy
+        end
+      end
+      begin : STOP
+        tx <= 1'b1; repeat (BAUD_DIV) @(posedge clk);
+      end
     end
   end
 endmodule
@@ -637,14 +1558,22 @@ module rs232_tx #(parameter int BAUD_DIV = 100) (
   input  logic       send,
   output logic       tx, busy
 );
-  typedef enum logic [1:0] {
-    __fsm_WAIT_SEND, __fsm_START, __fsm_DATA, __fsm_STOP
-  } __fsm_state_t;
+  localparam [3:0] __fsm_WAIT_SEND = 4'd0;   // no typedef and no enum at
+  localparam [3:0] __fsm_START     = 4'd1;   // this point in the pipeline
+  localparam [3:0] __fsm_DATA_0    = 4'd2;   // — see §10
+  localparam [3:0] __fsm_DATA_1    = 4'd3;
+  localparam [3:0] __fsm_DATA_2    = 4'd4;   // DATA_0..DATA_7: the `for`
+  localparam [3:0] __fsm_DATA_3    = 4'd5;   // unrolled, one counter state
+  localparam [3:0] __fsm_DATA_4    = 4'd6;   // per copy (§7.2), named by the
+  localparam [3:0] __fsm_DATA_5    = 4'd7;   // DATA label (§10.1)
+  localparam [3:0] __fsm_DATA_6    = 4'd8;
+  localparam [3:0] __fsm_DATA_7    = 4'd9;
+  localparam [3:0] __fsm_STOP      = 4'd10;
 
-  __fsm_state_t                __fsm_state;
-  logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;
-  logic [2:0]                  __fsm_i;
-
+  logic [3:0]                  __fsm_state;
+  logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;    // symbolic for reading — the
+                                             // emitted module is
+                                             // de-parametrized (§10)
   always_ff @(posedge clk) begin
     if (!rst_n) begin
       tx          <= 1'b1;              // the init segment, verbatim
@@ -653,41 +1582,50 @@ module rs232_tx #(parameter int BAUD_DIV = 100) (
     end
     else case (__fsm_state)
 
-      __fsm_WAIT_SEND:
-        if (send) begin                 // exit and the statements after the
-          busy      <= 1'b1;            // loop are ONE segment, so `busy = 0`
-          tx        <= 1'b0;            // and `busy = 1` collapse per §6.1
-          __fsm_cnt <= BAUD_DIV - 1;
+      __fsm_WAIT_SEND:                  // the `while (!send)` test: holds
+        if (send) begin                 // while idle. A frame requested during
+          busy        <= 1'b1;          // the stop bit never reaches here — it
+          tx          <= 1'b0;          // is taken by __fsm_STOP directly
+          __fsm_cnt   <= BAUD_DIV - 1;
           __fsm_state <= __fsm_START;
         end
-        else busy <= 1'b0;
 
       __fsm_START:
         if (__fsm_cnt == 0) begin
-          tx        <= data[0];
-          __fsm_i   <= 3'd0;
-          __fsm_cnt <= BAUD_DIV - 1;
-          __fsm_state <= __fsm_DATA;
+          tx          <= data[0];       // constant index — unrolling already
+          __fsm_cnt   <= BAUD_DIV - 1;  // substituted it (§7.2, §6.1)
+          __fsm_state <= __fsm_DATA_0;
         end
         else __fsm_cnt <= __fsm_cnt - 1;
 
-      __fsm_DATA:
+      __fsm_DATA_0:
         if (__fsm_cnt == 0) begin
-          if (__fsm_i == 3'd7) begin
-            tx        <= 1'b1;
-            __fsm_cnt <= BAUD_DIV - 1;
-            __fsm_state <= __fsm_STOP;
+          tx <= data[1]; __fsm_cnt <= BAUD_DIV - 1; __fsm_state <= __fsm_DATA_1;
+        end
+        else __fsm_cnt <= __fsm_cnt - 1;
+
+      // __fsm_DATA_1 … __fsm_DATA_6: the same arm, each loading the next
+      // constant bit — data[2] … data[7]
+
+      __fsm_DATA_7:
+        if (__fsm_cnt == 0) begin
+          tx <= 1'b1; __fsm_cnt <= BAUD_DIV - 1; __fsm_state <= __fsm_STOP;
+        end
+        else __fsm_cnt <= __fsm_cnt - 1;
+
+      __fsm_STOP:                       // decides in the cycle that ends the
+        if (__fsm_cnt == 0) begin       // stop bit, so a frame already
+          if (send) begin               // requested starts on THIS edge with
+            busy        <= 1'b1;        // no idle cycle — and `busy`, guarded
+            tx          <= 1'b0;        // in the source, is written once on
+            __fsm_cnt   <= BAUD_DIV - 1;// each path (§6, §A.3)
+            __fsm_state <= __fsm_START;
           end
           else begin
-            __fsm_i   <= __fsm_i + 3'd1;
-            tx        <= data[__fsm_i + 3'd1];   // NOT data[__fsm_i] — see §A.3
-            __fsm_cnt <= BAUD_DIV - 1;
+            busy        <= 1'b0;
+            __fsm_state <= __fsm_WAIT_SEND;
           end
         end
-        else __fsm_cnt <= __fsm_cnt - 1;
-
-      __fsm_STOP:
-        if (__fsm_cnt == 0) __fsm_state <= __fsm_WAIT_SEND;
         else __fsm_cnt <= __fsm_cnt - 1;
 
     endcase
@@ -697,58 +1635,104 @@ endmodule
 
 ### A.3 What the example pins
 
-- **Four states, not five.** `docs/imperative-fsm-design.md` counted an
-  `S_INIT`. Under §5 the init segment is the *reset branch*, not a state,
-  so it disappears — one fewer state and one fewer cycle out of reset.
-  A consequence of the convention worth seeing before committing to it.
-- **`data[__fsm_i + 3'd1]`, not `data[__fsm_i]`.** This is §6.1 doing real
-  work. In the source, `i = i + 1` is a blocking assignment, so
-  `tx = data[i]` on the next iteration reads the *incremented* i. In the
-  FSM, `__fsm_i` is a register updated by a nonblocking assignment, so it
-  still holds the old value in this cycle. The index must be substituted
-  forward. Emitting `data[__fsm_i]` transmits every bit one position late
-  — a bug that simulates plausibly and is exactly what hand-translation
-  gets wrong.
-- **`busy` collapses.** The `busy = 1'b0` that ends the previous byte and
-  the `busy = 1'b1` that starts the next are in the same segment; the
-  substitution rule keeps the last one on each path, giving the `if/else`
-  shown rather than two conflicting assignments.
-- **One shared countdown.** `repeat (BAUD_DIV)` in three different places
-  reuses `__fsm_cnt`, re-loaded on entry to each state (§13 of the design
-  note). Splitting it is a post-v1 optimisation.
+- **Eleven states, not twelve, and that is `initial` earning its keep.**
+  `docs/imperative-fsm-design.md` counted an `S_INIT`. Under §5.1 the init
+  segment is the *reset branch*, not a state, so it disappears — one fewer
+  state, one fewer cycle out of reset, and `tx`/`busy` come up at known
+  values with no cycle of operation needed. It is the concrete form of what
+  §15 says an `always` cannot do.
+- **`data[3]`, not `data[__fsm_i]` — no index register at all.** This is
+  §7.2 doing real work. An earlier draft compiled the loop to one `DATA`
+  state plus an induced index, and the emission then had to substitute the
+  blocking `for` step forward — `data[__fsm_i + 3'd1]`, one token away from
+  the off-by-one `data[__fsm_i]` that transmits every bit one position late
+  and simulates plausibly, exactly what hand-translation gets wrong.
+  Unrolling dissolves the hazard: each copy reads its bit at a constant
+  index, and the machine mirrors the source's control structure, which is
+  what keeps §11.1's bisimulation the identity. A hand-written counter
+  machine over an `idx` register is I/O-equivalent — and is not this pass's
+  output; an author who wants it writes §7.3's idiom and gets it as source,
+  not as a guess.
+- **`busy <= 1'b0` sits under a guard, and that is §6 at work.** Written
+  unconditionally at the end of the lap it would land in the same cycle as
+  the next frame's `busy <= 1'b1` and never be committed — measured, that
+  source gives opposite answers on Verilator and on Icarus/ModelSim.
+  `if (!send)` makes each path commit `busy` exactly once: the chaining path
+  writes only `1'b1`, the idle path writes `1'b0` and then waits. The
+  decision therefore stays in the cycle that ends the stop bit, which is why
+  `__fsm_STOP` branches on `send` rather than handing over unconditionally.
+- **One shared countdown.** `repeat (BAUD_DIV)` — three textual sites, ten
+  counter states after unrolling — reuses one `__fsm_cnt`, re-loaded on
+  entry to each state (§13 of the design note). Splitting it is a post-v1
+  optimisation.
+
+A.1 and A.2 have been run against each other under Verilator 5.050 —
+`BAUD_DIV = 4`, one frame, a back-to-back pair with `send` held across the
+boundary, then random stimulus, 721 compared cycles — and agree on `tx` and
+`busy` on every one from the release of reset. That is the §11 harness in
+miniature, and it is worth saying that it was actually run: an earlier
+form of the `__fsm_STOP` arms passes a single-frame test and fails the
+back-to-back one, which is exactly the class of bug the appendix exists to
+pin. Phase 6 lands it as a test rather than as a claim.
 
 ## Appendix B — I2C byte write: what a second protocol adds
 
 RS232 exercises every rule, but only one at a time. An I2C master phase is
-the useful second example because its loop body holds **two** cut points,
-so §7.2 produces a *group* of states rather than one, and because it
-samples an input to decide what happens next.
+the useful second example because its counted loop is written as §7.3's
+explicit-counter idiom — a body holding **two** cut points, so the loop is
+a two-state lap for any byte width — and because it samples an input to
+decide what happens next.
 
 ### B.1 Before
 
 ```systemverilog
-always begin
+logic [3:0] nbit;                                       // the author's counter
+
+(* veriparse_fsm *)
+initial begin
+  scl <= 1'b1; sda_out <= 1'b1; sda_oe <= 1'b1;         // reset branch: an
+  ack <= 1'b0; nbit <= 4'd8;                            // idle bus, not X
   @(posedge clk);
-  while (!go) @(posedge clk);
+  forever begin
+    begin : IDLE
+      while (!go) @(posedge clk);
+    end
 
-  sda_out <= 1'b0;  repeat (T_HD_STA) @(posedge clk);   // START condition
-  scl     <= 1'b0;
-
-  for (int i = 7; i >= 0; i = i - 1) begin              // two cut points in
-    sda_out <= byte_out[i];                             // one loop body
-    repeat (T_LOW)  @(posedge clk);
-    scl <= 1'b1;
-    repeat (T_HIGH) @(posedge clk);
+    begin : START
+      sda_out <= 1'b0;  repeat (T_HD_STA) @(posedge clk); // START condition
+    end
     scl <= 1'b0;
-  end
 
-  sda_oe <= 1'b0;                                       // release for ACK
-  repeat (T_LOW)  @(posedge clk);
-  scl <= 1'b1;
-  repeat (T_HIGH) @(posedge clk);
-  ack    <= ~sda_in;                                    // sample the slave
-  scl    <= 1'b0;
-  sda_oe <= 1'b1;
+    begin : BIT                                         // §7.3's idiom: two
+      while (nbit != 4'd0) begin                        // cut points, so a
+        begin : LOW                                     // two-state lap
+          sda_out <= byte_out[nbit - 4'd1];             // MSB first — both
+          nbit    <= nbit - 4'd1;                       // reads see the
+          repeat (T_LOW)  @(posedge clk);               // entry value (§6.1)
+        end
+        begin : HIGH
+          scl <= 1'b1;
+          repeat (T_HIGH) @(posedge clk);
+        end
+        scl <= 1'b0;
+      end
+    end
+    nbit <= 4'd8;                                       // re-arm: next byte
+
+    begin : ACK                                         // same shape again,
+      begin : LOW                                       // so the same two
+        sda_oe <= 1'b0;                                 // inner labels
+        repeat (T_LOW)  @(posedge clk);
+      end
+      begin : HIGH
+        scl <= 1'b1;
+        repeat (T_HIGH) @(posedge clk);
+      end
+    end
+    ack    <= ~sda_in;                                    // sample the slave
+    scl    <= 1'b0;
+    sda_oe <= 1'b1;
+  end
 end
 ```
 
@@ -761,18 +1745,32 @@ mechanically.
 |---|---|---|---|
 | `IDLE` | — | `go` | `START` |
 | `START` | `sda_out<=0`, load `T_HD_STA` | count 0 | `BIT_LOW` |
-| `BIT_LOW` | `scl<=0`, `sda_out<=byte_out[i]`, load `T_LOW` | count 0 | `BIT_HIGH` |
-| `BIT_HIGH` | `scl<=1`, load `T_HIGH` | count 0 and `i>0` | `BIT_LOW` (i−1) |
-| | | count 0 and `i==0` | `ACK_LOW` |
+| `BIT_LOW` | `scl<=0`, `sda_out<=byte_out[nbit-1]`, `nbit<=nbit-1`, load `T_LOW` | count 0 | `BIT_HIGH` |
+| `BIT_HIGH` | `scl<=1`, load `T_HIGH` | count 0 and `nbit!=0` | `BIT_LOW` |
+| | | count 0 and `nbit==0` | `ACK_LOW` (`nbit<=8` re-armed) |
 | `ACK_LOW` | `scl<=0`, `sda_oe<=0`, load `T_LOW` | count 0 | `ACK_HIGH` |
-| `ACK_HIGH` | `scl<=1`, load `T_HIGH` | count 0 | `IDLE` (`ack<=~sda_in`, `sda_oe<=1`) |
+| `ACK_HIGH` | `scl<=1`, load `T_HIGH` | count 0 and `!go` | `IDLE` (`ack<=~sda_in`, `scl<=0`, `sda_oe<=1`) |
+| | | count 0 and `go` | `START` (same writes, plus `sda_out<=0`, load `T_HD_STA`) |
 
-Three things it adds over RS232:
+The second `ACK_HIGH` row is the back-to-back byte — §A.2's `__fsm_STOP`
+shape again: `IDLE` is a `while`, so it costs no cycle when `go` is already
+high at the edge that ends the acknowledge.
 
-- **A loop body spanning two states.** `BIT_LOW`/`BIT_HIGH` are one
-  iteration; the back-edge returns to `BIT_LOW` with the index
-  decremented. §7.2's "group of states plus an iteration counter" is this,
-  and RS232 never shows it because its body holds a single cut point.
+Four things it adds over RS232:
+
+- **The explicit-counter idiom, in the field.** The bit loop declares its
+  own `nbit` and tests it in a `while` (§7.3), so its two cut points give a
+  two-state lap — `BIT_LOW`/`BIT_HIGH` — for any byte width, where the
+  unrolled-`for` alternative (§7.2) would spend sixteen states. The width
+  (4 bits: the count starts at 8, which three bits cannot hold) and the
+  re-arm for the next byte are the author's visible decisions, which is §3
+  rule 2's point. The state names come from §10.1's composition rule — the
+  body labelled `BIT`, its halves `LOW` and `HIGH` — the case ordinals
+  would have served badly.
+- **A preamble that is the bus specification.** The reset branch releases
+  both lines: out of reset the master presents an idle bus rather than `X`.
+  An earlier draft of this example had an empty preamble — legal under
+  §5.1, and wrong as I2C.
 - **An input sampled at a known edge.** `ack <= ~sda_in` reads `sda_in` as
   of the edge leaving `ACK_HIGH` — §6.1's sampling point, and the reason
   the behavioural source and the FSM agree on *when* the slave is read.
@@ -781,3 +1779,389 @@ Three things it adds over RS232:
   `inout` ports (`Inout port not supported during flattening`). That is a
   veriparse limitation, not an I2C one, and this example is a good reason
   to lift it.
+
+## Appendix C — Data structures and algorithm
+
+Written out for review. §C.1 is what the literature settles, §C.2 what it
+warns against, and the rest is design that follows from them.
+
+### C.1 What the FSMD literature gives us
+
+Two things, and the second is the useful one.
+
+**The target model.** An FSMD is an ordered tuple — control states, primary
+inputs, storage variables, primary outputs, a transition function and an
+action function. That is the shape to build, and it is worth naming because
+it says what the intermediate representation must carry: control and data
+*together*, not a control graph with the assignments left in the AST.
+
+**The path characterisation.** A *path* is a segment in the sense of §4 —
+a run from one cut point to the next with none in between. The literature
+characterises each one by two things, and the whole appendix is built on
+that pair, so it is worth setting up slowly.
+
+Take the state a path leaves. On entry it holds a **store**: the value of
+every storage variable at that moment, before anything in the path runs.
+Everything a path does is expressed against that store, and only against
+it. Two questions then say all there is to say about the path:
+
+- ***When* is it taken?* Several paths leave one state — a branch, a loop
+  test, a counter reaching zero — and exactly one is taken per cycle. The
+  answer is a predicate over the inputs and the entry store, written
+  **`R_p`** (`R` for the *condition* under which path `p` runs).
+- ***What* does it do?* One expression per storage variable, giving its
+  value on exit in terms of the entry store. That is the new store, written
+  **`s_p`**.
+
+So a path is the pair `(R_p, s_p)`: a guard and a store update, both read
+against the state's entry values.
+
+**Two places where this is a specialisation of the general model, not the
+model itself**, and being explicit about them is what makes the borrowing
+honest.
+
+The literature's data transformation is `r_p = <s_p, O_p>`: the store
+update *and* an ordered list `O_p` of the values sent to output ports along
+the path, order and multiplicity included, because in the general model an
+output is an event. Here an output is a level signal held by a register, so
+only its final value can be observed and it is already an element of
+`s_p` — `O_p` is empty and the pair collapses to `s_p` alone. §C.3 and §C.6
+are written for that collapsed form.
+
+The general model also indexes inputs by occurrence — the `i`-th read of
+port `P` along a path is a distinct value `P_i` — because a path there can
+span several samples. Here a path is exactly one clock cycle, so every read
+of an input along it yields the same value, sampled at the edge that
+entered the state. That is §6.1's sampling point, and it is a consequence
+of where we put the cut points rather than an assumption.
+
+Concretely, the `BIT_HIGH` state of Appendix B has three paths out, and
+writing them down is the fastest way to see what the notation buys:
+
+| | `R_p` | `s_p` |
+|---|---|---|
+| still counting | `cnt != 0` | `cnt := cnt - 1` |
+| next bit | `cnt == 0 && nbit != 0` | `scl := 0`, `sda_out := byte_out[nbit-1]`, `nbit := nbit - 1`, `cnt := T_LOW-1` |
+| byte done | `cnt == 0 && nbit == 0` | `scl := 0`, `sda_oe := 0`, `nbit := 8`, `cnt := T_LOW-1` |
+
+Read the middle row against the entry store, which is the only way it may
+be read: `nbit` there is the value *on entry*, so `byte_out[nbit - 1]` and
+`nbit := nbit - 1` are both in terms of it — the bit selected and the
+decrement never see each other, which is what nonblocking assignment means
+and what a hand translation forgets first. The notation does not merely
+describe the rule; it makes stating it wrongly awkward.
+
+**The validity condition, and why we meet it.** A path cover is a *finite*
+set of paths such that any computation is a concatenation of them, so the
+cut points must be chosen to make paths finite — every loop has to contain
+at least one. The literature obtains that from two rules: the reset state
+is a cut point, and so is any state with more than one outward transition,
+which "cut each loop of the FSMD in at least one cutpoint, because each
+internal loop has an exit point".
+
+Our rule is different — a cut point at every clock edge — so the obligation
+has to be discharged separately. It is, by construction: §7.1 hands every
+loop *without* a cut point to the passes that unroll or fold it, so every
+loop still standing when the CFG is built contains an `EventStatement`,
+hence a cut point. The condition holds for a different reason than theirs,
+and the ADR should say so rather than inherit the conclusion.
+
+Our cover is also strictly **finer** than the minimal one: cutting at every
+edge rather than only at branch points makes every path exactly one clock
+cycle. That is not incidental — it is what makes `s_p` simply "the state's
+action", what makes inputs single-valued along a path, and ultimately what
+makes §11.1's bisimulation the identity.
+
+That is the payoff. `(R_p, s_p)` is precisely what §6.1 describes in prose:
+the pre-edge environment is the entry store, the "final value per target"
+is `s_p`, and the branch conditions collected along the way are `R_p`. The
+substitution rule is therefore not a local invention to be defended on its
+own — it is the standard characterisation of an FSMD path, and writing the
+algorithm in those terms makes §11.1's argument mechanical rather than
+rhetorical.
+
+### C.2 What not to build
+
+HLS builds a **CDFG** and schedules it: operations carry mobility, and the
+scheduler decides which cycle each lands in. Building that here would be a
+category error. The schedule is an input, fixed by the author's edge waits,
+and every cut point is immovable. The representation is therefore a
+**control-flow graph with fixed cut points**, never a dataflow graph with
+freedom to move operations across them.
+
+Concretely: no ASAP/ALAP, no resource constraints, no mobility intervals,
+no list scheduling. If any of those appear in the implementation, the
+design has drifted.
+
+### C.3 Data structures
+
+```
+StateId       = index into the state table
+
+Transition {                     // one path of the path cover
+  Expr                guard;     // R_p, over entry values
+  vector<Update>      updates;   // s_p, one per assigned slice
+  StateId             next;
+}
+
+State {
+  StateId             id;
+  string              name;      // from the block label (§10.1), else ordinal
+  SourceLoc           loc;       // for the waveform and the state map
+  vector<Transition>  out;       // in source order; first match wins
+}
+
+Update {                         // an element of s_p
+  Slice               target;    // variable + bit range, or dynamic
+  Expr                value;     // over ENTRY values, never over updates;
+}                                // may be a conditional — see below
+
+Slice {
+  string              name;
+  optional<Range>     bits;      // absent = whole variable
+  bool                dynamic;   // index not constant — see §C.5
+}
+```
+
+Two remarks on shape.
+
+`Transition::updates` holds expressions over **entry** values by
+construction. That is the invariant the whole design rests on: if a value
+in `updates` ever refers to another update, §6.1 has been violated and the
+emission is wrong. It is cheap to assert and worth asserting.
+
+`State::out` is ordered and first-match-wins, which is what lets the
+emission be an `if/else if` chain rather than requiring the guards to be
+proven disjoint.
+
+**`Update::value` may be a conditional expression, and has to be.** §4 says
+a branch whose arms hold no cut point "stays a plain conditional inside one
+segment's action and costs no state"; the flat `vector<Transition>` above is
+where that promise is kept or lost. If every branch forked the path list, a
+segment holding *k* independent cut-point-free `if`s would produce 2^*k*
+transitions — each with a full conjunctive guard and its own copy of the
+updates the arms agree on — where the source has *k* conditionals. Eight of
+them is 256 case-arm branches instead of eight nested `if`s, and the output
+stops resembling A.2. So a cut-point-free branch is **if-converted into the
+value**: `x` written in one arm and not the other yields the single update
+`x := c ? e : x`, and the transition count stays proportional to the cut
+points actually reachable from the state, never to the branches between
+them. The emitter is then free to factor a guard shared by several updates
+back out into an `if`, which is what A.2's nested form shows; that is a
+readability choice on the way out, not a second representation.
+
+Alongside them, two side tables:
+
+- **induced variables** — the `repeat` countdowns §7.2 creates, the only
+  storage the pass invents. They are storage by construction, never subject
+  to the liveness question, and they must be distinguishable from the
+  author's variables when the state map and the prefix (§10) are produced;
+- **the environment**, during construction only: a map from `Slice` to
+  `Expr`, in two layers — the entry values and the blocking updates, which
+  is §6.1's two environments made concrete.
+
+### C.4 The algorithm
+
+1. **Normalise.** The existing pipeline (§10.3) runs first: parameters
+   inlined, generates removed, structs lowered, loops without cut points
+   unrolled. The process body reaching step 2 is structured statements over
+   concrete types.
+
+2. **Build the CFG, cutting at every `EventStatement`.** Structured
+   statements map directly: `if`/`case` fork, sequences chain. Every
+   bounded `for` is already gone — `LoopUnrolling` replicated it with the
+   index substituted per copy (§7.2) — so the loops still standing are
+   exactly three shapes: `repeat (N)` yields **one state plus an induced
+   countdown** (`repeat (1)` induces none: one wait, one state);
+   `while`/`forever` close a back-edge on the loop condition; and
+   `break`/`continue` add an edge to the loop's exit or head (§8). A
+   bounded `for` that nevertheless survives — its bound did not fold — is
+   the §9 error, not a back-edge.
+
+   The init segment is set aside as the reset action (§5) and is not a
+   state. A one-shot process additionally gets the §2 **hold state**
+   appended: an empty state the last segment enters, self-looping with no
+   updates.
+
+3. **Enumerate the path cover.** For each state, walk forward to the next
+   cut points, collecting branch conditions. A walk forks only at a branch
+   **whose arms contain a cut point**; a cut-point-free branch does not
+   fork it and is if-converted into the updates instead (§C.3), which is
+   what keeps the path count proportional to the reachable cut points
+   rather than exponential in the conditionals between them. Each distinct
+   walk is one `Transition`. Loops do not multiply paths here — their
+   back-edge ends a path like any other cut point, which is what keeps the
+   enumeration finite without any bound on iterations.
+
+4. **Symbolically execute each path** to get `(R_p, s_p)`. One forward
+   sweep with the two environments: a blocking assignment updates the
+   blocking layer, a nonblocking one records an `Update` and leaves the
+   entry layer alone, and a read resolves against the blocking layer if it
+   has the slice, the entry layer otherwise. `R_p` accumulates the branch
+   conditions taken, resolved the same way.
+
+5. **Check the §6 discipline over the CFG.** There is no classification
+   step — §6 already names every target: `<=` a register, `=` a scope-local
+   temporary, the latter checked by scoping and dissolved by step 4. What
+   needs the graph is read-before-assign: a forward reaching-definitions
+   pass from the reset state verifies that every register read on some
+   path out of reset is written by the init segment or preceded by a
+   commit — otherwise the §9 error. The one-commit rule is per-path and
+   already enforced while step 4 builds `s_p`. Induced countdowns skip the
+   check.
+
+6. **Allocate and encode states**, taking names from §10.1 and the encoding
+   from `veriparse_encoding`, and emitting one `localparam` per state
+   rather than an enum (§10).
+
+7. **Emit** the `always_ff` and one `case` arm per state whose body is its
+   transitions' guards and updates. The reset branch carries the init
+   segment's updates plus the state register. Write the state map (§10.2).
+
+Steps 2–5 are the generic half of §13; only 6 and 7 are FSM-specific.
+
+### C.5 The cases that will bite
+
+**A dynamic slice.** `data[i] = rx` with `i` a register cannot be tracked
+per-slice — the environment does not know which bits changed. The write is
+still emitted correctly (a dynamic bit-select assignment is ordinary RTL);
+what breaks is a *later read of `data` in the same path*, which blocking
+semantics say must observe the write. The rule: a dynamic write marks the
+variable unknown in the blocking layer, and a subsequent read of it in the
+same path is an error rather than a guess. Rare, and refusing it costs
+nothing next to getting it silently wrong.
+
+**Reading an induced variable.** The counter is a register, so a guard
+comparing it (`cnt == 0`) is over the entry value — the same rule as
+everything else, but easy to get wrong by treating induced variables as
+loop counters in the compiler's own sense.
+
+**A path with no updates.** A pure wait state produces an empty `updates`
+and a guard that is just the loop condition — the §2 hold state is all of
+that with a constant-true guard. Both must reach emission intact rather
+than be dropped as empty.
+
+**Nested labels and folded states.** §10.1's two open items land here: a
+state whose updates all fold away must disappear from the state table *and*
+from the state map, not linger with an encoding.
+
+### C.6 A self-check the structure makes cheap
+
+Because a path is `(R_p, s_p)` and §11.1 establishes the bisimulation is
+the identity, source and generated FSMD can be compared **path by path**:
+same endpoints, same `R_p`, same `s_p`. Re-extracting the pair from the
+generated RTL and diffing against the one the pass computed is translation
+validation in the literature's own sense, at a fraction of its cost —
+there is no bisimulation to search for.
+
+Whether that lands as a debug mode or as a test-only harness is open. It is
+recorded here because it is a property of the chosen representation, and
+choosing a different one would forfeit it.
+
+### C.7 References
+
+The FSMD model and the path characterisation §C.1 borrows from are not
+folklore. The entries below are split by **how far they were actually
+read**, because the ADR's claims rest unevenly on them and an earlier draft
+of this section got the mapping wrong: it presented the four PDFs held in
+`docs/` as though they were the first entries of a list they are not in, so
+"the definitions are read from the first two" pointed at two papers nobody
+had opened. What §C.1 quotes comes from the four below.
+
+None of them is committed (`.gitignore`): they are third-party and
+redistribution-restricted, so each is identified by a full citation and,
+where one exists, a DOI.
+
+**Read in full text.** Four papers by the Karfa / Sarkar / Mandal group at
+IIT Kharagpur, working copies in `docs/`. The definitions quoted in §C.1 —
+the FSMD tuple `<Q, q0, I, V, O, f, h>`, the condition of execution `R_p`,
+the data transformation `r_p = <s_p, O_p>`, the path cover, the computation
+as a finite walk from the reset state, and the two cutpoint selection rules
+with their justification *"cut each loop of the FSMD in at least one
+cutpoint, because each internal loop has an exit point"* — are read from
+these, and chiefly from the first two.
+
+1. **C. Karfa, C. Mandal, D. Sarkar, S. R. Pentakota**, *"A Formal
+   Verification Method of Scheduling in High-level Synthesis"*, 7th
+   International Symposium on Quality Electronic Design (ISQED), 2006.
+   <https://doi.org/10.1109/ISQED.2006.10> — `docs/ISQED06-eqck.pdf`.
+   The FSMD definition as an ordered tuple, cutpoints, computations as
+   concatenations of paths, the condition of execution and the data
+   transformation: the `(R_p, s_p)` characterisation §C.1 and §C.3 are
+   built on.
+
+2. **C. Reade, C. Karfa, D. Sarkar, C. Mandal**, *"Hand-in-hand
+   Verification of High-level Synthesis"*, GLSVLSI '07, 2007.
+   <https://doi.org/10.1145/1228784.1228911> — `docs/glsvlsi07.pdf`.
+   The tuple written out as `<Q, q0, I, V, O, f, h>`, the *computation*
+   defined as a finite walk from the reset state back to itself — the
+   definition §11.1 records as not covering an `initial` process — and the
+   cutpoint selection rules §C.1 discharges differently.
+
+3. **C. Karfa, D. Sarkar, C. Mandal**, *"Verification of Data-path and
+   Controller Generation Phase of High-level Synthesis"*, ADCOM 2007 —
+   `docs/karfa-adcom07.pdf`. The phase *after* scheduling: recovering the
+   register-transfer operations from generated RTL and checking them
+   against the scheduled FSMD. That recovery is the shape of §C.6's
+   path-by-path self-check.
+
+4. **C. Karfa, K. Banerjee, D. Sarkar, C. Mandal**, *"Equivalence Checking
+   of Array-Intensive Programs"*, IEEE Computer Society Annual Symposium on
+   VLSI (ISVLSI), 2011. <https://doi.org/10.1109/ISVLSI.2011.24> —
+   `docs/ISVLSI-2011-A-IEEE.pdf`. What it costs to reason about indexed
+   storage across paths, which is why §C.5 *refuses* a dynamic slice read
+   rather than solving it.
+
+**Read as bibliographic records and abstracts only.** Not held locally and
+not opened; cited for positioning, and to be checked before any argument is
+made to lean on them — the misattribution above is what that caution is for.
+
+5. **C. Karfa, D. Sarkar, C. Mandal, P. Kumar**, *"An Equivalence-Checking
+   Method for Scheduling Verification in High-Level Synthesis"*, IEEE
+   Transactions on Computer-Aided Design of Integrated Circuits and
+   Systems, vol. 27, no. 3, pp. 556–569, 2008.
+   <https://ieeexplore.ieee.org/abstract/document/4391074>
+   — the journal treatment of entry 1 by the same group; the fuller account
+   to read first if §C.4 turns out to need more than entry 1 gives.
+
+6. **T. Li, Y. Guo, W. Liu, M. Tang**, *"Translation validation of
+   scheduling in high level synthesis"*, GLSVLSI '13, pp. 101–106, 2013.
+   <https://doi.org/10.1145/2483028.2483070>
+   — translation validation of a scheduler, the expensive problem §11.1
+   explains this pass does *not* have. **This is not `glsvlsi07.pdf`**,
+   which is entry 2; conflating the two is the error this section corrects.
+
+7. **K. Banerjee, D. Sarkar, C. Mandal**, *"Deriving bisimulation relations
+   from path based equivalence checkers"*, Formal Aspects of Computing,
+   vol. 29, no. 2, pp. 365–379, 2017.
+   <https://doi.org/10.1007/s00165-016-0406-y>
+   — the bridge between path-based checking and bisimulation. §11.1 claims
+   the bisimulation here is the identity; this is the frame in which that
+   claim means something, and it is the one entry §11.1 would need read in
+   full before the claim is called proved rather than argued.
+
+8. **P. Coussy, D. D. Gajski, M. Meredith, A. Takach**, *"An Introduction
+   to High-Level Synthesis"*, IEEE Design & Test of Computers, 2009.
+   <http://masters.donntu.org/2018/fknt/khvishuk/library/article10.htm>
+   — scheduling and binding as the two phases of HLS, and the CDFG that
+   §C.2 deliberately refuses to build. The FSMD model is Gajski's; see also
+   *Embedded System Design: Modeling, Synthesis, Verification*, Springer,
+   2009, chapter "Finite State Machine with Datapath".
+
+9. **CIRCT**, *Handshake Dialect Rationale*.
+   <https://circt.llvm.org/docs/Dialects/Handshake/RationaleHandshake/>
+   — the open-source point of comparison in §14: dataflow circuits with
+   static or dynamic scheduling, lowered from MLIR.
+
+10. SystemC `SC_CTHREAD` as commercial HLS treats it — a clocked thread with
+    `wait()` spanning cycles, a reset preamble, synthesised into an FSM —
+    documented by the vendors rather than in a paper:
+    <https://semiwiki.com/eda/cadence/8080-update-on-systemc-for-high-level-synthesis/>
+    and <https://www.cadence.com/en_US/home/tools/digital-design-and-signoff/synthesis/stratus-high-level-synthesis.html>.
+    §5's reset convention and §14's positioning rest on this.
+
+**Not found, and worth recording as such**: no open-source tool performing
+this source-to-source lowering on Verilog, and no confirmable documentation
+of Synopsys Behavioral Compiler's cycle-fixed mode — mentioned in early
+discussion, deliberately absent from this ADR because it could not be
+sourced.
