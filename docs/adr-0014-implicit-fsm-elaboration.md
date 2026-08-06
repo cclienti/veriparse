@@ -54,7 +54,11 @@
   - **§9.3.4** — block names, which §10.1 uses to name states.
   - **§10.4.1 / §10.4.2** — blocking vs nonblocking procedural
     assignments; §6 turns their difference into the storage decision.
-  - **§12.7** — loop statements (`for`, `while`, `repeat`, `forever`).
+  - **§11.6** — expression bit lengths: the context-width rules §6.1's
+    materialization test is built on.
+  - **§12.7** — loop statements (`for`, `while`, `repeat`, `forever`);
+    §12.7.3 evaluates a `repeat` count once, on entry — §7.2's rolled
+    countdown implements exactly that.
   - **§5.12** — attributes: *"A mechanism is included for specifying
     properties about objects, statements, and groups of statements in the
     SystemVerilog source that can be used by various tools… without
@@ -846,23 +850,55 @@ final value never leaves the segment was only ever a name for a
 subexpression, so substitution removes it entirely and no flip-flop is
 inferred.
 
-**Substituted, not kept — and not for the synthesizer's sake.** A blocking
-write to an arm-local temporary inside an `always_ff` is legal (§9.2.2.2
-forbids nothing there) and every synthesis flow accepts it, so the emitted
-RTL *could* carry the `=` and let the downstream tool do the work. It does
-not, for two structural reasons. The analysis has already consumed the
-temp: paths are characterised as `(R_p, s_p)` over entry values, which is
-what merging paths, building guards, if-converting branches (§C.3) and the
-§C.6 self-check all compare — a value still naming a temp cannot be
-compared across paths, so keeping one would mean re-introducing it after
-the fact, not saving a step. And the output contract is the pipeline's
-normal form, not merely "synthesizable": §10.3 sits downstream of
-`ScopeElevator`, nothing after that point handles block-scoped
-declarations — the same argument §10 makes against emitting a `typedef
-enum` — and the 1364 output mode has no unnamed-block declarations at
-all. The cost is honest: substitution clones a temp's defining expression
-into every read, which synthesis CSE absorbs but a reader must wade
-through; §15 records the emission-side fix if that ever bites.
+**Substituted in the analysis; materialized on the way out when the
+language demands it.** The analysis always consumes the temp: paths are
+characterised as `(R_p, s_p)` over entry values, which is what merging
+paths, building guards, if-converting branches (§C.3) and the §C.6
+self-check all compare — a value still naming a temp cannot be compared
+across paths. The temp's *scope* never survives either: §10.3 sits
+downstream of `ScopeElevator`, nothing after that point handles
+block-scoped declarations — the same argument §10 makes against emitting a
+`typedef enum` — and 1364 has no unnamed-block declarations at all.
+
+What does come back, when needed, is the *name*: emission re-materializes
+a substituted value as a **module-level continuous assignment** —
+`wire [8:0] __fsm_t_sum = a + b;`, `__fsm`-prefixed and collision-checked
+like every §10 declaration, read inside the case arm. It is correct by the
+same sampling argument as everything else — the wire is a pure function of
+registers and inputs, so an `always_ff` RHS reading it at the edge sees
+exactly what the inline expression would have produced — it works
+identically in the 1364 mode (`wire` + `assign`, no cast needed, the
+declared width doing the truncating), and it is the shape `WireSplit`, the
+folding passes and the flattener already own. Three conditions call for
+it, and the first two are not cosmetic:
+
+- **the substituted form is unprintable** — `t = a + b; q <= t[7:0];`
+  substitutes to `(a + b)[7:0]`, and a part-select applies to a name,
+  never to an expression;
+- **the declared width was doing work** — with `logic [8:0] t`, the
+  `a + b` truncates at 9 bits *because the declaration says so*, while
+  substituted inline it evaluates at the surrounding context width
+  (§11.6) and can differ in the carry corner. SystemVerilog could patch
+  that with a `SizeCast`; 1364 cannot, and one rule for both modes beats
+  two. The test is exact: materialize when the substituted expression's
+  context width would differ from the temp's declared width;
+- **readability**, at the emitter's discretion — a value read many times
+  may deserve a name even where inline is legal; §15 keeps this purely
+  cosmetic half as the optional part.
+
+The same mechanism, applied *across* states, is a lightweight resource
+sharing: two case arms reading one materialized wire present the
+synthesizer a single network, and states being mutually exclusive, nothing
+ever contends. It shares only *identical* expressions — naming, not
+binding: one operator serving different operands behind a state-driven mux
+is HLS allocation, the thing §C.2 forbids — and §15 records it as a
+hint-enabled v2 mode.
+
+None of it disturbs folding: a temp whose value the veriparse machinery
+*can* fold stays substituted, and the `ConstantFolding`/`VariableFolding`
+that §10.3 runs right after this pass collapse it to the constant — an
+unrolled copy's index arithmetic never earns a wire. Materialization is
+for the values that remain expressions.
 
 This is not a local invention. It is how the FSMD literature characterises
 a path: by the condition under which it is taken and by what it leaves in
@@ -1083,8 +1119,10 @@ system function outside that subset is rejected by the second row.
 ## 10. Generated form, naming, and pass placement
 
 Output is a plain `always_ff` with a `case (state)`, one **`localparam` per
-state**, a vector state register, and the inferred countdown registers —
-accepted by every downstream tool.
+state**, a vector state register, the induced countdown and index
+registers of §7.2's rolled lowering, and the `wire` temporaries §6.1's
+emitter materializes when substitution cannot be printed — accepted by
+every downstream tool.
 
 **Not a `typedef enum`, and the reason is the pipeline position.** The
 obvious emission is `typedef enum logic [1:0] {…} __fsm_state_t;`, and it is
@@ -1526,10 +1564,10 @@ Positioning, so that later choices can be argued against something.
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | Counter splitting | one shared countdown per process, re-initialised on entry (rolled `repeat` timers share it; a rolled `for` keeps its own index) | post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
-| Expression duplication from §6.1 substitution (a temp read `N` times emits `N` clones of its defining expression) | accepted — synthesis CSE makes it QoR-neutral, so only readability pays | v2 emission nicety: re-materialize shared subexpressions as module-level prefixed temporaries, after all analysis — a presentation choice, no scoped declarations, no semantic content |
+| Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
 | Cut point inside a `function`/`task` | hard error (§9) | subroutine inlining before the cut walk |
-| Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule | out of scope by construction; this pass is not a prefix of full HLS |
+| Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule; the shared-wire CSE above is the structural subset that needs no allocation | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
@@ -2103,6 +2141,13 @@ semantics say must observe the write. The rule: a dynamic write marks the
 variable unknown in the blocking layer, and a subsequent read of it in the
 same path is an error rather than a guess. Rare, and refusing it costs
 nothing next to getting it silently wrong.
+
+**A temp's declared width.** `logic [8:0] t; t = a + b; q <= t + c;` —
+substituted inline, `a + b` evaluates at the surrounding context width
+instead of truncating at 9 bits (§11.6), and the carry corner differs.
+§6.1's materialization test is exact — a `wire` when context width and
+declared width disagree — and the trap is that the two agree on almost
+every stimulus that was not written to catch the corner.
 
 **Reading an induced variable.** The counter is a register, so a guard
 comparing it (`cnt == 0`) is over the entry value — the same rule as
