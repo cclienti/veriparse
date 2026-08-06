@@ -1776,6 +1776,13 @@ std::string VerilogGenerator::render_sens(const AST::Sens::Ptr node) const
         default:
             break;
         }
+
+        // Conditional event control (IEEE 1800-2017 §9.4.2.3): the
+        // qualifier belongs to this event term.
+        const AST::Node::Ptr condition = node->get_condition();
+        if(condition) {
+            result += " iff " + render(condition);
+        }
     }
     return result;
 }

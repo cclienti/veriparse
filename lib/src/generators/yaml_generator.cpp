@@ -4053,6 +4053,8 @@ YAML::Node YAMLGenerator::render_sens(const AST::Sens::Ptr node) const
         }
 
         content["sig"] = render(node->get_sig());
+
+        content["condition"] = render(node->get_condition());
     }
 
     node_sens["Sens"] = content;

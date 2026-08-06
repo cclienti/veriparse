@@ -441,6 +441,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_SENS_OR      "'or'"
 %token                  TK_POSEDGE      "'posedge'"
 %token                  TK_NEGEDGE      "'negedge'"
+%token                  TK_IFF          "'iff'"
 %token                  TK_INITIAL      "'initial'"
 %token                  TK_IF           "'if'"
 %token                  TK_ELSE         "'else'"
@@ -4030,6 +4031,25 @@ edgesig:        TK_POSEDGE edgesig_base
                 {
                     $$ = $2;
                     $$->set_type(AST::Sens::TypeEnum::NEGEDGE);
+                }
+
+                // Conditional event control (IEEE 1800-2017 §9.4.2.3). The
+                // qualifier binds to the event term, not to the list (Annex
+                // A.6.5), so each Sens carries its own condition:
+                // @(posedge clk iff en or posedge rst) conditions only the
+                // first term.
+        |       TK_POSEDGE edgesig_base TK_IFF expression
+                {
+                    $$ = $2;
+                    $$->set_type(AST::Sens::TypeEnum::POSEDGE);
+                    $$->set_condition($4);
+                }
+
+        |       TK_NEGEDGE edgesig_base TK_IFF expression
+                {
+                    $$ = $2;
+                    $$->set_type(AST::Sens::TypeEnum::NEGEDGE);
+                    $$->set_condition($4);
                 }
         ;
 

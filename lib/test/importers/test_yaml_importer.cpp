@@ -3300,6 +3300,7 @@ TEST(YAMLImporter, Sens)
                     "  filename: sens.v\n"
                     "  line: 4\n"
                     "  sig:\n"
+                    "  condition:\n"
                     "  type: NONE\n");
 
     AST::Node::Ptr ast = Importers::YAMLImporter().import(str);
@@ -3309,6 +3310,7 @@ TEST(YAMLImporter, Sens)
     ASSERT_TRUE(yaml["Sens"]["filename"].as<std::string>() == "sens.v");
     ASSERT_TRUE(yaml["Sens"]["line"].as<int>() == 4);
     ASSERT_TRUE(yaml["Sens"]["sig"]);
+    ASSERT_TRUE(yaml["Sens"]["condition"]);
     ASSERT_TRUE(yaml["Sens"]["type"].as<AST::Sens::TypeEnum>() == AST::Sens::TypeEnum::NONE);
 }
 

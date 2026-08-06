@@ -706,6 +706,7 @@ Sens:
     type: enum(All, Posedge, Negedge, None)
   children:
     sig: Node
+    condition: Node # `iff` qualifier on this event term (IEEE 1800-2017 §9.4.2.3)
 
 Defparamlist:
   properties:

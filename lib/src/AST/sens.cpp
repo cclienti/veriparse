@@ -16,8 +16,9 @@ Sens::Sens(const std::string &filename, uint32_t line) : Node(filename, line)
     set_node_categories({NodeType::Node});
 }
 
-Sens::Sens(const Node::Ptr sig, const TypeEnum &type, const std::string &filename, uint32_t line)
-    : Node(filename, line), m_sig(sig), m_type(type)
+Sens::Sens(const Node::Ptr sig, const Node::Ptr condition, const TypeEnum &type,
+           const std::string &filename, uint32_t line)
+    : Node(filename, line), m_sig(sig), m_condition(condition), m_type(type)
 {
     set_node_type(NodeType::Sens);
     set_node_categories({NodeType::Node});
@@ -72,6 +73,16 @@ bool Sens::replace(Node::Ptr node, Node::Ptr new_node)
             found = true;
         }
     }
+    if(get_condition()) {
+        if(get_condition() == node) {
+            if(found) {
+                LOG_WARNING << *this << ", "
+                            << "Sens::replace matches multiple times (Node::condition)";
+            }
+            set_condition(new_node);
+            found = true;
+        }
+    }
     return found;
 }
 
@@ -99,6 +110,9 @@ Node::ListPtr Sens::get_children(void) const
     if(get_sig()) {
         list->push_back(std::static_pointer_cast<Node>(get_sig()));
     }
+    if(get_condition()) {
+        list->push_back(std::static_pointer_cast<Node>(get_condition()));
+    }
     return list;
 }
 
@@ -106,6 +120,9 @@ void Sens::clone_children(Node::Ptr new_node) const
 {
     if(get_sig()) {
         cast_to<Sens>(new_node)->set_sig(get_sig()->clone());
+    }
+    if(get_condition()) {
+        cast_to<Sens>(new_node)->set_condition(get_condition()->clone());
     }
 }
 

@@ -10463,6 +10463,19 @@ AST::Node::Ptr YAMLImporter::convert_sens(const YAML::Node node) const
                 result->set_sig(child);
             }
         }
+
+        // Manage Child condition
+        if(node["condition"]) {
+            const YAML::Node node_condition = node["condition"];
+            // Set the child
+            AST::Node::Ptr child = convert(node_condition);
+            if(child) {
+                if(!result) {
+                    result = std::make_shared<AST::Sens>();
+                }
+                result->set_condition(child);
+            }
+        }
     }
 
     // Return the result

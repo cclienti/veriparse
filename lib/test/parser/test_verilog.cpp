@@ -261,6 +261,12 @@ TEST(VerilogParserErrorTest, vpp_default_nettype_integer)
 // SystemVerilog tests
 TEST(VerilogParserTest, sv_logic0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_always_ff0) { TEST_CORE_SV; }
+// Conditional event control (IEEE 1800-2017 §9.4.2.3): the `iff` qualifier
+// binds to its event term (Annex A.6.5), so in a multi-term list only the
+// qualified Sens carries a condition.
+TEST(VerilogParserTest, sv_iff0) { TEST_CORE_SV; }
+// `iff` is not a Verilog-2005 keyword: in non-SV mode it stays an identifier.
+TEST(VerilogParserTest, iff_ident0) { TEST_CORE; }
 TEST(VerilogParserTest, sv_always_comb0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_always_latch0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_case0) { TEST_CORE_SV; }
