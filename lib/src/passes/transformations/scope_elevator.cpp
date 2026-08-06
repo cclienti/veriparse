@@ -32,6 +32,26 @@ std::string render_scope_stack(const ScopeElevator::ScopeStack &stack, bool drop
     return scope_value;
 }
 
+/// True if the process under @p parent carries (* veriparse_fsm *): the parser
+/// binds item attributes structurally, so the process's parent is the
+/// Pragmalist holding them.
+bool is_fsm_marked(const AST::Node::Ptr &parent)
+{
+    if(!parent || !parent->is_node_type(AST::NodeType::Pragmalist)) {
+        return false;
+    }
+    const auto &pragmas = AST::cast_to<AST::Pragmalist>(parent)->get_pragmas();
+    if(!pragmas) {
+        return false;
+    }
+    for(const auto &pragma : *pragmas) {
+        if(pragma && pragma->get_name() == "veriparse_fsm") {
+            return true;
+        }
+    }
+    return false;
+}
+
 // We basically render scoped identifier without taking into account
 // ranges such as "[i]". This is not neccessay to identify properly
 // the scope hierarchy and it ease the matching.
@@ -97,6 +117,17 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
         m_scope_stack.pop_back();
     } break;
 
+    case AST::NodeType::Initial: {
+        // A process marked (* veriparse_fsm *) keeps its named blocks: their
+        // labels name the states of the behavioural lowering (ADR-0014
+        // §10.1). Declarations inside them are still renamed below, so two
+        // `int i` in two segments stay apart.
+        const bool saved = m_in_fsm_process;
+        m_in_fsm_process = saved || is_fsm_marked(parent);
+        ret += recurse_in_childs(node, recfct);
+        m_in_fsm_process = saved;
+    } break;
+
     case AST::NodeType::Block: {
         const auto &block = AST::cast_to<AST::Block>(node);
         const auto &scope = block->get_scope();
@@ -122,7 +153,9 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
                 rename_nested_variables(node, parent, scope, rmap);
                 rename_nested_identifiers(node, parent, rmap);
                 m_scope_stack.push_back(scope); // Restore the scope
-                pickup_statements(parent, node, block->get_statements());
+                if(!m_in_fsm_process) {
+                    pickup_statements(parent, node, block->get_statements());
+                }
             }
         } else {
             pickup_statements(parent, node, block->get_statements());

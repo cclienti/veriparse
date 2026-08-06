@@ -39,6 +39,11 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
 TEST(PassesTransformation_ScopeElevator, scope0) { TEST_CORE; }
+// Inside a process marked (* veriparse_fsm *), named blocks are renamed but
+// not spliced (ADR-0014 §10.1): their labels name the states of the
+// behavioural lowering, and the renaming keeps the two `cnt_tmp` apart.
+// Unmarked processes elevate exactly as before.
+TEST(PassesTransformation_ScopeElevator, fsm_scope0) { TEST_CORE; }
 TEST(PassesTransformation_ScopeElevator, scope1) { TEST_CORE; }
 TEST(PassesTransformation_ScopeElevator, scope2) { TEST_CORE; }
 TEST(PassesTransformation_ScopeElevator, scope3) { TEST_CORE; }
