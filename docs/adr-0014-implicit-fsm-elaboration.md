@@ -56,6 +56,11 @@
     assignments; §6 turns their difference into the storage decision.
   - **§11.6** — expression bit lengths: the context-width rules §6.1's
     materialization test is built on.
+  - **§13.3 / §13.4** — tasks and functions: §13.4 forbids time-controlled
+    statements in a `function`, so a function can never hold a cut point
+    and §9 accepts pure calls on that guarantee; §13.3's argument
+    copy-in/out is what gives a multi-cycle task's arguments their
+    capture-at-entry meaning when §15's inlining arrives.
   - **§12.7** — loop statements (`for`, `while`, `repeat`, `forever`);
     §12.7.3 evaluates a `repeat` count once, on entry — §7.2's rolled
     countdown implements exactly that.
@@ -644,6 +649,13 @@ carry the same edge on the same signal. The rule extends to *and the same
 `iff` condition, if any*, and the enable falls out of the uniformity that
 is already there.
 
+A text macro puts that uniformity beyond the reach of oversight:
+`` `define COMMIT @(posedge clk iff en) `` written once and used at every
+cut point — `veripp` expands it, the reference simulates the expansion, so
+the hard constraint holds and the mismatch rows below become unwritable.
+Worth doing in any process with more than a few waits; the v2 task
+inlining of §15 is the scoped version of the same idea.
+
 **Disagreement is an error** — waits some of which carry a condition and
 some of which do not, or which carry different ones. Two conditions are the
 same when their expressions are structurally equal after the passes that
@@ -1098,7 +1110,8 @@ unmarked column has already been misread once.
 | `WaitStatement` / level-sensitive control | not an edge; no boundary to cut at | IEEE §9.4.3 |
 | `fork`/`join` | concurrent control flow the state model cannot express | IEEE §9.3.2 |
 | `disable` | abortive control flow the state model cannot express | IEEE §9.6.2 |
-| cut point inside a called `function`/`task` | not visible in the process body; v1 does not inline to find it | ADR §13 |
+| cut point inside a called `task` | not visible in the process body; v1 does not inline to find it (§15). A `function` can never hold one — IEEE §13.4 forbids time-controlled statements there | IEEE §13.4, ADR §15 |
+| a `function` called in a marked process that writes non-local state | expression position is no place for a side effect: the `(R_p, s_p)` model would miss the write silently. **Pure functions are accepted** and pass through to the output as the ordinary combinational calls they are | IEEE §13.4 |
 | loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
@@ -1566,7 +1579,7 @@ Positioning, so that later choices can be argued against something.
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
-| Cut point inside a `function`/`task` | hard error (§9) | subroutine inlining before the cut walk |
+| Cut point inside a called `task` (multi-cycle sub-sequence) | hard error (§9); a pure `function` is accepted, IEEE §13.4 keeping it cut-point-free by construction | v2 `TaskInliner` before the cut walk: a task spanning waits is a *reusable sub-sequence* — Appendix B's `LOW`/`HIGH` pairs, called four times. IEEE §13.3's copy-in gives an `input` argument defined capture-at-entry semantics — an induced register per call — with per-call-site state naming (§10.1 composition, `LoopUnrolling`-style uniquification), copy-out at task end, recursion rejected |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule; the shared-wire CSE above is the structural subset that needs no allocation | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
