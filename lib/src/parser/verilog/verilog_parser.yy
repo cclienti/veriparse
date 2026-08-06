@@ -710,6 +710,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %type   <AST::Sens::Ptr>                     edgesig_base
 %type   <AST::Sens::ListPtr>                 levelsigs
 %type   <AST::Sens::Ptr>                     levelsig
+%type   <AST::Sens::Ptr>                     levelsig_iff
 %type   <AST::Sens::Ptr>                     levelsig_base
 %type   <AST::Node::Ptr>                     basic_statement
 %type   <AST::Node::Ptr>                     basic_statement_base
@@ -4070,22 +4071,36 @@ edgesig_base:   identifier
         ;
 
 
-levelsigs:      levelsigs TK_SENS_OR levelsig
+levelsigs:      levelsigs TK_SENS_OR levelsig_iff
                 {
                     $$ = $1;
                     $$->push_back($3);
                 }
 
-        |       levelsigs TK_COMMA levelsig
+        |       levelsigs TK_COMMA levelsig_iff
                 {
                     $$ = $1;
                     $$->push_back($3);
                 }
 
-        |       levelsig
+        |       levelsig_iff
                 {
                     $$ = std::make_shared<AST::Sens::List>();
                     $$->push_back($1);
+                }
+        ;
+
+
+                // Conditional event control on a level term: A.6.5 makes the
+                // edge identifier optional in `expression [iff expression]`.
+                // Legal only inside a parenthesized event expression, which is
+                // why `TK_AT levelsig` below does not go through this rule.
+levelsig_iff:   levelsig {$$ = $1;}
+
+        |       levelsig TK_IFF expression
+                {
+                    $$ = $1;
+                    $$->set_condition($3);
                 }
         ;
 
