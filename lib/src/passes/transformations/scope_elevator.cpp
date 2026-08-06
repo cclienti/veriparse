@@ -250,6 +250,14 @@ int ScopeElevator::process_scoped_identifiers(const AST::Node::Ptr &node, AST::N
             auto itend = m_global_replace_map.end();
             for(const auto &elt : search_list) {
                 if(elt != itend) {
+                    if(m_fsm_kept_ids.count(elt->first)) {
+                        LOG_ERROR_N(node) << "hierarchical reference '" << render_identifier(id)
+                                          << "' targets a declaration kept inside a "
+                                          << "(* veriparse_fsm *) process: the behavioural "
+                                          << "lowering consumes the block, so nothing survives "
+                                          << "for the reference to bind to";
+                        return 1;
+                    }
                     auto matched_scope = elt->second.first;
                     auto matched_id = elt->second.second;
                     LOG_DEBUG_N(node) << "matched scope: " << render_scope_stack(matched_scope);
@@ -326,6 +334,10 @@ int ScopeElevator::rename_nested_variables(const AST::Node::Ptr &node, const AST
 
         m_global_replace_map.emplace(scope_stack_str + "." + var_name,
                                      std::make_pair(new_scope_stack, new_var_name));
+
+        if(m_in_fsm_process) {
+            m_fsm_kept_ids.insert(scope_stack_str + "." + var_name);
+        }
     } else {
         // If the node is a block, keep track of the current stack
         bool is_block = node->is_node_type(AST::NodeType::Block);

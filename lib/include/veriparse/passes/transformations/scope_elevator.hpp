@@ -7,6 +7,7 @@
 #include <veriparse/AST/nodes.hpp>
 #include <list>
 #include <map>
+#include <set>
 
 namespace Veriparse
 {
@@ -59,6 +60,12 @@ private:
     /// the states of the behavioural lowering (ADR-0014 §10.1) — and unnamed
     /// ones stay untouched, being its temporary scopes (ADR-0014 §6).
     bool m_in_fsm_process = false;
+
+    /// Replace-map keys whose declarations stayed inside a kept block: a
+    /// hierarchical reference matching one has nothing to bind to — the
+    /// declaration was not hoisted, and the lowering consumes the block —
+    /// so the match is an error rather than a rewrite (ADR-0014 §9).
+    std::set<std::string> m_fsm_kept_ids;
 };
 
 } // namespace Transformations

@@ -38,12 +38,27 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     /* Check parsed against reference */                                                           \
     ASSERT_TRUE(source_ref->is_equal(*source, false))
 
+#define TEST_ERROR                                                                                 \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.parse(test_helpers.get_verilog_filename(test_name));                                   \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    ASSERT_NE(0, Passes::Transformations::ScopeElevator().run(source))
+
 TEST(PassesTransformation_ScopeElevator, scope0) { TEST_CORE; }
 // Inside a process marked (* veriparse_fsm *), named blocks are renamed but
 // not spliced (ADR-0014 §10.1): their labels name the states of the
 // behavioural lowering, and the renaming keeps the two `cnt_tmp` apart.
 // Unmarked processes elevate exactly as before.
 TEST(PassesTransformation_ScopeElevator, fsm_scope0) { TEST_CORE; }
+// A hierarchical reference into a kept block has nothing to bind to: the
+// declaration stays inside the surviving block and the lowering consumes it
+// (ADR-0014 §9). Rejected here rather than silently rewritten to a flat
+// name that no longer resolves.
+TEST(PassesTransformation_ScopeElevator, fsm_scope_hier0) { TEST_ERROR; }
 TEST(PassesTransformation_ScopeElevator, scope1) { TEST_CORE; }
 TEST(PassesTransformation_ScopeElevator, scope2) { TEST_CORE; }
 TEST(PassesTransformation_ScopeElevator, scope3) { TEST_CORE; }
