@@ -157,7 +157,10 @@ int ScopeElevator::process_variables(const AST::Node::Ptr &node, AST::Node::Ptr 
                     pickup_statements(parent, node, block->get_statements());
                 }
             }
-        } else {
+        } else if(!m_in_fsm_process) {
+            // An unnamed block of a marked process holds only `=`-temporaries
+            // (ADR-0014 §6): its boundary is what the scoping check reads, so
+            // it survives untouched — no rename, no splice.
             pickup_statements(parent, node, block->get_statements());
         }
 
