@@ -223,6 +223,9 @@ TEST(VerilogGeneratorTest, width1) { TEST_CORE; }
 // SystemVerilog generator round-trip tests
 TEST(VerilogGeneratorTest, sv_logic0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_always_ff0) { TEST_CORE_SV; }
+// The `iff` qualifier renders per event term and survives the reparse
+// (IEEE 1800-2017 §9.4.2.3).
+TEST(VerilogGeneratorTest, sv_iff0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_always_comb0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_always_latch0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_case0) { TEST_CORE_SV; }

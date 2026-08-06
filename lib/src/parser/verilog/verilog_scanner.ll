@@ -104,6 +104,11 @@ using token = Veriparse::Parser::VerilogParser::token;
                   yylval->build<std::string>(yytext);
                   return token::TK_IDENTIFIER;
               }
+"iff"         {
+                  if(m_sv_mode) return token::TK_IFF;
+                  yylval->build<std::string>(yytext);
+                  return token::TK_IDENTIFIER;
+              }
 "always_comb" {
                   if(m_sv_mode) return token::TK_ALWAYS_COMB;
                   yylval->build<std::string>(yytext);

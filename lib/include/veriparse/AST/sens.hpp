@@ -43,8 +43,8 @@ public:
     /**
      * Constructor, m_node_type is set to NodeType::Sens.
      */
-    Sens(const Node::Ptr sig, const TypeEnum &type, const std::string &filename = "",
-         uint32_t line = 0);
+    Sens(const Node::Ptr sig, const Node::Ptr condition, const TypeEnum &type,
+         const std::string &filename = "", uint32_t line = 0);
 
     /**
      * Assignment operator, do not affect children.
@@ -97,9 +97,19 @@ public:
     virtual Node::Ptr get_sig(void) const { return m_sig; }
 
     /**
+     * Return the child condition.
+     */
+    virtual Node::Ptr get_condition(void) const { return m_condition; }
+
+    /**
      * Change the child sig.
      */
     virtual void set_sig(Node::Ptr sig) { m_sig = sig; }
+
+    /**
+     * Change the child condition.
+     */
+    virtual void set_condition(Node::Ptr condition) { m_condition = condition; }
 
     /**
      * Return the property type.
@@ -136,6 +146,7 @@ private:
     virtual Node::Ptr alloc_same(void) const override;
 
     Node::Ptr m_sig{};
+    Node::Ptr m_condition{};
     TypeEnum m_type{};
 };
 

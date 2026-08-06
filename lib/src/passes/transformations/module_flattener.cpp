@@ -551,7 +551,8 @@ AST::Node::ListPtr ModuleFlattener::bind(const AST::Instance::Ptr &instance,
                 const auto &subst =
                     std::make_shared<AST::BlockingSubstitution>(lvalue, rvalue, nullptr, nullptr);
                 const auto &senslist = std::make_shared<AST::Sens::List>();
-                senslist->push_back(std::make_shared<AST::Sens>(nullptr, AST::Sens::TypeEnum::ALL));
+                senslist->push_back(
+                    std::make_shared<AST::Sens>(nullptr, nullptr, AST::Sens::TypeEnum::ALL));
                 assign_items->push_back(std::make_shared<AST::Always>(
                     std::make_shared<AST::Senslist>(senslist), subst));
             }

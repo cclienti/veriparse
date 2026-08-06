@@ -2897,14 +2897,16 @@ TEST(YAMLGenerator, Sens)
     Logger::add_stderr_sink();
 
     AST::Node::Ptr c_sig(new AST::Node);
+    AST::Node::Ptr c_condition(new AST::Node);
     AST::Sens::TypeEnum p_type = AST::Sens::TypeEnum::NONE;
 
-    AST::Sens::Ptr m_sens(new AST::Sens(c_sig, p_type, "filename", 0));
+    AST::Sens::Ptr m_sens(new AST::Sens(c_sig, c_condition, p_type, "filename", 0));
 
     YAML::Node yaml = Generators::YAMLGenerator().render(m_sens);
 
     ASSERT_TRUE(yaml["Sens"]);
     ASSERT_TRUE(yaml["Sens"]["sig"]);
+    ASSERT_TRUE(yaml["Sens"]["condition"]);
     ASSERT_TRUE(yaml["Sens"]["type"].as<AST::Sens::TypeEnum>() == AST::Sens::TypeEnum::NONE);
 }
 

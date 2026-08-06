@@ -7271,15 +7271,24 @@ std::string DotGenerator::render_sens(const AST::Sens::Ptr node) const
         }
         ss << "\t\t<TR><TD PORT=\"p1\" BGCOLOR=\"darkslategray\">"
            << "<FONT COLOR=\"wheat\">sig</FONT></TD></TR>\n";
+        ss << "\t\t<TR><TD PORT=\"p2\" BGCOLOR=\"darkslategray\">"
+           << "<FONT COLOR=\"wheat\">condition</FONT></TD></TR>\n";
 
         ss << "\t\t</TABLE>>];" << std::endl;
         if(node->get_sig().get()) {
             ss << render(node->get_sig());
         }
+        if(node->get_condition().get()) {
+            ss << render(node->get_condition());
+        }
         uint64_t childID;
         childID = reinterpret_cast<uint64_t>(node->get_sig().get());
         if(childID) {
             ss << "\tn" << nodeID << ":p1 -> n" << childID << ";" << std::endl;
+        }
+        childID = reinterpret_cast<uint64_t>(node->get_condition().get());
+        if(childID) {
+            ss << "\tn" << nodeID << ":p2 -> n" << childID << ";" << std::endl;
         }
     }
 
