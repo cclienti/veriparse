@@ -53,6 +53,11 @@ protected:
 private:
     ScopeStack m_scope_stack;
     GlobalReplaceMap m_global_replace_map;
+
+    /// True while walking a process marked (* veriparse_fsm *): its named
+    /// blocks are renamed as usual but kept in place, since their labels
+    /// name the states of the behavioural lowering (ADR-0014 §10.1).
+    bool m_in_fsm_process = false;
 };
 
 } // namespace Transformations
