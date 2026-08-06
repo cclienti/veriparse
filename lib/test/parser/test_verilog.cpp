@@ -265,6 +265,9 @@ TEST(VerilogParserTest, sv_always_ff0) { TEST_CORE_SV; }
 // binds to its event term (Annex A.6.5), so in a multi-term list only the
 // qualified Sens carries a condition.
 TEST(VerilogParserTest, sv_iff0) { TEST_CORE_SV; }
+// The edge-less form: A.6.5 makes the edge identifier optional, so a level
+// term takes the qualifier too — inside a parenthesized event expression.
+TEST(VerilogParserTest, sv_iff1) { TEST_CORE_SV; }
 // `iff` is not a Verilog-2005 keyword: in non-SV mode it stays an identifier.
 TEST(VerilogParserTest, iff_ident0) { TEST_CORE; }
 TEST(VerilogParserTest, sv_always_comb0) { TEST_CORE_SV; }
