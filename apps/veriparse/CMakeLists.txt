@@ -265,6 +265,46 @@ if(NOT WIN32)
       VERILOG_SOURCES ${_struct_pipe_sources}
       HARNESS ${_struct_pipe_harness}
     )
+
+    # verilower differential cosim (ADR-0014 §11): the behavioural source is
+    # the golden model — verilated under --timing, it runs as written — and
+    # the lowered machine must match it at the constant offset of the reset
+    # hold. Both tests share one expected trace.
+    set(_straight_line_src
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/src/straight_line.sv)
+    set(_straight_line_lowered
+      ${CMAKE_CURRENT_BINARY_DIR}/straight_line_lowered.v)
+
+    add_custom_command(
+      OUTPUT ${_straight_line_lowered}
+      COMMAND $<TARGET_FILE:verilower>
+              --sv
+              --top-module straight_line
+              --output ${_straight_line_lowered}
+              --log ${CMAKE_CURRENT_BINARY_DIR}/straight_line_lowered.log
+              ${_straight_line_src}
+      DEPENDS verilower ${_straight_line_src}
+      COMMENT "verilower straight_line"
+      VERBATIM)
+
+    add_cosim_test(
+      NAME test_cosim_straight_line_beh
+      TOP_MODULE straight_line
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_straight_line_src}
+      VERILATOR_ARGS --timing
+      HARNESS
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/test_straight_line_beh.cpp
+    )
+    add_cosim_test(
+      NAME test_cosim_straight_line_lower
+      TOP_MODULE straight_line
+      NO_VERIFLAT
+      VERILOG_SOURCES ${_straight_line_lowered}
+      VERILATOR_ARGS -Wno-CASEINCOMPLETE
+      HARNESS
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/test_straight_line_lower.cpp
+    )
   endif()
 
 endif()
