@@ -23,7 +23,12 @@
   compiles behaviour into structure, which is a different job from
   flattening a hierarchy, and §13 records that it is the first of a family
   — the CFG construction and dataflow checks below are generic, only the
-  RTL emission is FSM-specific.
+  RTL emission is FSM-specific. The two tools stay separate and **chain**:
+  verilower's source-to-source output is a first-class deliverable,
+  reviewed and simulated on its own, and `veriflat` consumes it like any
+  source. A future `veriflat --fsm` running the pass in-process stays
+  open, and cheaply — precisely because §10's default emission is safe in
+  that position too.
 - **Hard constraint, inherited unchanged**: the source must run as-is in
   any conforming simulator. Anything that would require veriparse to run
   before a behavioural simulation is rejected — this rules out a custom
@@ -1137,17 +1142,31 @@ registers of §7.2's rolled lowering, and the `wire` temporaries §6.1's
 emitter materializes when substitution cannot be printed — accepted by
 every downstream tool.
 
-**Not a `typedef enum`, and the reason is the pipeline position.** The
-obvious emission is `typedef enum logic [1:0] {…} __fsm_state_t;`, and it is
-wrong here: §10.3 puts this pass after `EnumElaboration`, `EnumInliner` and
-`TypedefInliner` have all run, and nothing re-runs them. A typedef or an
-enum created at that point survives into `ConstantFolding`,
-`VariableFolding`, `DeadcodeElimination` and `ModuleFlattener`, none of
-which handle either — the flattener has no `Typedef` or `Enum` case at all.
-That is precisely the breakage ADR-0009 was written to remove, and
-reintroducing it from the far end of the pipeline would be a silent
-regression on any design carrying a marked process. So the pass emits what
-the pipeline downstream of it already understands:
+**Not a `typedef enum` — and the honest argument is narrower than
+"never".** The obvious emission is `typedef enum logic [3:0] {…}
+__fsm_state_t;`, and three things rule it out as the *default*. First,
+verilower's own pipeline: §10.3 puts this pass after `EnumElaboration`,
+`EnumInliner` and `TypedefInliner` have run, and nothing re-runs them — an
+enum created at that point survives into the `ConstantFolding`,
+`VariableFolding` and `DeadcodeElimination` that follow the slot, none of
+which was ever taught it: the mid-pipeline breakage ADR-0009 was written
+to remove, reintroduced from the far end. Second, deployment: the pass is
+a library pass any front end may invoke (§2), including a future
+`veriflat --fsm` running it in-process ahead of the flattener — which has
+no `Typedef` or `Enum` case at all — so the default emission must be safe
+in *every* pipeline position, not just verilower's. Third, output
+language: `typedef enum` does not exist in 1364-2005, and one emitter
+serving both modes beats two.
+
+What the argument is **not** is a claim that enums in output are broken.
+Across tools, through serialization, they are fine: verilower writes a
+file, `veriflat` re-parses it, and its own ADR-0009 machinery inlines the
+enum like any user-written one — the breakage was always about
+mid-pipeline creation within one run, never about enums in source. §15
+therefore keeps enum emission as an opt-in style for the chained SV
+workflow, where it buys something real: enum states display symbolically
+in every simulator natively, no state-map filter needed. The default
+stays what every pipeline position and both output modes understand:
 
 ```systemverilog
 localparam [3:0] __fsm_WAIT_SEND = 4'd0;
@@ -1575,6 +1594,7 @@ Positioning, so that later choices can be argued against something.
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
+| `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
 | Counter splitting | one shared countdown per process, re-initialised on entry (rolled `repeat` timers share it; a rolled `for` keeps its own index) | post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |
