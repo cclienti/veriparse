@@ -226,6 +226,20 @@ TEST(VerilogGeneratorTest, sv_always_ff0) { TEST_CORE_SV; }
 // The `iff` qualifier renders per event term and survives the reparse
 // (IEEE 1800-2017 §9.4.2.3).
 TEST(VerilogGeneratorTest, sv_iff0) { TEST_CORE_SV; }
+TEST(VerilogGeneratorTest, sv_iff1) { TEST_CORE_SV; }
+
+// A Sens of type ALL carrying a condition is reachable only through a
+// hand-written YAML AST, and `@(* iff en)` parses nowhere: the qualifier
+// must be dropped, never rendered.
+TEST(VerilogGeneratorTest, sens_all_with_condition)
+{
+    auto sens = std::make_shared<AST::Sens>();
+    sens->set_type(AST::Sens::TypeEnum::ALL);
+    auto cond = std::make_shared<AST::Identifier>();
+    cond->set_name("en");
+    sens->set_condition(AST::to_node(cond));
+    EXPECT_EQ("*", Generators::VerilogGenerator().render(AST::to_node(sens)));
+}
 TEST(VerilogGeneratorTest, sv_always_comb0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_always_latch0) { TEST_CORE_SV; }
 TEST(VerilogGeneratorTest, sv_case0) { TEST_CORE_SV; }

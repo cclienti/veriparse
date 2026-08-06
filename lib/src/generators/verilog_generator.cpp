@@ -1778,9 +1778,11 @@ std::string VerilogGenerator::render_sens(const AST::Sens::Ptr node) const
         }
 
         // Conditional event control (IEEE 1800-2017 §9.4.2.3): the
-        // qualifier belongs to this event term.
+        // qualifier belongs to this event term. An ALL sens carrying one is
+        // only reachable through a hand-written YAML AST, and `@(* iff en)`
+        // parses nowhere, so the qualifier is dropped there.
         const AST::Node::Ptr condition = node->get_condition();
-        if(condition) {
+        if(condition && type != AST::Sens::TypeEnum::ALL) {
             result += " iff " + render(condition);
         }
     }
