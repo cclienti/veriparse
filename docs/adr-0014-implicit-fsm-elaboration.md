@@ -6,8 +6,9 @@
 - **Origin**: This ADR formalises `docs/imperative-fsm-design.md`, the
   design note that groomed the approach against two RS232 examples. That
   note's decisions carry over unless stated otherwise; §3 records the one
-  it reverses (attributes), and §7.2 splits the bounded-loop question the
-  note left whole — `repeat` counts, `for` unrolls.
+  it reverses (attributes), and §7.2 settles the bounded-loop question the
+  note left whole: unroll uniformly, `veriparse_no_unroll` to keep a loop
+  rolled.
 - **Scope**: A per-module pass that compiles a **multi-cycle imperative
   process** — an `initial` body carrying its own `@(posedge clk)` controls,
   the style a firmware engineer bit-banging a GPIO would write —
@@ -304,9 +305,9 @@ attributes" but two:
 > keeps paying for; an attribute turns it into a decision the author took.
 
 The second rule is why the reset signal is hinted rather than divined
-(§5), why an author who wants a counter machine writes the counter rather
-than the pass inferring one (§7.2, §7.3), and why state names are written
-rather than generated (§10.1). It
+(§5), why rolled-versus-unrolled on a bounded loop is the author's call,
+written `veriparse_no_unroll` rather than guessed (§7.2), and why state
+names are written rather than generated (§10.1). It
 also sets the bar for anything added later: a new heuristic ships as an
 attribute first, and only becomes a default once there is evidence the
 default is right.
@@ -325,6 +326,7 @@ non-empty), so nothing is lost on output.
 | `veriparse_reset_kind = "sync"\|"async"` | reset flavour of the generated `always_ff` | `"sync"` |
 | `veriparse_encoding = "binary"\|"one_hot"\|"gray"` | state encoding | `"binary"` |
 | `veriparse_prefix = "<id>"` | prefix for generated declarations | `__fsm` (§10) |
+| `veriparse_no_unroll` on a loop | keeps the loop rolled: one state group with an induced countdown or index register (§7.2) | bounded loops unroll |
 
 The three reset hints govern the whole reset branch, which under §5 is the
 init segment plus the state register.
@@ -729,18 +731,20 @@ the analysis in their head.
 **There is no exception, and the `for` step is not one.** In a clocked
 system an `=` that crosses an edge has no meaning to give it, so the rule is
 absolute for the author's variables. A `for` index is not one of those: it
-is loop control the construct owns, and unrolling consumes it — each
-replicated iteration carries the index as a constant (§7.2), so the blocking
-step never reaches the FSM at all. The `repeat` count is the same kind of
-thing with no name, and the countdown implementing it is the pass's own
-**induced variable** (§7.2, §C.3): storage by construction, outside the
+is loop control the construct owns. Unrolled — the §7.2 default — each
+replicated iteration carries it as a constant and the blocking step never
+reaches the FSM at all; rolled (`veriparse_no_unroll`, or a bound that does
+not fold), it becomes an **induced variable** (§7.2, §C.3) — a register of
+the index's declared type, stepped by the construct — like the countdown
+that implements a rolled `repeat`: storage by construction, outside the
 liveness question by definition.
 
-An author who wants a live counter — one register, not one state per
-iteration — writes it themselves (§7.3 shows the idiom), and then it is an
-ordinary variable taking `<=` like any other. What they may not do is write
-`=` to something that has to survive the edge — there is nothing for the
-pass to build out of that.
+An author who wants a counting shape the construct does not express — a
+custom re-arm point, a selection order the stride must survive — writes the
+register themselves (§7.3 shows the idiom), and then it is an ordinary
+variable taking `<=` like any other. What they may not do is write `=` to
+something that has to survive the edge — there is nothing for the pass to
+build out of that.
 
 **Every `<=` must be committed**, and that is the rule the discipline needs
 to be worth anything. A nonblocking assignment schedules a value for the
@@ -788,13 +792,16 @@ write and a nonblocking one disagree on what a *later statement in the same
 segment* sees (§10.4.1 vs §10.4.2), and the emitted RTL has only the
 nonblocking form to say it with.
 
-After §6 and §7.2 exactly one kind of blocking write reaches a segment: an
-`=` to a scope-local temporary. It never survives the cycle, so it is
-substituted into its uses and vanishes — no flip-flop, only the value it
-named. (An earlier draft also had to substitute the `for` index forward — a
-register stepped blocking by the construct, off by one when read naively.
-§7.2's replication removed the case: each unrolled iteration reads its
-index as a constant.)
+After §6 and §7.2, two kinds of blocking write reach a segment. An `=` to
+a scope-local temporary never survives the cycle, so it is substituted
+into its uses and vanishes — no flip-flop, only the value it named. And a
+**rolled loop's induced init and step** (§7.2) are blocking by the
+construct's own contract while the index is a register: a read *after*
+the step in the same segment must see the stepped value, so the pass
+substitutes it forward. Emitted naively — `data[__fsm_i]` where the
+source read the incremented index — every bit goes out one position late,
+a bug that simulates plausibly; the substitution is where that hazard
+dies. An unrolled iteration has neither problem: its index is a constant.
 
 **Rule.** A segment is straight-line code executed in one cycle, so the
 pass evaluates it symbolically and emits, per target, a single nonblocking
@@ -839,6 +846,24 @@ final value never leaves the segment was only ever a name for a
 subexpression, so substitution removes it entirely and no flip-flop is
 inferred.
 
+**Substituted, not kept — and not for the synthesizer's sake.** A blocking
+write to an arm-local temporary inside an `always_ff` is legal (§9.2.2.2
+forbids nothing there) and every synthesis flow accepts it, so the emitted
+RTL *could* carry the `=` and let the downstream tool do the work. It does
+not, for two structural reasons. The analysis has already consumed the
+temp: paths are characterised as `(R_p, s_p)` over entry values, which is
+what merging paths, building guards, if-converting branches (§C.3) and the
+§C.6 self-check all compare — a value still naming a temp cannot be
+compared across paths, so keeping one would mean re-introducing it after
+the fact, not saving a step. And the output contract is the pipeline's
+normal form, not merely "synthesizable": §10.3 sits downstream of
+`ScopeElevator`, nothing after that point handles block-scoped
+declarations — the same argument §10 makes against emitting a `typedef
+enum` — and the 1364 output mode has no unnamed-block declarations at
+all. The cost is honest: substitution clones a temp's defining expression
+into every read, which synthesis CSE absorbs but a reader must wade
+through; §15 records the emission-side fix if that ever bites.
+
 This is not a local invention. It is how the FSMD literature characterises
 a path: by the condition under which it is taken and by what it leaves in
 each variable, both read against the values held on entry — which is the
@@ -851,72 +876,93 @@ the algorithm and the data structures on it.
 
 Untouched. `LoopUnrolling` and the folding passes already own them.
 
-### 7.2 Bounded loops *containing* a cut point — `repeat` counts, `for` unrolls
+### 7.2 Bounded loops *containing* a cut point — unrolled, uniformly
 
-`repeat (N) @(posedge clk);` with `N` constant becomes **one state with a
-countdown register**, exiting at zero. The countdown is a pure
-implementation choice, not a guess: a `repeat` body has no index, so its
-`N` iterations are indistinguishable, and `N` copies of the same state —
-what an unguarded `LoopUnrolling` would make of the RS232 example's
-`repeat (BAUD_DIV)` at `BAUD_DIV = 100`, one hundred of them — describe
-the same machine at `N` times the cost. Nothing observable hangs on it.
+A bounded loop whose body contains a cut point **unrolls into consecutive
+states**, and the rule is the same for `for` and `repeat`: replication is
+what bounded iteration already means everywhere else in veriparse (§7.1),
+and a wait in the body changes what a copy *costs* — a state instead of a
+statement — not what the construct means. There is no heuristic on the
+loop body and no asymmetry between the two constructs. Appendix A's
+`DATA` loop yields `DATA_0 … DATA_7`, each copy reading its bit at a
+constant index.
 
-A bounded `for` is different, and this **reverses** an earlier draft of
-this ADR, which compiled it to one state plus an induced index register.
-The iterations of a `for` are *distinguishable* — the index names them — so
-counter-versus-unroll changes the machine's structure, and the counter form
-conjures a register the author never declared: the silent guess §3 rule 2
-forbids, made about the one thing §6 says the author names. A bounded `for`
-containing a cut point therefore **unrolls into consecutive states** —
-which is the only meaning `for` has anywhere else in veriparse (§7.1), and
-a wait in the body is no reason for the same keyword to describe a
-different machine. Appendix A's `DATA` loop yields `DATA_0 … DATA_7`, one
-counter state per copy, each reading its bit at a constant index. An author
-who wants the one-state machine writes its register — §7.3 shows the
-idiom — and nothing is lost but the guess.
+That uniformity **reverses this ADR twice over**, and the record matters.
+The first draft compiled both forms to counters; a revision then split
+them — `repeat` counting, `for` unrolling — on the argument that a
+`repeat` body has no index, so its iterations are indistinguishable and a
+countdown is a free implementation choice. True as far as it goes, but
+the split was the RS232 example steering the rule: `repeat (BAUD_DIV)` at
+`BAUD_DIV = 100` made a hundred states look absurd, and the absurdity was
+quietly promoted into a per-construct default — a heuristic on the body,
+which is what §3 rule 2 exists to forbid. One meaning for bounded loops;
+the state count is the author's decision, and it has a notation:
 
-The countdown holds `N-1 … 0`, so its width is `$clog2(N)` bits — except at
-`N = 1`, where `$clog2(1)` is 0 and `logic [$clog2(N)-1:0]` is the illegal
-range `[-1:0]`. `repeat (1) @(posedge clk)` needs no countdown at all: it is
-a single wait, one state, one edge out. **So `N = 1` induces no counter**,
-and the width rule applies only from `N = 2` up. Appendix A.2's
-`logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;` is the form for a `BAUD_DIV` of
-two or more, not a template to expand blindly.
+> **`(* veriparse_no_unroll *)` on a loop keeps it rolled.** It follows
+> every §3 rule: `veriparse_`-prefixed, no `fsm_` infix — it instructs
+> `LoopUnrolling`, not this pass, which is §13's decoupling — and it is a
+> pure implementation choice, the rolled and unrolled machines agreeing
+> cycle for cycle, so §3 rule 1 holds. It is §3 rule 2 in the flesh:
+> rolled-versus-unrolled is exactly a question the pass would otherwise
+> have guessed.
+
+**The rolled lowering** — taken by a `veriparse_no_unroll` loop, and
+forced on one whose bound does not fold to a constant, which is therefore
+no longer an error:
+
+- **`repeat (expr)` becomes one state with a countdown register.** IEEE
+  §12.7.3 evaluates the count once, on entry — so a non-constant `expr`
+  is *captured at entry* into the countdown by the standard's own
+  semantics, and a zero count skips the state through an entry guard.
+  For a constant `N` the countdown holds `N-1 … 0` in `$clog2(N)` bits —
+  except at `N = 1`, where `$clog2(1)` is 0 and `logic [$clog2(N)-1:0]`
+  is the illegal range `[-1:0]`: a single wait needs no countdown at all,
+  so **`N = 1` induces no counter** and the width rule applies from
+  `N = 2` up. Appendix A.2's `logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;` is
+  the form for a `BAUD_DIV` of two or more, not a template to expand
+  blindly.
+- **A `for` becomes its body's states plus an induced index register**,
+  honouring the construct's full contract, because the body may read the
+  index. The register takes the index's **declared type** — an `int i` is
+  a 32-bit signed flop; an author who wants four bits declares
+  `logic [3:0] i` — the init assigns it on entry, the stop condition is
+  the back-edge guard, re-evaluated each lap over entry values (which is
+  when the source evaluates it: in zero time, at the same cut point), and
+  the increment expression commits once per iteration, whatever it is.
+  The blocking init and step are substituted forward within their own
+  segment (§6.1).
+
+On a loop with **no** cut point in its body the hint is inert — the loop
+runs in zero time and there is no state to save — so the pass **warns**
+and it unrolls regardless: the §2 inert-mark rule, applied to a hint.
 
 **Prerequisite change, with its own commit and test:** `LoopUnrolling`
-must not unroll a **`RepeatStatement`** whose body contains an
-`EventStatement`, leaving it intact for this pass. Three things about that
-guard are easy to get wrong and are therefore normative here:
+honours `(* veriparse_no_unroll *)`, leaving the marked loop rolled. Two
+things about that guard are easy to get wrong and are therefore normative
+here:
 
-- **It covers `repeat` only — a bounded `for` keeps unrolling**, cut point
-  in the body or not, because that unrolling is the mechanism the `for`
-  rule above rides on: `LoopUnrolling` already substitutes the index
-  constant into every replicated copy and uniquifies the copy's
-  declarations and scopes, so the body reaching the CFG builder holds no
-  bounded `for` at all — eight copies with `data[3]`-style constant reads,
-  each with its still-rolled `repeat` inside — and the pass needs no `for`
-  handling of its own.
 - **It must still recurse into the body.** `LoopUnrolling::unroll` returns
   from `install_unrolled` on a `For`/`Repeat` node, so a guard that simply
   returns without unrolling never visits the body — and an unrollable loop
-  *nested inside* a guarded `repeat` would stay rolled, in exactly the
-  shape §7.1 and §C.4 step 1 assume is already gone. The guard skips the
-  unrolling of *this* loop and keeps descending.
+  *nested inside* a kept one would stay rolled, in exactly the shape §7.1
+  and §C.4 step 1 assume is already gone. The guard skips the unrolling of
+  *this* loop and keeps descending.
 - **It is unconditional, not restricted to marked processes**, and that is
   a deliberate change to a shared pass. Restricting it would mean teaching
-  `LoopUnrolling` about `veriparse_fsm`, which is the coupling §13 exists to
-  avoid. The blast radius is small: unrolling `repeat (N) @(posedge clk)`
-  produces `N` copies of a timing control inside a process, which no
-  downstream tool can synthesize either way, so nothing that was working
-  stops working. The test says so rather than the reader assuming it.
+  `LoopUnrolling` about `veriparse_fsm`, which is the coupling §13 exists
+  to avoid. The blast radius is the author's own ask: a kept loop in
+  ordinary RTL survives to the output, where the downstream flow will say
+  what it thinks of it — nothing that was working changes without the
+  attribute. The test says so rather than the reader assuming it.
 
-Loops without cut points keep unrolling exactly as today. That guard makes
-the pipeline ordering of §10.3 safe.
-
-A `for` whose bound does **not** fold to a constant can be neither
-replicated nor given an invented index register, so it is an **error**
-(§9), and the message carries the rewrite: §7.3's explicit-counter
-`while`.
+Loops without the attribute keep unrolling exactly as today — a bounded
+`for` with a cut point arrives at the CFG builder as replicated copies
+with `data[3]`-style constant reads, `LoopUnrolling` substituting the
+index and uniquifying each copy's declarations and scopes, so the pass
+needs no unrolling machinery of its own. A replicated group's size is
+visible in the state map (§10.2), and an unusually large expansion draws
+a §2-style informational note pointing at `veriparse_no_unroll` — the
+`BAUD_DIV = 100` timer is almost always meant rolled.
 
 ### 7.3 Data-dependent loops containing a cut point
 
@@ -936,9 +982,11 @@ A loop containing **no** cut point and no static exit inside a schedulable
 process is rejected: §9.2.2.1 names it a simulation deadlock, and it has no
 hardware meaning either.
 
-**The explicit-counter idiom.** The one-state machine §7.2 refuses to infer
-is written, not lost — the author declares the register, and the loop
-becomes data-dependent, which is exactly this section:
+**The explicit-counter idiom.** `veriparse_no_unroll` buys the induced
+register with the construct's own contract; a counting shape outside that
+contract — a custom re-arm point, MSB-first selection, an exit the stride
+must survive — is written by hand: the author declares the register, and
+the loop becomes data-dependent, which is exactly this section:
 
 ```systemverilog
 logic [3:0] i;                              // 4 bits: the exit value 8 must
@@ -952,11 +1000,13 @@ initial begin                               // never fails
       while (i < 8) begin
         tx <= data[i[2:0]];                 // entry value — no substitution
         i  <= i + 4'd1;                     // committed once per path (§6)
+        (* veriparse_no_unroll *)
         repeat (BAUD_DIV) @(posedge clk);
       end
     end
     begin : STOP
       tx <= 1'b1; i <= 4'd0;                // re-arm HERE, not only in reset
+      (* veriparse_no_unroll *)
       repeat (BAUD_DIV) @(posedge clk);
     end
   end
@@ -978,8 +1028,9 @@ with `i == 8` and skips it entirely — precisely the frame-chaining case
 v1 — the note's RS232 RX example depends on `continue`, and once states are
 explicit a jump is just an edge, needing none of the flag lowering
 ADR-0005 §3.2.1 deferred. The loops in question are the ones the CFG still
-sees — `while`, `forever`, a guarded `repeat`; in a bounded `for` the jumps
-are `LoopUnrolling`'s business, lowered across the unrolled sequence as
+sees — `while`, `forever`, a rolled `repeat` or `for` (§7.2); in an
+unrolled `for` the jumps are `LoopUnrolling`'s business, lowered across
+the unrolled sequence as
 today (ADR-0005 §3.2). A `break`/`continue` in a loop containing **no**
 cut point is not this pass's business and is left to the existing passes.
 
@@ -1013,7 +1064,6 @@ unmarked column has already been misread once.
 | `disable` | abortive control flow the state model cannot express | IEEE §9.6.2 |
 | cut point inside a called `function`/`task` | not visible in the process body; v1 does not inline to find it | ADR §13 |
 | loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
-| a bounded `for` containing a cut point whose bound does not fold | it can be neither replicated nor given an invented index register (ADR §7.2); the message carries §7.3's explicit-counter rewrite | ADR §7.2, §7.3 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
@@ -1113,24 +1163,28 @@ shape there is:
 ```systemverilog
 begin : START
   tx <= 1'b0;
+  (* veriparse_no_unroll *)
   repeat (BAUD_DIV) @(posedge clk);   // a cut point, inside the label
 end
 ```
 
-That block is **one** state — the counter state of §7.2, the wait being how
+That block is **one** state — the rolled counter state of §7.2, the wait
+being how
 it exits — and every phase of Appendix A's transmitter is written this way:
 A.1 carries one label per phase, and they are where A.2's `__fsm_WAIT_SEND`,
 `__fsm_START`, `__fsm_STOP` and the `__fsm_DATA_k` family come from. Under the graph rule
-it just works, with no special case: `repeat` and `while` each yield one
-state, so their label names it.
+it just works, with no special case: a rolled `repeat` and a `while` each
+yield one state, so their label names it.
 
 A label over a sub-CFG of **several** states gives them the stem with an
 ordinal:
 
 ```systemverilog
 begin : SEND_BIT
-  sda_out <= byte_out[nbit - 4'd1]; repeat (T_LOW)  @(posedge clk);
-  scl     <= 1'b1;                  repeat (T_HIGH) @(posedge clk);
+  sda_out <= byte_out[nbit - 4'd1];
+  (* veriparse_no_unroll *) repeat (T_LOW)  @(posedge clk);
+  scl     <= 1'b1;
+  (* veriparse_no_unroll *) repeat (T_HIGH) @(posedge clk);
 end
 ```
 
@@ -1224,8 +1278,9 @@ guarantee drift; emitting JSON lets `wavedisp` consume it.
 ```
 
 after `GenerateRemoval` so the CFG is over real control flow rather than
-generate structure; after `LoopUnrolling` — made safe by the §7.2 guard —
-so §7.1 loops are already flat; and **before** the second
+generate structure; after `LoopUnrolling` — which §7.2 teaches the
+`veriparse_no_unroll` hint — so §7.1 loops and unrolled §7.2 groups are
+already flat; and **before** the second
 `ConstantFolding`/`VariableFolding`/`DeadcodeElimination` so the generated
 FSM is folded and cleaned by the passes that already own that work, which
 is the note's "before flatten/dead-code keeps the output clean".
@@ -1286,10 +1341,10 @@ the golden model is free.
   convention is sound; the harness states which one it uses rather than
   aligning by accident.
 - The two RS232 examples from the design note are the primary corpus: TX
-  exercises `forever`, `while`, `repeat`, an unrolled `for` with a cut
-  point and a shared countdown; RX adds input sampling and `continue`.
-  With Appendix B's explicit-counter loop they cover every row of §7 and
-  §8.
+  exercises `forever`, `while`, rolled `repeat` timers
+  (`veriparse_no_unroll`), an unrolled `for` and a shared countdown; RX
+  adds input sampling and `continue`. With Appendix B's explicit-counter
+  loop they cover every row of §7 and §8.
 - Structural goldens (YAML + generated Verilog) pin the encoding and the
   state decode, in the existing house style.
 
@@ -1359,9 +1414,9 @@ says the datapath transformation was exercised on every one of them.
 ## 12. Phasing (each lands green) & test plan
 
 1. **Prerequisites**, each its own commit and test — the §7.2
-   `LoopUnrolling` guard (a `repeat` whose body holds an `EventStatement`
-   is left rolled, still recursing into its body; bounded `for` keeps
-   unrolling); the §10.1 `ScopeElevator` guard (rename but do not
+   `LoopUnrolling` guard (honour `(* veriparse_no_unroll *)`: the marked
+   loop stays rolled, still recursing into its body); the §10.1
+   `ScopeElevator` guard (rename but do not
    splice a named block inside a marked process); and the §5.3 grammar
    addition for `iff` (conditional event control, IEEE §9.4.2.3): a
    condition field on **`Sens`**, with parser and generator round-trip, the
@@ -1390,7 +1445,8 @@ says the datapath transformation was exercised on every one of them.
    it to carry a Verilator floor.
 4. **Branches** — `IfStatement`/`CaseStatement` with cut points in one or
    more arms, unequal lengths, merge state.
-5. **Loops** — §7.2 countdowns and unrolled `for` groups, then §7.3
+5. **Loops** — §7.2 unrolled groups and the rolled countdown/index
+   lowerings (`veriparse_no_unroll`, non-constant bounds), then §7.3
    back-edges, then §8 jumps, and the §11.2 coverage instrumentation grows
    to the constructs that finally need it: back-edges taken *and* not taken,
    `break`/`continue` edges, and the first and last iteration of a counter
@@ -1468,11 +1524,11 @@ Positioning, so that later choices can be argued against something.
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
-| Counter splitting | one shared countdown per process, re-initialised on entry | post-v1 optimisation, if routing says so |
+| Counter splitting | one shared countdown per process, re-initialised on entry (rolled `repeat` timers share it; a rolled `for` keeps its own index) | post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
+| Expression duplication from §6.1 substitution (a temp read `N` times emits `N` clones of its defining expression) | accepted — synthesis CSE makes it QoR-neutral, so only readability pays | v2 emission nicety: re-materialize shared subexpressions as module-level prefixed temporaries, after all analysis — a presentation choice, no scoped declarations, no semantic content |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
 | Cut point inside a `function`/`task` | hard error (§9) | subroutine inlining before the cut walk |
-| Loop count from a non-constant expression not captured at entry | hard error (§9), the message carrying §7.3's explicit-counter idiom | capture-at-entry lowering |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
@@ -1533,16 +1589,21 @@ module rs232_tx #(parameter int BAUD_DIV = 100) (
       end
       busy <= 1'b1;
       begin : START
-        tx <= 1'b0; repeat (BAUD_DIV) @(posedge clk);  // counter state
+        tx <= 1'b0;
+        (* veriparse_no_unroll *)                      // rolled: one counter
+        repeat (BAUD_DIV) @(posedge clk);              // state, not BAUD_DIV
       end
       begin : DATA
         for (int i = 0; i < 8; i = i + 1) begin        // unrolled (§7.2):
           tx <= data[i];                               // 8 states, `i` a
-          repeat (BAUD_DIV) @(posedge clk);            // constant per copy
+          (* veriparse_no_unroll *)                    // constant per copy
+          repeat (BAUD_DIV) @(posedge clk);
         end
       end
       begin : STOP
-        tx <= 1'b1; repeat (BAUD_DIV) @(posedge clk);
+        tx <= 1'b1;
+        (* veriparse_no_unroll *)
+        repeat (BAUD_DIV) @(posedge clk);
       end
     end
   end
@@ -1661,10 +1722,11 @@ endmodule
   writes only `1'b1`, the idle path writes `1'b0` and then waits. The
   decision therefore stays in the cycle that ends the stop bit, which is why
   `__fsm_STOP` branches on `send` rather than handing over unconditionally.
-- **One shared countdown.** `repeat (BAUD_DIV)` — three textual sites, ten
-  counter states after unrolling — reuses one `__fsm_cnt`, re-loaded on
-  entry to each state (§13 of the design note). Splitting it is a post-v1
-  optimisation.
+- **One shared countdown.** `repeat (BAUD_DIV)` — three textual sites,
+  each kept rolled by `veriparse_no_unroll` (§7.2), ten counter states
+  after the `for` unrolls around them — reuses one `__fsm_cnt`, re-loaded
+  on entry to each state (§13 of the design note). Splitting it is a
+  post-v1 optimisation.
 
 A.1 and A.2 have been run against each other under Verilator 5.050 —
 `BAUD_DIV = 4`, one frame, a back-to-back pair with `send` held across the
@@ -1699,7 +1761,9 @@ initial begin
     end
 
     begin : START
-      sda_out <= 1'b0;  repeat (T_HD_STA) @(posedge clk); // START condition
+      sda_out <= 1'b0;                                  // START condition
+      (* veriparse_no_unroll *)
+      repeat (T_HD_STA) @(posedge clk);
     end
     scl <= 1'b0;
 
@@ -1708,10 +1772,12 @@ initial begin
         begin : LOW                                     // two-state lap
           sda_out <= byte_out[nbit - 4'd1];             // MSB first — both
           nbit    <= nbit - 4'd1;                       // reads see the
-          repeat (T_LOW)  @(posedge clk);               // entry value (§6.1)
+          (* veriparse_no_unroll *)                     // entry value (§6.1)
+          repeat (T_LOW)  @(posedge clk);
         end
         begin : HIGH
           scl <= 1'b1;
+          (* veriparse_no_unroll *)
           repeat (T_HIGH) @(posedge clk);
         end
         scl <= 1'b0;
@@ -1722,10 +1788,12 @@ initial begin
     begin : ACK                                         // same shape again,
       begin : LOW                                       // so the same two
         sda_oe <= 1'b0;                                 // inner labels
+        (* veriparse_no_unroll *)
         repeat (T_LOW)  @(posedge clk);
       end
       begin : HIGH
         scl <= 1'b1;
+        (* veriparse_no_unroll *)
         repeat (T_HIGH) @(posedge clk);
       end
     end
@@ -1761,7 +1829,10 @@ Four things it adds over RS232:
 - **The explicit-counter idiom, in the field.** The bit loop declares its
   own `nbit` and tests it in a `while` (§7.3), so its two cut points give a
   two-state lap — `BIT_LOW`/`BIT_HIGH` — for any byte width, where the
-  unrolled-`for` alternative (§7.2) would spend sixteen states. The width
+  unrolled-`for` alternative (§7.2) would spend sixteen states. A
+  `veriparse_no_unroll` `for` would also give a two-state lap, with an
+  induced up-index; the hand-written register is what buys the MSB-first
+  down-count and the re-arm point. The width
   (4 bits: the count starts at 8, which three bits cannot hold) and the
   re-arm for the next byte are the author's visible decisions, which is §3
   rule 2's point. The state names come from §10.1's composition rule — the
@@ -1952,10 +2023,11 @@ readability choice on the way out, not a second representation.
 
 Alongside them, two side tables:
 
-- **induced variables** — the `repeat` countdowns §7.2 creates, the only
-  storage the pass invents. They are storage by construction, never subject
-  to the liveness question, and they must be distinguishable from the
-  author's variables when the state map and the prefix (§10) are produced;
+- **induced variables** — the countdowns and index registers §7.2's rolled
+  lowering creates, the only storage the pass invents. They are storage by
+  construction, never subject to the liveness question, and they must be
+  distinguishable from the author's variables when the state map and the
+  prefix (§10) are produced;
 - **the environment**, during construction only: a map from `Slice` to
   `Expr`, in two layers — the entry values and the blocking updates, which
   is §6.1's two environments made concrete.
@@ -1969,14 +2041,15 @@ Alongside them, two side tables:
 
 2. **Build the CFG, cutting at every `EventStatement`.** Structured
    statements map directly: `if`/`case` fork, sequences chain. Every
-   bounded `for` is already gone — `LoopUnrolling` replicated it with the
-   index substituted per copy (§7.2) — so the loops still standing are
-   exactly three shapes: `repeat (N)` yields **one state plus an induced
-   countdown** (`repeat (1)` induces none: one wait, one state);
-   `while`/`forever` close a back-edge on the loop condition; and
-   `break`/`continue` add an edge to the loop's exit or head (§8). A
-   bounded `for` that nevertheless survives — its bound did not fold — is
-   the §9 error, not a back-edge.
+   bounded loop without `veriparse_no_unroll` is already gone —
+   `LoopUnrolling` replicated it with the index substituted per copy
+   (§7.2) — so the loops still standing are: a rolled `repeat`, **one
+   state plus an induced countdown** (a constant count of 1 induces none:
+   one wait, one state); a rolled or non-constant-bound `for`, **its
+   body's states plus an induced index register** honouring the
+   construct's contract (§7.2); `while`/`forever`, a back-edge on the
+   loop condition; and `break`/`continue`, an edge to the loop's exit or
+   head (§8).
 
    The init segment is set aside as the reset action (§5) and is not a
    state. A one-shot process additionally gets the §2 **hold state**

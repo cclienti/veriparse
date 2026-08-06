@@ -47,16 +47,21 @@ module rs232_tx_beh #(parameter int BAUD_DIV = 4) (
             end
             busy <= 1'b1;
             begin : START
-                tx <= 1'b0; repeat (BAUD_DIV) @(posedge clk);
+                tx <= 1'b0;
+                (* veriparse_no_unroll *)      // rolled: one counter state
+                repeat (BAUD_DIV) @(posedge clk);
             end
             begin : DATA
                 for (int i = 0; i < 8; i = i + 1) begin
                     tx <= data[i];
+                    (* veriparse_no_unroll *)
                     repeat (BAUD_DIV) @(posedge clk);
                 end
             end
             begin : STOP
-                tx <= 1'b1; repeat (BAUD_DIV) @(posedge clk);
+                tx <= 1'b1;
+                (* veriparse_no_unroll *)
+                repeat (BAUD_DIV) @(posedge clk);
             end
         end
     end
