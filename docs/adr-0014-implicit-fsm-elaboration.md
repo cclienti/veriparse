@@ -204,7 +204,7 @@ as-is, marked or not.
 marked process it decides the terminal behaviour, read off §9.2.1/§9.2.2
 rather than invented:
 
-| Marked construct | Meaning | Terminal behaviour | Reset |
+| **Marked construct** | **Meaning** | **Terminal behaviour** | **Reset** |
 |---|---|---|---|
 | `(* veriparse_fsm *) initial begin … @…; forever begin … end end` — **canonical** | perpetual FSM | the `forever` back-edge (§7.3) | preamble is the reset branch; every register it writes is reset (§5.1) |
 | `(* veriparse_fsm *) initial begin @… @… end` | one-shot sequence | the last segment enters an added empty **hold state** — a self-loop on the segment itself would replay its action every cycle, where §9.2.1 says the activity has ceased | as above |
@@ -332,7 +332,7 @@ hints by being that list's element. The generator already round-trips the
 form (`render_pragmalist` emits `(* … *)` when the statement list is
 non-empty), so nothing is lost on output.
 
-| Attribute | Effect | Default when absent |
+| **Attribute** | **Effect** | **Default when absent** |
 |---|---|---|
 | `veriparse_fsm` (§2, the opt-in, not a hint) | compiles this process | the process is left untouched |
 | `veriparse_reset = "<port>"` | names the reset input | inferred (§5) |
@@ -610,7 +610,7 @@ question from the one asked.
 **Synthesis answers the right one.** Through Yosys, an 8-bit register with a
 synchronous reset and an enable:
 
-| | `if (!rst_n) … else if (en) …` | `if (en) begin if (!rst_n) … end` |
+| | **`if (!rst_n) … else if (en) …`** | **`if (en) begin if (!rst_n) … end`** |
 |---|---|---|
 | generic cell | `$sdffe` | `$sdffce` |
 | `synth_xilinx` | 8 × `FDRE`, 8 × `INV` | 8 × `FDRE`, **8 × `LUT2`** |
@@ -1103,7 +1103,7 @@ References are marked `IEEE §…` for a clause of IEEE 1800-2017 and `ADR §…
 for a section of this document; the two numbering schemes overlap and an
 unmarked column has already been misread once.
 
-| Condition | Why | Reference |
+| **Condition** | **Why** | **Reference** |
 |---|---|---|
 | cut points over different signals, mixed `POSEDGE`/`NEGEDGE`, or a level sensitivity (`@(sig)`) in one process | multi-clock scheduling is out of scope, and a level wait is no clock at all; picking one would mis-compile | IEEE §9.4.2 |
 | cut points **some carrying an `iff` and some bare** | almost always an oversight, and not repairable by guessing: adding or dropping an enable changes the machine. Names the odd wait out and the ones it disagrees with (ADR §5.3) | IEEE §9.4.2.3 |
@@ -1589,7 +1589,7 @@ Positioning, so that later choices can be argued against something.
 
 ## 15. Not supported (v1 deferrals)
 
-| Feature | v1 behavior | Future home |
+| **Feature** | **v1 behavior** | **Future home** |
 |---|---|---|
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
@@ -1880,7 +1880,7 @@ end
 Written as the state graph rather than full RTL; the emission follows §A.2
 mechanically.
 
-| State | Action | Leaves when | To |
+| **State** | **Action** | **Leaves when** | **To** |
 |---|---|---|---|
 | `IDLE` | — | `go` | `START` |
 | `START` | `sda_out<=0`, load `T_HD_STA` | count 0 | `BIT_LOW` |
@@ -1980,7 +1980,7 @@ of where we put the cut points rather than an assumption.
 Concretely, the `BIT_HIGH` state of Appendix B has three paths out, and
 writing them down is the fastest way to see what the notation buys:
 
-| | `R_p` | `s_p` |
+| | **`R_p`** | **`s_p`** |
 |---|---|---|
 | still counting | `cnt != 0` | `cnt := cnt - 1` |
 | next bit | `cnt == 0 && nbit != 0` | `scl := 0`, `sda_out := byte_out[nbit-1]`, `nbit := nbit - 1`, `cnt := T_LOW-1` |
