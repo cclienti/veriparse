@@ -1294,14 +1294,23 @@ before the CFG is built, so every state would fall back to its ordinal and
 the author would get `__fsm_state_0/1/2…`, the exact waveform this section
 exists to prevent, with no diagnostic saying the labels were dropped.
 
-The guard is narrow and mirrors §7.2's: inside a process marked
-`(* veriparse_fsm *)`, `ScopeElevator` still **renames** a named block's
-declarations exactly as today — that is what keeps two `int i` in two
-segments apart, and this pass needs it — but **skips the splice**, leaving
-the `Block` node and its `scope` in place. Everything else, marked or not,
-elevates as it does today. The block is consumed by this pass along with the
-rest of the process body, so no downstream pass ever sees a surviving named
-block and the invariant `ScopeElevator` exists to establish is unbroken.
+The guard mirrors §7.2's and covers **every block of the marked process**,
+not the labelled ones alone. A named block still has its declarations
+**renamed** exactly as today — that is what keeps two `int i` in two
+segments apart, and the emission needs it when a segment's registers are
+promoted to module level — but the splice is skipped, leaving the `Block`
+node and its `scope` in place. An **unnamed** block is never spliced:
+under §6 it can hold only `=`-temporaries, which §6.1's substitution
+dissolves into values, and its boundary is precisely what §6's scoping
+check reads, so it must survive to the pass. (One nuance, pinned by the
+test: an enclosing label's rename sweep still prefixes declarations in
+its whole subtree, surviving unnamed blocks included — harmless, since
+the rename is consistent and the scope boundary is what matters.)
+Everything outside a marked process,
+named or not, elevates as it does today. Each kept block is consumed by
+this pass along with the rest of the process body, so no downstream pass
+ever sees a surviving block and the invariant `ScopeElevator` exists to
+establish is unbroken.
 
 **Two things to check in phase 2 rather than assume.** A named block is a
 *scope* (§9.3.4), so declarations inside it are local — which is exactly
@@ -1486,8 +1495,8 @@ says the datapath transformation was exercised on every one of them.
 1. **Prerequisites**, each its own commit and test — the §7.2
    `LoopUnrolling` guard (honour `(* veriparse_no_unroll *)`: the marked
    loop stays rolled, still recursing into its body); the §10.1
-   `ScopeElevator` guard (rename but do not
-   splice a named block inside a marked process); and the §5.3 grammar
+   `ScopeElevator` guard (keep every block of a marked process: named ones
+   renamed, unnamed ones unspliced); and the §5.3 grammar
    addition for `iff` (conditional event control, IEEE §9.4.2.3): a
    condition field on **`Sens`**, with parser and generator round-trip, the
    round-trip covering the multi-term form

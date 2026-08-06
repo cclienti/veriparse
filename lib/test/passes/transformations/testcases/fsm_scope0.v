@@ -10,7 +10,11 @@ module fsm_scope0 (input clk, input rst_n, output reg tick);
       forever begin
          begin : COUNT
             reg [7:0] cnt_tmp;
-            n <= n + 8'd1;
+            begin
+               reg [8:0] sum;
+               sum = n + 8'd1;
+               n <= sum[7:0];
+            end
             tick <= 1'b0;
             @(posedge clk);
          end
