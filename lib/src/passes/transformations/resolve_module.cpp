@@ -14,6 +14,7 @@
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/branch_selection.hpp>
 #include <veriparse/passes/transformations/generate_removal.hpp>
+#include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
 #include <veriparse/passes/transformations/module_instance_normalizer.hpp>
@@ -30,16 +31,16 @@ namespace Passes
 namespace Transformations
 {
 
-ResolveModule::ResolveModule(bool deadcode_elimination)
-    : m_deadcode_elimination(deadcode_elimination)
+ResolveModule::ResolveModule(bool deadcode_elimination, bool fsm_elaboration)
+    : m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration)
 {
 }
 
 ResolveModule::ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
                              const Analysis::Module::ModulesMap &modules_map,
-                             bool deadcode_elimination)
+                             bool deadcode_elimination, bool fsm_elaboration)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
-      m_deadcode_elimination(deadcode_elimination)
+      m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration)
 {
 }
 
@@ -115,6 +116,16 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     if(GenerateRemoval().run(node)) {
         LOG_ERROR_N(node) << "Failed to select branches";
         return 1;
+    }
+
+    // ADR-0014 §10.3: the FSM lowering sits after the passes that normalise
+    // declarations and flatten loops, and before the folding that cleans the
+    // generated machine. Per-tool opt-in, like SynthesizableCheck.
+    if(m_fsm_elaboration) {
+        if(ImplicitFsmElaboration().run(node)) {
+            LOG_ERROR_N(node) << "Failed to elaborate the marked FSM processes";
+            return 1;
+        }
     }
 
     if(ConstantFolding(function_map).run(node)) {
