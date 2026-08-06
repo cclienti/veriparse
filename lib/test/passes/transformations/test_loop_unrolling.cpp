@@ -60,6 +60,10 @@ TEST(PassesTransformation_LoopUnrolling, loop_unrolling3) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat0) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat1) { TEST_CORE; }
 TEST(PassesTransformation_LoopUnrolling, repeat3) { TEST_CORE; }
+// (* veriparse_no_unroll *) keeps the marked loop rolled (ADR-0014 §7.2) —
+// `repeat` and `for` alike, in any process — while its body is still visited,
+// so a nested unmarked loop unrolls and so do unmarked siblings.
+TEST(PassesTransformation_LoopUnrolling, no_unroll0) { TEST_CORE; }
 // A for loop nested inside a repeat: the inner unroll replaces the iteration
 // block's statement list, and the repeat must splice the replaced list — not a
 // stale pre-recursion pointer that still holds the un-unrolled loop.

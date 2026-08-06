@@ -70,6 +70,27 @@ bool owns_jump_of(const AST::Node::Ptr &node, AST::NodeType jt)
     return false;
 }
 
+/// True if the loop under @p parent carries `(* veriparse_no_unroll *)`: the
+/// attribute keeps the loop rolled for a downstream behavioural lowering
+/// (ADR-0014 §7.2). The parser binds statement attributes structurally, so the
+/// loop's parent is the Pragmalist holding them.
+bool keeps_rolled(const AST::Node::Ptr &parent)
+{
+    if(!parent || !parent->is_node_type(AST::NodeType::Pragmalist)) {
+        return false;
+    }
+    const auto &pragmas = AST::cast_to<AST::Pragmalist>(parent)->get_pragmas();
+    if(!pragmas) {
+        return false;
+    }
+    for(const auto &pragma : *pragmas) {
+        if(pragma && pragma->get_name() == "veriparse_no_unroll") {
+            return true;
+        }
+    }
+    return false;
+}
+
 /// If @p s is exactly `if (cond) <jump jt>;` (no else, the then-branch is just the
 /// jump), return its condition; otherwise null. This is the shape the structural
 /// lowering can turn into a guard.
@@ -365,7 +386,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
         return 0;
     }
 
-    if(node->is_node_type(AST::NodeType::ForStatement)) {
+    if(node->is_node_type(AST::NodeType::ForStatement) && !keeps_rolled(parent)) {
         const AST::ForStatement::Ptr for_node = AST::cast_to<AST::ForStatement>(node);
 
         if(!parent) {
@@ -424,7 +445,7 @@ int LoopUnrolling::unroll(AST::Node::Ptr node, AST::Node::Ptr parent, const std:
         }
     }
 
-    else if(node->is_node_type(AST::NodeType::RepeatStatement)) {
+    else if(node->is_node_type(AST::NodeType::RepeatStatement) && !keeps_rolled(parent)) {
         const AST::RepeatStatement::Ptr repeat_node = AST::cast_to<AST::RepeatStatement>(node);
 
         if(!parent) {
