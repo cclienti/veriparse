@@ -17,6 +17,7 @@ struct Config
     std::vector<std::string> undefs;
     std::string output;
     std::string top_module;
+    std::string suffix;   ///< appended to the emitted module's name
     std::string log_file; ///< empty: log to console (stderr); else log to this file
     bool sv_mode{false};
     std::uint64_t seed;

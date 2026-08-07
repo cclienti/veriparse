@@ -52,8 +52,11 @@ static int verilower(int argc, char *argv[])
         "output,o", boost::program_options::value<std::string>(&config.output)->required(),
         "output")("top-module,t",
                   boost::program_options::value<std::string>(&config.top_module)->required(),
-                  "top-module")("sv", boost::program_options::bool_switch(&config.sv_mode),
-                                "Enable SystemVerilog mode")(
+                  "top-module")(
+        "suffix", boost::program_options::value<std::string>(&config.suffix)->default_value(""),
+        "Append to the emitted module's name, so the output can sit beside "
+        "its source in one testbench")("sv", boost::program_options::bool_switch(&config.sv_mode),
+                                       "Enable SystemVerilog mode")(
         "include-dir,I",
         boost::program_options::value<std::vector<std::string>>(&config.include_dirs),
         "Add directory to `include search path (repeatable)")(
@@ -227,6 +230,17 @@ static int verilower(int argc, char *argv[])
     if(Veriparse::Passes::Analysis::SynthesizableCheck::check(compiled) != 0) {
         LOG_ERROR << "compiled output uses non-synthesizable constructs";
         return 1;
+    }
+
+    //---------------------------------------------------------
+    // Rename on request: the differential cosim of ADR-0014 §11 puts the
+    // compiled module beside its own source in one testbench, which needs
+    // distinct names.
+    //---------------------------------------------------------
+
+    if(!config.suffix.empty()) {
+        const auto &module_node = Veriparse::AST::cast_to<Veriparse::AST::Module>(module);
+        module_node->set_name(module_node->get_name() + config.suffix);
     }
 
     //---------------------------------------------------------
