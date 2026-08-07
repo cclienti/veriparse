@@ -238,7 +238,8 @@ module tb;
         repeat (60) @(posedge clk);
 
         $display("checked=%0d errors=%0d", checked, errors);
-        if (errors == 0) $display("EQUIVALENT"); else $display("DIVERGED");
+        if (errors != 0) $fatal(1, "DIVERGED");
+        $display("EQUIVALENT");
         $finish;
     end
 endmodule
