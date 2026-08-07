@@ -207,6 +207,47 @@ static int verilower(int argc, char *argv[])
     auto module = modules_map[config.top_module];
 
     //---------------------------------------------------------
+    // A marked process outside the selected module is not compiled, and the
+    // mark is never skipped in silence (ADR-0014 §2): each marked module is
+    // its own run, at its default parameterization — an instantiation with
+    // parameter overrides needs a per-instance flow instead.
+    //---------------------------------------------------------
+
+    for(const auto &elt : modules_map) {
+        if(elt.first == config.top_module) {
+            continue;
+        }
+        const auto &items =
+            Veriparse::AST::cast_to<Veriparse::AST::Module>(elt.second)->get_items();
+        if(!items) {
+            continue;
+        }
+        for(const auto &item : *items) {
+            if(!item || !item->is_node_type(Veriparse::AST::NodeType::Pragmalist)) {
+                continue;
+            }
+            const auto &pragmas =
+                Veriparse::AST::cast_to<Veriparse::AST::Pragmalist>(item)->get_pragmas();
+            if(!pragmas) {
+                continue;
+            }
+            bool marked = false;
+            for(const auto &pragma : *pragmas) {
+                if(pragma && pragma->get_name() == "veriparse_fsm") {
+                    marked = true;
+                }
+            }
+            if(marked) {
+                LOG_WARNING << "module '" << elt.first << "' carries (* veriparse_fsm *) "
+                            << "processes but only '" << config.top_module << "' is compiled: "
+                            << "run verilower with --top-module " << elt.first
+                            << " as its own step";
+                break;
+            }
+        }
+    }
+
+    //---------------------------------------------------------
     // Resolve the module with the FSM slot enabled (ADR-0014 §10.3): the
     // marked processes compile into explicit machines, and the folding
     // passes clean the result.
