@@ -747,7 +747,9 @@ An `=` to anything else — a module-level signal, or a variable whose
 declaring scope spans a cut point — is an **error** naming the target and
 pointing at `<=`. Nothing is silently promoted, and a reader can tell a
 register from a wire by looking at the declaration rather than by running
-the analysis in their head.
+the analysis in their head. (§15 records the one planned exception: a
+signal declared for combinational output decode, where a module-level `=`
+on every lap becomes the per-state value of an emitted `always_comb`.)
 
 **There is no exception, and the `for` step is not one.** In a clocked
 system an `=` that crosses an edge has no meaning to give it, so the rule is
@@ -1602,6 +1604,7 @@ Positioning, so that later choices can be argued against something.
 | **Feature** | **v1 behavior** | **Future home** |
 |---|---|---|
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
+| Combinational output decode: module-level `=` in the process | hard error (§6) | v2, on signals declared for it: the rule is **one `=` on every path between two consecutive cut points** — a totality that is at once the anti-latch check and the coherency check, since a lap that skips the assignment *holds* in the source and *tracks* in the emitted `always_comb`. Lowered to one `always_comb` over the state register; equivalence is **as sampled at the clock edges** — between them the source holds its sample where the RTL tracks, which no synchronous consumer observes. A rolled `repeat` lap cannot re-assert and fails the check; §7.3's `while` idiom spells the per-lap re-assertion. This is also the output-decode half of the three-process emission |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
