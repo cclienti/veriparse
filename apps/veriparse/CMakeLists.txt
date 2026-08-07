@@ -38,6 +38,7 @@ if(NOT WIN32)
     message(STATUS "Veriparse Apps: verilator not found, skipping cosim tests")
   else()
     include(${CMAKE_SOURCE_DIR}/cmake/modules/add_cosim_test.cmake)
+    include(${CMAKE_SOURCE_DIR}/cmake/modules/add_sv_cosim_test.cmake)
 
     foreach(_aes_width 128 192 256)
       set(_aes_sources
@@ -304,6 +305,36 @@ if(NOT WIN32)
       VERILATOR_ARGS -Wno-CASEINCOMPLETE
       HARNESS
         ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/test_straight_line_lower.cpp
+    )
+
+    # The same differential check as a pure-SV bench (verilator --binary
+    # --timing): source and renamed verilower output side by side, one
+    # testbench, the exit status carrying the verdict. The shape phases 5-6
+    # register their protocol cosims in.
+    set(_straight_line_suffixed
+      ${CMAKE_CURRENT_BINARY_DIR}/straight_line_suffixed.v)
+
+    add_custom_command(
+      OUTPUT ${_straight_line_suffixed}
+      COMMAND $<TARGET_FILE:verilower>
+              --sv
+              --top-module straight_line
+              --suffix _lowered
+              --output ${_straight_line_suffixed}
+              --log ${CMAKE_CURRENT_BINARY_DIR}/straight_line_suffixed.log
+              ${_straight_line_src}
+      DEPENDS verilower ${_straight_line_src}
+      COMMENT "verilower straight_line (renamed _lowered)"
+      VERBATIM)
+
+    add_sv_cosim_test(
+      NAME test_cosim_straight_line_svbench
+      TOP_MODULE tb_straight_line
+      VERILOG_SOURCES
+        ${_straight_line_src}
+        ${_straight_line_suffixed}
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/tb_straight_line.sv
+      VERILATOR_ARGS -Wno-CASEINCOMPLETE
     )
   endif()
 
