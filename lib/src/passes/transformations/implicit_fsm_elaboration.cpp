@@ -2,6 +2,7 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
 #include <algorithm>
@@ -341,29 +342,39 @@ int ImplicitFsmElaboration::check_enable(const std::vector<AST::EventStatement::
     // Some waits qualified and some bare is almost always an oversight, and
     // it is not repairable by guessing: adding or dropping an enable changes
     // the machine. The message names the odd waits out and the ones they
-    // disagree with (§5.3).
+    // disagree with (§5.3). Lines are deduplicated: waits replicated by
+    // unrolling share one source line and are one wait to the author.
     if(!bare.empty()) {
         const bool bare_odd = bare.size() <= qualified.size();
         const auto &odd = bare_odd ? bare : qualified;
         const auto &rest = bare_odd ? qualified : bare;
-        std::string odd_lines, rest_lines;
-        for(const auto &wait : odd) {
-            odd_lines += (odd_lines.empty() ? "" : ", ") + std::to_string(wait->get_line());
-        }
-        for(const auto &wait : rest) {
-            rest_lines += (rest_lines.empty() ? "" : ", ") + std::to_string(wait->get_line());
-        }
+        auto lines_of = [](const std::vector<AST::EventStatement::Ptr> &group) {
+            std::set<int> lines;
+            for(const auto &wait : group) {
+                lines.insert(wait->get_line());
+            }
+            std::vector<std::string> strs;
+            for(int line : lines) {
+                strs.push_back(std::to_string(line));
+            }
+            return std::make_pair(lines.size(), Misc::StringUtils::join(", ", strs));
+        };
+        const auto &odd_lines = lines_of(odd);
+        const auto &rest_lines = lines_of(rest);
+        auto describe = [](const std::pair<std::size_t, std::string> &lines) {
+            return (lines.first > 1 ? "the waits at lines " : "the wait at line ") + lines.second;
+        };
         LOG_ERROR_N(odd.front())
-            << "the wait" << (odd.size() > 1 ? "s" : "") << " at line"
-            << (odd.size() > 1 ? "s " : " ") << odd_lines << (bare_odd ? " carry no" : " carry an")
-            << " `iff` while the waits at line" << (rest.size() > 1 ? "s " : " ") << rest_lines
-            << (bare_odd ? " carry one" : " carry none")
+            << describe(odd_lines) << (odd_lines.first > 1 ? " carry" : " carries")
+            << (bare_odd ? " no `iff`" : " an `iff`") << " while " << describe(rest_lines)
+            << (rest_lines.first > 1 ? " carry" : " carries") << (bare_odd ? " one" : " none")
             << ": a chip enable qualifies every transition or none (ADR-0014 §5.3)";
         return 1;
     }
 
     const auto &reference = qualified.front()->get_senslist()->get_list()->front()->get_condition();
-    for(const auto &wait : qualified) {
+    for(std::size_t i = 1; i < qualified.size(); ++i) {
+        const auto &wait = qualified[i];
         const auto &condition = wait->get_senslist()->get_list()->front()->get_condition();
         if(!reference->is_equal(condition, false)) {
             LOG_ERROR_N(wait)
@@ -421,7 +432,8 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
 }
 
 int ImplicitFsmElaboration::check_segments(const AST::Node::ListPtr &init_stmts,
-                                           const std::vector<Segment> &segments)
+                                           const std::vector<Segment> &segments,
+                                           const AST::Node::Ptr &enable)
 {
     // Registers of the process: every nonblocking target anywhere in it.
     std::set<std::string> process_regs;
@@ -486,6 +498,26 @@ int ImplicitFsmElaboration::check_segments(const AST::Node::ListPtr &init_stmts,
     if(check_one(init_stmts, true)) {
         return 1;
     }
+
+    // The enable is read at every state's entry, the first out of reset
+    // included, so a process register it reads must come up with a value
+    // the init segment supplies — the same rule as any other read, applied
+    // at the one read site that sits outside the segments (§5.1, §5.3, §6).
+    if(enable) {
+        std::set<std::string> reads;
+        collect_identifier_names(enable, reads);
+        for(const auto &read : reads) {
+            if(process_regs.count(read) && !defined.count(read)) {
+                LOG_ERROR_N(enable)
+                    << "the `iff` enable reads register '" << read << "' which no path "
+                    << "out of reset assigns: the enable gates every state including "
+                    << "the first, and the init segment gives it no value "
+                    << "(ADR-0014 §5.1, §5.3, §6)";
+                return 1;
+            }
+        }
+    }
+
     for(const auto &segment : segments) {
         if(check_one(segment.statements, false)) {
             return 1;
@@ -544,7 +576,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         return 1;
     }
 
-    if(check_segments(init_stmts, segments)) {
+    if(check_segments(init_stmts, segments, enable)) {
         return 1;
     }
 

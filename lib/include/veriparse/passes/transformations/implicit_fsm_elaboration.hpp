@@ -71,8 +71,10 @@ private:
                    std::string &reset_name, bool &active_low);
 
     /// §6 on the straight-line subset: one commit per register per segment,
-    /// and no register read before a path out of reset has written it.
-    int check_segments(const AST::Node::ListPtr &init_stmts, const std::vector<Segment> &segments);
+    /// and no register read before a path out of reset has written it — the
+    /// enable included, since it is read at every state's entry (§5.3).
+    int check_segments(const AST::Node::ListPtr &init_stmts, const std::vector<Segment> &segments,
+                       const AST::Node::Ptr &enable);
 
     AST::Node::ListPtr emit(const AST::Module::Ptr &module, const AST::Sens::Ptr &clock,
                             const AST::Node::Ptr &enable, const std::string &reset_name,
