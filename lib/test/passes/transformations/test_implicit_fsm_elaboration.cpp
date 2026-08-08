@@ -67,3 +67,13 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_straight_err0) { TEST_ERRO
 // A register read out of reset that the init segment never assigns
 // (ADR-0014 §5.1, §6).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_straight_err1) { TEST_ERROR_SV; }
+// The chip enable: every wait carries the same `iff en`, and the emission
+// gates the case and nothing else — the reset stays outside the enable
+// (ADR-0014 §5.3). The golden pins that nesting.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable0) { TEST_CORE_SV; }
+// Some waits qualified, some bare: almost always an oversight, never
+// repaired by guessing (ADR-0014 §5.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err0) { TEST_ERROR_SV; }
+// Different `iff` conditions: a state-dependent enable is a separate
+// feature, not a variant of this one (ADR-0014 §5.3, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err1) { TEST_ERROR_SV; }
