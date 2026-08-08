@@ -55,9 +55,15 @@ private:
     /// blocks transparently and rejecting what the lowering cannot express.
     int flatten_body(const AST::Node::Ptr &node, AST::Node::ListPtr atoms);
 
-    /// Check one wait: exactly one Sens, posedge/negedge, no `iff`, and the
-    /// same edge over the same signal as every other wait of the process.
+    /// Check one wait: exactly one Sens, posedge/negedge, and the same edge
+    /// over the same signal as every other wait of the process.
     int check_wait(const AST::EventStatement::Ptr &event, AST::Sens::Ptr &clock);
+
+    /// §2 extended to the chip enable (§5.3): every wait bare, or every wait
+    /// carrying the same `iff` condition — structurally equal after the
+    /// passes that ran before this one. Fills the uniform enable, null when
+    /// the waits are bare.
+    int check_enable(const std::vector<AST::EventStatement::Ptr> &waits, AST::Node::Ptr &enable);
 
     /// §5: `veriparse_reset` hint, else the unique matching module input.
     /// Fills the signal name and its active level.
@@ -69,8 +75,8 @@ private:
     int check_segments(const AST::Node::ListPtr &init_stmts, const std::vector<Segment> &segments);
 
     AST::Node::ListPtr emit(const AST::Module::Ptr &module, const AST::Sens::Ptr &clock,
-                            const std::string &reset_name, bool active_low,
-                            const AST::Node::ListPtr &init_stmts,
+                            const AST::Node::Ptr &enable, const std::string &reset_name,
+                            bool active_low, const AST::Node::ListPtr &init_stmts,
                             const std::vector<Segment> &segments, const std::string &prefix);
 };
 

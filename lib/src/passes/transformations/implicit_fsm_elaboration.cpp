@@ -297,12 +297,6 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
         return 1;
     }
 
-    if(sens->get_condition()) {
-        LOG_ERROR_N(event) << "conditional event control in a marked process: "
-                           << "the chip enable is not lowered yet (ADR-0014 §5.3)";
-        return 1;
-    }
-
     if(!sens->get_sig() || !sens->get_sig()->is_node_type(AST::NodeType::Identifier)) {
         LOG_ERROR_N(event) << "a marked process waits on a plain clock signal";
         return 1;
@@ -322,6 +316,66 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
         return 1;
     }
 
+    return 0;
+}
+
+int ImplicitFsmElaboration::check_enable(const std::vector<AST::EventStatement::Ptr> &waits,
+                                         AST::Node::Ptr &enable)
+{
+    std::vector<AST::EventStatement::Ptr> bare;
+    std::vector<AST::EventStatement::Ptr> qualified;
+    for(const auto &wait : waits) {
+        const auto &sens = wait->get_senslist()->get_list()->front();
+        if(sens->get_condition()) {
+            qualified.push_back(wait);
+        } else {
+            bare.push_back(wait);
+        }
+    }
+
+    if(qualified.empty()) {
+        enable = nullptr;
+        return 0;
+    }
+
+    // Some waits qualified and some bare is almost always an oversight, and
+    // it is not repairable by guessing: adding or dropping an enable changes
+    // the machine. The message names the odd waits out and the ones they
+    // disagree with (§5.3).
+    if(!bare.empty()) {
+        const bool bare_odd = bare.size() <= qualified.size();
+        const auto &odd = bare_odd ? bare : qualified;
+        const auto &rest = bare_odd ? qualified : bare;
+        std::string odd_lines, rest_lines;
+        for(const auto &wait : odd) {
+            odd_lines += (odd_lines.empty() ? "" : ", ") + std::to_string(wait->get_line());
+        }
+        for(const auto &wait : rest) {
+            rest_lines += (rest_lines.empty() ? "" : ", ") + std::to_string(wait->get_line());
+        }
+        LOG_ERROR_N(odd.front())
+            << "the wait" << (odd.size() > 1 ? "s" : "") << " at line"
+            << (odd.size() > 1 ? "s " : " ") << odd_lines << (bare_odd ? " carry no" : " carry an")
+            << " `iff` while the waits at line" << (rest.size() > 1 ? "s " : " ") << rest_lines
+            << (bare_odd ? " carry one" : " carry none")
+            << ": a chip enable qualifies every transition or none (ADR-0014 §5.3)";
+        return 1;
+    }
+
+    const auto &reference = qualified.front()->get_senslist()->get_list()->front()->get_condition();
+    for(const auto &wait : qualified) {
+        const auto &condition = wait->get_senslist()->get_list()->front()->get_condition();
+        if(!reference->is_equal(condition, false)) {
+            LOG_ERROR_N(wait)
+                << "the wait at line " << wait->get_line() << " carries a different `iff` "
+                << "condition than the wait at line " << qualified.front()->get_line()
+                << ": a uniform chip enable is one condition for the whole machine — "
+                << "gating states differently is a separate feature (ADR-0014 §5.3, §15)";
+            return 1;
+        }
+    }
+
+    enable = reference;
     return 0;
 }
 
@@ -456,13 +510,16 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     AST::Sens::Ptr clock;
     const auto &init_stmts = std::make_shared<AST::Node::List>();
     std::vector<Segment> segments;
+    std::vector<AST::EventStatement::Ptr> waits;
     AST::Node::ListPtr current = init_stmts;
 
     for(const auto &atom : *atoms) {
         if(atom->is_node_type(AST::NodeType::EventStatement)) {
-            if(check_wait(AST::cast_to<AST::EventStatement>(atom), clock)) {
+            const auto &event = AST::cast_to<AST::EventStatement>(atom);
+            if(check_wait(event, clock)) {
                 return 1;
             }
+            waits.push_back(event);
             segments.push_back(Segment{std::make_shared<AST::Node::List>()});
             current = segments.back().statements;
         } else {
@@ -476,6 +533,11 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         return 1;
     }
 
+    AST::Node::Ptr enable;
+    if(check_enable(waits, enable)) {
+        return 1;
+    }
+
     std::string reset_name;
     bool active_low = false;
     if(find_reset(module, pragmalist, reset_name, active_low)) {
@@ -486,7 +548,8 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         return 1;
     }
 
-    const auto &emitted = emit(module, clock, reset_name, active_low, init_stmts, segments, prefix);
+    const auto &emitted =
+        emit(module, clock, enable, reset_name, active_low, init_stmts, segments, prefix);
     if(!emitted) {
         return 1;
     }
@@ -497,12 +560,11 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     return 0;
 }
 
-AST::Node::ListPtr ImplicitFsmElaboration::emit(const AST::Module::Ptr &module,
-                                                const AST::Sens::Ptr &clock,
-                                                const std::string &reset_name, bool active_low,
-                                                const AST::Node::ListPtr &init_stmts,
-                                                const std::vector<Segment> &segments,
-                                                const std::string &prefix)
+AST::Node::ListPtr
+ImplicitFsmElaboration::emit(const AST::Module::Ptr &module, const AST::Sens::Ptr &clock,
+                             const AST::Node::Ptr &enable, const std::string &reset_name,
+                             bool active_low, const AST::Node::ListPtr &init_stmts,
+                             const std::vector<Segment> &segments, const std::string &prefix)
 {
     const std::string &fn = module->get_filename();
     const int ln = module->get_line();
@@ -599,7 +661,17 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(const AST::Module::Ptr &module,
     case_stmt->set_comp(AST::to_node(make_id(state_reg, fn, ln)));
     case_stmt->set_caselist(caselist);
 
-    // if (!rst_n) <reset> else case (...) — the reset never gated (§5.3).
+    // if (!rst_n) <reset> else [if (en)] case (...) — the enable gates the
+    // case and nothing else: the reset is never gated, so the machine leaves
+    // reset whether or not anything is running it (§5.3).
+    AST::Node::Ptr else_branch = AST::to_node(case_stmt);
+    if(enable) {
+        auto gate = std::make_shared<AST::IfStatement>(fn, ln);
+        gate->set_cond(enable->clone());
+        gate->set_true_statement(else_branch);
+        else_branch = AST::to_node(gate);
+    }
+
     AST::Node::Ptr reset_cond = AST::to_node(make_id(reset_name, fn, ln));
     if(active_low) {
         auto ulnot = std::make_shared<AST::Ulnot>(fn, ln);
@@ -609,7 +681,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(const AST::Module::Ptr &module,
     auto guard = std::make_shared<AST::IfStatement>(fn, ln);
     guard->set_cond(reset_cond);
     guard->set_true_statement(AST::to_node(reset_block));
-    guard->set_false_statement(AST::to_node(case_stmt));
+    guard->set_false_statement(else_branch);
 
     auto clock_sens = std::make_shared<AST::Sens>(fn, ln);
     clock_sens->set_type(clock->get_type());
