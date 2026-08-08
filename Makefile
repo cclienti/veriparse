@@ -68,7 +68,8 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  grep '^ *- ' | grep -v '{{\|compiler\|stdlib\|mold' | \
 	  grep -vE '# *\[(win|build_platform.startswith\("win-"\))\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
-	@echo "  - verilator"             >> conda/environment.yml
+	@echo "  - verilator>=5.050"      >> conda/environment.yml
+	@echo "  - yosys"                 >> conda/environment.yml
 	@echo "  - gcovr"                 >> conda/environment.yml
 
 dev-env: dev-env-file

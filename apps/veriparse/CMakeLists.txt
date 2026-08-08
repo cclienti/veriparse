@@ -336,6 +336,50 @@ if(NOT WIN32)
         ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/tb_straight_line.sv
       VERILATOR_ARGS -Wno-CASEINCOMPLETE
     )
+
+    # The enable half of the §5.3 emission, differentially checked: the
+    # reference honours `iff`, so en toggles irregularly against both models.
+    set(_enable_line_src
+      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/enable_line/src/enable_line.sv)
+    set(_enable_line_suffixed
+      ${CMAKE_CURRENT_BINARY_DIR}/enable_line_suffixed.v)
+
+    add_custom_command(
+      OUTPUT ${_enable_line_suffixed}
+      COMMAND $<TARGET_FILE:verilower>
+              --sv
+              --top-module enable_line
+              --suffix _lowered
+              --output ${_enable_line_suffixed}
+              --log ${CMAKE_CURRENT_BINARY_DIR}/enable_line_suffixed.log
+              ${_enable_line_src}
+      DEPENDS verilower ${_enable_line_src}
+      COMMENT "verilower enable_line (renamed _lowered)"
+      VERBATIM)
+
+    add_sv_cosim_test(
+      NAME test_cosim_enable_line_svbench
+      TOP_MODULE tb_enable_line
+      VERILOG_SOURCES
+        ${_enable_line_src}
+        ${_enable_line_suffixed}
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/enable_line/cosim/tb_enable_line.sv
+      VERILATOR_ARGS -Wno-CASEINCOMPLETE
+    )
+
+    # §5.3 is normative on synthesis: the sync reset stays outside the clock
+    # enable, which the flop primitive already provides — through yosys the
+    # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys
+    # is absent.
+    find_program(YOSYS_BIN yosys HINTS ${VERILATOR_ROOT}/../../bin)
+    if(YOSYS_BIN)
+      add_test(NAME test_synth_enable_line
+               COMMAND ${YOSYS_BIN} -q -p
+                 "read_verilog -sv ${_enable_line_suffixed}; proc; opt_clean; opt_dff; select -assert-any t:$sdffe; select -assert-none t:$sdffce")
+      set_tests_properties(test_synth_enable_line PROPERTIES LABELS "cosim")
+    else()
+      message(STATUS "Veriparse Apps: yosys not found, skipping the synthesis check")
+    endif()
   endif()
 
 endif()
