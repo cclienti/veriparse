@@ -34,11 +34,26 @@ install(DIRECTORY test/double_fpu-master
 
 if(NOT WIN32)
   find_package(verilator CONFIG QUIET)
+  set(_verilator_version "")
+  if(verilator_FOUND)
+    # The floor is semantic (ADR-0014 §11): earlier versions execute an
+    # initial block's nonblocking assignments as blocking, corrupting a
+    # behavioural reference into a baffling divergence at run time.
+    execute_process(COMMAND ${VERILATOR_BIN} --version
+                    OUTPUT_VARIABLE _verilator_version_line
+                    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    string(REGEX MATCH "[0-9]+\\.[0-9]+" _verilator_version "${_verilator_version_line}")
+  endif()
   if(NOT verilator_FOUND)
     message(STATUS "Veriparse Apps: verilator not found, skipping cosim tests")
+  elseif(_verilator_version VERSION_LESS 5.050)
+    message(STATUS "Veriparse Apps: verilator ${_verilator_version} < 5.050 "
+                   "(initial-block nonblocking assignments run as blocking), "
+                   "skipping cosim tests")
   else()
     include(${CMAKE_SOURCE_DIR}/cmake/modules/add_cosim_test.cmake)
     include(${CMAKE_SOURCE_DIR}/cmake/modules/add_sv_cosim_test.cmake)
+    include(${CMAKE_SOURCE_DIR}/cmake/modules/add_verilower_sv_cosim.cmake)
 
     foreach(_aes_width 128 192 256)
       set(_aes_sources
@@ -311,74 +326,34 @@ if(NOT WIN32)
     # --timing): source and renamed verilower output side by side, one
     # testbench, the exit status carrying the verdict. The shape phases 5-6
     # register their protocol cosims in.
-    set(_straight_line_suffixed
-      ${CMAKE_CURRENT_BINARY_DIR}/straight_line_suffixed.v)
-
-    add_custom_command(
-      OUTPUT ${_straight_line_suffixed}
-      COMMAND $<TARGET_FILE:verilower>
-              --sv
-              --top-module straight_line
-              --suffix _lowered
-              --output ${_straight_line_suffixed}
-              --log ${CMAKE_CURRENT_BINARY_DIR}/straight_line_suffixed.log
-              ${_straight_line_src}
-      DEPENDS verilower ${_straight_line_src}
-      COMMENT "verilower straight_line (renamed _lowered)"
-      VERBATIM)
-
-    add_sv_cosim_test(
-      NAME test_cosim_straight_line_svbench
-      TOP_MODULE tb_straight_line
-      VERILOG_SOURCES
-        ${_straight_line_src}
-        ${_straight_line_suffixed}
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/straight_line/cosim/tb_straight_line.sv
-      VERILATOR_ARGS -Wno-CASEINCOMPLETE
-    )
+    add_verilower_sv_cosim(NAME straight_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
     # The enable half of the §5.3 emission, differentially checked: the
     # reference honours `iff`, so en toggles irregularly against both models.
-    set(_enable_line_src
-      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/enable_line/src/enable_line.sv)
-    set(_enable_line_suffixed
-      ${CMAKE_CURRENT_BINARY_DIR}/enable_line_suffixed.v)
-
-    add_custom_command(
-      OUTPUT ${_enable_line_suffixed}
-      COMMAND $<TARGET_FILE:verilower>
-              --sv
-              --top-module enable_line
-              --suffix _lowered
-              --output ${_enable_line_suffixed}
-              --log ${CMAKE_CURRENT_BINARY_DIR}/enable_line_suffixed.log
-              ${_enable_line_src}
-      DEPENDS verilower ${_enable_line_src}
-      COMMENT "verilower enable_line (renamed _lowered)"
-      VERBATIM)
-
-    add_sv_cosim_test(
-      NAME test_cosim_enable_line_svbench
-      TOP_MODULE tb_enable_line
-      VERILOG_SOURCES
-        ${_enable_line_src}
-        ${_enable_line_suffixed}
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/enable_line/cosim/tb_enable_line.sv
-      VERILATOR_ARGS -Wno-CASEINCOMPLETE
-    )
+    add_verilower_sv_cosim(NAME enable_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys
-    # is absent.
+    # is absent or predates opt_dff's $sdffe extraction (0.10).
     find_program(YOSYS_BIN yosys HINTS ${VERILATOR_ROOT}/../../bin)
+    set(_yosys_version "")
     if(YOSYS_BIN)
+      execute_process(COMMAND ${YOSYS_BIN} -V
+                      OUTPUT_VARIABLE _yosys_version_line
+                      OUTPUT_STRIP_TRAILING_WHITESPACE)
+      string(REGEX MATCH "[0-9]+\\.[0-9]+" _yosys_version "${_yosys_version_line}")
+    endif()
+    if(NOT YOSYS_BIN)
+      message(STATUS "Veriparse Apps: yosys not found, skipping the synthesis check")
+    elseif(_yosys_version VERSION_LESS 0.10)
+      message(STATUS "Veriparse Apps: yosys ${_yosys_version} < 0.10 "
+                     "(opt_dff yields no $sdffe), skipping the synthesis check")
+    else()
       add_test(NAME test_synth_enable_line
                COMMAND ${YOSYS_BIN} -q -p
-                 "read_verilog -sv ${_enable_line_suffixed}; proc; opt_clean; opt_dff; select -assert-any t:$sdffe; select -assert-none t:$sdffce")
+                 "read_verilog -sv ${enable_line_LOWERED_V}; proc; opt_clean; opt_dff; select -assert-any t:$sdffe; select -assert-none t:$sdffce")
       set_tests_properties(test_synth_enable_line PROPERTIES LABELS "cosim")
-    else()
-      message(STATUS "Veriparse Apps: yosys not found, skipping the synthesis check")
     endif()
   endif()
 

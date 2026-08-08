@@ -77,3 +77,8 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err0) { TEST_ERROR_
 // Different `iff` conditions: a state-dependent enable is a separate
 // feature, not a variant of this one (ADR-0014 §5.3, §15).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err1) { TEST_ERROR_SV; }
+// The enable reads a process register the init segment never assigns: it
+// gates every state including the first out of reset, so the register would
+// come up undefined — invisible to a 2-state cosim, caught structurally
+// (ADR-0014 §5.1, §5.3, §6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err2) { TEST_ERROR_SV; }
