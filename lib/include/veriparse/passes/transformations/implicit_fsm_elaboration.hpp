@@ -30,10 +30,15 @@ namespace Transformations
  *
  * Actions hold nonblocking assignments to plain registers and the branches
  * that fork or ride along the path cover (§4, §C.3): an if or case whose
- * arms hold cut points forks the state graph — arms of unequal length meet
- * at the same merge state — while a cut-point-free branch stays a plain
- * conditional inside one state's action. Loops and blocking temporaries are
- * rejected with a diagnostic rather than mis-lowered (§9).
+ * arms hold cut points — or a jump — forks the state graph, arms of unequal
+ * length meeting at the same merge state, while a cut-point-free branch
+ * stays a plain conditional inside one state's action. Loops the CFG keeps
+ * become back-edges (§7.3), the rolled bounded forms carrying their induced
+ * storage (§7.2): the shared countdown for a repeat, the author's index
+ * register for a for, with the blocking init/step substituted forward
+ * within their own segment (§6.1). break and continue are edges over those
+ * loops (§8). The perpetual `forever` form and free blocking temporaries
+ * are rejected with a diagnostic rather than mis-lowered (§9).
  */
 class ImplicitFsmElaboration : public TransformationBase
 {
@@ -71,12 +76,39 @@ private:
     /// A position in the statement tree during path enumeration: the
     /// innermost list is walked first, exhausted frames pop back to the
     /// enclosing continuation — which is how the merge after a branch is
-    /// reached from every arm.
+    /// reached from every arm. A frame carrying @c loop is the body of a
+    /// loop the CFG keeps: reaching its end takes the back-edge instead of
+    /// popping through (§7.2, §7.3).
     struct Frame
     {
         AST::Node::ListPtr stmts;
         AST::Node::List::iterator it;
+        const AST::Node *loop = nullptr;
     };
+
+    /// A loop the CFG keeps — §7.3 data-dependent, or §7.2 rolled with its
+    /// induced storage contract.
+    struct LoopInfo
+    {
+        enum class Kind
+        {
+            WHILE,
+            REPEAT,
+            FOR
+        };
+        Kind kind = Kind::WHILE;
+        AST::Node::Ptr cond; ///< while/for: the test; repeat: the count
+        AST::Node::Ptr body;
+        std::string index;        ///< rolled for: the author's index register
+        AST::Node::Ptr init_rhs;  ///< rolled for: the entry value
+        AST::Node::Ptr step_rhs;  ///< rolled for: the per-lap value
+        bool count_known = false; ///< rolled repeat: the count folded
+        unsigned long count_value = 0;
+    };
+
+    /// §6.1 for the induced registers: the blocking init/step values,
+    /// substituted forward within their own segment.
+    using Env = std::map<std::string, AST::Node::Ptr>;
 
     int compile_process(const AST::Module::Ptr &module, const AST::Node::Ptr &parent,
                         const AST::Pragmalist::Ptr &pragmalist, const AST::Initial::Ptr &initial,
@@ -89,17 +121,39 @@ private:
     int collect_body(const AST::Node::Ptr &node, std::vector<AST::EventStatement::Ptr> &waits,
                      AST::Sens::Ptr &clock, bool &has_wait);
 
-    /// Push a statement as an enumeration frame: a block contributes its
-    /// list, a single statement a one-element list, null nothing.
-    static void push_frame(std::vector<Frame> &frames, const AST::Node::Ptr &node);
+    /// Validate and register a loop the CFG keeps (§7.2 rolled, §7.3
+    /// data-dependent); @p kept_rolled when `(* veriparse_no_unroll *)`
+    /// asked for it, false when the loop simply survived the unroller.
+    int collect_loop(const AST::Node::Ptr &node, bool kept_rolled,
+                     std::vector<AST::EventStatement::Ptr> &waits, AST::Sens::Ptr &clock,
+                     bool &has_wait);
+
+    /// Push a statement as an enumeration frame: a block or pragma list
+    /// contributes its list, a single statement a one-element list, null
+    /// nothing. @p loop marks the frame as a loop body.
+    static void push_frame(std::vector<Frame> &frames, const AST::Node::Ptr &node,
+                           const AST::Node *loop = nullptr);
 
     /// Enumerate the path cover (§C.4 step 3) from the position in
     /// @p frames: fork at branches whose arms hold a cut point, copy
     /// cut-point-free statements into the running action, end each path at
-    /// the next wait — or at the hold state when the process ends.
+    /// the next wait — or at the hold state when the process ends. @p env
+    /// carries induced-register values substituted within the segment;
+    /// @p lapped the loops entered since the last cut point, to reject a
+    /// zero-delay lap.
     int walk_paths(std::size_t from, const AST::Node::Ptr &guard, AST::Node::ListPtr action,
-                   std::vector<Frame> frames, std::vector<State> &states,
-                   std::vector<Transition> &entry);
+                   std::vector<Frame> frames, Env env, std::set<const AST::Node *> lapped,
+                   std::vector<State> &states, std::vector<Transition> &entry);
+
+    /// Fork at a loop head — on entry or on the back-edge: the enter leg
+    /// pushes the body frame under the loop's guard, the exit leg continues
+    /// past it. Rolled forms commit their induced register into the action
+    /// (§7.2): the countdown load or decrement, the index init or step.
+    int loop_fork(const AST::Node *loop, bool entering, std::size_t from,
+                  const AST::Node::Ptr &guard, const AST::Node::ListPtr &action,
+                  const std::vector<Frame> &frames, const Env &env,
+                  const std::set<const AST::Node *> &lapped, std::vector<State> &states,
+                  std::vector<Transition> &entry);
 
     /// Check one wait: exactly one Sens, posedge/negedge, and the same edge
     /// over the same signal as every other wait of the process.
@@ -135,6 +189,15 @@ private:
     /// collect_body.
     std::set<const AST::Node *> m_forking;
     std::map<const AST::EventStatement *, std::size_t> m_wait_index;
+
+    /// The loops the CFG keeps, filled per process by collect_body.
+    std::map<const AST::Node *, LoopInfo> m_loops;
+
+    /// The shared countdown (§15: one per process, re-initialised on
+    /// entry): its name, and its width — zero when no rolled repeat needs
+    /// one.
+    std::string m_cnt_name;
+    unsigned int m_cnt_width = 0;
 };
 
 } // namespace Transformations

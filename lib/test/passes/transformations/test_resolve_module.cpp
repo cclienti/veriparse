@@ -85,3 +85,8 @@ TEST(PassesTransformation_ResolveModule, alu_dsp) { TEST_CORE; }
 // the constant into a segment, and the folding passes clean the generated
 // machine (ADR-0014 §10.3).
 TEST(PassesTransformation_ResolveModule, resolve_fsm0) { TEST_CORE_FSM_SV; }
+// §7.2 unrolled groups end to end: an unmarked bounded for with a cut point
+// is replicated by LoopUnrolling before the lowering cuts — one state per
+// copy, each reading its constant index — and the folding passes clean the
+// machine (ADR-0014 §7.2, §12 phase 5).
+TEST(PassesTransformation_ResolveModule, resolve_fsm1) { TEST_CORE_FSM_SV; }
