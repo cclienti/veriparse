@@ -110,3 +110,22 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err2) { TEST_ERROR_
 // casez in a marked process: wildcard matching is not lowered yet, rejected
 // rather than mis-compiled as exact equality (ADR-0014 §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_case_err0) { TEST_ERROR_SV; }
+// Two default arms in a forking case: the grammar admits it, IEEE 1800-2017
+// §12.5 forbids it in prose, and the guard construction has no condition to
+// give the second one — rejected, not crashed on (ADR-0014 §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_case_err1) { TEST_ERROR_SV; }
+// A case item with x/z bits in a forking case: item matching is case
+// equality (IEEE 1800-2017 §12.5) but the fork guard is built with `==`,
+// which such an item can never satisfy — rejected rather than silently
+// never taken (ADR-0014 §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_case_err2) { TEST_ERROR_SV; }
+// The preamble reads a process register: the entry store out of reset holds
+// nothing — even its own '<=' commits only at the edge — so the read is of
+// an uninitialised value the reset branch would then replay every reset
+// cycle (ADR-0014 §5.1, §6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_straight_err2) { TEST_ERROR_SV; }
+// A branch in the preamble, even without a cut point: the reset branch
+// loads constants once, and a conditional there makes the reset value
+// input-dependent and re-evaluated on every reset cycle — unlike the source
+// initial, which evaluates it exactly once (ADR-0014 §5.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err3) { TEST_ERROR_SV; }
