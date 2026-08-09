@@ -337,6 +337,11 @@ if(NOT WIN32)
     # path — five input-pinned behavioural/lowered pairs so every edge runs.
     add_verilower_sv_cosim(NAME branch_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # The §7 loops: the §7.3 wait-state self-loop taken and not taken, the
+    # rolled countdown's first and last lap, and the captured non-constant
+    # count entering and skipping (§11.2's back-edge coverage).
+    add_verilower_sv_cosim(NAME count_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -66,6 +67,28 @@ bool contains_event_statement(const AST::Node::Ptr &node)
     return false;
 }
 
+/// Whether the subtree holds a break or continue: a jump transfers control,
+/// so a branch carrying one forks the path walk even with no cut point in
+/// its arms (§8). A jump bound to a loop nested inside the branch would be
+/// a false positive, but such a loop holds cut points of its own, so the
+/// branch forks regardless.
+bool contains_jump(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Break) || node->is_node_type(AST::NodeType::Continue)) {
+        return true;
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        if(contains_jump(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void collect_identifier_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
     if(!node) {
@@ -81,11 +104,10 @@ void collect_identifier_names(const AST::Node::Ptr &node, std::set<std::string> 
     }
 }
 
-/// The target register of a straight-line nonblocking assignment: a plain
-/// identifier, or null when the shape is outside the subset.
-std::string nba_target(const AST::NonblockingSubstitution::Ptr &nba)
+/// The plain-identifier target of an assignment's left-hand side, or empty
+/// when the shape is outside the subset.
+std::string lvalue_target(const AST::Lvalue::Ptr &lvalue)
 {
-    const auto &lvalue = nba->get_left();
     if(!lvalue || !lvalue->get_var()) {
         return "";
     }
@@ -93,6 +115,18 @@ std::string nba_target(const AST::NonblockingSubstitution::Ptr &nba)
         return "";
     }
     return AST::cast_to<AST::Identifier>(lvalue->get_var())->get_name();
+}
+
+/// The target register of a straight-line nonblocking assignment.
+std::string nba_target(const AST::NonblockingSubstitution::Ptr &nba)
+{
+    return lvalue_target(nba->get_left());
+}
+
+/// The target of a for's blocking init or step (§7.2).
+std::string nba_like_target(const AST::BlockingSubstitution::Ptr &assign)
+{
+    return lvalue_target(assign->get_left());
 }
 
 std::string to_lower(const std::string &str)
@@ -191,6 +225,37 @@ AST::Node::Ptr make_eq(const AST::Node::Ptr &left, const AST::Node::Ptr &right,
     return AST::to_node(node);
 }
 
+AST::Node::Ptr make_noteq(const AST::Node::Ptr &left, const AST::Node::Ptr &right,
+                          const std::string &fn, int ln)
+{
+    auto node = std::make_shared<AST::NotEq>(fn, ln);
+    node->set_left(left);
+    node->set_right(right);
+    return AST::to_node(node);
+}
+
+AST::Node::Ptr make_minus(const AST::Node::Ptr &left, const AST::Node::Ptr &right,
+                          const std::string &fn, int ln)
+{
+    auto node = std::make_shared<AST::Minus>(fn, ln);
+    node->set_left(left);
+    node->set_right(right);
+    return AST::to_node(node);
+}
+
+AST::NonblockingSubstitution::Ptr make_nba(const std::string &target, const AST::Node::Ptr &rhs,
+                                           const std::string &fn, int ln)
+{
+    auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+    lvalue->set_var(AST::to_node(make_id(target, fn, ln)));
+    auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+    rvalue->set_var(rhs);
+    auto nba = std::make_shared<AST::NonblockingSubstitution>(fn, ln);
+    nba->set_left(lvalue);
+    nba->set_right(rvalue);
+    return nba;
+}
+
 /// Conjoin a path condition onto a guard; a null side passes the other
 /// through, so unconditional composes as identity.
 AST::Node::Ptr conjoin(const AST::Node::Ptr &guard, const AST::Node::Ptr &extra,
@@ -200,6 +265,88 @@ AST::Node::Ptr conjoin(const AST::Node::Ptr &guard, const AST::Node::Ptr &extra,
         return guard;
     }
     return guard ? make_land(guard, extra, fn, ln) : extra;
+}
+
+/// §6.1 substitution, in place on a tree the caller owns: identifiers in
+/// read position take their environment value; write positions — Lvalue
+/// subtrees — are left alone.
+AST::Node::Ptr subst_into(AST::Node::Ptr node, const std::map<std::string, AST::Node::Ptr> &env)
+{
+    if(!node) {
+        return node;
+    }
+    if(node->is_node_type(AST::NodeType::Identifier)) {
+        const auto &found = env.find(AST::cast_to<AST::Identifier>(node)->get_name());
+        return found != env.end() ? found->second->clone() : node;
+    }
+    if(node->is_node_type(AST::NodeType::Lvalue)) {
+        return node;
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        const auto &replacement = subst_into(child, env);
+        if(replacement != child) {
+            node->replace(child, replacement);
+        }
+    }
+    return node;
+}
+
+/// A fresh expression for a guard or an action: cloned, with the segment's
+/// induced-register values substituted in (§6.1).
+AST::Node::Ptr clone_subst(const AST::Node::Ptr &node,
+                           const std::map<std::string, AST::Node::Ptr> &env)
+{
+    return env.empty() ? node->clone() : subst_into(node->clone(), env);
+}
+
+/// The module-level declaration behind a name — a body item or an ANSI
+/// port's inner declaration — or null.
+AST::Declaration::Ptr find_declaration(const AST::Module::Ptr &module, const std::string &name)
+{
+    const auto &ports = module->get_ports();
+    if(ports) {
+        for(const auto &port : *ports) {
+            const auto &decl = port->get_decl();
+            if(decl && decl->get_name() == name) {
+                return decl;
+            }
+        }
+    }
+    const auto &items = module->get_items();
+    if(items) {
+        for(const auto &item : *items) {
+            const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(item);
+            if(decl && decl->get_name() == name) {
+                return decl;
+            }
+        }
+    }
+    return nullptr;
+}
+
+/// The declared packed width of a declaration, when its single packed
+/// dimension folds to constants; scalar means one bit.
+int declared_width(const AST::Declaration::Ptr &decl, unsigned int &width)
+{
+    const auto &type = decl->get_type();
+    const auto &dims = type ? type->get_packed_dims() : nullptr;
+    if(!dims || dims->empty()) {
+        width = 1;
+        return 0;
+    }
+    if(dims->size() != 1 || !dims->front()->is_node_type(AST::NodeType::RangeDim)) {
+        return 1;
+    }
+    const auto &range = AST::cast_to<AST::RangeDim>(dims->front());
+    mpz_class left, right;
+    if(!ExpressionEvaluation().evaluate_node(range->get_left(), left) ||
+       !ExpressionEvaluation().evaluate_node(range->get_right(), right)) {
+        return 1;
+    }
+    const mpz_class span = left >= right ? left - right : right - left;
+    width = span.convert_to<unsigned int>() + 1;
+    return 0;
 }
 
 AST::Node::ListPtr copy_list(const AST::Node::ListPtr &list)
@@ -592,10 +739,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(collect_body(ifs->get_false_statement(), waits, clock, arms_wait)) {
             return 1;
         }
-        if(arms_wait) {
+        if(arms_wait || contains_jump(node)) {
             m_forking.insert(node.get());
-            has_wait = true;
         }
+        has_wait |= arms_wait;
         return 0;
     }
 
@@ -626,7 +773,8 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         // case equality (IEEE 1800-2017 §12.5): an item with x/z bits can
         // never satisfy the guard, so it is rejected, not silently dropped.
         // A cut-point-free case stays verbatim and keeps its semantics.
-        if(arms_wait && caselist) {
+        const bool forking = arms_wait || contains_jump(node);
+        if(forking && caselist) {
             for(const auto &arm : *caselist) {
                 const auto &conds = arm->get_cond();
                 if(!conds) {
@@ -647,10 +795,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 }
             }
         }
-        if(arms_wait) {
+        if(forking) {
             m_forking.insert(node.get());
-            has_wait = true;
         }
+        has_wait |= arms_wait;
         return 0;
     }
 
@@ -659,6 +807,57 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         LOG_ERROR_N(node) << "casex/casez in a marked process: wildcard matching "
                           << "is not handled by the lowering yet (ADR-0014 §9)";
         return 1;
+
+    case AST::NodeType::Pragmalist: {
+        // (* veriparse_no_unroll *) directly on a loop keeps it rolled
+        // (§7.2); any other statement pragma is transparent.
+        const auto &pragmalist = AST::cast_to<AST::Pragmalist>(node);
+        const bool no_unroll = has_pragma(pragmalist, "veriparse_no_unroll");
+        const auto &statements = pragmalist->get_statements();
+        if(statements) {
+            for(const auto &stmt : *statements) {
+                const bool loop = stmt->is_node_type(AST::NodeType::RepeatStatement) ||
+                                  stmt->is_node_type(AST::NodeType::ForStatement) ||
+                                  stmt->is_node_type(AST::NodeType::WhileStatement);
+                if(no_unroll && loop) {
+                    if(collect_loop(stmt, true, waits, clock, has_wait)) {
+                        return 1;
+                    }
+                } else if(collect_body(stmt, waits, clock, has_wait)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    case AST::NodeType::WhileStatement:
+        return collect_loop(node, false, waits, clock, has_wait);
+
+    case AST::NodeType::RepeatStatement:
+    case AST::NodeType::ForStatement:
+        return collect_loop(node, false, waits, clock, has_wait);
+
+    case AST::NodeType::ForeverStatement:
+        LOG_ERROR_N(node) << "forever in a marked process: the perpetual form is "
+                          << "not compiled yet (ADR-0014 §2, §12 phase 6)";
+        return 1;
+
+    case AST::NodeType::Break:
+    case AST::NodeType::Continue:
+        // §8: a CFG edge — resolved during the path walk, where the
+        // innermost enclosing loop is known.
+        return 0;
+
+    case AST::NodeType::SingleStatement: {
+        const auto &single = AST::cast_to<AST::SingleStatement>(node);
+        if(single->get_delay()) {
+            LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
+                              << "with no hardware meaning (ADR-0014 §9)";
+            return 1;
+        }
+        return collect_body(single->get_statement(), waits, clock, has_wait);
+    }
 
     case AST::NodeType::BlockingSubstitution:
         LOG_ERROR_N(node) << "blocking assignment in a marked process: '=' names a "
@@ -687,7 +886,99 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
     }
 }
 
-void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::Node::Ptr &node)
+int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_rolled,
+                                         std::vector<AST::EventStatement::Ptr> &waits,
+                                         AST::Sens::Ptr &clock, bool &has_wait)
+{
+    LoopInfo info;
+    switch(node->get_node_type()) {
+    case AST::NodeType::WhileStatement: {
+        const auto &loop = AST::cast_to<AST::WhileStatement>(node);
+        info.kind = LoopInfo::Kind::WHILE;
+        info.cond = loop->get_cond();
+        info.body = loop->get_statement();
+        break;
+    }
+    case AST::NodeType::RepeatStatement: {
+        const auto &loop = AST::cast_to<AST::RepeatStatement>(node);
+        info.kind = LoopInfo::Kind::REPEAT;
+        info.cond = loop->get_times();
+        info.body = loop->get_statement();
+        mpz_class value;
+        if(ExpressionEvaluation().evaluate_node(info.cond, value)) {
+            info.count_known = true;
+            info.count_value = value.convert_to<unsigned long>();
+        }
+        break;
+    }
+    case AST::NodeType::ForStatement: {
+        const auto &loop = AST::cast_to<AST::ForStatement>(node);
+        info.kind = LoopInfo::Kind::FOR;
+        info.cond = loop->get_cond();
+        info.body = loop->get_statement();
+        const auto &pre = loop->get_pre();
+        const auto &post = loop->get_post();
+        if(!pre || !post || !info.cond) {
+            LOG_ERROR_N(node) << "a rolled for honours the construct's full contract and "
+                              << "needs all three of init, test and step (ADR-0014 §7.2)";
+            return 1;
+        }
+        const auto &pre_target = nba_like_target(pre);
+        const auto &post_target = nba_like_target(post);
+        if(pre_target.empty() || pre_target != post_target) {
+            LOG_ERROR_N(node) << "a rolled for's init and step assign the same plain index "
+                              << "register (ADR-0014 §7.2)";
+            return 1;
+        }
+        info.index = pre_target;
+        info.init_rhs = pre->get_right() ? pre->get_right()->get_var() : nullptr;
+        info.step_rhs = post->get_right() ? post->get_right()->get_var() : nullptr;
+        if(!info.init_rhs || !info.step_rhs) {
+            LOG_ERROR_N(node) << "a rolled for's init and step carry plain expressions "
+                              << "(ADR-0014 §7.2)";
+            return 1;
+        }
+        break;
+    }
+    default:
+        return 1;
+    }
+
+    bool body_wait = false;
+    if(collect_body(info.body, waits, clock, body_wait)) {
+        return 1;
+    }
+
+    if(!body_wait) {
+        if(kept_rolled) {
+            LOG_ERROR_N(node) << "(* veriparse_no_unroll *) on a loop without a cut point: "
+                              << "the loop runs in zero time and there is no state to save — "
+                              << "drop the hint and let it unroll (ADR-0014 §7.2)";
+        } else {
+            LOG_ERROR_N(node) << "loop with no cut point survived to the FSM lowering: no "
+                              << "static exit, or the unroller refused it — a zero-delay "
+                              << "loop has no hardware meaning (IEEE 1800-2017 §9.2.2.1, "
+                              << "ADR-0014 §9)";
+        }
+        return 1;
+    }
+
+    // §7.2: the rolled lowering is forced on a bounded loop the unroller
+    // left behind — a non-constant bound is no longer an error — but the
+    // author should know the state count changed hands.
+    if(!kept_rolled && info.kind != LoopInfo::Kind::WHILE) {
+        LOG_WARNING_N(node) << "bounded loop with a cut point was not unrolled upstream: "
+                            << "compiled rolled — mark it (* veriparse_no_unroll *) to make "
+                            << "that explicit (ADR-0014 §7.2, §8)";
+    }
+
+    m_loops[node.get()] = info;
+    has_wait = true;
+    return 0;
+}
+
+void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::Node::Ptr &node,
+                                        const AST::Node *loop)
 {
     if(!node) {
         return;
@@ -695,17 +986,25 @@ void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::N
     if(node->is_node_type(AST::NodeType::Block)) {
         const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
         if(stmts) {
-            frames.push_back(Frame{stmts, stmts->begin()});
+            frames.push_back(Frame{stmts, stmts->begin(), loop});
+        }
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::Pragmalist)) {
+        const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
+        if(stmts) {
+            frames.push_back(Frame{stmts, stmts->begin(), loop});
         }
         return;
     }
     auto single = std::make_shared<AST::Node::List>();
     single->push_back(node);
-    frames.push_back(Frame{single, single->begin()});
+    frames.push_back(Frame{single, single->begin(), loop});
 }
 
 int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &guard,
                                        AST::Node::ListPtr action, std::vector<Frame> frames,
+                                       Env env, std::set<const AST::Node *> lapped,
                                        std::vector<State> &states, std::vector<Transition> &entry)
 {
     const auto record = [&](std::size_t next) {
@@ -719,6 +1018,14 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
     while(!frames.empty()) {
         Frame &top = frames.back();
         if(top.it == top.stmts->end()) {
+            // The end of a loop's body is its back-edge (§7.3): fork at the
+            // loop head again instead of popping through.
+            if(top.loop) {
+                const AST::Node *loop = top.loop;
+                frames.pop_back();
+                return loop_fork(loop, false, from, guard, action, frames, env, lapped, states,
+                                 entry);
+            }
             frames.pop_back();
             continue;
         }
@@ -730,26 +1037,33 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
         switch(stmt->get_node_type()) {
         case AST::NodeType::Block:
+        case AST::NodeType::Pragmalist:
             push_frame(frames, stmt);
             break;
 
+        case AST::NodeType::SingleStatement:
+            // Validated delay-free by the collector; the wrapper is
+            // transparent.
+            push_frame(frames, AST::cast_to<AST::SingleStatement>(stmt)->get_statement());
+            break;
+
         case AST::NodeType::NonblockingSubstitution:
-            action->push_back(stmt);
+            action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
             break;
 
         case AST::NodeType::IfStatement: {
             // Cut-point-free: a plain conditional inside the action, no
             // state spent on it (§4).
             if(!m_forking.count(stmt.get())) {
-                action->push_back(stmt);
+                action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
                 break;
             }
             const auto &ifs = AST::cast_to<AST::IfStatement>(stmt);
             {
                 std::vector<Frame> leg = frames;
                 push_frame(leg, ifs->get_true_statement());
-                if(walk_paths(from, conjoin(guard, ifs->get_cond()->clone(), fn, ln),
-                              copy_list(action), leg, states, entry)) {
+                if(walk_paths(from, conjoin(guard, clone_subst(ifs->get_cond(), env), fn, ln),
+                              copy_list(action), leg, env, lapped, states, entry)) {
                     return 1;
                 }
             }
@@ -759,8 +1073,9 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 std::vector<Frame> leg = frames;
                 push_frame(leg, ifs->get_false_statement());
                 if(walk_paths(from,
-                              conjoin(guard, make_ulnot(ifs->get_cond()->clone(), fn, ln), fn, ln),
-                              copy_list(action), leg, states, entry)) {
+                              conjoin(guard, make_ulnot(clone_subst(ifs->get_cond(), env), fn, ln),
+                                      fn, ln),
+                              copy_list(action), leg, env, lapped, states, entry)) {
                     return 1;
                 }
             }
@@ -769,7 +1084,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
         case AST::NodeType::CaseStatement: {
             if(!m_forking.count(stmt.get())) {
-                action->push_back(stmt);
+                action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
                 break;
             }
             const auto &cs = AST::cast_to<AST::CaseStatement>(stmt);
@@ -790,7 +1105,8 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                     }
                     AST::Node::Ptr match;
                     for(const auto &value : *conds) {
-                        const auto &eq = make_eq(cs->get_comp()->clone(), value->clone(), fn, ln);
+                        const auto &eq =
+                            make_eq(clone_subst(cs->get_comp(), env), value->clone(), fn, ln);
                         match = match ? make_lor(match, eq, fn, ln) : eq;
                     }
                     legs.emplace_back(match, arm->get_statement());
@@ -805,19 +1121,50 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             for(const auto &leg : legs) {
                 std::vector<Frame> lf = frames;
                 push_frame(lf, leg.second);
-                if(walk_paths(from, conjoin(guard, leg.first, fn, ln), copy_list(action), lf,
-                              states, entry)) {
+                if(walk_paths(from, conjoin(guard, leg.first, fn, ln), copy_list(action), lf, env,
+                              lapped, states, entry)) {
                     return 1;
                 }
             }
             if(!has_default) {
                 std::vector<Frame> lf = frames;
-                if(walk_paths(from, conjoin(guard, not_any, fn, ln), copy_list(action), lf, states,
-                              entry)) {
+                if(walk_paths(from, conjoin(guard, not_any, fn, ln), copy_list(action), lf, env,
+                              lapped, states, entry)) {
                     return 1;
                 }
             }
             return 0;
+        }
+
+        case AST::NodeType::WhileStatement:
+        case AST::NodeType::RepeatStatement:
+        case AST::NodeType::ForStatement:
+            // A loop the CFG keeps, registered by the collector: fork at
+            // its head (§7.2, §7.3).
+            return loop_fork(stmt.get(), true, from, guard, action, frames, env, lapped, states,
+                             entry);
+
+        case AST::NodeType::Break:
+        case AST::NodeType::Continue: {
+            // §8: a jump is just an edge. Unwind to the innermost loop the
+            // CFG sees: continue takes its back-edge — the step and the
+            // test — break continues past it, skipping both.
+            std::size_t depth = frames.size();
+            while(depth > 0 && !frames[depth - 1].loop) {
+                --depth;
+            }
+            if(depth == 0) {
+                LOG_ERROR_N(stmt) << "break/continue outside a loop the CFG sees: nothing "
+                                  << "to jump within (ADR-0014 §8)";
+                return 1;
+            }
+            const AST::Node *loop = frames[depth - 1].loop;
+            std::vector<Frame> unwound(frames.begin(), frames.begin() + (depth - 1));
+            if(stmt->is_node_type(AST::NodeType::Continue)) {
+                return loop_fork(loop, false, from, guard, action, unwound, env, lapped, states,
+                                 entry);
+            }
+            return walk_paths(from, guard, action, unwound, env, lapped, states, entry);
         }
 
         case AST::NodeType::EventStatement: {
@@ -826,15 +1173,17 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             record(idx);
             // Every path reaches a given wait with the same continuation —
             // its syntactic position fixes it — so its outgoing paths are
-            // walked once, on first arrival.
+            // walked once, on first arrival. The environment and the lap
+            // set die with the segment: the next one reads committed
+            // registers.
             if(states[idx].walked) {
                 return 0;
             }
             states[idx].walked = true;
             std::vector<Frame> cont = frames;
             push_frame(cont, event->get_statement());
-            return walk_paths(idx, nullptr, std::make_shared<AST::Node::List>(), cont, states,
-                              entry);
+            return walk_paths(idx, nullptr, std::make_shared<AST::Node::List>(), cont, Env{}, {},
+                              states, entry);
         }
 
         default:
@@ -847,6 +1196,136 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
     // The process ends: a one-shot parks in the hold state (§2).
     record(states.size());
     return 0;
+}
+
+int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std::size_t from,
+                                      const AST::Node::Ptr &guard, const AST::Node::ListPtr &action,
+                                      const std::vector<Frame> &frames, const Env &env,
+                                      const std::set<const AST::Node *> &lapped,
+                                      std::vector<State> &states, std::vector<Transition> &entry)
+{
+    const auto &info = m_loops.at(loop);
+    const std::string &fn = info.cond->get_filename();
+    const int ln = info.cond->get_line();
+
+    // Entering the body: a lap that reached this head again without
+    // crossing a cut point re-enters in zero time (IEEE §9.2.2.1, §9).
+    const auto enter_body = [&](const AST::Node::Ptr &leg_guard, AST::Node::ListPtr leg_action,
+                                Env leg_env) -> int {
+        if(lapped.count(loop)) {
+            LOG_ERROR_N(info.cond) << "a path through this loop's body reaches the loop head again "
+                                   << "without crossing a cut point: a zero-delay lap "
+                                   << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9)";
+            return 1;
+        }
+        auto leg_lapped = lapped;
+        leg_lapped.insert(loop);
+        auto leg_frames = frames;
+        push_frame(leg_frames, info.body, loop);
+        return walk_paths(from, leg_guard, leg_action, leg_frames, leg_env, leg_lapped, states,
+                          entry);
+    };
+    const auto skip_past = [&](const AST::Node::Ptr &leg_guard, AST::Node::ListPtr leg_action,
+                               Env leg_env) -> int {
+        return walk_paths(from, leg_guard, leg_action, frames, leg_env, lapped, states, entry);
+    };
+
+    switch(info.kind) {
+    case LoopInfo::Kind::WHILE: {
+        // §7.3: the test re-evaluates at the head, entry and back-edge
+        // alike, over the segment's values.
+        if(enter_body(conjoin(guard, clone_subst(info.cond, env), fn, ln), copy_list(action),
+                      env)) {
+            return 1;
+        }
+        return skip_past(conjoin(guard, make_ulnot(clone_subst(info.cond, env), fn, ln), fn, ln),
+                         copy_list(action), env);
+    }
+
+    case LoopInfo::Kind::REPEAT: {
+        const auto cnt_id = [&]() { return AST::to_node(make_id(m_cnt_name, fn, ln)); };
+        const auto cnt_zero = [&]() {
+            return AST::to_node(make_const(0, static_cast<int>(m_cnt_width), fn, ln));
+        };
+        if(entering) {
+            if(info.count_known) {
+                if(info.count_value == 0) {
+                    return skip_past(guard, action, env);
+                }
+                if(info.count_value == 1) {
+                    // §7.2: a single pass needs no countdown — the body
+                    // runs once, inline.
+                    auto leg_frames = frames;
+                    push_frame(leg_frames, info.body);
+                    return walk_paths(from, guard, action, leg_frames, env, lapped, states, entry);
+                }
+                auto leg_action = copy_list(action);
+                leg_action->push_back(AST::to_node(make_nba(
+                    m_cnt_name,
+                    AST::to_node(make_const(static_cast<unsigned int>(info.count_value - 1),
+                                            static_cast<int>(m_cnt_width), fn, ln)),
+                    fn, ln)));
+                return enter_body(guard, leg_action, env);
+            }
+            // §12.7.3: the count is evaluated once, on entry — captured
+            // into the countdown — and a zero count skips the state
+            // through the entry guard.
+            {
+                auto leg_action = copy_list(action);
+                leg_action->push_back(AST::to_node(make_nba(
+                    m_cnt_name,
+                    make_minus(clone_subst(info.cond, env),
+                               AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)),
+                               fn, ln),
+                    fn, ln)));
+                if(enter_body(conjoin(guard,
+                                      make_noteq(clone_subst(info.cond, env), cnt_zero(), fn, ln),
+                                      fn, ln),
+                              leg_action, env)) {
+                    return 1;
+                }
+            }
+            return skip_past(
+                conjoin(guard, make_eq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn, ln),
+                copy_list(action), env);
+        }
+        // Back-edge: the countdown decides, and decrements on the lap.
+        {
+            auto leg_action = copy_list(action);
+            leg_action->push_back(AST::to_node(make_nba(
+                m_cnt_name,
+                make_minus(cnt_id(),
+                           AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)), fn,
+                           ln),
+                fn, ln)));
+            if(enter_body(conjoin(guard, make_noteq(cnt_id(), cnt_zero(), fn, ln), fn, ln),
+                          leg_action, env)) {
+                return 1;
+            }
+        }
+        return skip_past(conjoin(guard, make_eq(cnt_id(), cnt_zero(), fn, ln), fn, ln),
+                         copy_list(action), env);
+    }
+
+    case LoopInfo::Kind::FOR: {
+        // §7.2: the init or the step commits once, and its value is
+        // substituted forward within its own segment (§6.1) — which is when
+        // the source evaluates the test.
+        const auto &value = clone_subst(entering ? info.init_rhs : info.step_rhs, env);
+        Env leg_env = env;
+        leg_env[info.index] = value;
+        auto base = copy_list(action);
+        base->push_back(AST::to_node(make_nba(info.index, value->clone(), fn, ln)));
+        if(enter_body(conjoin(guard, clone_subst(info.cond, leg_env), fn, ln), copy_list(base),
+                      leg_env)) {
+            return 1;
+        }
+        return skip_past(
+            conjoin(guard, make_ulnot(clone_subst(info.cond, leg_env), fn, ln), fn, ln), base,
+            leg_env);
+    }
+    }
+    return 1;
 }
 
 int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AST::Sens::Ptr &clock)
@@ -1113,11 +1592,46 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
         }
     }
 
+    // Back-edges (§7.3) make the state graph cyclic, so the must-defined
+    // sets iterate to a fixpoint: they only ever shrink once seeded, so
+    // the iteration terminates.
     std::vector<std::set<std::string>> defined_in(states.size());
     std::vector<bool> reached(states.size(), false);
     if(entry_next < states.size()) {
         defined_in[entry_next] = init_defined;
         reached[entry_next] = true;
+    }
+    bool changed = true;
+    while(changed) {
+        changed = false;
+        for(std::size_t s = 0; s < states.size(); ++s) {
+            if(!reached[s]) {
+                continue;
+            }
+            for(const auto &transition : states[s].out) {
+                if(transition.next >= states.size()) {
+                    continue;
+                }
+                std::set<std::string> defined_out = defined_in[s];
+                must_writes_list(transition.action, defined_out);
+                if(!reached[transition.next]) {
+                    defined_in[transition.next] = defined_out;
+                    reached[transition.next] = true;
+                    changed = true;
+                    continue;
+                }
+                std::set<std::string> kept;
+                for(const auto &name : defined_in[transition.next]) {
+                    if(defined_out.count(name)) {
+                        kept.insert(name);
+                    }
+                }
+                if(kept.size() != defined_in[transition.next].size()) {
+                    defined_in[transition.next] = kept;
+                    changed = true;
+                }
+            }
+        }
     }
 
     for(std::size_t s = 0; s < states.size(); ++s) {
@@ -1160,23 +1674,6 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
                     return 1;
                 }
             }
-
-            if(transition.next < states.size()) {
-                std::set<std::string> defined_out = defined_in[s];
-                must_writes_list(transition.action, defined_out);
-                if(!reached[transition.next]) {
-                    defined_in[transition.next] = defined_out;
-                    reached[transition.next] = true;
-                } else {
-                    std::set<std::string> kept;
-                    for(const auto &name : defined_in[transition.next]) {
-                        if(defined_out.count(name)) {
-                            kept.insert(name);
-                        }
-                    }
-                    defined_in[transition.next] = kept;
-                }
-            }
         }
     }
     return 0;
@@ -1192,6 +1689,9 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     // for shape and clock uniformity as it is collected.
     m_forking.clear();
     m_wait_index.clear();
+    m_loops.clear();
+    m_cnt_name = prefix + "_cnt";
+    m_cnt_width = 0;
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
@@ -1203,6 +1703,51 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         LOG_ERROR_N(initial) << "(* veriparse_fsm *) on an initial with no wait: "
                              << "there is nothing to compile (ADR-0014 §2, §9)";
         return 1;
+    }
+
+    // Size the shared countdown (§15: one per process) over every rolled
+    // repeat: $clog2(N) for a folded count, the count signal's declared
+    // width otherwise — the capture `cnt <= expr - 1` must hold any value
+    // the signal can carry. Rolled for indices are the author's registers:
+    // they must exist at module level, with their declared type (§7.2).
+    for(const auto &elt : m_loops) {
+        const auto &info = elt.second;
+        if(info.kind == LoopInfo::Kind::FOR) {
+            if(!find_declaration(module, info.index)) {
+                LOG_ERROR_N(info.cond)
+                    << "rolled for index '" << info.index << "' is not a module-level "
+                    << "declaration: the induced register takes the index's declared "
+                    << "type (ADR-0014 §7.2)";
+                return 1;
+            }
+            continue;
+        }
+        if(info.kind != LoopInfo::Kind::REPEAT) {
+            continue;
+        }
+        if(info.count_known) {
+            if(info.count_value >= 2) {
+                m_cnt_width =
+                    std::max(m_cnt_width, clog2(static_cast<unsigned int>(info.count_value)));
+            }
+            continue;
+        }
+        if(!info.cond->is_node_type(AST::NodeType::Identifier)) {
+            LOG_ERROR_N(info.cond) << "non-constant repeat count must be a plain signal, so the "
+                                   << "countdown can take its declared width — bind the expression "
+                                   << "to a named signal first (ADR-0014 §7.2)";
+            return 1;
+        }
+        const auto &count_name = AST::cast_to<AST::Identifier>(info.cond)->get_name();
+        const auto &decl = find_declaration(module, count_name);
+        unsigned int width = 0;
+        if(!decl || declared_width(decl, width)) {
+            LOG_ERROR_N(info.cond)
+                << "cannot size the countdown for repeat count '" << count_name
+                << "': its declaration or packed range is not resolvable (ADR-0014 §7.2)";
+            return 1;
+        }
+        m_cnt_width = std::max(m_cnt_width, width);
     }
 
     AST::Node::Ptr enable;
@@ -1225,7 +1770,8 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     std::vector<Transition> entry;
     std::vector<Frame> frames;
     push_frame(frames, initial->get_statement());
-    if(walk_paths(k_entry, nullptr, std::make_shared<AST::Node::List>(), frames, states, entry)) {
+    if(walk_paths(k_entry, nullptr, std::make_shared<AST::Node::List>(), frames, Env{}, {}, states,
+                  entry)) {
         return 1;
     }
 
@@ -1314,6 +1860,24 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     reg->set_type(reg_type);
     result->push_back(AST::to_node(reg));
 
+    // logic [w-1:0] <prefix>_cnt; — the shared countdown, when a rolled
+    // repeat induced one (§7.2, §15).
+    if(m_cnt_width > 0) {
+        if(Analysis::UniqueDeclaration::identifier_declaration_exists(m_cnt_name, declared)) {
+            LOG_ERROR_N(module) << "generated declaration '" << m_cnt_name
+                                << "' collides with an existing one (ADR-0014 §10)";
+            return nullptr;
+        }
+        auto cnt_type = std::make_shared<AST::LogicType>(fn, ln);
+        if(m_cnt_width > 1) {
+            cnt_type->set_packed_dims(make_packed_range(m_cnt_width - 1, fn, ln));
+        }
+        auto cnt = std::make_shared<AST::Var>(fn, ln);
+        cnt->set_name(m_cnt_name);
+        cnt->set_type(cnt_type);
+        result->push_back(AST::to_node(cnt));
+    }
+
     // Reset branch: the init segment verbatim, plus the state register
     // going to the first state (§5.1).
     const auto &reset_stmts = std::make_shared<AST::Node::List>();
@@ -1340,6 +1904,19 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                 AST::to_node(make_state_assign(state_reg, state_names[transition.next], fn, ln)));
             return AST::to_node(std::make_shared<AST::Block>(leg_stmts, "", fn, ln));
         };
+
+        // A state no path reaches — a constant-zero repeat's body — keeps
+        // an empty arm, like the hold state.
+        if(out.empty()) {
+            const auto &conds = std::make_shared<AST::Node::List>();
+            conds->push_back(AST::to_node(make_id(state_names[i], fn, ln)));
+            auto arm = std::make_shared<AST::Case>(fn, ln);
+            arm->set_cond(conds);
+            arm->set_statement(AST::to_node(
+                std::make_shared<AST::Block>(std::make_shared<AST::Node::List>(), "", fn, ln)));
+            caselist->push_back(arm);
+            continue;
+        }
 
         AST::Node::Ptr body = make_leg(out.back());
         for(std::size_t j = out.size() - 1; j-- > 0;) {

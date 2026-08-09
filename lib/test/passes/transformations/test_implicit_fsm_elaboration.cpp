@@ -129,3 +129,41 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_straight_err2) { TEST_ERRO
 // input-dependent and re-evaluated on every reset cycle — unlike the source
 // initial, which evaluates it exactly once (ADR-0014 §5.1).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err3) { TEST_ERROR_SV; }
+// The §7.3 wait-state idiom: `while (!start) @(posedge clk);` is one state
+// holding itself while !start — the back-edge is a self-loop, the exit the
+// bare else.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_while0) { TEST_CORE_SV; }
+// A rolled repeat with a folded count (§7.2): one state, the shared
+// countdown loaded to N-1 by the entering segment, decremented on the lap,
+// exited at zero.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat0) { TEST_CORE_SV; }
+// repeat (1) rolled: a single pass needs no countdown at all — the body
+// runs once, inline (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat1) { TEST_CORE_SV; }
+// A non-constant repeat count, unmarked: the rolled lowering is forced and
+// warned about (§7.2). IEEE §12.7.3 evaluates the count once on entry, so
+// the countdown captures it there, sized to the count signal's declared
+// width, and a zero count skips the state through the entry guard.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat2) { TEST_CORE_SV; }
+// A rolled for (§7.2): the author's index register honours init, test and
+// step — the init and step commit once per entry/lap, and their values
+// substitute forward within their own segment (§6.1), which is when the
+// source evaluates the test and the body's first reads.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for0) { TEST_CORE_SV; }
+// §8: break transitions past the innermost loop, continue takes its
+// back-edge — once states are explicit a jump is just an edge.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump0) { TEST_CORE_SV; }
+// A path through a while body that reaches the head again without crossing
+// a cut point: a zero-delay lap (IEEE 1800-2017 §9.2.2.1, ADR-0014 §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_while_err0) { TEST_ERROR_SV; }
+// A while with no cut point at all: no static exit, no hardware meaning
+// (IEEE 1800-2017 §9.2.2.1, ADR-0014 §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_while_err1) { TEST_ERROR_SV; }
+// (* veriparse_no_unroll *) on a loop without a cut point: the hint is
+// inert — the loop runs in zero time, there is no state to save (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_loop_err0) { TEST_ERROR_SV; }
+// break outside any loop the CFG sees: nothing to jump within (§8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump_err0) { TEST_ERROR_SV; }
+// A rolled for whose step assigns a different register than its init: the
+// construct's contract names one index (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err0) { TEST_ERROR_SV; }
