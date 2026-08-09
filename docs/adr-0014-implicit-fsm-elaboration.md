@@ -988,8 +988,28 @@ no longer an error:
   segment (§6.1).
 
 On a loop with **no** cut point in its body the hint is inert — the loop
-runs in zero time and there is no state to save — so the pass **warns**
-and it unrolls regardless: the §2 inert-mark rule, applied to a hint.
+runs in zero time and there is no state to save — and the pass **errors**,
+telling the author to drop the hint and let the loop unroll. An earlier
+revision had it warn and unroll regardless, the §2 inert-mark rule applied
+to a hint; but the unrolling would have to be this pass's own — the shared
+unroller honoured the hint and is already behind us — and this section
+says twice over that the pass carries no unrolling machinery of its own.
+An error keeps that true, and the fix is deleting one attribute.
+
+Two more contract points the rolled lowering pins down, both loud errors
+rather than silent choices (§3 rule 2):
+
+- **A non-constant repeat count is a plain signal.** The capture
+  `cnt <= expr - 1` must hold any value the count can carry, so the
+  countdown takes the count signal's **declared width** — the same rule as
+  the `for` index's declared type. An arbitrary expression has no declared
+  width to take; the author binds it to a named signal first, and the
+  binding is one line.
+- **A rolled `for`'s index is a module-level declaration.** The pass
+  consumes the process, so a declaration inside it does not survive to
+  carry the induced register; "the register takes the index's declared
+  type" needs a declaration that outlives the lowering. §7.3's
+  explicit-counter idiom already writes it that way.
 
 **Prerequisite change, with its own commit and test:** `LoopUnrolling`
 honours `(* veriparse_no_unroll *)`, leaving the marked loop rolled. Two
@@ -1095,9 +1115,19 @@ deferred — it warns and leaves the loop intact rather than unrolling it
 wrongly. So a loop it refused — with or without a cut point in the body —
 inside a marked process reaches the CFG builder still rolled, in a shape
 §7.1 or §7.2 expected to be gone.
-This pass neither worsens nor repairs that; what it must do is **notice**,
-and say the loop could not be flattened and why, rather than treat a
-surviving loop as a cut-point loop and build a back-edge for it.
+
+What the pass does with such a survivor changed once the rolled lowering
+landed. The draft had it **notice and refuse** — say the loop could not be
+flattened rather than treat it as a cut-point loop — because at drafting
+time a surviving loop had no correct lowering. It now does: the §7.2
+rolled forms and this section's jump edges together compile exactly the
+shapes the unroller refuses, back-edges and mixed `break`/`continue`
+included. So a surviving bounded loop **with** a cut point is compiled
+rolled, with a warning naming the loop and pointing at
+`(* veriparse_no_unroll *)` to make the choice explicit — a repair, not a
+refusal, and cycle-for-cycle correct either way. A survivor **without** a
+cut point still has nothing this pass can do and errors per §9's
+zero-delay row.
 
 ## 9. Errors — rejected loudly, never silently mis-lowered
 
@@ -1120,6 +1150,12 @@ unmarked column has already been misread once.
 | cut point inside a called `task` | not visible in the process body; v1 does not inline to find it (§15). A `function` can never hold one — IEEE §13.4 forbids time-controlled statements there | IEEE §13.4, ADR §15 |
 | a `function` called in a marked process that writes non-local state | expression position is no place for a side effect: the `(R_p, s_p)` model would miss the write silently. **Pure functions are accepted** and pass through to the output as the ordinary combinational calls they are | IEEE §13.4 |
 | loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
+| a path through a kept loop's body that reaches the head again without crossing a cut point | the same zero-delay lap, hidden in one arm of a branch: the loop has cut points, that path has none | IEEE §9.2.2.1 |
+| `(* veriparse_no_unroll *)` on a loop without a cut point | the hint is inert — the loop runs in zero time, there is no state to save — and honouring it would need unrolling machinery this pass deliberately lacks (ADR §7.2); the fix is deleting the attribute | ADR §7.2 |
+| `break`/`continue` outside a loop the CFG sees | nothing to jump within: in an unrolled loop the jumps were the unroller's business (ADR §8), and stray ones have no target | ADR §8 |
+| a rolled `for` missing init, test or step, or whose init and step assign different registers | the lowering honours the construct's full contract on one index register; half a contract is a different construct | ADR §7.2 |
+| a non-constant repeat count that is not a plain signal | the countdown takes the count signal's declared width (ADR §7.2); an arbitrary expression has none to take — bind it to a named signal first | ADR §7.2 |
+| a rolled `for` whose index is not a module-level declaration | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register (ADR §7.2) | ADR §7.2 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
