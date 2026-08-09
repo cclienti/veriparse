@@ -332,6 +332,11 @@ if(NOT WIN32)
     # reference honours `iff`, so en toggles irregularly against both models.
     add_verilower_sv_cosim(NAME enable_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # The §4 path cover: an if/else fork with unequal arms, a cut-point-free
+    # conditional inside a segment, and a no-default case with a fall-through
+    # path — both fork directions pinned so every merge edge runs.
+    add_verilower_sv_cosim(NAME branch_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

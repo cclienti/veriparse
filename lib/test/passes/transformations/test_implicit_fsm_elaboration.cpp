@@ -82,3 +82,31 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err1) { TEST_ERROR_
 // come up undefined — invisible to a 2-state cosim, caught structurally
 // (ADR-0014 §5.1, §5.3, §6).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enable_err2) { TEST_ERROR_SV; }
+// An if/else with cut points in both arms, unequal lengths: the fork spends
+// no state of its own, each arm's last state transitions to the same merge
+// state, and a cut-point-free branch in the merge segment stays a plain
+// conditional inside the action (ADR-0014 §4, §C.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch0) { TEST_CORE_SV; }
+// An if with no else holding a cut point: the missing else is the
+// fall-through path, taking the merge segment in zero extra cycles
+// (ADR-0014 §4, §C.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch1) { TEST_CORE_SV; }
+// A case with a multi-value arm, no default and cut points in the arms:
+// one leg per arm, guarded by the disjunction of its matches; the no-match
+// path falls through past the endcase under every match negated
+// (ADR-0014 §4, §C.3, §C.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_case0) { TEST_CORE_SV; }
+// Two commits on one runtime path — one in a branch arm, one past the
+// merge: the else path commits twice even though the if path is fine
+// (ADR-0014 §6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err0) { TEST_ERROR_SV; }
+// A cut point inside a branch before the first wait: the state out of reset
+// would be input-dependent — the reset branch cannot fork (ADR-0014 §5.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err1) { TEST_ERROR_SV; }
+// A register written in only one arm and read past the merge: defined-ness
+// is the intersection over incoming paths, not the union (ADR-0014 §5.1,
+// §6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_branch_err2) { TEST_ERROR_SV; }
+// casez in a marked process: wildcard matching is not lowered yet, rejected
+// rather than mis-compiled as exact equality (ADR-0014 §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_case_err0) { TEST_ERROR_SV; }
