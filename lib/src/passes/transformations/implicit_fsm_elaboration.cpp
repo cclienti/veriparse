@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <functional>
 #include <map>
 #include <set>
 
@@ -259,13 +260,6 @@ void collect_reads(const AST::Node::Ptr &node, std::set<std::string> &reads)
     }
     default:
         break;
-    }
-}
-
-void collect_reads_list(const AST::Node::ListPtr &stmts, std::set<std::string> &reads)
-{
-    for(const auto &stmt : *stmts) {
-        collect_reads(stmt, reads);
     }
 }
 
@@ -554,7 +548,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                                          std::vector<AST::EventStatement::Ptr> &waits,
-                                         AST::Sens::Ptr &clock)
+                                         AST::Sens::Ptr &clock, bool &has_wait)
 {
     if(!node) {
         return 0;
@@ -565,7 +559,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         const auto &statements = AST::cast_to<AST::Block>(node)->get_statements();
         if(statements) {
             for(const auto &stmt : *statements) {
-                if(collect_body(stmt, waits, clock)) {
+                if(collect_body(stmt, waits, clock, has_wait)) {
                     return 1;
                 }
             }
@@ -578,10 +572,12 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(check_wait(event, clock)) {
             return 1;
         }
+        m_wait_index[event.get()] = waits.size();
         waits.push_back(event);
+        has_wait = true;
         // `@(posedge clk) stmt;` attaches the statement to the wait: it runs
         // after the edge, so it belongs to the following segment.
-        return collect_body(event->get_statement(), waits, clock);
+        return collect_body(event->get_statement(), waits, clock, has_wait);
     }
 
     case AST::NodeType::NonblockingSubstitution:
@@ -589,20 +585,71 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
 
     case AST::NodeType::IfStatement: {
         const auto &ifs = AST::cast_to<AST::IfStatement>(node);
-        if(collect_body(ifs->get_true_statement(), waits, clock)) {
+        bool arms_wait = false;
+        if(collect_body(ifs->get_true_statement(), waits, clock, arms_wait)) {
             return 1;
         }
-        return collect_body(ifs->get_false_statement(), waits, clock);
+        if(collect_body(ifs->get_false_statement(), waits, clock, arms_wait)) {
+            return 1;
+        }
+        if(arms_wait) {
+            m_forking.insert(node.get());
+            has_wait = true;
+        }
+        return 0;
     }
 
     case AST::NodeType::CaseStatement: {
         const auto &caselist = AST::cast_to<AST::CaseStatement>(node)->get_caselist();
+        bool arms_wait = false;
+        std::size_t defaults = 0;
         if(caselist) {
             for(const auto &arm : *caselist) {
-                if(collect_body(arm->get_statement(), waits, clock)) {
+                const auto &conds = arm->get_cond();
+                if(!conds || conds->empty()) {
+                    ++defaults;
+                }
+                if(collect_body(arm->get_statement(), waits, clock, arms_wait)) {
                     return 1;
                 }
             }
+        }
+        // The grammar admits several default arms; IEEE 1800-2017 §12.5
+        // allows at most one, and the guard construction has no condition
+        // to give a second one.
+        if(defaults > 1) {
+            LOG_ERROR_N(node) << "case with " << defaults << " default arms in a marked "
+                              << "process: at most one (IEEE 1800-2017 §12.5, ADR-0014 §9)";
+            return 1;
+        }
+        // A forking case is if-converted with `==`, but item matching is
+        // case equality (IEEE 1800-2017 §12.5): an item with x/z bits can
+        // never satisfy the guard, so it is rejected, not silently dropped.
+        // A cut-point-free case stays verbatim and keeps its semantics.
+        if(arms_wait && caselist) {
+            for(const auto &arm : *caselist) {
+                const auto &conds = arm->get_cond();
+                if(!conds) {
+                    continue;
+                }
+                for(const auto &value : *conds) {
+                    if(!value->is_node_type(AST::NodeType::IntConst)) {
+                        continue;
+                    }
+                    const auto &text = AST::cast_to<AST::IntConst>(value)->get_value();
+                    if(text.find_first_of("xXzZ?") != std::string::npos) {
+                        LOG_ERROR_N(value) << "case item '" << text << "' with x/z bits in a case "
+                                           << "holding cut points: the fork guard uses logical "
+                                           << "equality, which such an item never satisfies "
+                                           << "(IEEE 1800-2017 §12.5, ADR-0014 §9)";
+                        return 1;
+                    }
+                }
+            }
+        }
+        if(arms_wait) {
+            m_forking.insert(node.get());
+            has_wait = true;
         }
         return 0;
     }
@@ -693,7 +740,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         case AST::NodeType::IfStatement: {
             // Cut-point-free: a plain conditional inside the action, no
             // state spent on it (§4).
-            if(!contains_event_statement(stmt)) {
+            if(!m_forking.count(stmt.get())) {
                 action->push_back(stmt);
                 break;
             }
@@ -721,7 +768,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         }
 
         case AST::NodeType::CaseStatement: {
-            if(!contains_event_statement(stmt)) {
+            if(!m_forking.count(stmt.get())) {
                 action->push_back(stmt);
                 break;
             }
@@ -775,10 +822,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
         case AST::NodeType::EventStatement: {
             const auto &event = AST::cast_to<AST::EventStatement>(stmt);
-            std::size_t idx = 0;
-            while(idx < states.size() && states[idx].wait != event) {
-                ++idx;
-            }
+            const std::size_t idx = m_wait_index.at(event.get());
             record(idx);
             // Every path reaches a given wait with the same continuation —
             // its syntactic position fixes it — so its outgoing paths are
@@ -974,13 +1018,34 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
     }
 
     // At most one commit per register on any runtime path through an action
-    // (§6) — a branch counts its worst arm, a sequence adds.
+    // (§6) — a branch counts its worst arm, a sequence adds. The error is
+    // anchored at the last '<=' to the offending register, the one whose
+    // predecessor never takes effect.
     auto commits_ok = [](const AST::Node::ListPtr &stmts) -> int {
         std::map<std::string, int> counts;
         max_commits_list(stmts, counts);
         for(const auto &elt : counts) {
             if(elt.second > 1) {
-                LOG_ERROR_N(stmts->front())
+                AST::Node::Ptr anchor = stmts->front();
+                std::function<void(const AST::Node::Ptr &)> find = [&](const AST::Node::Ptr &node) {
+                    if(!node) {
+                        return;
+                    }
+                    if(node->is_node_type(AST::NodeType::NonblockingSubstitution)) {
+                        if(nba_target(AST::cast_to<AST::NonblockingSubstitution>(node)) ==
+                           elt.first) {
+                            anchor = node;
+                        }
+                        return;
+                    }
+                    for(const auto &child : *node->get_children()) {
+                        find(child);
+                    }
+                };
+                for(const auto &stmt : *stmts) {
+                    find(stmt);
+                }
+                LOG_ERROR_N(anchor)
                     << "register '" << elt.first << "' committed twice on one path: "
                     << "the first '<=' never takes effect (ADR-0014 §6)";
                 return 1;
@@ -990,6 +1055,36 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
     };
     if(!init_stmts->empty() && commits_ok(init_stmts)) {
         return 1;
+    }
+
+    // §5.1: the reset branch loads reset values once. Emitted under
+    // `if (!rst)` a preamble branch would be re-evaluated on every reset
+    // cycle — the source initial evaluates it exactly once — and an arm
+    // that skips a register leaves it with no reset value.
+    for(const auto &stmt : *init_stmts) {
+        if(stmt->is_node_type(AST::NodeType::IfStatement) ||
+           stmt->is_node_type(AST::NodeType::CaseStatement)) {
+            LOG_ERROR_N(stmt) << "a branch in the preamble: the reset branch loads reset "
+                              << "values once, while emitted into the reset arm it would be "
+                              << "re-evaluated on every reset cycle (ADR-0014 §5.1)";
+            return 1;
+        }
+    }
+
+    // A preamble read of a process register is a read of the empty entry
+    // store: nothing is assigned at reset entry — its own '<=' commits only
+    // at the clock edge (§5.1, §6).
+    for(const auto &stmt : *init_stmts) {
+        std::set<std::string> reads;
+        collect_reads(stmt, reads);
+        for(const auto &read : reads) {
+            if(process_regs.count(read)) {
+                LOG_ERROR_N(stmt) << "the preamble reads register '" << read
+                                  << "': nothing is assigned at reset entry, so the reset "
+                                  << "value would be undefined (ADR-0014 §5.1, §6)";
+                return 1;
+            }
+        }
     }
 
     // Must-defined registers at each state's entry: what the init segment
@@ -1037,17 +1132,31 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
             // Reads resolve against the entry store (§6.1): the action's own
             // writes commit at the next edge and define nothing here. The
             // guard is a read too — the fork asks the question at entry.
-            std::set<std::string> reads;
+            // Each error is anchored at the statement or guard that reads.
+            auto check_reads = [&](const std::set<std::string> &reads,
+                                   const AST::Node::Ptr &anchor) -> int {
+                for(const auto &read : reads) {
+                    if(process_regs.count(read) && !defined_in[s].count(read)) {
+                        LOG_ERROR_N(anchor)
+                            << "register '" << read << "' is read before every path "
+                            << "out of reset assigns it, and the init segment gives "
+                            << "it no value (ADR-0014 §5.1, §6)";
+                        return 1;
+                    }
+                }
+                return 0;
+            };
             if(transition.guard) {
+                std::set<std::string> reads;
                 collect_identifier_names(transition.guard, reads);
+                if(check_reads(reads, transition.guard)) {
+                    return 1;
+                }
             }
-            collect_reads_list(transition.action, reads);
-            for(const auto &read : reads) {
-                if(process_regs.count(read) && !defined_in[s].count(read)) {
-                    LOG_ERROR_N(states[s].wait)
-                        << "register '" << read << "' is read before every path "
-                        << "out of reset assigns it, and the init segment gives "
-                        << "it no value (ADR-0014 §5.1, §6)";
+            for(const auto &stmt : *transition.action) {
+                std::set<std::string> reads;
+                collect_reads(stmt, reads);
+                if(check_reads(reads, stmt)) {
                     return 1;
                 }
             }
@@ -1081,9 +1190,12 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
 {
     // One state per wait, in source order (§4, §10.1); each wait is checked
     // for shape and clock uniformity as it is collected.
+    m_forking.clear();
+    m_wait_index.clear();
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
-    if(collect_body(initial->get_statement(), waits, clock)) {
+    bool has_wait = false;
+    if(collect_body(initial->get_statement(), waits, clock, has_wait)) {
         return 1;
     }
 
@@ -1231,6 +1343,14 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
         AST::Node::Ptr body = make_leg(out.back());
         for(std::size_t j = out.size() - 1; j-- > 0;) {
+            // Guards partition by construction: every non-final transition
+            // of a multi-way state carries one. Refuse to emit otherwise.
+            if(!out[j].guard) {
+                LOG_ERROR_N(states[i].wait)
+                    << "unguarded transition in a multi-way state: the path cover "
+                    << "lost a fork condition — please report this input";
+                return nullptr;
+            }
             auto chain = std::make_shared<AST::IfStatement>(fn, ln);
             chain->set_cond(out[j].guard->clone());
             chain->set_true_statement(make_leg(out[j]));

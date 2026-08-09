@@ -6,6 +6,8 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -81,9 +83,11 @@ private:
                         const std::string &prefix);
 
     /// Collect the process's waits in source order, validating each
-    /// statement against what the lowering can express.
+    /// statement against what the lowering can express. Fills @p has_wait
+    /// with whether the subtree holds a cut point, recording forking
+    /// branches and wait indices so the path walk resolves both in O(1).
     int collect_body(const AST::Node::Ptr &node, std::vector<AST::EventStatement::Ptr> &waits,
-                     AST::Sens::Ptr &clock);
+                     AST::Sens::Ptr &clock, bool &has_wait);
 
     /// Push a statement as an enumeration frame: a block contributes its
     /// list, a single statement a one-element list, null nothing.
@@ -125,6 +129,12 @@ private:
                             bool active_low, const AST::Node::ListPtr &init_stmts,
                             const std::vector<State> &states, std::size_t entry_next,
                             const std::string &prefix);
+
+    /// Branches whose subtree holds a cut point — the ones that fork the
+    /// path walk — and each wait's state index, both filled per process by
+    /// collect_body.
+    std::set<const AST::Node *> m_forking;
+    std::map<const AST::EventStatement *, std::size_t> m_wait_index;
 };
 
 } // namespace Transformations

@@ -1124,6 +1124,11 @@ unmarked column has already been misread once.
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
+| the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
+| a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
+| `casex`/`casez` in a marked process | wildcard matching is not lowered in v1 (ADR §15): the fork guard would need wildcard-match semantics, and exact `==` would silently change which arm runs | IEEE §12.5.1, ADR §15 |
+| a `case` with more than one `default` arm | the grammar admits it, IEEE allows at most one, and the guard construction has no condition to give a second one | IEEE §12.5 |
+| a case item with x/z bits, in a `case` holding cut points | plain-`case` item matching is case equality, but the fork guard is built with logical `==`, which such an item never satisfies. A cut-point-free `case` stays verbatim in its action and keeps its semantics | IEEE §12.5 |
 | a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse | IEEE §9.2.2.4 |
 | two concurrent statements in one imperative block | outside the sequential model | — |
 
@@ -1624,6 +1629,7 @@ Positioning, so that later choices can be argued against something.
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
+| `casex`/`casez` holding cut points, and x/z case items in a forking `case` | hard error (§9) — the fork guards are exact `==` | v2, if a design asks: wildcard-match guard expressions (`casez` semantics per item), the same if-conversion with a different comparison |
 | Cut point inside a called `task` (multi-cycle sub-sequence) | hard error (§9); a pure `function` is accepted, IEEE §13.4 keeping it cut-point-free by construction | v2 `TaskInliner` before the cut walk: a task spanning waits is a *reusable sub-sequence* — Appendix B's `LOW`/`HIGH` pairs, called four times. IEEE §13.3's copy-in gives an `input` argument defined capture-at-entry semantics — an induced register per call — with per-call-site state naming (§10.1 composition, `LoopUnrolling`-style uniquification), copy-out at task end, recursion rejected |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule; the shared-wire CSE above is the structural subset that needs no allocation | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
@@ -2117,6 +2123,21 @@ points actually reachable from the state, never to the branches between
 them. The emitter is then free to factor a guard shared by several updates
 back out into an `if`, which is what A.2's nested form shows; that is a
 readability choice on the way out, not a second representation.
+
+**Where the v1 implementation stands relative to this shape.** Phases 2–4
+keep a transition's action as the verbatim statement run — nonblocking
+assignments plus the cut-point-free branches, held as statements — which is
+exactly the factored form the previous paragraph lets the emitter print,
+stored directly instead of if-converted and re-factored. The transition
+count is the same (a cut-point-free branch never forks the walk), the
+entry-value invariant holds by nonblocking semantics (every right-hand side
+reads entry values), and the §6 checks do the per-arm merging on the
+statement form: worst-arm addition for the commit count, arm intersection
+for the must-defined sets. The flat `Update` list with if-converted values
+becomes load-bearing the moment §6.1's blocking temporaries arrive — a `=`
+value must be substituted *into* later expressions, which needs the
+two-layer environment and update-level representation — so the conversion
+to this section's shape belongs to the phase that lands them, not before.
 
 Alongside them, two side tables:
 

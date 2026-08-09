@@ -334,7 +334,7 @@ if(NOT WIN32)
 
     # The §4 path cover: an if/else fork with unequal arms, a cut-point-free
     # conditional inside a segment, and a no-default case with a fall-through
-    # path — both fork directions pinned so every merge edge runs.
+    # path — five input-pinned behavioural/lowered pairs so every edge runs.
     add_verilower_sv_cosim(NAME branch_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
