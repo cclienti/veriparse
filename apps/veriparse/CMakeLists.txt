@@ -360,6 +360,14 @@ if(NOT WIN32)
     # break abandoning inner laps with its commit coalesced.
     add_verilower_sv_cosim(NAME mixed_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # A production RMII MAC receiver, three ways: the behavioural rewrite
+    # against its verilower output AND against the pre-existing
+    # three-process implementation it was rewritten from — an independent
+    # reference, not a transcription (§1, §11).
+    add_verilower_sv_cosim(NAME rmii_mac_rx VERILATOR_ARGS -Wno-CASEINCOMPLETE
+                           EXTRA_SOURCES
+                           ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/rmii_mac_rx/cosim/rmii_mac_rx_ref.sv)
+
     # The §10.2 state map and its graphviz view on the ADR's own example:
     # the JSON carries the labelled names and the reset contract, the dot
     # marks the entry with a double circle — and keeps the edges bare of
