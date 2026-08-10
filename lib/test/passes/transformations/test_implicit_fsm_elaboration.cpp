@@ -185,10 +185,11 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump_err0) { TEST_ERROR_SV
 // A rolled for whose step assigns a different register than its init: the
 // construct's contract names one index (§7.2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err0) { TEST_ERROR_SV; }
-// Nested rolled repeats: both would drive the one shared countdown (§15),
-// the inner reload clobbering the outer's remaining count — rejected, not
-// silently mis-counted (§7.2, §9).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err0) { TEST_ERROR_SV; }
+// Nested rolled repeats — the 2D-scan shape: each nesting depth owns its
+// countdown register (cnt, cnt2, ...), so the inner reload leaves the
+// outer's remaining count alone; sequential repeats at one depth still
+// share (§7.2, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat5) { TEST_CORE_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).

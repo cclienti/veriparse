@@ -1011,6 +1011,15 @@ rather than silent choices (§3 rule 2):
   type" needs a declaration that outlives the lowering. §7.3's
   explicit-counter idiom already writes it that way.
 
+**Nested rolled repeats each own their depth's countdown.** One register
+per repeat-nesting depth (`__fsm_cnt`, `__fsm_cnt2`, ...), sized over the
+counting repeats at that depth: sequential timers at one depth still share
+— they re-initialise on entry — while an inner timer's reload leaves the
+outer's remaining count alone, which is what makes the 2D-scan shape
+(`repeat (ROWS) begin ... repeat (COLS) @(posedge clk); ... end`) compile
+without hand-writing either counter. A repeat that induces no counter (a
+folded count of 0 or 1) consumes no depth.
+
 **Prerequisite change, with its own commit and test:** `LoopUnrolling`
 honours `(* veriparse_no_unroll *)`, leaving the marked loop rolled. Two
 things about that guard are easy to get wrong and are therefore normative
@@ -1156,7 +1165,6 @@ unmarked column has already been misread once.
 | a rolled `for` missing init, test or step, or whose init and step assign different registers | the lowering honours the construct's full contract on one index register; half a contract is a different construct | ADR §7.2 |
 | a non-constant repeat count that is not a plain signal | the countdown takes the count signal's declared width (ADR §7.2); an arbitrary expression has none to take — bind it to a named signal first | ADR §7.2 |
 | a rolled `for` whose index is not a module-level declaration, or not a **variable** the machine can drive | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register — and an input port or a net cannot take its commits (ADR §7.2) | ADR §7.2, IEEE §9.2.2.4 |
-| **nested** rolled repeats | §15 gives the process one shared countdown, re-initialised on entry: sequential repeats share it soundly, but an inner reload would clobber the outer's remaining count — unroll one of them | ADR §7.2, §15 |
 | a constant repeat count that folds **negative**, or beyond 2^32 | a loop cannot execute a negative number of times and tools disagree on what one means — §12.7.2 gives only x/z a meaning (zero) — so it is almost always a parameterization off-by-N; and no countdown the lowering sizes holds 2^32 laps | IEEE §12.7.2, ADR §7.2 |
 | a system call outside the constant/query subset in a fork or loop **condition**, or in a rolled `for`'s init/step | the walk forks on conditions, reuses them across guards, and prunes their contradictions (§C.4) — every one of those moves assumes the condition reads stably within its zero-time segment, which `$random` and its kin break | ADR §C.4, IEEE §20 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
@@ -1676,7 +1684,7 @@ Positioning, so that later choices can be argued against something.
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
-| Counter splitting | one shared countdown per process, re-initialised on entry (rolled `repeat` timers share it; a rolled `for` keeps its own index) | post-v1 optimisation, if routing says so |
+| Counter splitting | one shared countdown per repeat-nesting **depth**, re-initialised on entry: sequential rolled `repeat` timers share their depth's register, nested ones each own their depth's (`cnt`, `cnt2`, ...), and a rolled `for` keeps its own index | further splitting (one per site) is a post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
