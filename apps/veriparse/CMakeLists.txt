@@ -355,6 +355,11 @@ if(NOT WIN32)
     # the 2D-scan shape, the captured inner count entering and skipping.
     add_verilower_sv_cosim(NAME nested_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # Mixed rolled nesting under jumps (§7.2, §8, §15): the countdown depth
+    # threading through a counterless for layer, a captured count, and a
+    # break abandoning inner laps with its commit coalesced.
+    add_verilower_sv_cosim(NAME mixed_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The §10.2 state map and its graphviz view on the ADR's own example:
     # the JSON carries the labelled names and the reset contract, the dot
     # marks the entry with a double circle — and keeps the edges bare of
