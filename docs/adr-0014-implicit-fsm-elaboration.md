@@ -1158,6 +1158,7 @@ unmarked column has already been misread once.
 | a rolled `for` whose index is not a module-level declaration, or not a **variable** the machine can drive | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register — and an input port or a net cannot take its commits (ADR §7.2) | ADR §7.2, IEEE §9.2.2.4 |
 | **nested** rolled repeats | §15 gives the process one shared countdown, re-initialised on entry: sequential repeats share it soundly, but an inner reload would clobber the outer's remaining count — unroll one of them | ADR §7.2, §15 |
 | a constant repeat count that folds **negative**, or beyond 2^32 | a loop cannot execute a negative number of times and tools disagree on what one means — §12.7.2 gives only x/z a meaning (zero) — so it is almost always a parameterization off-by-N; and no countdown the lowering sizes holds 2^32 laps | IEEE §12.7.2, ADR §7.2 |
+| a system call outside the constant/query subset in a fork or loop **condition**, or in a rolled `for`'s init/step | the walk forks on conditions, reuses them across guards, and prunes their contradictions (§C.4) — every one of those moves assumes the condition reads stably within its zero-time segment, which `$random` and its kin break | ADR §C.4, IEEE §20 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
@@ -2227,14 +2228,26 @@ Alongside them, two side tables:
    A.1's `WAIT_SEND` forks at `if (!send)` and again at its
    `while (!send)`, and the leg that takes the `if` yet skips the `while`
    carries `!send && send` — where `busy` commits twice, tripping §6 on
-   the ADR's own example if the path is kept. A guard some conjunct of
-   which is the negation of another (structural equality, the §5.3
-   criterion) is the empty set: the walk drops it before judging or
+   the ADR's own example if the path is kept. A contradictory guard is
+   the empty set: the walk drops the leg at the fork, before judging or
    emitting anything, and the remaining legs still partition — the
    removed piece was empty, which is also why the last leg may still be
-   printed as the bare `else`. For the same reason a conjunct the guard
-   already carries is not conjoined again, so a test forked twice along
-   one path reads once in the output.
+   printed as the bare `else`.
+
+   The screen runs where the guard grows — each condition joins conjunct
+   by conjunct, a compound test flattened into its parts — and knows the
+   complement shapes the walk itself produces (structural equality, the
+   §5.3 criterion, throughout): `X` against `!X`, a negated conjunction
+   against its individually-present parts, the countdown's `cnt == 0`
+   against `cnt != 0`, and two equalities pinning one expression to
+   different folded constants. A conjunct the guard already carries is
+   not conjoined again, so a test forked twice along one path reads once
+   in the output; a constant `while` test folds at the loop head, which
+   is what makes `while (1)` and `forever` the same machine (§2). All of
+   it assumes a condition reads stably within its zero-time segment,
+   which is why an impure call in condition position is rejected (§9) —
+   pruning a "contradiction" between two evaluations of `$random` would
+   delete a transition the source can take.
 
 4. **Symbolically execute each path** to get `(R_p, s_p)`. One forward
    sweep with the two environments: a blocking assignment updates the
