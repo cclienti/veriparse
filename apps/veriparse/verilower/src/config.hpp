@@ -17,8 +17,11 @@ struct Config
     std::vector<std::string> undefs;
     std::string output;
     std::string top_module;
-    std::string suffix;   ///< appended to the emitted module's name
-    std::string log_file; ///< empty: log to console (stderr); else log to this file
+    std::string suffix;         ///< appended to the emitted module's name
+    std::string log_file;       ///< empty: log to console (stderr); else log to this file
+    std::string state_map;      ///< §10.2 JSON path; empty: <output>.fsm.json
+    std::string fsm_dot;        ///< graphviz view of the machines; empty: not written
+    bool fsm_dot_values{false}; ///< label dot edges with the register updates too
     bool sv_mode{false};
     std::uint64_t seed;
 };

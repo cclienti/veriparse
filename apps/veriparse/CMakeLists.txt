@@ -351,6 +351,23 @@ if(NOT WIN32)
     # mid-bit glitch and the framing-error drop — then recovery.
     add_verilower_sv_cosim(NAME rs232_rx VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # The §10.2 state map and its graphviz view on the ADR's own example:
+    # the JSON carries the labelled names and the reset contract, the dot
+    # marks the entry with a double circle — and keeps the edges bare of
+    # register updates unless asked.
+    add_test(NAME test_fsm_state_map
+             COMMAND sh -c "$<TARGET_FILE:verilower> --sv -t rs232_tx \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.v \
+                     --state-map ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.json \
+                     --fsm-dot ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.dot \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/rs232_tx/src/rs232_tx.sv \
+                     && grep -q '__fsm_WAIT_SEND' ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.json \
+                     && grep -q '\"registers\": \\[\"tx\", \"busy\", \"__fsm_state\"\\]' \
+                        ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.json \
+                     && grep -q 'doublecircle' ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.dot \
+                     && ! grep -q 'busy <=' ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.dot")
+    set_tests_properties(test_fsm_state_map PROPERTIES LABELS unittest)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

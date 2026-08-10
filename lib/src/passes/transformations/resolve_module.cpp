@@ -31,16 +31,20 @@ namespace Passes
 namespace Transformations
 {
 
-ResolveModule::ResolveModule(bool deadcode_elimination, bool fsm_elaboration)
-    : m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration)
+ResolveModule::ResolveModule(bool deadcode_elimination, bool fsm_elaboration,
+                             ImplicitFsmElaboration::FsmReport *fsm_report)
+    : m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration),
+      m_fsm_report(fsm_report)
 {
 }
 
 ResolveModule::ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
                              const Analysis::Module::ModulesMap &modules_map,
-                             bool deadcode_elimination, bool fsm_elaboration)
+                             bool deadcode_elimination, bool fsm_elaboration,
+                             ImplicitFsmElaboration::FsmReport *fsm_report)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
-      m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration)
+      m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration),
+      m_fsm_report(fsm_report)
 {
 }
 
@@ -122,7 +126,7 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // declarations and flatten loops, and before the folding that cleans the
     // generated machine. Per-tool opt-in, like SynthesizableCheck.
     if(m_fsm_elaboration) {
-        if(ImplicitFsmElaboration().run(node)) {
+        if(ImplicitFsmElaboration(m_fsm_report).run(node)) {
             LOG_ERROR_N(node) << "Failed to elaborate the marked FSM processes";
             return 1;
         }

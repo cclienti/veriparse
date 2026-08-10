@@ -1402,12 +1402,22 @@ one, and §5.1 is where it comes from. A register the design expected to come
 up reset and that is absent from the list is exactly what this makes
 reviewable.
 
-JSON is the canonical form and nothing else is generated from inside the
-tool. Waveform viewers each want their own file — GTKWave a translate
-filter, Surfer its own translator — and that knowledge already lives in
-`wavedisp`, which drives all of them from one description and already has
-`radix='symbolic'`. Emitting viewer formats here would duplicate it and
-guarantee drift; emitting JSON lets `wavedisp` consume it.
+JSON is the canonical form, and no **viewer** format is generated from
+inside the tool. Waveform viewers each want their own file — GTKWave a
+translate filter, Surfer its own translator — and that knowledge already
+lives in `wavedisp`, which drives all of them from one description and
+already has `radix='symbolic'`. Emitting viewer formats here would
+duplicate it and guarantee drift; emitting JSON lets `wavedisp` consume it
+(`scripts/fsm_wavedisp.py` is the bridge).
+
+One derived output is generated beside it, because it is review material,
+not viewer plumbing: `--fsm-dot` prints a **graphviz** view of each
+machine from the same report the JSON serialises — states as circles, the
+reset-entry state as a double circle, guards on the edges. The register
+updates stay off the edges unless `--fsm-dot-values` asks, so the picture
+reads as a state graph rather than a listing. Sharing the report is the
+rule that keeps the two from drifting: the dot printer consumes exactly
+the structure the JSON records, never the AST.
 
 ### 10.3 Placement in the `ResolveModule` pipeline
 

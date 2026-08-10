@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include "config.hpp"
+#include "report.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -66,7 +67,13 @@ static int verilower(int argc, char *argv[])
         "Cancel a predefine NAME (repeatable)")(
         "seed,s", boost::program_options::value<std::uint64_t>(&config.seed)->default_value(0),
         "Seed value")("log", boost::program_options::value<std::string>(&config.log_file),
-                      "Log to FILE instead of stderr");
+                      "Log to FILE instead of stderr")(
+        "state-map", boost::program_options::value<std::string>(&config.state_map),
+        "Write the ADR-0014 state map (JSON) to FILE; default <output>.fsm.json")(
+        "fsm-dot", boost::program_options::value<std::string>(&config.fsm_dot),
+        "Write a graphviz view of the compiled machines to FILE")(
+        "fsm-dot-values", boost::program_options::bool_switch(&config.fsm_dot_values),
+        "Label the graphviz edges with the register updates too");
 
     boost::program_options::options_description hidden("positional");
     hidden.add_options()("verilog-file",
@@ -253,8 +260,9 @@ static int verilower(int argc, char *argv[])
     // passes clean the result.
     //---------------------------------------------------------
 
-    Veriparse::Passes::Transformations::ResolveModule resolver(Veriparse::AST::ParamArg::ListPtr(),
-                                                               modules_map, true, true);
+    Veriparse::Passes::Transformations::ImplicitFsmElaboration::FsmReport fsm_report;
+    Veriparse::Passes::Transformations::ResolveModule resolver(
+        Veriparse::AST::ParamArg::ListPtr(), modules_map, true, true, &fsm_report);
     if(resolver.run(module) != 0) {
         LOG_ERROR << "FSM elaboration failed";
         return 1;
@@ -291,6 +299,27 @@ static int verilower(int argc, char *argv[])
     const std::string str = Veriparse::Generators::VerilogGenerator().render(module);
     std::ofstream fout(config.output);
     fout << str << std::endl;
+
+    //---------------------------------------------------------
+    // The §10.2 state map: JSON is the canonical record of what the source
+    // does not state — encoding, naming, the reset contract. The graphviz
+    // view is printed from the same report: states as circles, the reset
+    // entry as a double circle, guards on the edges, the register updates
+    // only on request.
+    //---------------------------------------------------------
+
+    if(!fsm_report.processes.empty()) {
+        const std::string map_path =
+            config.state_map.empty() ? config.output + ".fsm.json" : config.state_map;
+        std::ofstream json(map_path);
+        json << render_state_map(fsm_report);
+        LOG_INFO << "state map written to " << map_path;
+    }
+    if(!config.fsm_dot.empty()) {
+        std::ofstream dot(config.fsm_dot);
+        dot << render_fsm_dot(fsm_report, config.fsm_dot_values);
+        LOG_INFO << "graphviz view written to " << config.fsm_dot;
+    }
 
     return 0;
 }
