@@ -126,7 +126,7 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // declarations and flatten loops, and before the folding that cleans the
     // generated machine. Per-tool opt-in, like SynthesizableCheck.
     if(m_fsm_elaboration) {
-        if(ImplicitFsmElaboration(m_fsm_report).run(node)) {
+        if(ImplicitFsmElaboration(m_fsm_report, &m_modules_map).run(node)) {
             LOG_ERROR_N(node) << "Failed to elaborate the marked FSM processes";
             return 1;
         }

@@ -2426,6 +2426,47 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 if(item.get() == static_cast<AST::Node *>(pragmalist.get())) {
                     continue;
                 }
+                // An instance drives whatever its output and inout ports
+                // connect to — visible when the instantiated module's
+                // definition is in the map, skipped as a black box when not.
+                if(item->is_node_type(AST::NodeType::Instancelist) && m_modules) {
+                    const auto &instancelist = AST::cast_to<AST::Instancelist>(item);
+                    const auto &definition = m_modules->find(instancelist->get_module());
+                    const auto &instances = instancelist->get_instances();
+                    if(definition == m_modules->end() || !instances) {
+                        continue;
+                    }
+                    const auto &def_ports = definition->second->get_ports();
+                    for(const auto &instance : *instances) {
+                        const auto &connections = instance->get_portlist();
+                        if(!connections || !def_ports) {
+                            continue;
+                        }
+                        std::size_t position = 0;
+                        for(const auto &connection : *connections) {
+                            AST::Port::Ptr port;
+                            if(!connection->get_name().empty()) {
+                                for(const auto &candidate : *def_ports) {
+                                    const auto &decl = candidate->get_decl();
+                                    if(decl && decl->get_name() == connection->get_name()) {
+                                        port = candidate;
+                                        break;
+                                    }
+                                }
+                            } else if(position < def_ports->size()) {
+                                auto it_port = def_ports->begin();
+                                std::advance(it_port, position);
+                                port = *it_port;
+                            }
+                            ++position;
+                            if(port && (port->get_direction() == AST::Port::DirectionEnum::OUTPUT ||
+                                        port->get_direction() == AST::Port::DirectionEnum::INOUT)) {
+                                collect_lvalue_bases(connection->get_value(), others);
+                            }
+                        }
+                    }
+                    continue;
+                }
                 if(!item->is_node_type(AST::NodeType::Always) &&
                    !item->is_node_type(AST::NodeType::AlwaysFF) &&
                    !item->is_node_type(AST::NodeType::AlwaysComb) &&

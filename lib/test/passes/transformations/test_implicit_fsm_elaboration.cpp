@@ -41,6 +41,24 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
                                                                                                    \
     ASSERT_TRUE(module_ref->is_equal(*module, false))
 
+// Same as TEST_ERROR_SV, but the pass receives the parsed modules — how
+// an instance's output-port directions become visible (§9.2.2.4).
+#define TEST_ERROR_MAP_SV                                                                          \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    Passes::Analysis::Module::ModulesMap modules_map;                                              \
+    Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
+    ASSERT_TRUE(modules_map.count(test_name) == 1);                                                \
+    const auto &module = modules_map[test_name];                                                   \
+                                                                                                   \
+    ASSERT_NE(0, Passes::Transformations::ImplicitFsmElaboration(nullptr, &modules_map).run(module))
+
 #define TEST_ERROR_SV                                                                              \
     ENABLE_LOGGER;                                                                                 \
                                                                                                    \
@@ -324,3 +342,6 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint2) { TEST_CORE_SV; }
 // An encoding value the table does not define (§3, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint_err0) { TEST_ERROR_SV; }
+// The other writer is an instance output port, visible through the parsed
+// modules the driver supplies (IEEE §9.2.2.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err3) { TEST_ERROR_MAP_SV; }
