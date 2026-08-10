@@ -210,6 +210,24 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat9) { TEST_CORE_SV; }
 // path without a cut point: the zero-delay lap, with the diagnostic
 // naming the repeat skip as the cause (§7.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err3) { TEST_ERROR_SV; }
+// Mixed nesting through a counterless layer: a counting repeat inside a
+// rolled for inside a counting repeat — the for consumes no repeat depth,
+// so the inner countdown must land on cnt2, never share cnt through the
+// for (§7.2, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_mixed0) { TEST_CORE_SV; }
+// Mixed nesting both ways between the data-dependent and the counted
+// forms: a rolled repeat polling inside a wait-while, then a wait-while
+// inside a counting repeat — both countdowns at depth 0, shared
+// sequentially through the while layers (§7.2, §7.3, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_mixed1) { TEST_CORE_SV; }
+// Jumps bind to the innermost loop across mixed nesting: break and
+// continue leave a perpetual while inside a counting repeat, whose
+// countdown keeps counting laps regardless (§7.2, §8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump1) { TEST_CORE_SV; }
+// A break abandoning an inner countdown inside a while, then the while's
+// own continue: the abandoned lap's commit coalesces under the next
+// entry's reload through the while layer (§6, §7.2, §8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump2) { TEST_CORE_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).
