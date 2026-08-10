@@ -271,12 +271,13 @@ void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conju
     conjuncts.push_back(node);
 }
 
-/// §9 on condition position: the walk forks on conditions, reuses them in
-/// several guards, drops one it already carries and prunes contradictions —
-/// all assuming a condition reads stably within its zero-time segment. A
-/// system call outside the constant/query subset ($random above all) makes
-/// every one of those moves wrong, so it is rejected, not mis-walked.
-int check_condition_calls(const AST::Node::Ptr &expr)
+/// §9 on system functions: outside the constant/query subset every
+/// synthesis flow accepts, a call has no stable value — and the walk
+/// forks on conditions, reuses them across guards and prunes their
+/// contradictions, all assuming an expression reads stably within its
+/// zero-time segment. $random breaks every one of those moves, so it is
+/// rejected wherever it appears, not mis-walked.
+int check_impure_calls(const AST::Node::Ptr &expr)
 {
     if(!expr) {
         return 0;
@@ -286,17 +287,149 @@ int check_condition_calls(const AST::Node::Ptr &expr)
                                                    "right", "signed", "unsigned"};
         const auto &name = AST::cast_to<AST::SystemCall>(expr)->get_syscall();
         if(!pure.count(name)) {
-            LOG_ERROR_N(expr) << "system call '$" << name << "' in a branch or loop "
-                              << "condition: the walk forks on conditions and assumes they "
-                              << "read stably within their zero-time segment "
-                              << "(ADR-0014 §9, §C.4)";
+            LOG_ERROR_N(expr) << "system function '$" << name << "' in a marked process: "
+                              << "outside the constant/query subset it has no stable value, "
+                              << "and the walk assumes expressions read stably within their "
+                              << "zero-time segment (ADR-0014 §9, §C.4)";
             return 1;
         }
     }
     const auto &children = expr->get_children();
     for(const auto &child : *children) {
-        if(check_condition_calls(child)) {
+        if(check_impure_calls(child)) {
             return 1;
+        }
+    }
+    return 0;
+}
+
+/// §9: a function called in a marked process must not write non-local
+/// state — an output argument included: expression position is no place
+/// for a side effect, and the (R_p, s_p) model would miss the write
+/// silently. Pure functions pass through as the ordinary combinational
+/// calls they are.
+int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::Ptr &initial);
+
+/// The base register a left-hand side drives: through selects and
+/// concatenations down to the named variables, index expressions excluded.
+void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    switch(node->get_node_type()) {
+    case AST::NodeType::Identifier:
+        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
+        return;
+    case AST::NodeType::Lvalue:
+        collect_lvalue_bases(AST::cast_to<AST::Lvalue>(node)->get_var(), names);
+        return;
+    case AST::NodeType::Pointer:
+        collect_lvalue_bases(AST::cast_to<AST::Pointer>(node)->get_var(), names);
+        return;
+    case AST::NodeType::Partselect:
+        collect_lvalue_bases(AST::cast_to<AST::Partselect>(node)->get_var(), names);
+        return;
+    default: {
+        // Concatenations and anything else: every child may name a target.
+        const auto &children = node->get_children();
+        for(const auto &child : *children) {
+            collect_lvalue_bases(child, names);
+        }
+        return;
+    }
+    }
+}
+
+/// Every register a statement tree drives — procedural or continuous —
+/// harvested at the assignment nodes, their right-hand sides left alone.
+void collect_driven(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    switch(node->get_node_type()) {
+    case AST::NodeType::NonblockingSubstitution:
+    case AST::NodeType::BlockingSubstitution:
+    case AST::NodeType::Assign:
+        collect_lvalue_bases(AST::to_node(AST::cast_to<AST::Assign>(node)->get_left()), names);
+        return;
+    default: {
+        const auto &children = node->get_children();
+        for(const auto &child : *children) {
+            collect_driven(child, names);
+        }
+        return;
+    }
+    }
+}
+
+void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(node);
+    if(decl) {
+        names.insert(decl->get_name());
+        return;
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        collect_declaration_names(child, names);
+    }
+}
+
+int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::Ptr &initial)
+{
+    const auto &calls = Analysis::Module::get_functioncall_nodes(AST::to_node(initial));
+    if(!calls || calls->empty()) {
+        return 0;
+    }
+    Analysis::Module::FunctionMap functions;
+    Analysis::Module::get_function_dictionary(AST::to_node(module), functions);
+    std::set<std::string> checked;
+    for(const auto &call : *calls) {
+        const auto &name = call->get_name();
+        if(!checked.insert(name).second) {
+            continue;
+        }
+        const auto &found = functions.find(name);
+        if(found == functions.end()) {
+            continue;
+        }
+        const auto &function = found->second;
+        std::set<std::string> locals = {function->get_name()};
+        const auto &args = function->get_args();
+        if(args) {
+            for(const auto &arg : *args) {
+                if(arg->get_direction() != AST::Arg::DirectionEnum::INPUT &&
+                   arg->get_direction() != AST::Arg::DirectionEnum::NONE) {
+                    LOG_ERROR_N(call)
+                        << "function '" << name << "' carries a non-input argument: a "
+                        << "side effect in expression position the (R_p, s_p) model "
+                        << "would miss silently (ADR-0014 §9)";
+                    return 1;
+                }
+                locals.insert(arg->get_name());
+            }
+        }
+        std::set<std::string> targets;
+        const auto &statements = function->get_statements();
+        if(statements) {
+            for(const auto &stmt : *statements) {
+                collect_declaration_names(stmt, locals);
+                collect_driven(stmt, targets);
+            }
+        }
+        for(const auto &target : targets) {
+            if(!locals.count(target)) {
+                LOG_ERROR_N(call)
+                    << "function '" << name << "' writes non-local '" << target
+                    << "': a side effect in expression position the (R_p, s_p) model "
+                    << "would miss silently — pure functions are accepted (ADR-0014 §9)";
+                return 1;
+            }
         }
     }
     return 0;
@@ -927,8 +1060,17 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         return collect_body(event->get_statement(), waits, clock, has_wait);
     }
 
-    case AST::NodeType::NonblockingSubstitution:
-        return 0;
+    case AST::NodeType::NonblockingSubstitution: {
+        const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(node);
+        // `#d q <= e` and `q <= #d e` park the delay on the assignment
+        // itself, not on a DelayStatement.
+        if(nba->get_ldelay() || nba->get_rdelay()) {
+            LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
+                              << "with no hardware meaning (ADR-0014 §9)";
+            return 1;
+        }
+        return check_impure_calls(AST::to_node(nba->get_right()));
+    }
 
     case AST::NodeType::IfStatement: {
         const auto &ifs = AST::cast_to<AST::IfStatement>(node);
@@ -940,7 +1082,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             return 1;
         }
         if(arms_wait || contains_jump(node)) {
-            if(check_condition_calls(ifs->get_cond())) {
+            if(check_impure_calls(ifs->get_cond())) {
                 return 1;
             }
             m_forking.insert(node.get());
@@ -999,7 +1141,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             }
         }
         if(forking) {
-            if(check_condition_calls(AST::cast_to<AST::CaseStatement>(node)->get_comp())) {
+            if(check_impure_calls(AST::cast_to<AST::CaseStatement>(node)->get_comp())) {
                 return 1;
             }
             m_forking.insert(node.get());
@@ -1053,6 +1195,25 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         // §8: a CFG edge — resolved during the path walk, where the
         // innermost enclosing loop is known.
         return 0;
+
+    case AST::NodeType::ParallelBlock:
+        LOG_ERROR_N(node) << "fork/join in a marked process: concurrent control "
+                          << "flow the state model cannot express (IEEE 1800-2017 "
+                          << "§9.3.2, ADR-0014 §9)";
+        return 1;
+
+    case AST::NodeType::Disable:
+        LOG_ERROR_N(node) << "disable in a marked process: abortive control flow "
+                          << "the state model cannot express (IEEE 1800-2017 §9.6.2, "
+                          << "ADR-0014 §9)";
+        return 1;
+
+    case AST::NodeType::TaskCall:
+    case AST::NodeType::Call:
+        LOG_ERROR_N(node) << "task call in a marked process: a cut point inside it "
+                          << "would be invisible — v1 does not inline tasks to find "
+                          << "out (ADR-0014 §9, §15)";
+        return 1;
 
     case AST::NodeType::SingleStatement: {
         const auto &single = AST::cast_to<AST::SingleStatement>(node);
@@ -1172,8 +1333,8 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
 
     // Loop conditions — and a rolled for's init/step, which the walk
     // substitutes and duplicates — must read stably in their segment.
-    if(check_condition_calls(info.cond) || check_condition_calls(info.init_rhs) ||
-       check_condition_calls(info.step_rhs)) {
+    if(check_impure_calls(info.cond) || check_impure_calls(info.init_rhs) ||
+       check_impure_calls(info.step_rhs)) {
         return 1;
     }
 
@@ -2039,6 +2200,50 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         LOG_ERROR_N(initial) << "(* veriparse_fsm *) on an initial with no wait: "
                              << "there is nothing to compile (ADR-0014 §2, §9)";
         return 1;
+    }
+
+    if(check_called_functions(module, initial)) {
+        return 1;
+    }
+
+    // §9 / IEEE §9.2.2.4: no other process or continuous assign may write a
+    // register this machine drives — the source is merely a race, but the
+    // emitted always_ff would not conform, the stronger reason to refuse.
+    {
+        std::set<std::string> mine;
+        collect_driven(initial->get_statement(), mine);
+        for(const auto &elt : m_loops) {
+            if(elt.second.kind == LoopInfo::Kind::FOR) {
+                mine.insert(elt.second.index);
+            }
+        }
+        std::set<std::string> others;
+        const auto &items = module->get_items();
+        if(items) {
+            for(const auto &item : *items) {
+                if(item.get() == static_cast<AST::Node *>(pragmalist.get())) {
+                    continue;
+                }
+                if(item->is_node_type(AST::NodeType::Always) ||
+                   item->is_node_type(AST::NodeType::AlwaysFF) ||
+                   item->is_node_type(AST::NodeType::AlwaysComb) ||
+                   item->is_node_type(AST::NodeType::AlwaysLatch) ||
+                   item->is_node_type(AST::NodeType::Initial) ||
+                   item->is_node_type(AST::NodeType::Assign) ||
+                   item->is_node_type(AST::NodeType::Pragmalist)) {
+                    collect_driven(item, others);
+                }
+            }
+        }
+        for(const auto &name : mine) {
+            if(others.count(name)) {
+                LOG_ERROR_N(initial)
+                    << "register '" << name << "' is also written by another process "
+                    << "or a continuous assign: the emitted always_ff would not "
+                    << "conform (IEEE 1800-2017 §9.2.2.4, ADR-0014 §9)";
+                return 1;
+            }
+        }
     }
 
     // Size the shared countdown (§15: one per process) over every rolled

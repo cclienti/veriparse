@@ -223,3 +223,51 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_prune_err0) { TEST_ERROR_S
 // test folds at the loop head, no dead exit leg, no hold state beyond the
 // one break opens — the same machine forever produces (§2, §7.3).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever2) { TEST_CORE_SV; }
+
+// —— The §9 table, row by row (§12 phase 7) ——
+
+// Cut points over different signals: multi-clock scheduling is out of
+// scope, and picking one would mis-compile (§2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clock_err0) { TEST_ERROR_SV; }
+// A level sensitivity `@(sig)`: no clock at all (§2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clock_err1) { TEST_ERROR_SV; }
+// '#' delay: simulation timing with no hardware meaning (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_delay_err0) { TEST_ERROR_SV; }
+// A system task: no hardware meaning — the mark landed on testbench
+// code? (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_systask_err0) { TEST_ERROR_SV; }
+// A level-sensitive wait: not an edge, no boundary to cut at (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_wait_err0) { TEST_ERROR_SV; }
+// A free blocking assignment: '=' names a combinational value the
+// lowering does not handle yet (§6, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_blocking_err0) { TEST_ERROR_SV; }
+// A marked always whose body holds a wait: not compiled — the message
+// carries the one-line initial-forever rewrite (§9, §15.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_always_err0) { TEST_ERROR_SV; }
+// The mark on an item that is not a process (§2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_mark_err0) { TEST_ERROR_SV; }
+// The mark on an initial with no wait: nothing to compile (§2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_mark_err1) { TEST_ERROR_SV; }
+// Reset neither hinted nor uniquely inferable: two candidate inputs (§5,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_reset_err0) { TEST_ERROR_SV; }
+// fork/join: concurrent control flow the state model cannot express (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_fork_err0) { TEST_ERROR_SV; }
+// disable: abortive control flow the state model cannot express (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_disable_err0) { TEST_ERROR_SV; }
+// A task call: a cut point inside it would be invisible — v1 does not
+// inline to find out (§9, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err0) { TEST_ERROR_SV; }
+// A system function outside the constant/query subset in expression
+// position (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc_err0) { TEST_ERROR_SV; }
+// A function that writes non-local state, called in the process:
+// expression position is no place for a side effect (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_func_err0) { TEST_ERROR_SV; }
+// A pure function passes through as the ordinary combinational call it
+// is (§9): the accepted half of the same row.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_func0) { TEST_CORE_SV; }
+// A target the marked process shares with another process: the output
+// would not conform to IEEE §9.2.2.4, which is the stronger reason to
+// refuse (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err0) { TEST_ERROR_SV; }
