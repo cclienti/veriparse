@@ -271,3 +271,36 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_func0) { TEST_CORE_SV; }
 // would not conform to IEEE §9.2.2.4, which is the stronger reason to
 // refuse (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err0) { TEST_ERROR_SV; }
+// Mixed posedge/negedge over one signal: one clock, one edge, per
+// process (§2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clock_err2) { TEST_ERROR_SV; }
+// The §20.9 bit-vector functions are as synthesizable and stable as the
+// §20.5-§20.8 queries: $countones passes through (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc0) { TEST_CORE_SV; }
+// $random in a cut-point-free condition: no fork to poison, but the call
+// would land verbatim in the always_ff — rejected wherever it appears
+// (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc_err1) { TEST_ERROR_SV; }
+// $random in an `iff` wait condition: the enable is read at every state's
+// entry, the least stable place of all (§5.3, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc_err2) { TEST_ERROR_SV; }
+// The impurity hides inside the called function's body: the purity check
+// scans what the function calls, not only what it assigns (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_func_err1) { TEST_ERROR_SV; }
+// A static-lifetime function writing a local: the local carries state
+// across calls — successive evaluations differ, which breaks the walk's
+// stable-read assumption; `automatic` is the one-word fix (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_func_err2) { TEST_ERROR_SV; }
+// The other writer hides behind a task call: the task's body drives the
+// register, the calling process makes it a driver (IEEE §9.2.2.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err1) { TEST_ERROR_SV; }
+// The other writer sits inside a generate block (IEEE §9.2.2.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err2) { TEST_ERROR_SV; }
+// A block-local variable shadowing the FSM's register name in another
+// process: scope-blind name matching must not refuse the legal design
+// (IEEE §9.2.2.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive0) { TEST_CORE_SV; }
+// Another process writes through an indexed part-select whose index is
+// the FSM's register: the index is a read, not a drive (IEEE §9.2.2.4,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive1) { TEST_CORE_SV; }
