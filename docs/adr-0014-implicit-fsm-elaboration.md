@@ -2222,6 +2222,20 @@ Alongside them, two side tables:
    back-edge ends a path like any other cut point, which is what keeps the
    enumeration finite without any bound on iterations.
 
+   **A structurally contradictory guard prunes its path.** The
+   enumeration is syntactic, so it also names paths no execution takes:
+   A.1's `WAIT_SEND` forks at `if (!send)` and again at its
+   `while (!send)`, and the leg that takes the `if` yet skips the `while`
+   carries `!send && send` — where `busy` commits twice, tripping §6 on
+   the ADR's own example if the path is kept. A guard some conjunct of
+   which is the negation of another (structural equality, the §5.3
+   criterion) is the empty set: the walk drops it before judging or
+   emitting anything, and the remaining legs still partition — the
+   removed piece was empty, which is also why the last leg may still be
+   printed as the bare `else`. For the same reason a conjunct the guard
+   already carries is not conjoined again, so a test forked twice along
+   one path reads once in the output.
+
 4. **Symbolically execute each path** to get `(R_p, s_p)`. One forward
    sweep with the two environments: a blocking assignment updates the
    blocking layer, a nonblocking one records an `Update` and leaves the
