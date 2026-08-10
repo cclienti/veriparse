@@ -204,3 +204,22 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever0) { TEST_CORE_SV; 
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever1) { TEST_CORE_SV; }
 // forever with no cut point: the §9 zero-delay row, on the perpetual form.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever_err0) { TEST_ERROR_SV; }
+// The A.1 WAIT_SEND idiom with a compound condition: the empty leg that
+// takes `if (!(go && rdy))` yet skips its identical while carries the
+// contradiction through a negated conjunction — flattened parts against
+// the whole — and prunes like the single-identifier form (§C.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_prune0) { TEST_CORE_SV; }
+// Two rolled repeats over the same count in one zero-time segment: the
+// walk's own complement pair — `n == 0` from the first skip, `n != 0` from
+// the second entry — names an empty path, pruned rather than emitted as a
+// dead arm (§C.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_prune1) { TEST_CORE_SV; }
+// An impure system call in a fork condition: the walk assumes a condition
+// reads stably within its zero-time segment — pruning and guard reuse are
+// both wrong otherwise — so it is rejected, not silently mis-pruned
+// (ADR-0014 §9, §C.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_prune_err0) { TEST_ERROR_SV; }
+// while (1'b1) is the perpetual form spelled differently: the constant
+// test folds at the loop head, no dead exit leg, no hold state beyond the
+// one break opens — the same machine forever produces (§2, §7.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever2) { TEST_CORE_SV; }

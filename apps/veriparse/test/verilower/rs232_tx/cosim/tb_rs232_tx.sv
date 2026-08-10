@@ -33,7 +33,8 @@ module tb_rs232_tx;
       busy_b_q  <= busy_b;
    end
 
-   task automatic check;
+   task automatic step;
+      @(posedge clk);
       if (tx_l !== tx_b_q || busy_l !== busy_b_q)
          $fatal(1, "DIVERGED t=%0t  tx fsm=%b ref=%b  busy fsm=%b ref=%b",
                 $time, tx_l, tx_b_q, busy_l, busy_b_q);
@@ -47,24 +48,24 @@ module tb_rs232_tx;
 
       // 1. a single isolated frame
       send <= 1'b1;
-      @(posedge clk); check();
+      step();
       send <= 1'b0;
-      repeat (60) begin @(posedge clk); check(); end
+      repeat (60) step();
 
       // 2. back-to-back: send held across the frame boundary
       send <= 1'b1;
-      repeat (140) begin @(posedge clk); check(); end
+      repeat (140) step();
       send <= 1'b0;
-      repeat (60) begin @(posedge clk); check(); end
+      repeat (60) step();
 
       // 3. random stimulus
       for (int k = 0; k < 400; k++) begin
-         @(posedge clk); check();
+         step();
          rnd = $random;
          if (k % 7  == 0) send <= rnd[0];
          if (k % 13 == 0) data <= rnd[15:8];
       end
-      repeat (60) begin @(posedge clk); check(); end
+      repeat (60) step();
 
       $display("EQUIVALENT checked=%0d", checked);
       $finish;

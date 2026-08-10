@@ -271,53 +271,166 @@ void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conju
     conjuncts.push_back(node);
 }
 
+/// §9 on condition position: the walk forks on conditions, reuses them in
+/// several guards, drops one it already carries and prunes contradictions —
+/// all assuming a condition reads stably within its zero-time segment. A
+/// system call outside the constant/query subset ($random above all) makes
+/// every one of those moves wrong, so it is rejected, not mis-walked.
+int check_condition_calls(const AST::Node::Ptr &expr)
+{
+    if(!expr) {
+        return 0;
+    }
+    if(expr->is_node_type(AST::NodeType::SystemCall)) {
+        static const std::set<std::string> pure = {"clog2", "bits",   "size",    "left",
+                                                   "right", "signed", "unsigned"};
+        const auto &name = AST::cast_to<AST::SystemCall>(expr)->get_syscall();
+        if(!pure.count(name)) {
+            LOG_ERROR_N(expr) << "system call '$" << name << "' in a branch or loop "
+                              << "condition: the walk forks on conditions and assumes they "
+                              << "read stably within their zero-time segment "
+                              << "(ADR-0014 §9, §C.4)";
+            return 1;
+        }
+    }
+    const auto &children = expr->get_children();
+    for(const auto &child : *children) {
+        if(check_condition_calls(child)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/// Whether two conditions are structural complements: X against !X on
+/// either side, the walk's own Eq/NotEq pairs over equal operands, or two
+/// equalities pinning one expression to different folded constants.
+bool complements(const AST::Node::Ptr &a, const AST::Node::Ptr &b)
+{
+    if(a->is_node_type(AST::NodeType::Ulnot)) {
+        const auto &operand = AST::cast_to<AST::Ulnot>(a)->get_right();
+        if(operand && operand->is_equal(b, false)) {
+            return true;
+        }
+    }
+    if(b->is_node_type(AST::NodeType::Ulnot)) {
+        const auto &operand = AST::cast_to<AST::Ulnot>(b)->get_right();
+        if(operand && operand->is_equal(a, false)) {
+            return true;
+        }
+    }
+    const bool a_eq = a->is_node_type(AST::NodeType::Eq);
+    const bool b_eq = b->is_node_type(AST::NodeType::Eq);
+    const bool a_neq = a->is_node_type(AST::NodeType::NotEq);
+    const bool b_neq = b->is_node_type(AST::NodeType::NotEq);
+    if((a_eq && b_neq) || (a_neq && b_eq)) {
+        const auto &lhs = AST::cast_to<AST::Operator>(a);
+        const auto &rhs = AST::cast_to<AST::Operator>(b);
+        if(lhs->get_left() && rhs->get_left() && lhs->get_right() && rhs->get_right() &&
+           lhs->get_left()->is_equal(rhs->get_left(), false) &&
+           lhs->get_right()->is_equal(rhs->get_right(), false)) {
+            return true;
+        }
+    }
+    if(a_eq && b_eq) {
+        const auto &lhs = AST::cast_to<AST::Eq>(a);
+        const auto &rhs = AST::cast_to<AST::Eq>(b);
+        mpz_class lval, rval;
+        if(lhs->get_left() && rhs->get_left() &&
+           lhs->get_left()->is_equal(rhs->get_left(), false) &&
+           ExpressionEvaluation().evaluate_node(lhs->get_right(), lval) &&
+           ExpressionEvaluation().evaluate_node(rhs->get_right(), rval) && lval != rval) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Whether adding @p extra to feasible @p conjuncts creates a
+/// contradiction: a complementary pair involving the newcomer, or a
+/// negated conjunction — !(a && b) — whose flattened parts are now all
+/// individually present. Guards only ever grow through conjoin, so
+/// checking against the newcomer keeps the whole set screened.
+bool contradicts(const std::vector<AST::Node::Ptr> &conjuncts, const AST::Node::Ptr &extra)
+{
+    for(const auto &conjunct : conjuncts) {
+        if(complements(conjunct, extra)) {
+            return true;
+        }
+    }
+    std::vector<AST::Node::Ptr> all = conjuncts;
+    all.push_back(extra);
+    for(const auto &negation : all) {
+        if(!negation->is_node_type(AST::NodeType::Ulnot)) {
+            continue;
+        }
+        const auto &negated = AST::cast_to<AST::Ulnot>(negation)->get_right();
+        if(!negated || !negated->is_node_type(AST::NodeType::Land)) {
+            continue;
+        }
+        std::vector<AST::Node::Ptr> parts;
+        flatten_land(negated, parts);
+        bool covered = true;
+        for(const auto &part : parts) {
+            bool present = false;
+            for(const auto &conjunct : all) {
+                if(conjunct != negation && conjunct->is_equal(part, false)) {
+                    present = true;
+                    break;
+                }
+            }
+            covered &= present;
+        }
+        if(covered) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /// Conjoin a path condition onto a guard; a null side passes the other
 /// through, so unconditional composes as identity. A condition the guard
 /// already carries — the same test forked twice along one path — adds
-/// nothing and is dropped.
+/// nothing and is dropped. With @p dead supplied, a condition that
+/// contradicts the guard marks the leg as the empty path (§C.4): no
+/// execution takes it, so the caller drops it before §6 or the emission
+/// ever see it — soundly, since removing an empty piece keeps the
+/// remaining legs a partition.
 AST::Node::Ptr conjoin(const AST::Node::Ptr &guard, const AST::Node::Ptr &extra,
-                       const std::string &fn, int ln)
+                       const std::string &fn, int ln, bool *dead = nullptr)
 {
     if(!extra) {
         return guard;
     }
-    if(!guard) {
-        return extra;
-    }
-    std::vector<AST::Node::Ptr> conjuncts;
-    flatten_land(guard, conjuncts);
-    for(const auto &conjunct : conjuncts) {
-        if(conjunct->is_equal(extra, false)) {
-            return guard;
+    // The condition joins part by part, so a compound test dedups and
+    // screens against the guard's conjuncts exactly like a simple one.
+    std::vector<AST::Node::Ptr> parts;
+    flatten_land(extra, parts);
+    AST::Node::Ptr result = guard;
+    for(const auto &part : parts) {
+        if(!result) {
+            result = part;
+            continue;
         }
-    }
-    return make_land(guard, extra, fn, ln);
-}
-
-/// Whether a guard is a structural contradiction — some conjunct is the
-/// negation of another. Such a path is the empty set: the walk enumerated
-/// it syntactically, but no execution takes it, so §6 must not judge it
-/// and the emission must not print it. Dropping it keeps the remaining
-/// legs a partition — the removed piece was empty.
-bool is_infeasible(const AST::Node::Ptr &guard)
-{
-    if(!guard) {
-        return false;
-    }
-    std::vector<AST::Node::Ptr> conjuncts;
-    flatten_land(guard, conjuncts);
-    for(std::size_t i = 0; i < conjuncts.size(); ++i) {
-        for(std::size_t j = 0; j < conjuncts.size(); ++j) {
-            if(i == j || !conjuncts[i]->is_node_type(AST::NodeType::Ulnot)) {
-                continue;
-            }
-            const auto &negated = AST::cast_to<AST::Ulnot>(conjuncts[i])->get_right();
-            if(negated && negated->is_equal(conjuncts[j], false)) {
-                return true;
+        std::vector<AST::Node::Ptr> conjuncts;
+        flatten_land(result, conjuncts);
+        bool present = false;
+        for(const auto &conjunct : conjuncts) {
+            if(conjunct->is_equal(part, false)) {
+                present = true;
+                break;
             }
         }
+        if(present) {
+            continue;
+        }
+        if(dead && contradicts(conjuncts, part)) {
+            *dead = true;
+            return nullptr;
+        }
+        result = make_land(result, part, fn, ln);
     }
-    return false;
+    return result;
 }
 
 /// §6.1 substitution, in place on a tree the caller owns: identifiers in
@@ -827,6 +940,9 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             return 1;
         }
         if(arms_wait || contains_jump(node)) {
+            if(check_condition_calls(ifs->get_cond())) {
+                return 1;
+            }
             m_forking.insert(node.get());
         }
         has_wait |= arms_wait;
@@ -883,6 +999,9 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             }
         }
         if(forking) {
+            if(check_condition_calls(AST::cast_to<AST::CaseStatement>(node)->get_comp())) {
+                return 1;
+            }
             m_forking.insert(node.get());
         }
         has_wait |= arms_wait;
@@ -1051,6 +1170,13 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         return 1;
     }
 
+    // Loop conditions — and a rolled for's init/step, which the walk
+    // substitutes and duplicates — must read stably in their segment.
+    if(check_condition_calls(info.cond) || check_condition_calls(info.init_rhs) ||
+       check_condition_calls(info.step_rhs)) {
+        return 1;
+    }
+
     // §15 gives the process one shared countdown; nesting counting repeats
     // would have the inner reload clobber the outer's remaining count.
     // Sequential repeats re-initialise on entry and share it soundly.
@@ -1132,15 +1258,10 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                                        Env env, std::set<const AST::Node *> lapped,
                                        std::vector<State> &states, std::vector<Transition> &entry)
 {
-    // A structurally contradictory guard names the empty path — the same
-    // condition forked both ways along one walk, like taking an
-    // `if (!send)` and then skipping its `while (!send)` in the same zero
-    // time. No execution takes it; it must neither trip §6 nor be emitted.
-    if(is_infeasible(guard)) {
-        return 0;
-    }
-
     const auto record = [&](std::size_t next) {
+        if(next >= states.size()) {
+            m_hold_needed = true;
+        }
         if(from == k_entry) {
             entry.push_back(Transition{guard, action, next});
         } else {
@@ -1193,23 +1314,31 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             }
             const auto &ifs = AST::cast_to<AST::IfStatement>(stmt);
             {
-                std::vector<Frame> leg = frames;
-                push_frame(leg, ifs->get_true_statement());
-                if(walk_paths(from, conjoin(guard, clone_subst(ifs->get_cond(), env), fn, ln),
-                              copy_list(action), leg, env, lapped, states, entry)) {
-                    return 1;
+                bool dead = false;
+                const auto &leg_guard =
+                    conjoin(guard, clone_subst(ifs->get_cond(), env), fn, ln, &dead);
+                if(!dead) {
+                    std::vector<Frame> leg = frames;
+                    push_frame(leg, ifs->get_true_statement());
+                    if(walk_paths(from, leg_guard, copy_list(action), leg, env, lapped, states,
+                                  entry)) {
+                        return 1;
+                    }
                 }
             }
             {
                 // A missing else is the fall-through path: the machine takes
                 // it in zero extra statements, not zero probability.
-                std::vector<Frame> leg = frames;
-                push_frame(leg, ifs->get_false_statement());
-                if(walk_paths(from,
-                              conjoin(guard, make_ulnot(clone_subst(ifs->get_cond(), env), fn, ln),
-                                      fn, ln),
-                              copy_list(action), leg, env, lapped, states, entry)) {
-                    return 1;
+                bool dead = false;
+                const auto &leg_guard = conjoin(
+                    guard, make_ulnot(clone_subst(ifs->get_cond(), env), fn, ln), fn, ln, &dead);
+                if(!dead) {
+                    std::vector<Frame> leg = frames;
+                    push_frame(leg, ifs->get_false_statement());
+                    if(walk_paths(from, leg_guard, copy_list(action), leg, env, lapped, states,
+                                  entry)) {
+                        return 1;
+                    }
                 }
             }
             return 0;
@@ -1252,18 +1381,26 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 }
             }
             for(const auto &leg : legs) {
+                bool dead = false;
+                const auto &leg_guard = conjoin(guard, leg.first, fn, ln, &dead);
+                if(dead) {
+                    continue;
+                }
                 std::vector<Frame> lf = frames;
                 push_frame(lf, leg.second);
-                if(walk_paths(from, conjoin(guard, leg.first, fn, ln), copy_list(action), lf, env,
-                              lapped, states, entry)) {
+                if(walk_paths(from, leg_guard, copy_list(action), lf, env, lapped, states, entry)) {
                     return 1;
                 }
             }
             if(!has_default) {
-                std::vector<Frame> lf = frames;
-                if(walk_paths(from, conjoin(guard, not_any, fn, ln), copy_list(action), lf, env,
-                              lapped, states, entry)) {
-                    return 1;
+                bool dead = false;
+                const auto &leg_guard = conjoin(guard, not_any, fn, ln, &dead);
+                if(!dead) {
+                    std::vector<Frame> lf = frames;
+                    if(walk_paths(from, leg_guard, copy_list(action), lf, env, lapped, states,
+                                  entry)) {
+                        return 1;
+                    }
                 }
             }
             return 0;
@@ -1367,20 +1504,35 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
 
     switch(info.kind) {
     case LoopInfo::Kind::WHILE: {
+        // A constant test folds at the head: while (1) is the perpetual
+        // form spelled differently (§2) — no dead exit leg, no hold state
+        // it would otherwise force — and while (0) never runs.
+        mpz_class value;
+        if(ExpressionEvaluation().evaluate_node(info.cond, value)) {
+            if(value == 0) {
+                return skip_past(guard, copy_list(action), env);
+            }
+            return enter_body(guard, action, env);
+        }
         // §7.3: the test re-evaluates at the head, entry and back-edge
         // alike, over the segment's values.
-        if(enter_body(conjoin(guard, clone_subst(info.cond, env), fn, ln), copy_list(action),
-                      env)) {
-            return 1;
+        {
+            bool dead = false;
+            const auto &leg_guard = conjoin(guard, clone_subst(info.cond, env), fn, ln, &dead);
+            if(!dead && enter_body(leg_guard, copy_list(action), env)) {
+                return 1;
+            }
         }
-        return skip_past(conjoin(guard, make_ulnot(clone_subst(info.cond, env), fn, ln), fn, ln),
-                         copy_list(action), env);
+        bool dead = false;
+        const auto &leg_guard =
+            conjoin(guard, make_ulnot(clone_subst(info.cond, env), fn, ln), fn, ln, &dead);
+        return dead ? 0 : skip_past(leg_guard, copy_list(action), env);
     }
 
     case LoopInfo::Kind::FOREVER:
         // §2: the §7.3 back-edge with no exit test — the only way past it
         // is a break (§8).
-        return enter_body(guard, entering ? action : copy_list(action), env);
+        return enter_body(guard, action, env);
 
     case LoopInfo::Kind::REPEAT: {
         const auto cnt_id = [&]() { return AST::to_node(make_id(m_cnt_name, fn, ln)); };
@@ -1410,23 +1562,28 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
             // into the countdown — and a zero count skips the state
             // through the entry guard.
             {
-                auto leg_action = copy_list(action);
-                leg_action->push_back(AST::to_node(make_nba(
-                    m_cnt_name,
-                    make_minus(clone_subst(info.cond, env),
-                               AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)),
-                               fn, ln),
-                    fn, ln)));
-                if(enter_body(conjoin(guard,
-                                      make_noteq(clone_subst(info.cond, env), cnt_zero(), fn, ln),
-                                      fn, ln),
-                              leg_action, env)) {
-                    return 1;
+                bool dead = false;
+                const auto &leg_guard =
+                    conjoin(guard, make_noteq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn,
+                            ln, &dead);
+                if(!dead) {
+                    auto leg_action = copy_list(action);
+                    leg_action->push_back(AST::to_node(make_nba(
+                        m_cnt_name,
+                        make_minus(
+                            clone_subst(info.cond, env),
+                            AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)), fn,
+                            ln),
+                        fn, ln)));
+                    if(enter_body(leg_guard, leg_action, env)) {
+                        return 1;
+                    }
                 }
             }
-            return skip_past(
-                conjoin(guard, make_eq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn, ln),
-                copy_list(action), env);
+            bool dead = false;
+            const auto &leg_guard = conjoin(
+                guard, make_eq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn, ln, &dead);
+            return dead ? 0 : skip_past(leg_guard, copy_list(action), env);
         }
         // Back-edge of the single pass: exit unconditionally — which is
         // also where a continue inside it lands (§12.7.2: no next lap).
@@ -1435,20 +1592,26 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         }
         // Back-edge: the countdown decides, and decrements on the lap.
         {
-            auto leg_action = copy_list(action);
-            leg_action->push_back(AST::to_node(make_nba(
-                m_cnt_name,
-                make_minus(cnt_id(),
-                           AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)), fn,
-                           ln),
-                fn, ln)));
-            if(enter_body(conjoin(guard, make_noteq(cnt_id(), cnt_zero(), fn, ln), fn, ln),
-                          leg_action, env)) {
-                return 1;
+            bool dead = false;
+            const auto &leg_guard =
+                conjoin(guard, make_noteq(cnt_id(), cnt_zero(), fn, ln), fn, ln, &dead);
+            if(!dead) {
+                auto leg_action = copy_list(action);
+                leg_action->push_back(AST::to_node(make_nba(
+                    m_cnt_name,
+                    make_minus(cnt_id(),
+                               AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)),
+                               fn, ln),
+                    fn, ln)));
+                if(enter_body(leg_guard, leg_action, env)) {
+                    return 1;
+                }
             }
         }
-        return skip_past(conjoin(guard, make_eq(cnt_id(), cnt_zero(), fn, ln), fn, ln),
-                         copy_list(action), env);
+        bool dead = false;
+        const auto &leg_guard =
+            conjoin(guard, make_eq(cnt_id(), cnt_zero(), fn, ln), fn, ln, &dead);
+        return dead ? 0 : skip_past(leg_guard, copy_list(action), env);
     }
 
     case LoopInfo::Kind::FOR: {
@@ -1473,13 +1636,17 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         const auto &commit = AST::to_node(make_nba(info.index, value->clone(), fn, ln));
         m_induced.insert(commit.get());
         base->push_back(commit);
-        if(enter_body(conjoin(guard, clone_subst(info.cond, leg_env), fn, ln), copy_list(base),
-                      leg_env)) {
-            return 1;
+        {
+            bool dead = false;
+            const auto &leg_guard = conjoin(guard, clone_subst(info.cond, leg_env), fn, ln, &dead);
+            if(!dead && enter_body(leg_guard, copy_list(base), leg_env)) {
+                return 1;
+            }
         }
-        return skip_past(
-            conjoin(guard, make_ulnot(clone_subst(info.cond, leg_env), fn, ln), fn, ln), base,
-            leg_env);
+        bool dead = false;
+        const auto &leg_guard =
+            conjoin(guard, make_ulnot(clone_subst(info.cond, leg_env), fn, ln), fn, ln, &dead);
+        return dead ? 0 : skip_past(leg_guard, base, leg_env);
     }
     }
     return 1;
@@ -1860,6 +2027,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_cnt_name = prefix + "_cnt";
     m_cnt_width = 0;
     m_repeat_depth = 0;
+    m_hold_needed = false;
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
@@ -1991,13 +2159,9 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // One state per wait, plus the hold state a one-shot parks in (§2) —
     // omitted when no path ends the process, as none does in a perpetual
-    // machine: an unreachable state would still cost encoding width.
-    bool hold_needed = entry_next >= states.size();
-    for(const auto &state : states) {
-        for(const auto &transition : state.out) {
-            hold_needed |= transition.next >= states.size();
-        }
-    }
+    // machine: an unreachable state would still cost encoding width. The
+    // walk flagged it when recording a transition to the hold index.
+    const bool hold_needed = m_hold_needed;
     const std::size_t nstates = states.size() + (hold_needed ? 1 : 0);
     const unsigned int width = clog2(static_cast<unsigned int>(nstates));
 
