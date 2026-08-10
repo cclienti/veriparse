@@ -132,6 +132,19 @@ private:
         AST::Node::List::iterator it;
         const AST::Node *loop = nullptr;
         std::string label;
+        /// §6 temporaries this frame's block declares: their environment
+        /// entries die when the frame pops — the scope is the lifetime.
+        std::vector<std::string> decls;
+    };
+
+    /// §6 scoping context during collection: which temporaries are
+    /// readable here, and which may be written — writes reset at branch
+    /// arms, so a conditional value cannot leak into an outer name.
+    struct TempScope
+    {
+        std::set<std::string> visible;
+        std::set<std::string> writable;
+        bool verbatim = false; ///< inside a cut-point-free branch kept verbatim
     };
 
     /// A loop the CFG keeps — §7.3 data-dependent, or §7.2 rolled with its
@@ -167,9 +180,22 @@ private:
     /// Collect the process's waits in source order, validating each
     /// statement against what the lowering can express. Fills @p has_wait
     /// with whether the subtree holds a cut point, recording forking
-    /// branches and wait indices so the path walk resolves both in O(1).
+    /// branches, wait indices and §6 temporaries so the path walk resolves
+    /// them all in O(1). @p scope carries the temporaries in force, by
+    /// value: a block's declarations reach its later siblings, never its
+    /// parent's.
     int collect_body(const AST::Node::Ptr &node, std::vector<AST::EventStatement::Ptr> &waits,
-                     AST::Sens::Ptr &clock, bool &has_wait);
+                     AST::Sens::Ptr &clock, bool &has_wait, TempScope scope);
+
+    /// §6.1: the emission tier for one blocking value — inline when
+    /// trivial, else a module-level wire carrying the temporary's declared
+    /// type, shared when the expression is structurally identical.
+    std::string materialize_temp(const std::string &temp, const AST::Node::Ptr &value,
+                                 const std::string &fn, int ln);
+
+    /// §6.1: a substituted expression must not still read a temporary the
+    /// environment no longer carries — dead scope, or not yet assigned.
+    int check_temp_reads(const AST::Node::Ptr &node, const Env &env);
 
     /// Validate and register a loop the CFG keeps (§7.2 rolled, §7.3
     /// data-dependent); @p kept_rolled when `(* veriparse_no_unroll *)`
@@ -294,6 +320,21 @@ private:
     };
     Encoding m_encoding = Encoding::BINARY;
     bool m_async_reset = false;
+
+    /// §6 temporaries of the walked segments (name → declaration, for the
+    /// materialized wire's type), and the §6.1 wires the emission owes:
+    /// name, the substituted value, and the temporary supplying the type.
+    std::map<std::string, AST::Var::Ptr> m_temps;
+    struct MaterializedWire
+    {
+        std::string name;
+        AST::Node::Ptr value;
+        AST::Var::Ptr temp;
+    };
+    std::vector<MaterializedWire> m_wires;
+
+    /// The per-process declaration prefix, for the wire names.
+    std::string m_prefix;
 
     /// §10.2 collection point, null when nobody asked.
     FsmReport *m_report = nullptr;

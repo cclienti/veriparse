@@ -360,6 +360,10 @@ if(NOT WIN32)
     # break abandoning inner laps with its commit coalesced.
     add_verilower_sv_cosim(NAME mixed_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §6.1 blocking temporaries under live data: the declared-width carry
+    # corner (§11.6) through the materialized wires, alternating forever.
+    add_verilower_sv_cosim(NAME temp_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # A production RMII MAC receiver, three ways: the behavioural rewrite
     # against its verilower output AND against the pre-existing
     # three-process implementation it was rewritten from — an independent

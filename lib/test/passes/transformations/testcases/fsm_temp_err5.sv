@@ -1,0 +1,24 @@
+module fsm_temp_err5 (
+    input logic clk,
+    input logic rst_n,
+    input logic [7:0] a,
+    output logic [7:0] q
+);
+
+    (* veriparse_fsm *)
+    initial begin
+        q <= '0;
+        @(posedge clk);
+        begin
+            logic [7:0] t;
+            t = a;
+            begin
+                logic [7:0] t;
+                t = a + 8'd1;
+                q <= t;
+            end
+        end
+        @(posedge clk);
+    end
+
+endmodule

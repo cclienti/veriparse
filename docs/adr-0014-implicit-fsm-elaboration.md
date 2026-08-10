@@ -2192,11 +2192,14 @@ count is the same (a cut-point-free branch never forks the walk), the
 entry-value invariant holds by nonblocking semantics (every right-hand side
 reads entry values), and the §6 checks do the per-arm merging on the
 statement form: worst-arm addition for the commit count, arm intersection
-for the must-defined sets. The flat `Update` list with if-converted values
-becomes load-bearing the moment §6.1's blocking temporaries arrive — a `=`
-value must be substituted *into* later expressions, which needs the
-two-layer environment and update-level representation — so the conversion
-to this section's shape belongs to the phase that lands them, not before.
+for the must-defined sets. When §6.1's blocking temporaries landed, the
+two-layer environment arrived without converting the actions: the walk
+substitutes a `=` value — or its materialized wire's name — into every
+later expression *before* it enters an action or a guard, so the statement
+form stays fully resolved over entry values and the flat `Update` list
+remains unnecessary. The conversion to this section's literal shape is now
+motivated only by the §C.6 self-check and the v2 rows that compare values
+across paths, and belongs to whichever lands first.
 
 Alongside them, two side tables:
 
