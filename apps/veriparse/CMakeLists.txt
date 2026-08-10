@@ -368,6 +368,31 @@ if(NOT WIN32)
                      && ! grep -q 'busy <=' ${CMAKE_CURRENT_BINARY_DIR}/rs232_map.dot")
     set_tests_properties(test_fsm_state_map PROPERTIES LABELS unittest)
 
+    # An explicitly requested --state-map is written even when no process
+    # was compiled: a consumer opening the promised path must not fail.
+    add_test(NAME test_fsm_state_map_empty
+             COMMAND sh -c "$<TARGET_FILE:verilower> --sv -t plain \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/plain_map.v \
+                     --state-map ${CMAKE_CURRENT_BINARY_DIR}/plain_map.json \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/plain/src/plain.sv \
+                     && test -f ${CMAKE_CURRENT_BINARY_DIR}/plain_map.json")
+    set_tests_properties(test_fsm_state_map_empty PROPERTIES LABELS unittest)
+
+    # Two marked processes: distinct ordinal prefixes, two entries in the
+    # JSON, and one digraph holding two cluster subgraphs — a single
+    # graphviz invocation renders the whole machine set.
+    add_test(NAME test_fsm_state_map_dual
+             COMMAND sh -c "$<TARGET_FILE:verilower> --sv -t dual \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/dual_map.v \
+                     --state-map ${CMAKE_CURRENT_BINARY_DIR}/dual_map.json \
+                     --fsm-dot ${CMAKE_CURRENT_BINARY_DIR}/dual_map.dot \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/dual/src/dual.sv \
+                     && grep -q '__fsm0_state' ${CMAKE_CURRENT_BINARY_DIR}/dual_map.json \
+                     && grep -q '__fsm1_state' ${CMAKE_CURRENT_BINARY_DIR}/dual_map.json \
+                     && test \"$(grep -c '^digraph' ${CMAKE_CURRENT_BINARY_DIR}/dual_map.dot)\" = 1 \
+                     && test \"$(grep -c 'subgraph' ${CMAKE_CURRENT_BINARY_DIR}/dual_map.dot)\" = 2")
+    set_tests_properties(test_fsm_state_map_dual PROPERTIES LABELS unittest)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

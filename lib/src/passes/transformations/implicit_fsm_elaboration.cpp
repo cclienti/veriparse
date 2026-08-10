@@ -68,6 +68,23 @@ bool contains_event_statement(const AST::Node::Ptr &node)
     return false;
 }
 
+/// §10.1: a labelled cut-point-free block that is itself one arm of a fork
+/// does not delimit a state alone — naming the state after one arm would be
+/// wrong on the paths that take the other, so the name is dropped, loudly.
+void warn_fork_arm_label(const AST::Node::Ptr &arm)
+{
+    if(!arm || !arm->is_node_type(AST::NodeType::Block)) {
+        return;
+    }
+    const auto &label = AST::cast_to<AST::Block>(arm)->get_scope();
+    if(label.empty() || contains_event_statement(arm)) {
+        return;
+    }
+    LOG_WARNING_N(arm) << "label '" << label << "' sits on one arm of a fork: it does "
+                       << "not delimit a state alone, so the name is dropped "
+                       << "(ADR-0014 §10.1)";
+}
+
 /// Whether the subtree holds a break or continue: a jump transfers control,
 /// so a branch carrying one forks the path walk even with no cut point in
 /// its arms (§8). A jump bound to a loop nested inside the branch would be
@@ -354,6 +371,45 @@ void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &nam
         return;
     }
     }
+}
+
+/// The name a header port answers to: the inner declaration's for an ANSI
+/// port, the Port's own for a non-ANSI name-only reference.
+std::string header_port_name(const AST::Port::Ptr &port)
+{
+    const auto &decl = port->get_decl();
+    return decl ? decl->get_name() : port->get_name();
+}
+
+/// A child module port's direction, ANSI or non-ANSI: the header's when it
+/// carries one, else the body direction declaration of that name — which
+/// is where a non-ANSI module states it.
+AST::Port::DirectionEnum child_port_direction(const AST::Module::Ptr &definition,
+                                              const std::string &name)
+{
+    const auto &ports = definition->get_ports();
+    if(ports) {
+        for(const auto &port : *ports) {
+            if(header_port_name(port) == name &&
+               port->get_direction() != AST::Port::DirectionEnum::NONE) {
+                return port->get_direction();
+            }
+        }
+    }
+    const auto &items = definition->get_items();
+    if(items) {
+        for(const auto &item : *items) {
+            if(!item->is_node_type(AST::NodeType::Port)) {
+                continue;
+            }
+            const auto &port = AST::cast_to<AST::Port>(item);
+            if(header_port_name(port) == name &&
+               port->get_direction() != AST::Port::DirectionEnum::NONE) {
+                return port->get_direction();
+            }
+        }
+    }
+    return AST::Port::DirectionEnum::NONE;
 }
 
 /// The subroutine names a statement tree calls — how a task's writes reach
@@ -1091,13 +1147,15 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return ret;
     }
 
-    std::size_t ordinal = 0;
-    for(const auto &elt : marked) {
-        // §3: veriparse_prefix overrides the default; several processes
-        // without hints get an ordinal each, one shared prefix would
-        // collide by construction (§10).
-        std::string prefix = (marked.size() > 1) ? ("__fsm" + std::to_string(ordinal)) : "__fsm";
-        const auto &prefix_hint = get_pragma(elt.first, "veriparse_prefix");
+    // §3: veriparse_prefix overrides the default; several processes
+    // without hints get an ordinal each. Every prefix must be distinct —
+    // a hint that collides with another process's hint or ordinal is
+    // rejected here, where the clash can be named, not later at the §10
+    // declaration check where the message would blame the wrong thing.
+    std::vector<std::string> prefixes;
+    for(std::size_t i = 0; i < marked.size(); ++i) {
+        std::string prefix = (marked.size() > 1) ? ("__fsm" + std::to_string(i)) : "__fsm";
+        const auto &prefix_hint = get_pragma(marked[i].first, "veriparse_prefix");
         if(prefix_hint) {
             const auto &expr = prefix_hint->get_expression();
             std::string wanted;
@@ -1106,19 +1164,36 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
             } else if(expr && expr->is_node_type(AST::NodeType::Identifier)) {
                 wanted = AST::cast_to<AST::Identifier>(expr)->get_name();
             }
-            bool valid = !wanted.empty() && (std::isalpha(wanted.front()) || wanted.front() == '_');
+            bool valid =
+                !wanted.empty() &&
+                (std::isalpha(static_cast<unsigned char>(wanted.front())) || wanted.front() == '_');
             for(const char c : wanted) {
-                valid &= std::isalnum(c) || c == '_';
+                valid &= std::isalnum(static_cast<unsigned char>(c)) != 0 || c == '_';
             }
             if(!valid) {
-                LOG_ERROR_N(elt.first) << "veriparse_prefix wants an identifier to prefix "
-                                       << "the generated declarations with (ADR-0014 §3, §10)";
+                LOG_ERROR_N(marked[i].first)
+                    << "veriparse_prefix wants an identifier to prefix "
+                    << "the generated declarations with (ADR-0014 §3, §10)";
                 return 1;
             }
             prefix = wanted;
         }
-        ret += compile_process(module, node, elt.first, elt.second, prefix);
-        ++ordinal;
+        prefixes.push_back(prefix);
+    }
+    for(std::size_t i = 0; i < prefixes.size(); ++i) {
+        for(std::size_t j = i + 1; j < prefixes.size(); ++j) {
+            if(prefixes[i] == prefixes[j]) {
+                LOG_ERROR_N(marked[j].first)
+                    << "prefix '" << prefixes[j] << "' is already taken by another "
+                    << "marked process of this module — hint or ordinal — and the "
+                    << "generated declarations need distinct prefixes "
+                    << "(ADR-0014 §3, §10)";
+                return 1;
+            }
+        }
+    }
+    for(std::size_t i = 0; i < marked.size(); ++i) {
+        ret += compile_process(module, node, marked[i].first, marked[i].second, prefixes[i]);
     }
 
     return ret;
@@ -1573,15 +1648,24 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         switch(stmt->get_node_type()) {
         case AST::NodeType::Block: {
             const auto &label = AST::cast_to<AST::Block>(stmt)->get_scope();
-            if(!label.empty()) {
+            if(!label.empty() && !contains_event_statement(stmt)) {
                 if(from == k_entry) {
-                    // §10.1: the init segment is not a state — the label
-                    // has nothing to point at.
+                    // §10.1: the init segment is not a state — a label whose
+                    // block holds no cut point has nothing to point at. One
+                    // that does names its states through the stack instead.
                     LOG_WARNING_N(stmt)
                         << "label '" << label << "' names the init segment: the reset "
                         << "branch is not a state, so the name is dropped "
                         << "(ADR-0014 §5.1, §10.1)";
-                } else if(!contains_event_statement(stmt) && states[from].stem.empty()) {
+                } else if(guard) {
+                    // Under a fork guard the block does not delimit the
+                    // state alone: naming it after one arm would be wrong on
+                    // the paths that take the other (§10.1).
+                    LOG_WARNING_N(stmt)
+                        << "label '" << label << "' sits under a fork condition: it does "
+                        << "not delimit a state alone, so the name is dropped "
+                        << "(ADR-0014 §10.1)";
+                } else if(states[from].stem.empty()) {
                     // A cut-point-free labelled block is one state's action:
                     // the state it belongs to takes the name (§10.1).
                     const auto &outer = labels_of(frames);
@@ -1619,6 +1703,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 const auto &leg_guard =
                     conjoin(guard, clone_subst(ifs->get_cond(), env), fn, ln, &dead);
                 if(!dead) {
+                    warn_fork_arm_label(ifs->get_true_statement());
                     std::vector<Frame> leg = frames;
                     push_frame(leg, ifs->get_true_statement());
                     if(walk_paths(from, leg_guard, copy_list(action), leg, env, lapped, states,
@@ -1634,6 +1719,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 const auto &leg_guard = conjoin(
                     guard, make_ulnot(clone_subst(ifs->get_cond(), env), fn, ln), fn, ln, &dead);
                 if(!dead) {
+                    warn_fork_arm_label(ifs->get_false_statement());
                     std::vector<Frame> leg = frames;
                     push_frame(leg, ifs->get_false_statement());
                     if(walk_paths(from, leg_guard, copy_list(action), leg, env, lapped, states,
@@ -1687,6 +1773,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 if(dead) {
                     continue;
                 }
+                warn_fork_arm_label(leg.second);
                 std::vector<Frame> lf = frames;
                 push_frame(lf, leg.second);
                 if(walk_paths(from, leg_guard, copy_list(action), lf, env, lapped, states, entry)) {
@@ -2444,23 +2531,21 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                         }
                         std::size_t position = 0;
                         for(const auto &connection : *connections) {
-                            AST::Port::Ptr port;
-                            if(!connection->get_name().empty()) {
-                                for(const auto &candidate : *def_ports) {
-                                    const auto &decl = candidate->get_decl();
-                                    if(decl && decl->get_name() == connection->get_name()) {
-                                        port = candidate;
-                                        break;
-                                    }
-                                }
-                            } else if(position < def_ports->size()) {
+                            // Resolve the connected port's NAME — given, or
+                            // positional through the header — then its
+                            // direction, which a non-ANSI module states in
+                            // its body, not its header.
+                            std::string port_name = connection->get_name();
+                            if(port_name.empty() && position < def_ports->size()) {
                                 auto it_port = def_ports->begin();
                                 std::advance(it_port, position);
-                                port = *it_port;
+                                port_name = header_port_name(*it_port);
                             }
                             ++position;
-                            if(port && (port->get_direction() == AST::Port::DirectionEnum::OUTPUT ||
-                                        port->get_direction() == AST::Port::DirectionEnum::INOUT)) {
+                            const auto direction =
+                                child_port_direction(definition->second, port_name);
+                            if(direction == AST::Port::DirectionEnum::OUTPUT ||
+                               direction == AST::Port::DirectionEnum::INOUT) {
                                 collect_lvalue_bases(connection->get_value(), others);
                             }
                         }
@@ -2694,10 +2779,20 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         state_names.push_back(prefix + "_hold");
     }
     {
+        // The ordinal scheme was collision-free by construction; label
+        // stems must be checked against each other AND against the other
+        // generated declarations of this machine.
         std::set<std::string> unique(state_names.begin(), state_names.end());
-        if(unique.size() != state_names.size()) {
-            LOG_ERROR_N(module) << "two states resolve to the same generated name: "
-                                << "rename one of the colliding labels (ADR-0014 §10.1)";
+        std::size_t expected = state_names.size() + 1;
+        unique.insert(prefix + "_state");
+        if(m_cnt_width > 0) {
+            unique.insert(m_cnt_name);
+            ++expected;
+        }
+        if(unique.size() != expected) {
+            LOG_ERROR_N(module) << "a state name collides with another state or with a "
+                                << "generated declaration (the state register or the "
+                                << "countdown): rename the label (ADR-0014 §10, §10.1)";
             return nullptr;
         }
     }
