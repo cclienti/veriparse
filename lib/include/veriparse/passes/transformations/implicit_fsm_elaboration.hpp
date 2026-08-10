@@ -65,12 +65,14 @@ private:
 
     /// One state per cut point, in source order; its transitions in
     /// enumeration order, first match wins. The hold state (§2) is the
-    /// index one past the last.
+    /// index one past the last. The stem is the §10.1 label composition
+    /// naming the state — empty falls back to the ordinal.
     struct State
     {
         AST::EventStatement::Ptr wait;
         std::vector<Transition> out;
         bool walked = false;
+        std::string stem;
     };
 
     /// A position in the statement tree during path enumeration: the
@@ -78,12 +80,15 @@ private:
     /// enclosing continuation — which is how the merge after a branch is
     /// reached from every arm. A frame carrying @c loop is the body of a
     /// loop the CFG keeps: reaching its end takes the back-edge instead of
-    /// popping through (§7.2, §7.3).
+    /// popping through (§7.2, §7.3). A frame carrying @c label is a named
+    /// block (§10.1): the labels in force compose outward-in to name the
+    /// states cut inside them.
     struct Frame
     {
         AST::Node::ListPtr stmts;
         AST::Node::List::iterator it;
         const AST::Node *loop = nullptr;
+        std::string label;
     };
 
     /// A loop the CFG keeps — §7.3 data-dependent, or §7.2 rolled with its
@@ -131,9 +136,13 @@ private:
 
     /// Push a statement as an enumeration frame: a block or pragma list
     /// contributes its list, a single statement a one-element list, null
-    /// nothing. @p loop marks the frame as a loop body.
+    /// nothing. @p loop marks the frame as a loop body; a named block
+    /// carries its §10.1 label.
     static void push_frame(std::vector<Frame> &frames, const AST::Node::Ptr &node,
                            const AST::Node *loop = nullptr);
+
+    /// The §10.1 label composition in force at a walk position.
+    static std::string labels_of(const std::vector<Frame> &frames);
 
     /// Enumerate the path cover (§C.4 step 3) from the position in
     /// @p frames: fork at branches whose arms hold a cut point, copy

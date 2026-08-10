@@ -304,3 +304,12 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive0) { TEST_CORE_S
 // the FSM's register: the index is a read, not a drive (IEEE §9.2.2.4,
 // §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive1) { TEST_CORE_SV; }
+// §10.1 label naming, every shape at once: an action label names its
+// state (IDLE), a label over two cut points takes ordinals (COUNT_0/1),
+// nested labels compose outward-in (BIT_LOW, BIT_HIGH), an unlabelled
+// segment keeps the global ordinal, and a label on the init segment warns
+// and is dropped — the reset branch is not a state.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name0) { TEST_CORE_SV; }
+// A label that resolves to the same generated name as an ordinal state:
+// collisions error, never silently rename (§10, §10.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name_err0) { TEST_ERROR_SV; }

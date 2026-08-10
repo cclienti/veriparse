@@ -1478,22 +1478,37 @@ void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::N
         return;
     }
     if(node->is_node_type(AST::NodeType::Block)) {
-        const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
+        const auto &block = AST::cast_to<AST::Block>(node);
+        const auto &stmts = block->get_statements();
         if(stmts) {
-            frames.push_back(Frame{stmts, stmts->begin(), loop});
+            frames.push_back(Frame{stmts, stmts->begin(), loop, block->get_scope()});
         }
         return;
     }
     if(node->is_node_type(AST::NodeType::Pragmalist)) {
         const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
         if(stmts) {
-            frames.push_back(Frame{stmts, stmts->begin(), loop});
+            frames.push_back(Frame{stmts, stmts->begin(), loop, ""});
         }
         return;
     }
     auto single = std::make_shared<AST::Node::List>();
     single->push_back(node);
-    frames.push_back(Frame{single, single->begin(), loop});
+    frames.push_back(Frame{single, single->begin(), loop, ""});
+}
+
+/// The §10.1 label composition in force at a walk position: the frames'
+/// labels joined outward-in.
+std::string ImplicitFsmElaboration::labels_of(const std::vector<Frame> &frames)
+{
+    std::string stem;
+    for(const auto &frame : frames) {
+        if(frame.label.empty()) {
+            continue;
+        }
+        stem += stem.empty() ? frame.label : "_" + frame.label;
+    }
+    return stem;
 }
 
 int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &guard,
@@ -1533,7 +1548,27 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         const int ln = stmt->get_line();
 
         switch(stmt->get_node_type()) {
-        case AST::NodeType::Block:
+        case AST::NodeType::Block: {
+            const auto &label = AST::cast_to<AST::Block>(stmt)->get_scope();
+            if(!label.empty()) {
+                if(from == k_entry) {
+                    // §10.1: the init segment is not a state — the label
+                    // has nothing to point at.
+                    LOG_WARNING_N(stmt)
+                        << "label '" << label << "' names the init segment: the reset "
+                        << "branch is not a state, so the name is dropped "
+                        << "(ADR-0014 §5.1, §10.1)";
+                } else if(!contains_event_statement(stmt) && states[from].stem.empty()) {
+                    // A cut-point-free labelled block is one state's action:
+                    // the state it belongs to takes the name (§10.1).
+                    const auto &outer = labels_of(frames);
+                    states[from].stem = outer.empty() ? label : outer + "_" + label;
+                }
+            }
+            push_frame(frames, stmt);
+            break;
+        }
+
         case AST::NodeType::Pragmalist:
             push_frame(frames, stmt);
             break;
@@ -1684,6 +1719,10 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         case AST::NodeType::EventStatement: {
             const auto &event = AST::cast_to<AST::EventStatement>(stmt);
             const std::size_t idx = m_wait_index.at(event.get());
+            // §10.1: the labels in force name the state cut here.
+            if(states[idx].stem.empty()) {
+                states[idx].stem = labels_of(frames);
+            }
             record(idx);
             // Every path reaches a given wait with the same continuation —
             // its syntactic position fixes it — so its outgoing paths are
@@ -2492,12 +2531,39 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     const std::size_t nstates = states.size() + (hold_needed ? 1 : 0);
     const unsigned int width = clog2(static_cast<unsigned int>(nstates));
 
+    // §10.1: a stem naming one state names it outright, several take the
+    // stem with an ordinal, and an unlabelled state keeps the global
+    // ordinal — naming is incremental.
     std::vector<std::string> state_names;
-    for(std::size_t i = 0; i < states.size(); ++i) {
-        state_names.push_back(prefix + "_state_" + std::to_string(i));
+    {
+        std::map<std::string, std::size_t> stem_total, stem_seen;
+        for(const auto &state : states) {
+            if(!state.stem.empty()) {
+                ++stem_total[state.stem];
+            }
+        }
+        for(std::size_t i = 0; i < states.size(); ++i) {
+            const auto &stem = states[i].stem;
+            if(stem.empty()) {
+                state_names.push_back(prefix + "_state_" + std::to_string(i));
+            } else if(stem_total[stem] == 1) {
+                state_names.push_back(prefix + "_" + stem);
+            } else {
+                state_names.push_back(prefix + "_" + stem + "_" +
+                                      std::to_string(stem_seen[stem]++));
+            }
+        }
     }
     if(hold_needed) {
         state_names.push_back(prefix + "_hold");
+    }
+    {
+        std::set<std::string> unique(state_names.begin(), state_names.end());
+        if(unique.size() != state_names.size()) {
+            LOG_ERROR_N(module) << "two states resolve to the same generated name: "
+                                << "rename one of the colliding labels (ADR-0014 §10.1)";
+            return nullptr;
+        }
     }
     const std::string state_reg = prefix + "_state";
 
