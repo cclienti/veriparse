@@ -1858,6 +1858,21 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
     return 0;
 }
 
+void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
+                                          const std::string &target, const AST::Node::Ptr &rhs,
+                                          const std::string &fn, int ln)
+{
+    for(auto it = action->begin(); it != action->end();) {
+        const bool induced = m_induced.count(it->get()) &&
+                             (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
+                             nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == target;
+        it = induced ? action->erase(it) : std::next(it);
+    }
+    const auto &commit = AST::to_node(make_nba(target, rhs, fn, ln));
+    m_induced.insert(commit.get());
+    action->push_back(commit);
+}
+
 int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std::size_t from,
                                       const AST::Node::Ptr &guard, const AST::Node::ListPtr &action,
                                       const std::vector<Frame> &frames, const Env &env,
@@ -1876,7 +1891,9 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         if(lapped.count(loop)) {
             LOG_ERROR_N(anchor) << "a path through this loop's body reaches the loop head again "
                                 << "without crossing a cut point: a zero-delay lap "
-                                << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9)";
+                                << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9). If a rolled "
+                                << "repeat with a possibly-zero count sits on that path, "
+                                << "its skip is the lap: a cut point after it breaks it";
             return 1;
         }
         auto leg_lapped = lapped;
@@ -1945,11 +1962,11 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                     return enter_body(guard, action, env);
                 }
                 auto leg_action = copy_list(action);
-                leg_action->push_back(AST::to_node(make_nba(
-                    depth_cnt,
+                push_induced(
+                    leg_action, depth_cnt,
                     AST::to_node(make_const(static_cast<unsigned int>(info.count_value - 1),
                                             static_cast<int>(depth_width), fn, ln)),
-                    fn, ln)));
+                    fn, ln);
                 return enter_body(guard, leg_action, env);
             }
             // §12.7.2: the count is evaluated once, on entry — captured
@@ -1962,13 +1979,12 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                             ln, &dead);
                 if(!dead) {
                     auto leg_action = copy_list(action);
-                    leg_action->push_back(AST::to_node(make_nba(
-                        depth_cnt,
-                        make_minus(
-                            clone_subst(info.cond, env),
-                            AST::to_node(make_const(1, static_cast<int>(depth_width), fn, ln)), fn,
-                            ln),
-                        fn, ln)));
+                    push_induced(leg_action, depth_cnt,
+                                 make_minus(clone_subst(info.cond, env),
+                                            AST::to_node(make_const(
+                                                1, static_cast<int>(depth_width), fn, ln)),
+                                            fn, ln),
+                                 fn, ln);
                     if(enter_body(leg_guard, leg_action, env)) {
                         return 1;
                     }
@@ -1991,12 +2007,12 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                 conjoin(guard, make_noteq(cnt_id(), cnt_zero(), fn, ln), fn, ln, &dead);
             if(!dead) {
                 auto leg_action = copy_list(action);
-                leg_action->push_back(AST::to_node(make_nba(
-                    depth_cnt,
+                push_induced(
+                    leg_action, depth_cnt,
                     make_minus(cnt_id(),
                                AST::to_node(make_const(1, static_cast<int>(depth_width), fn, ln)),
                                fn, ln),
-                    fn, ln)));
+                    fn, ln);
                 if(enter_body(leg_guard, leg_action, env)) {
                     return 1;
                 }
@@ -2016,20 +2032,7 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         Env leg_env = env;
         leg_env[info.index] = value;
         auto base = copy_list(action);
-        // A prior induced commit to the same index in this segment — the
-        // previous loop's step before this one's init — coalesces away,
-        // blocking-style: the environment already carries the value its
-        // reads needed. An author's commit stays, and §6 flags it.
-        for(auto it = base->begin(); it != base->end();) {
-            const bool induced =
-                m_induced.count(it->get()) &&
-                (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
-                nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == info.index;
-            it = induced ? base->erase(it) : std::next(it);
-        }
-        const auto &commit = AST::to_node(make_nba(info.index, value->clone(), fn, ln));
-        m_induced.insert(commit.get());
-        base->push_back(commit);
+        push_induced(base, info.index, value->clone(), fn, ln);
         {
             bool dead = false;
             const auto &leg_guard = conjoin(guard, clone_subst(info.cond, leg_env), fn, ln, &dead);
@@ -2609,7 +2612,8 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         }
     }
 
-    // Size the shared countdown (§15: one per process) over every rolled
+    // Size the shared countdowns (§15: one per repeat-nesting depth)
+    // over every rolled
     // repeat: $clog2(N) for a folded count, the count signal's declared
     // width otherwise — the capture `cnt <= expr - 1` must hold any value
     // the signal can carry. Rolled for indices are the author's registers:
@@ -2845,8 +2849,8 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     reg->set_type(reg_type);
     result->push_back(AST::to_node(reg));
 
-    // logic [w-1:0] <prefix>_cnt; — the shared countdown, when a rolled
-    // repeat induced one (§7.2, §15).
+    // logic [w-1:0] <prefix>_cnt, _cnt2, ...; — one shared countdown per
+    // repeat-nesting depth that induced one (§7.2, §15).
     for(std::size_t depth = 0; depth < m_cnt_widths.size(); ++depth) {
         if(m_cnt_widths[depth] == 0) {
             continue;

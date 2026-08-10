@@ -190,6 +190,26 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err0) { TEST_ERROR_SV;
 // outer's remaining count alone; sequential repeats at one depth still
 // share (§7.2, §15).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat5) { TEST_CORE_SV; }
+// A break abandoning an inner lap carries that depth's countdown commit
+// into the sibling repeat's reload in one segment: the pass's own induced
+// commits coalesce blocking-style instead of tripping §6 on a register
+// the author never wrote (§6, §7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat6) { TEST_CORE_SV; }
+// Three nesting depths (cnt, cnt2, cnt3) with two same-depth siblings
+// sharing cnt2 — the width is the max over the depth's counting repeats
+// (§7.2, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat7) { TEST_CORE_SV; }
+// The outer body ends directly with the inner repeat: the inner exit
+// guard, the outer decrement and the inner reload fuse into one action
+// (§6, §7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat8) { TEST_CORE_SV; }
+// A captured non-constant inner count under a nested outer: the entry
+// fork on n != 0, the n-1 load sized to n's declared width (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat9) { TEST_CORE_SV; }
+// A possibly-zero inner count whose skip leg is the outer body's only
+// path without a cut point: the zero-delay lap, with the diagnostic
+// naming the repeat skip as the cause (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err3) { TEST_ERROR_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).
