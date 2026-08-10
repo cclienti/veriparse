@@ -195,9 +195,18 @@ private:
 
     /// The shared countdown (§15: one per process, re-initialised on
     /// entry): its name, and its width — zero when no rolled repeat needs
-    /// one.
+    /// one. Counting repeats must not nest (the reload would clobber the
+    /// outer count): tracked during collection.
     std::string m_cnt_name;
     unsigned int m_cnt_width = 0;
+    unsigned int m_repeat_depth = 0;
+
+    /// The induced-register commits this pass created (§7.2): when a later
+    /// induced commit to the same register lands in the same action —
+    /// sequential rolled fors sharing one index — the earlier one coalesces
+    /// away, blocking-style, instead of tripping §6. Author commits never
+    /// do.
+    std::set<const AST::Node *> m_induced;
 };
 
 } // namespace Transformations

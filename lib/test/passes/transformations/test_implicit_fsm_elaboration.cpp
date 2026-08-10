@@ -141,7 +141,7 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat0) { TEST_CORE_SV; }
 // runs once, inline (§7.2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat1) { TEST_CORE_SV; }
 // A non-constant repeat count, unmarked: the rolled lowering is forced and
-// warned about (§7.2). IEEE §12.7.3 evaluates the count once on entry, so
+// warned about (§7.2). IEEE §12.7.2 evaluates the count once on entry, so
 // the countdown captures it there, sized to the count signal's declared
 // width, and a zero count skips the state through the entry guard.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat2) { TEST_CORE_SV; }
@@ -167,3 +167,31 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump_err0) { TEST_ERROR_SV
 // A rolled for whose step assigns a different register than its init: the
 // construct's contract names one index (§7.2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err0) { TEST_ERROR_SV; }
+// Nested rolled repeats: both would drive the one shared countdown (§15),
+// the inner reload clobbering the outer's remaining count — rejected, not
+// silently mis-counted (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err0) { TEST_ERROR_SV; }
+// repeat (1) rolled with a jump inside: the single pass still owns its
+// break/continue — break falls through past the pass, never out of an
+// enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat3) { TEST_CORE_SV; }
+// A keyword-width count (`int n`): no packed dims, 32 bits all the same —
+// the countdown takes the full declared width (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat4) { TEST_CORE_SV; }
+// A constant repeat count that folds negative: the loop cannot execute a
+// negative number of times, and tools disagree on what it means — almost
+// always a parameterization off-by-N, rejected loudly (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err1) { TEST_ERROR_SV; }
+// Two sequential rolled fors sharing one module-level index: the first
+// loop's exit step and the second's entry init land in one segment, and the
+// induced commits coalesce blocking-style — last wins — instead of tripping
+// §6 (§7.2, §7.3's one-declared-counter idiom).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for1) { TEST_CORE_SV; }
+// The rolled for's index resolves to an input port: the machine cannot
+// drive it (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err1) { TEST_ERROR_SV; }
+// A non-constant repeat count that is not a plain signal: no declared
+// width for the countdown to take (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err2) { TEST_ERROR_SV; }
+// A rolled for whose index is declared nowhere at module level (§7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err2) { TEST_ERROR_SV; }

@@ -301,14 +301,20 @@ AST::Node::Ptr clone_subst(const AST::Node::Ptr &node,
 }
 
 /// The module-level declaration behind a name — a body item or an ANSI
-/// port's inner declaration — or null.
-AST::Declaration::Ptr find_declaration(const AST::Module::Ptr &module, const std::string &name)
+/// port's inner declaration — or null. @p is_input reports whether the
+/// name is an input or inout port, which no process may drive.
+AST::Declaration::Ptr find_declaration(const AST::Module::Ptr &module, const std::string &name,
+                                       bool *is_input = nullptr)
 {
     const auto &ports = module->get_ports();
     if(ports) {
         for(const auto &port : *ports) {
             const auto &decl = port->get_decl();
             if(decl && decl->get_name() == name) {
+                if(is_input) {
+                    *is_input = port->get_direction() == AST::Port::DirectionEnum::INPUT ||
+                                port->get_direction() == AST::Port::DirectionEnum::INOUT;
+                }
                 return decl;
             }
         }
@@ -318,6 +324,9 @@ AST::Declaration::Ptr find_declaration(const AST::Module::Ptr &module, const std
         for(const auto &item : *items) {
             const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(item);
             if(decl && decl->get_name() == name) {
+                if(is_input) {
+                    *is_input = false;
+                }
                 return decl;
             }
         }
@@ -325,15 +334,40 @@ AST::Declaration::Ptr find_declaration(const AST::Module::Ptr &module, const std
     return nullptr;
 }
 
-/// The declared packed width of a declaration, when its single packed
-/// dimension folds to constants; scalar means one bit.
+/// The declared packed width of a declaration: the packed dimension when
+/// it folds to constants, the keyword width for the integer atom types
+/// (IEEE 1800-2017 §6.11), one bit for a scalar vector type.
 int declared_width(const AST::Declaration::Ptr &decl, unsigned int &width)
 {
     const auto &type = decl->get_type();
-    const auto &dims = type ? type->get_packed_dims() : nullptr;
+    if(!type) {
+        return 1;
+    }
+    const auto &dims = type->get_packed_dims();
     if(!dims || dims->empty()) {
-        width = 1;
-        return 0;
+        switch(type->get_node_type()) {
+        case AST::NodeType::ByteType:
+            width = 8;
+            return 0;
+        case AST::NodeType::ShortintType:
+            width = 16;
+            return 0;
+        case AST::NodeType::IntType:
+        case AST::NodeType::IntegerType:
+            width = 32;
+            return 0;
+        case AST::NodeType::LongintType:
+        case AST::NodeType::TimeType:
+            width = 64;
+            return 0;
+        case AST::NodeType::LogicType:
+        case AST::NodeType::RegType:
+        case AST::NodeType::BitType:
+            width = 1;
+            return 0;
+        default:
+            return 1;
+        }
     }
     if(dims->size() != 1 || !dims->front()->is_node_type(AST::NodeType::RangeDim)) {
         return 1;
@@ -906,6 +940,22 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         info.body = loop->get_statement();
         mpz_class value;
         if(ExpressionEvaluation().evaluate_node(info.cond, value)) {
+            // §12.7.2 gives x/z a meaning (zero) but a negative count none,
+            // and tools disagree on one: almost always a parameterization
+            // off-by-N, so it is rejected rather than silently guessed.
+            if(value < 0) {
+                LOG_ERROR_N(info.cond)
+                    << "repeat count folds to " << value << ": a loop cannot execute "
+                    << "a negative number of times — a parameterization off-by-N? "
+                    << "(IEEE 1800-2017 §12.7.2, ADR-0014 §7.2, §9)";
+                return 1;
+            }
+            if(value > mpz_class(0xFFFFFFFFUL)) {
+                LOG_ERROR_N(info.cond)
+                    << "repeat count folds to " << value << ": beyond any countdown "
+                    << "the lowering will size (ADR-0014 §7.2, §9)";
+                return 1;
+            }
             info.count_known = true;
             info.count_value = value.convert_to<unsigned long>();
         }
@@ -944,8 +994,26 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         return 1;
     }
 
+    // §15 gives the process one shared countdown; nesting counting repeats
+    // would have the inner reload clobber the outer's remaining count.
+    // Sequential repeats re-initialise on entry and share it soundly.
+    const bool counting_repeat =
+        info.kind == LoopInfo::Kind::REPEAT && (!info.count_known || info.count_value >= 2);
+    if(counting_repeat) {
+        if(m_repeat_depth > 0) {
+            LOG_ERROR_N(node) << "nested rolled repeats: both would drive the one shared "
+                              << "countdown, the inner reload clobbering the outer count — "
+                              << "unroll one of them (ADR-0014 §7.2, §9, §15)";
+            return 1;
+        }
+        ++m_repeat_depth;
+    }
     bool body_wait = false;
-    if(collect_body(info.body, waits, clock, body_wait)) {
+    const int body_rc = collect_body(info.body, waits, clock, body_wait);
+    if(counting_repeat) {
+        --m_repeat_depth;
+    }
+    if(body_rc) {
         return 1;
     }
 
@@ -1253,11 +1321,10 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                     return skip_past(guard, action, env);
                 }
                 if(info.count_value == 1) {
-                    // §7.2: a single pass needs no countdown — the body
-                    // runs once, inline.
-                    auto leg_frames = frames;
-                    push_frame(leg_frames, info.body);
-                    return walk_paths(from, guard, action, leg_frames, env, lapped, states, entry);
+                    // §7.2: a single pass needs no countdown, but the body
+                    // still owns its jumps (§8): it enters as a loop whose
+                    // back-edge exits unconditionally.
+                    return enter_body(guard, action, env);
                 }
                 auto leg_action = copy_list(action);
                 leg_action->push_back(AST::to_node(make_nba(
@@ -1267,7 +1334,7 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                     fn, ln)));
                 return enter_body(guard, leg_action, env);
             }
-            // §12.7.3: the count is evaluated once, on entry — captured
+            // §12.7.2: the count is evaluated once, on entry — captured
             // into the countdown — and a zero count skips the state
             // through the entry guard.
             {
@@ -1288,6 +1355,11 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
             return skip_past(
                 conjoin(guard, make_eq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn, ln),
                 copy_list(action), env);
+        }
+        // Back-edge of the single pass: exit unconditionally — which is
+        // also where a continue inside it lands (§12.7.2: no next lap).
+        if(info.count_known && info.count_value == 1) {
+            return skip_past(guard, copy_list(action), env);
         }
         // Back-edge: the countdown decides, and decrements on the lap.
         {
@@ -1315,7 +1387,20 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         Env leg_env = env;
         leg_env[info.index] = value;
         auto base = copy_list(action);
-        base->push_back(AST::to_node(make_nba(info.index, value->clone(), fn, ln)));
+        // A prior induced commit to the same index in this segment — the
+        // previous loop's step before this one's init — coalesces away,
+        // blocking-style: the environment already carries the value its
+        // reads needed. An author's commit stays, and §6 flags it.
+        for(auto it = base->begin(); it != base->end();) {
+            const bool induced =
+                m_induced.count(it->get()) &&
+                (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
+                nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == info.index;
+            it = induced ? base->erase(it) : std::next(it);
+        }
+        const auto &commit = AST::to_node(make_nba(info.index, value->clone(), fn, ln));
+        m_induced.insert(commit.get());
+        base->push_back(commit);
         if(enter_body(conjoin(guard, clone_subst(info.cond, leg_env), fn, ln), copy_list(base),
                       leg_env)) {
             return 1;
@@ -1594,7 +1679,15 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
 
     // Back-edges (§7.3) make the state graph cyclic, so the must-defined
     // sets iterate to a fixpoint: they only ever shrink once seeded, so
-    // the iteration terminates.
+    // the iteration terminates. A transition's write set never changes:
+    // computed once, the fixpoint is pure set arithmetic.
+    std::vector<std::vector<std::set<std::string>>> writes_of(states.size());
+    for(std::size_t s = 0; s < states.size(); ++s) {
+        for(const auto &transition : states[s].out) {
+            writes_of[s].emplace_back();
+            must_writes_list(transition.action, writes_of[s].back());
+        }
+    }
     std::vector<std::set<std::string>> defined_in(states.size());
     std::vector<bool> reached(states.size(), false);
     if(entry_next < states.size()) {
@@ -1608,12 +1701,13 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
             if(!reached[s]) {
                 continue;
             }
-            for(const auto &transition : states[s].out) {
+            for(std::size_t t = 0; t < states[s].out.size(); ++t) {
+                const auto &transition = states[s].out[t];
                 if(transition.next >= states.size()) {
                     continue;
                 }
                 std::set<std::string> defined_out = defined_in[s];
-                must_writes_list(transition.action, defined_out);
+                defined_out.insert(writes_of[s][t].begin(), writes_of[s][t].end());
                 if(!reached[transition.next]) {
                     defined_in[transition.next] = defined_out;
                     reached[transition.next] = true;
@@ -1690,8 +1784,10 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_forking.clear();
     m_wait_index.clear();
     m_loops.clear();
+    m_induced.clear();
     m_cnt_name = prefix + "_cnt";
     m_cnt_width = 0;
+    m_repeat_depth = 0;
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
@@ -1713,11 +1809,22 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     for(const auto &elt : m_loops) {
         const auto &info = elt.second;
         if(info.kind == LoopInfo::Kind::FOR) {
-            if(!find_declaration(module, info.index)) {
+            bool is_input = false;
+            const auto &decl = find_declaration(module, info.index, &is_input);
+            if(!decl) {
                 LOG_ERROR_N(info.cond)
                     << "rolled for index '" << info.index << "' is not a module-level "
                     << "declaration: the induced register takes the index's declared "
                     << "type (ADR-0014 §7.2)";
+                return 1;
+            }
+            // The machine drives the index from its always_ff: an input
+            // port or a net cannot take the commits.
+            if(is_input || !std::dynamic_pointer_cast<AST::Var>(decl)) {
+                LOG_ERROR_N(info.cond)
+                    << "rolled for index '" << info.index << "' is not a variable the "
+                    << "machine can drive: an input port or a net cannot take the "
+                    << "induced register's commits (ADR-0014 §7.2, §9)";
                 return 1;
             }
             continue;

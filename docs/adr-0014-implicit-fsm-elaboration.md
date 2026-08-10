@@ -67,7 +67,7 @@
     copy-in/out is what gives a multi-cycle task's arguments their
     capture-at-entry meaning when §15's inlining arrives.
   - **§12.7** — loop statements (`for`, `while`, `repeat`, `forever`);
-    §12.7.3 evaluates a `repeat` count once, on entry — §7.2's rolled
+    §12.7.2 evaluates a `repeat` count once, on entry — §7.2's rolled
     countdown implements exactly that.
   - **§5.12** — attributes: *"A mechanism is included for specifying
     properties about objects, statements, and groups of statements in the
@@ -966,7 +966,7 @@ forced on one whose bound does not fold to a constant, which is therefore
 no longer an error:
 
 - **`repeat (expr)` becomes one state with a countdown register.** IEEE
-  §12.7.3 evaluates the count once, on entry — so a non-constant `expr`
+  §12.7.2 evaluates the count once, on entry — so a non-constant `expr`
   is *captured at entry* into the countdown by the standard's own
   semantics, and a zero count skips the state through an entry guard.
   For a constant `N` the countdown holds `N-1 … 0` in `$clog2(N)` bits —
@@ -1155,7 +1155,9 @@ unmarked column has already been misread once.
 | `break`/`continue` outside a loop the CFG sees | nothing to jump within: in an unrolled loop the jumps were the unroller's business (ADR §8), and stray ones have no target | ADR §8 |
 | a rolled `for` missing init, test or step, or whose init and step assign different registers | the lowering honours the construct's full contract on one index register; half a contract is a different construct | ADR §7.2 |
 | a non-constant repeat count that is not a plain signal | the countdown takes the count signal's declared width (ADR §7.2); an arbitrary expression has none to take — bind it to a named signal first | ADR §7.2 |
-| a rolled `for` whose index is not a module-level declaration | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register (ADR §7.2) | ADR §7.2 |
+| a rolled `for` whose index is not a module-level declaration, or not a **variable** the machine can drive | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register — and an input port or a net cannot take its commits (ADR §7.2) | ADR §7.2, IEEE §9.2.2.4 |
+| **nested** rolled repeats | §15 gives the process one shared countdown, re-initialised on entry: sequential repeats share it soundly, but an inner reload would clobber the outer's remaining count — unroll one of them | ADR §7.2, §15 |
+| a constant repeat count that folds **negative**, or beyond 2^32 | a loop cannot execute a negative number of times and tools disagree on what one means — §12.7.2 gives only x/z a meaning (zero) — so it is almost always a parameterization off-by-N; and no countdown the lowering sizes holds 2^32 laps | IEEE §12.7.2, ADR §7.2 |
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
