@@ -208,6 +208,11 @@ private:
     /// away, blocking-style, instead of tripping §6. Author commits never
     /// do.
     std::set<const AST::Node *> m_induced;
+
+    /// Whether some path ends the process — set by the walk when it records
+    /// a transition to the hold index. A perpetual machine has none, and
+    /// then no hold state is emitted (§2).
+    bool m_hold_needed = false;
 };
 
 } // namespace Transformations
