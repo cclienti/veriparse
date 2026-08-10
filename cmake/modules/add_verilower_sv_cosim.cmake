@@ -13,7 +13,7 @@ include_guard(GLOBAL)
 
 function(add_verilower_sv_cosim)
     set(one_value_args NAME)
-    set(multi_value_args VERILATOR_ARGS)
+    set(multi_value_args VERILATOR_ARGS EXTRA_SOURCES)
     cmake_parse_arguments(AVSC "" "${one_value_args}" "${multi_value_args}" ${ARGN})
 
     if(NOT AVSC_NAME)
@@ -40,7 +40,7 @@ function(add_verilower_sv_cosim)
     add_sv_cosim_test(
         NAME test_cosim_${AVSC_NAME}_svbench
         TOP_MODULE tb_${AVSC_NAME}
-        VERILOG_SOURCES ${_src} ${_lowered} ${_tb}
+        VERILOG_SOURCES ${_src} ${_lowered} ${AVSC_EXTRA_SOURCES} ${_tb}
         VERILATOR_ARGS ${AVSC_VERILATOR_ARGS})
 
     set(${AVSC_NAME}_LOWERED_V ${_lowered} PARENT_SCOPE)
