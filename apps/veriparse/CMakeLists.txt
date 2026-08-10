@@ -351,6 +351,10 @@ if(NOT WIN32)
     # mid-bit glitch and the framing-error drop — then recovery.
     add_verilower_sv_cosim(NAME rs232_rx VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # Nested rolled repeats (§7.2, §15): one countdown per nesting depth —
+    # the 2D-scan shape, the captured inner count entering and skipping.
+    add_verilower_sv_cosim(NAME nested_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The §10.2 state map and its graphviz view on the ADR's own example:
     # the JSON carries the labelled names and the reset contract, the dot
     # marks the entry with a double circle — and keeps the edges bare of

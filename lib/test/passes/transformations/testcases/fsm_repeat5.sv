@@ -1,18 +1,26 @@
-module fsm_repeat_err0 (
+module fsm_repeat5 (
     input logic clk,
     input logic rst_n,
+    output logic [7:0] rows,
+    output logic [7:0] cols,
     output logic done
 );
 
     (* veriparse_fsm *)
     initial begin
+        rows <= '0;
+        cols <= '0;
         done <= 1'b0;
         @(posedge clk);
         (* veriparse_no_unroll *)
         repeat (3) begin
-            @(posedge clk);
+            rows <= rows + 8'd1;
             (* veriparse_no_unroll *)
-            repeat (4) @(posedge clk);
+            repeat (4) begin
+                cols <= cols + 8'd1;
+                @(posedge clk);
+            end
+            @(posedge clk);
         end
         done <= 1'b1;
         @(posedge clk);

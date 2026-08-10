@@ -1518,18 +1518,15 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         return 1;
     }
 
-    // §15 gives the process one shared countdown; nesting counting repeats
-    // would have the inner reload clobber the outer's remaining count.
-    // Sequential repeats re-initialise on entry and share it soundly.
+    // §15 gives each repeat-nesting depth its own shared countdown:
+    // sequential repeats at a depth re-initialise on entry and share its
+    // register; a nested counting repeat uses the next depth's, so its
+    // reload leaves the outer count alone. A repeat that induces no
+    // counter (a folded count of 0 or 1) consumes no depth.
     const bool counting_repeat =
         info.kind == LoopInfo::Kind::REPEAT && (!info.count_known || info.count_value >= 2);
     if(counting_repeat) {
-        if(m_repeat_depth > 0) {
-            LOG_ERROR_N(node) << "nested rolled repeats: both would drive the one shared "
-                              << "countdown, the inner reload clobbering the outer count — "
-                              << "unroll one of them (ADR-0014 §7.2, §9, §15)";
-            return 1;
-        }
+        info.depth = m_repeat_depth;
         ++m_repeat_depth;
     }
     bool body_wait = false;
@@ -1927,9 +1924,14 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         return enter_body(guard, action, env);
 
     case LoopInfo::Kind::REPEAT: {
-        const auto cnt_id = [&]() { return AST::to_node(make_id(m_cnt_name, fn, ln)); };
+        // A repeat that induces no counter (count 0 or 1) has no width
+        // slot at its depth; its legs never touch the countdown.
+        const std::string depth_cnt = cnt_name(info.depth);
+        const unsigned int depth_width =
+            info.depth < m_cnt_widths.size() ? m_cnt_widths[info.depth] : 0;
+        const auto cnt_id = [&]() { return AST::to_node(make_id(depth_cnt, fn, ln)); };
         const auto cnt_zero = [&]() {
-            return AST::to_node(make_const(0, static_cast<int>(m_cnt_width), fn, ln));
+            return AST::to_node(make_const(0, static_cast<int>(depth_width), fn, ln));
         };
         if(entering) {
             if(info.count_known) {
@@ -1944,9 +1946,9 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                 }
                 auto leg_action = copy_list(action);
                 leg_action->push_back(AST::to_node(make_nba(
-                    m_cnt_name,
+                    depth_cnt,
                     AST::to_node(make_const(static_cast<unsigned int>(info.count_value - 1),
-                                            static_cast<int>(m_cnt_width), fn, ln)),
+                                            static_cast<int>(depth_width), fn, ln)),
                     fn, ln)));
                 return enter_body(guard, leg_action, env);
             }
@@ -1961,10 +1963,10 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                 if(!dead) {
                     auto leg_action = copy_list(action);
                     leg_action->push_back(AST::to_node(make_nba(
-                        m_cnt_name,
+                        depth_cnt,
                         make_minus(
                             clone_subst(info.cond, env),
-                            AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)), fn,
+                            AST::to_node(make_const(1, static_cast<int>(depth_width), fn, ln)), fn,
                             ln),
                         fn, ln)));
                     if(enter_body(leg_guard, leg_action, env)) {
@@ -1990,9 +1992,9 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
             if(!dead) {
                 auto leg_action = copy_list(action);
                 leg_action->push_back(AST::to_node(make_nba(
-                    m_cnt_name,
+                    depth_cnt,
                     make_minus(cnt_id(),
-                               AST::to_node(make_const(1, static_cast<int>(m_cnt_width), fn, ln)),
+                               AST::to_node(make_const(1, static_cast<int>(depth_width), fn, ln)),
                                fn, ln),
                     fn, ln)));
                 if(enter_body(leg_guard, leg_action, env)) {
@@ -2451,7 +2453,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_loops.clear();
     m_induced.clear();
     m_cnt_name = prefix + "_cnt";
-    m_cnt_width = 0;
+    m_cnt_widths.clear();
     m_repeat_depth = 0;
     m_hold_needed = false;
     m_encoding = Encoding::BINARY;
@@ -2638,10 +2640,15 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         if(info.kind != LoopInfo::Kind::REPEAT) {
             continue;
         }
+        const auto widen = [this](unsigned int depth, unsigned int width) {
+            if(m_cnt_widths.size() <= depth) {
+                m_cnt_widths.resize(depth + 1, 0);
+            }
+            m_cnt_widths[depth] = std::max(m_cnt_widths[depth], width);
+        };
         if(info.count_known) {
             if(info.count_value >= 2) {
-                m_cnt_width =
-                    std::max(m_cnt_width, clog2(static_cast<unsigned int>(info.count_value)));
+                widen(info.depth, clog2(static_cast<unsigned int>(info.count_value)));
             }
             continue;
         }
@@ -2660,7 +2667,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 << "': its declaration or packed range is not resolvable (ADR-0014 §7.2)";
             return 1;
         }
-        m_cnt_width = std::max(m_cnt_width, width);
+        widen(info.depth, width);
     }
 
     AST::Node::Ptr enable;
@@ -2785,9 +2792,11 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         std::set<std::string> unique(state_names.begin(), state_names.end());
         std::size_t expected = state_names.size() + 1;
         unique.insert(prefix + "_state");
-        if(m_cnt_width > 0) {
-            unique.insert(m_cnt_name);
-            ++expected;
+        for(std::size_t depth = 0; depth < m_cnt_widths.size(); ++depth) {
+            if(m_cnt_widths[depth] > 0) {
+                unique.insert(cnt_name(static_cast<unsigned int>(depth)));
+                ++expected;
+            }
         }
         if(unique.size() != expected) {
             LOG_ERROR_N(module) << "a state name collides with another state or with a "
@@ -2838,18 +2847,22 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // logic [w-1:0] <prefix>_cnt; — the shared countdown, when a rolled
     // repeat induced one (§7.2, §15).
-    if(m_cnt_width > 0) {
-        if(Analysis::UniqueDeclaration::identifier_declaration_exists(m_cnt_name, declared)) {
-            LOG_ERROR_N(module) << "generated declaration '" << m_cnt_name
+    for(std::size_t depth = 0; depth < m_cnt_widths.size(); ++depth) {
+        if(m_cnt_widths[depth] == 0) {
+            continue;
+        }
+        const auto &name = cnt_name(static_cast<unsigned int>(depth));
+        if(Analysis::UniqueDeclaration::identifier_declaration_exists(name, declared)) {
+            LOG_ERROR_N(module) << "generated declaration '" << name
                                 << "' collides with an existing one (ADR-0014 §10)";
             return nullptr;
         }
         auto cnt_type = std::make_shared<AST::LogicType>(fn, ln);
-        if(m_cnt_width > 1) {
-            cnt_type->set_packed_dims(make_packed_range(m_cnt_width - 1, fn, ln));
+        if(m_cnt_widths[depth] > 1) {
+            cnt_type->set_packed_dims(make_packed_range(m_cnt_widths[depth] - 1, fn, ln));
         }
         auto cnt = std::make_shared<AST::Var>(fn, ln);
-        cnt->set_name(m_cnt_name);
+        cnt->set_name(name);
         cnt->set_type(cnt_type);
         result->push_back(AST::to_node(cnt));
     }

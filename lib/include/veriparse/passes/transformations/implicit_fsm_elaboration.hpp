@@ -153,6 +153,7 @@ private:
         AST::Node::Ptr step_rhs;  ///< rolled for: the per-lap value
         bool count_known = false; ///< rolled repeat: the count folded
         unsigned long count_value = 0;
+        unsigned int depth = 0; ///< rolled repeat: nesting depth, one countdown per depth
     };
 
     /// §6.1 for the induced registers: the blocking init/step values,
@@ -246,13 +247,21 @@ private:
     /// The loops the CFG keeps, filled per process by collect_body.
     std::map<const AST::Node *, LoopInfo> m_loops;
 
-    /// The shared countdown (§15: one per process, re-initialised on
-    /// entry): its name, and its width — zero when no rolled repeat needs
-    /// one. Counting repeats must not nest (the reload would clobber the
-    /// outer count): tracked during collection.
+    /// The shared countdowns (§15: one per repeat-nesting depth,
+    /// re-initialised on entry): sequential repeats at one depth share a
+    /// register, nested ones each own their depth's, so an inner reload
+    /// leaves the outer count alone. m_cnt_widths[d] is depth d's width —
+    /// zero when nothing at that depth needs one.
     std::string m_cnt_name;
-    unsigned int m_cnt_width = 0;
+    std::vector<unsigned int> m_cnt_widths;
     unsigned int m_repeat_depth = 0;
+
+    /// Depth d's countdown register name: the bare prefix at depth zero,
+    /// then cnt2, cnt3, ...
+    std::string cnt_name(unsigned int depth) const
+    {
+        return depth == 0 ? m_cnt_name : m_cnt_name + std::to_string(depth + 1);
+    }
 
     /// The induced-register commits this pass created (§7.2): when a later
     /// induced commit to the same register lands in the same action —
