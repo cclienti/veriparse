@@ -228,6 +228,40 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump1) { TEST_CORE_SV; }
 // own continue: the abandoned lap's commit coalesces under the next
 // entry's reload through the while layer (§6, §7.2, §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_jump2) { TEST_CORE_SV; }
+
+// —— §6/§6.1: scope-local blocking temporaries ——
+
+// The §6 example itself: a sized temporary in an unnamed block, read
+// through a part-select — materialized as a module-level wire carrying
+// the declared type, so the 9-bit sum truncates exactly as the source
+// did and the select finds a name to apply to (§6.1, §11.6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp0) { TEST_CORE_SV; }
+// Repeated assignment collapses to the last value; a trivial value stays
+// inline, a computed one earns the wire; substitution reaches into a
+// verbatim branch that reads the temporary (§6.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp1) { TEST_CORE_SV; }
+// The same temporary name in two segments computing the same expression:
+// one shared wire — naming, not binding, and mutually exclusive states
+// never contend (§6.1, §15).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp2) { TEST_CORE_SV; }
+// A temporary declared, assigned and read entirely inside a
+// cut-point-free branch: ordinary scoped SystemVerilog, kept verbatim in
+// the action (§6, §6.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp3) { TEST_CORE_SV; }
+// A temporary declared in a scope a cut point spans: it would have to
+// outlive the cycle (§6, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err1) { TEST_ERROR_SV; }
+// '<=' to a temporary that takes '=': one variable cannot be both a wire
+// and a flop (§6.1 consequence 3, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err2) { TEST_ERROR_SV; }
+// A temporary read before its first assignment in the segment (§6.1, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err3) { TEST_ERROR_SV; }
+// '=' under a branch to a temporary declared outside it: the value would
+// be conditional, which v1 does not if-convert (§6.1, §9, §C.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err4) { TEST_ERROR_SV; }
+// A temporary shadowing one of an enclosing scope: substitution binds by
+// name (§6, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err5) { TEST_ERROR_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).

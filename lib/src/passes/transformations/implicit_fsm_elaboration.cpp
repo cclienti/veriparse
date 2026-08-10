@@ -1201,7 +1201,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
 int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                                          std::vector<AST::EventStatement::Ptr> &waits,
-                                         AST::Sens::Ptr &clock, bool &has_wait)
+                                         AST::Sens::Ptr &clock, bool &has_wait, TempScope scope)
 {
     if(!node) {
         return 0;
@@ -1212,7 +1212,40 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         const auto &statements = AST::cast_to<AST::Block>(node)->get_statements();
         if(statements) {
             for(const auto &stmt : *statements) {
-                if(collect_body(stmt, waits, clock, has_wait)) {
+                // §6: a declaration met here names a temporary — legal only
+                // in a scope no cut point spans, visible to the block's
+                // later statements, dead at its end.
+                if(stmt->is_node_type(AST::NodeType::Var)) {
+                    const auto &var = AST::cast_to<AST::Var>(stmt);
+                    if(contains_event_statement(node)) {
+                        LOG_ERROR_N(stmt)
+                            << "temporary '" << var->get_name() << "' is declared in a "
+                            << "scope a cut point spans: it would have to outlive the "
+                            << "cycle, which '=' cannot mean — a register takes '<=' at "
+                            << "module level (ADR-0014 §6, §9)";
+                        return 1;
+                    }
+                    if(var->get_unpacked_dims() && !var->get_unpacked_dims()->empty()) {
+                        LOG_ERROR_N(stmt) << "array temporary '" << var->get_name()
+                                          << "': not handled by the lowering yet "
+                                          << "(ADR-0014 §6, §9)";
+                        return 1;
+                    }
+                    if(scope.visible.count(var->get_name())) {
+                        LOG_ERROR_N(stmt)
+                            << "temporary '" << var->get_name() << "' shadows one of an "
+                            << "enclosing scope: substitution binds by name — rename it "
+                            << "(ADR-0014 §6)";
+                        return 1;
+                    }
+                    scope.visible.insert(var->get_name());
+                    scope.writable.insert(var->get_name());
+                    if(!scope.verbatim) {
+                        m_temps[var->get_name()] = var;
+                    }
+                    continue;
+                }
+                if(collect_body(stmt, waits, clock, has_wait, scope)) {
                     return 1;
                 }
             }
@@ -1230,7 +1263,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         has_wait = true;
         // `@(posedge clk) stmt;` attaches the statement to the wait: it runs
         // after the edge, so it belongs to the following segment.
-        return collect_body(event->get_statement(), waits, clock, has_wait);
+        return collect_body(event->get_statement(), waits, clock, has_wait, scope);
     }
 
     case AST::NodeType::NonblockingSubstitution: {
@@ -1242,6 +1275,15 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                               << "with no hardware meaning (ADR-0014 §9)";
             return 1;
         }
+        // §6.1 consequence 3: one variable cannot be both a wire and a
+        // flop — '<=' to a temporary is a contradiction, not a choice.
+        if(scope.visible.count(nba_target(nba))) {
+            LOG_ERROR_N(node) << "'<=' to temporary '" << nba_target(nba)
+                              << "': it already takes '=' — mixing the two forms on one "
+                              << "target contradicts what the variable is (ADR-0014 §6.1, "
+                              << "§9)";
+            return 1;
+        }
         // Both sides: the left holds index expressions.
         if(check_impure_calls(AST::to_node(nba->get_left()))) {
             return 1;
@@ -1251,11 +1293,19 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
 
     case AST::NodeType::IfStatement: {
         const auto &ifs = AST::cast_to<AST::IfStatement>(node);
+        // §6.1: a write under a branch to an outer temporary would make its
+        // value conditional — arms may only write what they declare. A
+        // cut-point-free branch stays verbatim, and its own temporaries are
+        // ordinary scoped SystemVerilog there, not walked ones.
+        TempScope arm_scope = scope;
+        arm_scope.writable.clear();
+        arm_scope.verbatim =
+            scope.verbatim || !(contains_event_statement(node) || contains_jump(node));
         bool arms_wait = false;
-        if(collect_body(ifs->get_true_statement(), waits, clock, arms_wait)) {
+        if(collect_body(ifs->get_true_statement(), waits, clock, arms_wait, arm_scope)) {
             return 1;
         }
-        if(collect_body(ifs->get_false_statement(), waits, clock, arms_wait)) {
+        if(collect_body(ifs->get_false_statement(), waits, clock, arms_wait, arm_scope)) {
             return 1;
         }
         // Rejected in condition position wherever it appears: a verbatim
@@ -1272,6 +1322,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
 
     case AST::NodeType::CaseStatement: {
         const auto &caselist = AST::cast_to<AST::CaseStatement>(node)->get_caselist();
+        TempScope arm_scope = scope;
+        arm_scope.writable.clear();
+        arm_scope.verbatim =
+            scope.verbatim || !(contains_event_statement(node) || contains_jump(node));
         bool arms_wait = false;
         std::size_t defaults = 0;
         if(caselist) {
@@ -1280,7 +1334,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 if(!conds || conds->empty()) {
                     ++defaults;
                 }
-                if(collect_body(arm->get_statement(), waits, clock, arms_wait)) {
+                if(collect_body(arm->get_statement(), waits, clock, arms_wait, arm_scope)) {
                     return 1;
                 }
             }
@@ -1350,7 +1404,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                     if(collect_loop(stmt, true, waits, clock, has_wait)) {
                         return 1;
                     }
-                } else if(collect_body(stmt, waits, clock, has_wait)) {
+                } else if(collect_body(stmt, waits, clock, has_wait, scope)) {
                     return 1;
                 }
             }
@@ -1402,14 +1456,45 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                               << "with no hardware meaning (ADR-0014 §9)";
             return 1;
         }
-        return collect_body(single->get_statement(), waits, clock, has_wait);
+        return collect_body(single->get_statement(), waits, clock, has_wait, scope);
     }
 
-    case AST::NodeType::BlockingSubstitution:
-        LOG_ERROR_N(node) << "blocking assignment in a marked process: '=' names a "
-                          << "combinational value the lowering does not handle yet "
-                          << "— a register takes '<=' (ADR-0014 §6)";
+    case AST::NodeType::BlockingSubstitution: {
+        // §6: '=' names a combinational value within one cycle, and the
+        // check is scoping — its target is a temporary declared in a
+        // scope no cut point spans, written where it is declared.
+        const auto &blocking = AST::cast_to<AST::BlockingSubstitution>(node);
+        const auto &target = lvalue_target(blocking->get_left());
+        if(blocking->get_ldelay() || blocking->get_rdelay()) {
+            LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
+                              << "with no hardware meaning (ADR-0014 §9)";
+            return 1;
+        }
+        if(check_impure_calls(AST::to_node(blocking->get_right()))) {
+            return 1;
+        }
+        if(scope.writable.count(target)) {
+            return 0;
+        }
+        if(target.empty()) {
+            LOG_ERROR_N(node) << "'=' target is not a plain identifier: slice writes to "
+                              << "a temporary are not handled by the lowering yet "
+                              << "(ADR-0014 §6, §9)";
+            return 1;
+        }
+        if(scope.visible.count(target)) {
+            LOG_ERROR_N(node) << "'=' to temporary '" << target << "' under a branch it is not "
+                              << "declared in: the value would be conditional, which v1 does not "
+                              << "if-convert — declare the temporary inside the branch, or assign "
+                              << "it once before it (ADR-0014 §6.1, §9, §C.3)";
+            return 1;
+        }
+        LOG_ERROR_N(node) << "'=' to '" << target << "', which is not a scope-local "
+                          << "temporary: a value that must survive the edge takes '<=', "
+                          << "a temporary is declared in a scope without a cut point "
+                          << "(ADR-0014 §6, §9)";
         return 1;
+    }
 
     case AST::NodeType::DelayStatement:
         LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
@@ -1530,7 +1615,7 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         ++m_repeat_depth;
     }
     bool body_wait = false;
-    const int body_rc = collect_body(info.body, waits, clock, body_wait);
+    const int body_rc = collect_body(info.body, waits, clock, body_wait, TempScope{});
     if(counting_repeat) {
         --m_repeat_depth;
     }
@@ -1576,20 +1661,26 @@ void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::N
         const auto &block = AST::cast_to<AST::Block>(node);
         const auto &stmts = block->get_statements();
         if(stmts) {
-            frames.push_back(Frame{stmts, stmts->begin(), loop, block->get_scope()});
+            std::vector<std::string> decls;
+            for(const auto &stmt : *stmts) {
+                if(stmt->is_node_type(AST::NodeType::Var)) {
+                    decls.push_back(AST::cast_to<AST::Var>(stmt)->get_name());
+                }
+            }
+            frames.push_back(Frame{stmts, stmts->begin(), loop, block->get_scope(), decls});
         }
         return;
     }
     if(node->is_node_type(AST::NodeType::Pragmalist)) {
         const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
         if(stmts) {
-            frames.push_back(Frame{stmts, stmts->begin(), loop, ""});
+            frames.push_back(Frame{stmts, stmts->begin(), loop, "", {}});
         }
         return;
     }
     auto single = std::make_shared<AST::Node::List>();
     single->push_back(node);
-    frames.push_back(Frame{single, single->begin(), loop, ""});
+    frames.push_back(Frame{single, single->begin(), loop, "", {}});
 }
 
 /// The §10.1 label composition in force at a walk position: the frames'
@@ -1625,6 +1716,11 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
     while(!frames.empty()) {
         Frame &top = frames.back();
         if(top.it == top.stmts->end()) {
+            // §6: a block's temporaries die at its end — the scope is the
+            // lifetime, and a read past it must not substitute.
+            for(const auto &name : top.decls) {
+                env.erase(name);
+            }
             // The end of a loop's body is its back-edge (§7.3): fork at the
             // loop head again instead of popping through.
             if(top.loop) {
@@ -1683,15 +1779,53 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             push_frame(frames, AST::cast_to<AST::SingleStatement>(stmt)->get_statement());
             break;
 
-        case AST::NodeType::NonblockingSubstitution:
-            action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
+        case AST::NodeType::Var:
+            // §6: a temporary's declaration — its frame carries the scope,
+            // the environment carries the value; nothing is emitted.
             break;
+
+        case AST::NodeType::BlockingSubstitution: {
+            // §6.1: substitution, not rewriting. The value is taken over
+            // entry values through the environment; a trivial value stays
+            // inline, anything else becomes a module-level wire typed by
+            // the temporary's declaration — which is exactly where the
+            // declared width keeps doing its work (§11.6) and where a
+            // select finds a name to apply to.
+            const auto &blocking = AST::cast_to<AST::BlockingSubstitution>(stmt);
+            const auto &target = lvalue_target(blocking->get_left());
+            const auto &value = clone_subst(AST::to_node(blocking->get_right()->get_var()), env);
+            if(check_temp_reads(value, env)) {
+                return 1;
+            }
+            if(value->is_node_type(AST::NodeType::Identifier) ||
+               value->is_node_type(AST::NodeType::IntConst) ||
+               value->is_node_type(AST::NodeType::IntConstN)) {
+                env[target] = value;
+            } else {
+                env[target] =
+                    AST::to_node(make_id(materialize_temp(target, value, fn, ln), fn, ln));
+            }
+            break;
+        }
+
+        case AST::NodeType::NonblockingSubstitution: {
+            const auto &placed = env.empty() ? stmt : subst_into(stmt->clone(), env);
+            if(check_temp_reads(placed, env)) {
+                return 1;
+            }
+            action->push_back(placed);
+            break;
+        }
 
         case AST::NodeType::IfStatement: {
             // Cut-point-free: a plain conditional inside the action, no
             // state spent on it (§4).
             if(!m_forking.count(stmt.get())) {
-                action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
+                const auto &placed = env.empty() ? stmt : subst_into(stmt->clone(), env);
+                if(check_temp_reads(placed, env)) {
+                    return 1;
+                }
+                action->push_back(placed);
                 break;
             }
             const auto &ifs = AST::cast_to<AST::IfStatement>(stmt);
@@ -1730,7 +1864,11 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
         case AST::NodeType::CaseStatement: {
             if(!m_forking.count(stmt.get())) {
-                action->push_back(env.empty() ? stmt : subst_into(stmt->clone(), env));
+                const auto &placed = env.empty() ? stmt : subst_into(stmt->clone(), env);
+                if(check_temp_reads(placed, env)) {
+                    return 1;
+                }
+                action->push_back(placed);
                 break;
             }
             const auto &cs = AST::cast_to<AST::CaseStatement>(stmt);
@@ -1855,6 +1993,54 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
     // The process ends: a one-shot parks in the hold state (§2).
     record(states.size());
+    return 0;
+}
+
+std::string ImplicitFsmElaboration::materialize_temp(const std::string &temp,
+                                                     const AST::Node::Ptr &value,
+                                                     const std::string &fn, int ln)
+{
+    // §6.1: identical expressions share one wire — naming, not binding;
+    // mutually exclusive states never contend on it.
+    for(const auto &wire : m_wires) {
+        if(wire.value->is_equal(value, false)) {
+            return wire.name;
+        }
+    }
+    const std::string base = m_prefix + "_t_" + temp;
+    std::string name = base;
+    std::size_t ordinal = 0;
+    for(bool taken = true; taken;) {
+        taken = false;
+        for(const auto &wire : m_wires) {
+            if(wire.name == name) {
+                name = base + "_" + std::to_string(++ordinal);
+                taken = true;
+                break;
+            }
+        }
+    }
+    (void)fn;
+    (void)ln;
+    m_wires.push_back(MaterializedWire{name, value, m_temps.at(temp)});
+    return name;
+}
+
+int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const Env &env)
+{
+    if(m_temps.empty()) {
+        return 0;
+    }
+    std::set<std::string> reads;
+    collect_identifier_names(node, reads);
+    for(const auto &read : reads) {
+        if(m_temps.count(read) && !env.count(read)) {
+            LOG_ERROR_N(node) << "temporary '" << read << "' is read before it is "
+                              << "assigned in this segment — or outside the scope that "
+                              << "declares it (ADR-0014 §6, §6.1, §9)";
+            return 1;
+        }
+    }
     return 0;
 }
 
@@ -2456,7 +2642,10 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_loops.clear();
     m_induced.clear();
     m_cnt_name = prefix + "_cnt";
+    m_prefix = prefix;
     m_cnt_widths.clear();
+    m_temps.clear();
+    m_wires.clear();
     m_repeat_depth = 0;
     m_hold_needed = false;
     m_encoding = Encoding::BINARY;
@@ -2485,7 +2674,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
-    if(collect_body(initial->get_statement(), waits, clock, has_wait)) {
+    if(collect_body(initial->get_statement(), waits, clock, has_wait, TempScope{})) {
         return 1;
     }
 
@@ -2509,6 +2698,11 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             if(elt.second.kind == LoopInfo::Kind::FOR) {
                 mine.insert(elt.second.index);
             }
+        }
+        // §6 temporaries dissolve into values: they are not registers of
+        // this process, and a same-named variable elsewhere is unrelated.
+        for(const auto &elt : m_temps) {
+            mine.erase(elt.first);
         }
         std::set<std::string> others;
         const auto &tasks = Analysis::Module::get_task_nodes(AST::to_node(module));
@@ -2802,6 +2996,10 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                 ++expected;
             }
         }
+        for(const auto &wire : m_wires) {
+            unique.insert(wire.name);
+            ++expected;
+        }
         if(unique.size() != expected) {
             LOG_ERROR_N(module) << "a state name collides with another state or with a "
                                 << "generated declaration (the state register or the "
@@ -2869,6 +3067,41 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         cnt->set_name(name);
         cnt->set_type(cnt_type);
         result->push_back(AST::to_node(cnt));
+    }
+
+    // §6.1: the materialized temporaries — a wire per surviving value,
+    // typed by the temporary's declaration so the declared width keeps
+    // truncating exactly as the source did, driven by one continuous
+    // assign, read from the case arms.
+    for(const auto &wire : m_wires) {
+        if(Analysis::UniqueDeclaration::identifier_declaration_exists(wire.name, declared)) {
+            LOG_ERROR_N(module) << "generated declaration '" << wire.name
+                                << "' collides with an existing one (ADR-0014 §10)";
+            return nullptr;
+        }
+        auto net = std::make_shared<AST::WireNet>(fn, ln);
+        net->set_name(wire.name);
+        // Dims only, no data type: `wire [8:0] name` reads the same in
+        // SystemVerilog and in 1364 mode, and the declared width is the
+        // whole point (§6.1, §11.6).
+        if(wire.temp && wire.temp->get_type() && wire.temp->get_type()->get_packed_dims()) {
+            auto net_type = std::make_shared<AST::ImplicitType>(fn, ln);
+            auto dims = std::make_shared<AST::Dimension::List>();
+            for(const auto &dim : *wire.temp->get_type()->get_packed_dims()) {
+                dims->push_back(AST::cast_to<AST::Dimension>(dim->clone()));
+            }
+            net_type->set_packed_dims(dims);
+            net->set_type(net_type);
+        }
+        result->push_back(AST::to_node(net));
+        auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+        lvalue->set_var(AST::to_node(make_id(wire.name, fn, ln)));
+        auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+        rvalue->set_var(wire.value->clone());
+        auto cont = std::make_shared<AST::Assign>(fn, ln);
+        cont->set_left(lvalue);
+        cont->set_right(rvalue);
+        result->push_back(AST::to_node(cont));
     }
 
     // Reset branch: the init segment verbatim, plus the state register
