@@ -308,7 +308,7 @@ static int verilower(int argc, char *argv[])
     // only on request.
     //---------------------------------------------------------
 
-    if(!fsm_report.processes.empty()) {
+    if(!fsm_report.processes.empty() || !config.state_map.empty()) {
         const std::string map_path =
             config.state_map.empty() ? config.output + ".fsm.json" : config.state_map;
         std::ofstream json(map_path);

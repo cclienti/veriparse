@@ -35,8 +35,8 @@ def generate(map_path, out_path):
         lines += [
             "    grp = Group('FSM %s')" % process["module"],
             "    hier.add(grp)",
-            "    # symbolic value table: %s" % states,
-            "    grp.add(Disp('%s', radix='symbolic'))" % process["state_variable"],
+            "    grp.add(Disp('%s', radix='symbolic', states=%r))"
+            % (process["state_variable"], states),
             "    grp.add(Disp('%s'))" % process["reset"]["signal"],
         ]
         for register in process["reset"]["registers"]:

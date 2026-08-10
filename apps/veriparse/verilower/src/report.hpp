@@ -4,6 +4,7 @@
 #define VERILOWER_REPORT_HPP
 
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <cstdio>
 #include <sstream>
 #include <string>
 
@@ -22,8 +23,20 @@ static inline std::string json_escape(const std::string &str)
         case '\n':
             out += "\\n";
             break;
+        case '\t':
+            out += "\\t";
+            break;
+        case '\r':
+            out += "\\r";
+            break;
         default:
-            out += c;
+            if(static_cast<unsigned char>(c) < 0x20) {
+                char buffer[8];
+                std::snprintf(buffer, sizeof(buffer), "\\u%04x", c);
+                out += buffer;
+            } else {
+                out += c;
+            }
         }
     }
     return out;
@@ -98,13 +111,20 @@ render_fsm_dot(const Veriparse::Passes::Transformations::ImplicitFsmElaboration:
                bool with_values)
 {
     std::stringstream dot;
+    // One digraph, one cluster per compiled process: state names are
+    // prefix-qualified and prefixes are distinct per process, so the node
+    // namespaces cannot collide.
+    dot << "digraph fsm {\n";
+    dot << "  rankdir=LR;\n";
+    dot << "  node [shape=circle];\n";
+    std::size_t index = 0;
     for(const auto &process : report.processes) {
-        dot << "digraph \"" << dot_escape(process.module_name) << "\" {\n";
-        dot << "  rankdir=LR;\n";
-        dot << "  node [shape=circle];\n";
-        dot << "  \"" << dot_escape(process.entry) << "\" [shape=doublecircle];\n";
+        dot << "  subgraph \"cluster_" << index++ << "\" {\n";
+        dot << "    label=\"" << dot_escape(process.module_name) << " / "
+            << dot_escape(process.state_variable) << "\";\n";
+        dot << "    \"" << dot_escape(process.entry) << "\" [shape=doublecircle];\n";
         for(const auto &edge : process.transitions) {
-            dot << "  \"" << dot_escape(edge.from) << "\" -> \"" << dot_escape(edge.to) << "\"";
+            dot << "    \"" << dot_escape(edge.from) << "\" -> \"" << dot_escape(edge.to) << "\"";
             std::string label = edge.guard;
             if(with_values && !edge.action.empty()) {
                 label += label.empty() ? edge.action : " / " + edge.action;
@@ -114,8 +134,9 @@ render_fsm_dot(const Veriparse::Passes::Transformations::ImplicitFsmElaboration:
             }
             dot << ";\n";
         }
-        dot << "}\n";
+        dot << "  }\n";
     }
+    dot << "}\n";
     return dot.str();
 }
 

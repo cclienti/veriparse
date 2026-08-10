@@ -339,7 +339,7 @@ non-empty), so nothing is lost on output.
 | `veriparse_reset_level = 0\|1` | active level | `1`, or `0` when the name ends in `_n` |
 | `veriparse_reset_kind = "sync"\|"async"` | reset flavour of the generated `always_ff` | `"sync"` |
 | `veriparse_encoding = "binary"\|"one_hot"\|"gray"` | state encoding | `"binary"` |
-| `veriparse_prefix = "<id>"` | prefix for generated declarations | `__fsm` (§10) |
+| `veriparse_prefix = "<id>"` | prefix for generated declarations; must be **distinct** across a module's marked processes — a hint colliding with another process's hint or ordinal is rejected where the prefix is assigned | `__fsm` (§10), `__fsm<N>` when several processes are marked |
 | `veriparse_no_unroll` on a loop | keeps the loop rolled: one state group with an induced countdown or index register (§7.2) | bounded loops unroll |
 
 The three reset hints govern the whole reset branch, which under §5 is the

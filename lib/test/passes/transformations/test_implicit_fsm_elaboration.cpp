@@ -345,3 +345,24 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint_err0) { TEST_ERROR_SV
 // The other writer is an instance output port, visible through the parsed
 // modules the driver supplies (IEEE §9.2.2.4, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err3) { TEST_ERROR_MAP_SV; }
+// The child declares its ports non-ANSI style: the direction lives in a
+// body declaration, not the header, and the check resolves it there
+// (IEEE §9.2.2.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_multidrive_err4) { TEST_ERROR_MAP_SV; }
+// A label spelling the state register's own generated name: the ordinal
+// scheme excluded that by construction, labels must be checked for it
+// (§10, §10.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name_err1) { TEST_ERROR_SV; }
+// A labelled cut-point-free block on one arm of a fork does not delimit
+// the state alone: the name is dropped with a warning and the state keeps
+// its ordinal, while the arm that holds a cut point names its own state
+// through the stack (§10.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name1) { TEST_CORE_SV; }
+// A label containing the first cut point, met on the entry walk: it names
+// that state — no init-segment warning, which is only for a label whose
+// block holds no cut point at all (§5.1, §10.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name2) { TEST_CORE_SV; }
+// A veriparse_prefix hint colliding with another marked process's prefix
+// — hint or ordinal: rejected where the prefix is assigned, naming the
+// clash (§3, §10).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint_err1) { TEST_ERROR_SV; }
