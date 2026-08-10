@@ -5,6 +5,7 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
+#include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <map>
 #include <set>
@@ -81,7 +82,11 @@ public:
     };
 
     ImplicitFsmElaboration() = default;
-    explicit ImplicitFsmElaboration(FsmReport *report) : m_report(report) {}
+    explicit ImplicitFsmElaboration(FsmReport *report,
+                                    const Analysis::Module::ModulesMap *modules = nullptr)
+        : m_report(report), m_modules(modules)
+    {
+    }
 
 private:
     /**
@@ -274,6 +279,12 @@ private:
 
     /// §10.2 collection point, null when nobody asked.
     FsmReport *m_report = nullptr;
+
+    /// The parsed modules, when the driver has them: how an instance's
+    /// output-port connections become visible to the §9.2.2.4 multi-driver
+    /// check. Null — or an instantiated module missing from the map, a
+    /// black box — skips that instance.
+    const Analysis::Module::ModulesMap *m_modules = nullptr;
 };
 
 } // namespace Transformations
