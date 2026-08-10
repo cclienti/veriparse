@@ -199,6 +199,15 @@ private:
                    std::vector<Frame> frames, Env env, std::set<const AST::Node *> lapped,
                    std::vector<State> &states, std::vector<Transition> &entry);
 
+    /// Append an induced-register commit to an action, coalescing away a
+    /// prior induced commit to the same register (§7.2): blocking
+    /// last-wins — the abandoned value was the pass's own, a dead
+    /// decrement past a break or a superseded init, and its reads were
+    /// carried by the environment. Author commits are never touched and §6
+    /// still flags them.
+    void push_induced(const AST::Node::ListPtr &action, const std::string &target,
+                      const AST::Node::Ptr &rhs, const std::string &fn, int ln);
+
     /// Fork at a loop head — on entry or on the back-edge: the enter leg
     /// pushes the body frame under the loop's guard, the exit leg continues
     /// past it. Rolled forms commit their induced register into the action
