@@ -313,3 +313,14 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name0) { TEST_CORE_SV; }
 // A label that resolves to the same generated name as an ordinal state:
 // collisions error, never silently rename (§10, §10.1).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_name_err0) { TEST_ERROR_SV; }
+// veriparse_encoding = "one_hot": one bit per state, constants 1 << i
+// (§3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint0) { TEST_CORE_SV; }
+// veriparse_encoding = "gray": i ^ (i >> 1) in clog2 bits (§3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint1) { TEST_CORE_SV; }
+// The reset hints together: a named reset with an overridden active
+// level, the async flavour adding the reset's own edge to the
+// sensitivity, and a custom declaration prefix (§3, §5).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint2) { TEST_CORE_SV; }
+// An encoding value the table does not define (§3, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_hint_err0) { TEST_ERROR_SV; }

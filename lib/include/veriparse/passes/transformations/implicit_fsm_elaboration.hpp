@@ -222,6 +222,17 @@ private:
     /// a transition to the hold index. A perpetual machine has none, and
     /// then no hold state is emitted (§2).
     bool m_hold_needed = false;
+
+    /// §3 hints steering the emission: the state encoding, and the reset
+    /// flavour of the generated always_ff.
+    enum class Encoding
+    {
+        BINARY,
+        ONE_HOT,
+        GRAY
+    };
+    Encoding m_encoding = Encoding::BINARY;
+    bool m_async_reset = false;
 };
 
 } // namespace Transformations

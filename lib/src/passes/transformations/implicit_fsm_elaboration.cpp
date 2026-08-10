@@ -1092,8 +1092,30 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     std::size_t ordinal = 0;
     for(const auto &elt : marked) {
-        const std::string prefix =
-            (marked.size() > 1) ? ("__fsm" + std::to_string(ordinal)) : "__fsm";
+        // §3: veriparse_prefix overrides the default; several processes
+        // without hints get an ordinal each, one shared prefix would
+        // collide by construction (§10).
+        std::string prefix = (marked.size() > 1) ? ("__fsm" + std::to_string(ordinal)) : "__fsm";
+        const auto &prefix_hint = get_pragma(elt.first, "veriparse_prefix");
+        if(prefix_hint) {
+            const auto &expr = prefix_hint->get_expression();
+            std::string wanted;
+            if(expr && expr->is_node_type(AST::NodeType::StringConst)) {
+                wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
+            } else if(expr && expr->is_node_type(AST::NodeType::Identifier)) {
+                wanted = AST::cast_to<AST::Identifier>(expr)->get_name();
+            }
+            bool valid = !wanted.empty() && (std::isalpha(wanted.front()) || wanted.front() == '_');
+            for(const char c : wanted) {
+                valid &= std::isalnum(c) || c == '_';
+            }
+            if(!valid) {
+                LOG_ERROR_N(elt.first) << "veriparse_prefix wants an identifier to prefix "
+                                       << "the generated declarations with (ADR-0014 §3, §10)";
+                return 1;
+            }
+            prefix = wanted;
+        }
         ret += compile_process(module, node, elt.first, elt.second, prefix);
         ++ordinal;
     }
@@ -2087,6 +2109,34 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
 
     const auto &lowered = to_lower(reset_name);
     active_low = lowered.size() >= 2 && lowered.compare(lowered.size() - 2, 2, "_n") == 0;
+
+    // §3: veriparse_reset_level overrides the suffix inference,
+    // veriparse_reset_kind picks the always_ff's reset flavour.
+    const auto &level = get_pragma(pragmalist, "veriparse_reset_level");
+    if(level) {
+        mpz_class value;
+        if(!level->get_expression() ||
+           !ExpressionEvaluation().evaluate_node(level->get_expression(), value) ||
+           (value != 0 && value != 1)) {
+            LOG_ERROR_N(pragmalist) << "veriparse_reset_level is 0 or 1 (ADR-0014 §3)";
+            return 1;
+        }
+        active_low = value == 0;
+    }
+    const auto &kind = get_pragma(pragmalist, "veriparse_reset_kind");
+    if(kind) {
+        const auto &expr = kind->get_expression();
+        std::string wanted;
+        if(expr && expr->is_node_type(AST::NodeType::StringConst)) {
+            wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
+        }
+        if(wanted != "sync" && wanted != "async") {
+            LOG_ERROR_N(pragmalist) << "veriparse_reset_kind is \"sync\" or \"async\" "
+                                    << "(ADR-0014 §3)";
+            return 1;
+        }
+        m_async_reset = wanted == "async";
+    }
     return 0;
 }
 
@@ -2316,6 +2366,29 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_cnt_width = 0;
     m_repeat_depth = 0;
     m_hold_needed = false;
+    m_encoding = Encoding::BINARY;
+    m_async_reset = false;
+
+    // §3: veriparse_encoding picks the state constants' shape.
+    const auto &encoding = get_pragma(pragmalist, "veriparse_encoding");
+    if(encoding) {
+        const auto &expr = encoding->get_expression();
+        std::string wanted;
+        if(expr && expr->is_node_type(AST::NodeType::StringConst)) {
+            wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
+        }
+        if(wanted == "binary") {
+            m_encoding = Encoding::BINARY;
+        } else if(wanted == "one_hot") {
+            m_encoding = Encoding::ONE_HOT;
+        } else if(wanted == "gray") {
+            m_encoding = Encoding::GRAY;
+        } else {
+            LOG_ERROR_N(pragmalist) << "veriparse_encoding is \"binary\", \"one_hot\" or "
+                                    << "\"gray\" (ADR-0014 §3)";
+            return 1;
+        }
+    }
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
@@ -2529,7 +2602,28 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     // walk flagged it when recording a transition to the hold index.
     const bool hold_needed = m_hold_needed;
     const std::size_t nstates = states.size() + (hold_needed ? 1 : 0);
-    const unsigned int width = clog2(static_cast<unsigned int>(nstates));
+
+    // §3: the encoding shapes the constants and the register width —
+    // binary and gray pack into clog2 bits, one-hot spends one per state.
+    if(m_encoding == Encoding::ONE_HOT && nstates > 32) {
+        LOG_ERROR_N(module) << "one_hot encoding beyond 32 states (" << nstates
+                            << "): pick binary or gray (ADR-0014 §3)";
+        return nullptr;
+    }
+    const unsigned int width = m_encoding == Encoding::ONE_HOT
+                                   ? static_cast<unsigned int>(nstates)
+                                   : clog2(static_cast<unsigned int>(nstates));
+    const auto encode = [&](std::size_t index) -> unsigned int {
+        switch(m_encoding) {
+        case Encoding::ONE_HOT:
+            return 1U << index;
+        case Encoding::GRAY:
+            return static_cast<unsigned int>(index ^ (index >> 1));
+        case Encoding::BINARY:
+        default:
+            return static_cast<unsigned int>(index);
+        }
+    };
 
     // §10.1: a stem naming one state names it outright, several take the
     // stem with an ordinal, and an unlabelled state keeps the global
@@ -2593,8 +2687,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         param->set_name(state_names[i]);
         param->set_is_local(true);
         param->set_type(type);
-        param->set_value(AST::to_node(
-            make_const(static_cast<unsigned int>(i), static_cast<int>(width), fn, ln)));
+        param->set_value(AST::to_node(make_const(encode(i), static_cast<int>(width), fn, ln)));
         result->push_back(AST::to_node(param));
     }
 
@@ -2729,6 +2822,16 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     clock_sens->set_sig(clock->get_sig()->clone());
     const auto &sens_list = std::make_shared<AST::Sens::List>();
     sens_list->push_back(clock_sens);
+
+    // §3: veriparse_reset_kind = "async" adds the reset's own edge to the
+    // sensitivity; the guard structure is the same either way.
+    if(m_async_reset) {
+        auto reset_sens = std::make_shared<AST::Sens>(fn, ln);
+        reset_sens->set_type(active_low ? AST::Sens::TypeEnum::NEGEDGE
+                                        : AST::Sens::TypeEnum::POSEDGE);
+        reset_sens->set_sig(AST::to_node(make_id(reset_name, fn, ln)));
+        sens_list->push_back(reset_sens);
+    }
 
     auto always = std::make_shared<AST::AlwaysFF>(fn, ln);
     always->set_senslist(std::make_shared<AST::Senslist>(sens_list, fn, ln));
