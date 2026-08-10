@@ -43,7 +43,45 @@ namespace Transformations
 class ImplicitFsmElaboration : public TransformationBase
 {
 public:
+    /// §10.2: what the source does not state and the RTL should not have
+    /// to be reverse-engineered for — the encoding, the naming, the reset
+    /// contract and the transition structure, per compiled process. The
+    /// JSON state map and the graphviz view are both printed from this.
+    struct FsmReport
+    {
+        struct State
+        {
+            std::string name;
+            unsigned long value = 0;
+            int line = 0;
+        };
+        struct Transition
+        {
+            std::string from;
+            std::string to;
+            std::string guard;  ///< empty = unconditional
+            std::string action; ///< the register updates, `;`-joined
+        };
+        struct Process
+        {
+            std::string module_name;
+            std::string state_variable;
+            unsigned int width = 0;
+            std::string encoding;
+            std::string entry; ///< the state reset transitions into
+            bool has_hold = false;
+            std::string reset_signal;
+            int reset_active_level = 1;
+            std::string reset_kind;
+            std::vector<std::string> reset_registers;
+            std::vector<State> states;
+            std::vector<Transition> transitions;
+        };
+        std::vector<Process> processes;
+    };
+
     ImplicitFsmElaboration() = default;
+    explicit ImplicitFsmElaboration(FsmReport *report) : m_report(report) {}
 
 private:
     /**
@@ -233,6 +271,9 @@ private:
     };
     Encoding m_encoding = Encoding::BINARY;
     bool m_async_reset = false;
+
+    /// §10.2 collection point, null when nobody asked.
+    FsmReport *m_report = nullptr;
 };
 
 } // namespace Transformations

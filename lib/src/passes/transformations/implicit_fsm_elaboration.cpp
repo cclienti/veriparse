@@ -3,6 +3,7 @@
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -2837,6 +2838,60 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     always->set_senslist(std::make_shared<AST::Senslist>(sens_list, fn, ln));
     always->set_statement(AST::to_node(guard));
     result->push_back(AST::to_node(always));
+
+    // §10.2: record what the source does not state, for the state map and
+    // the graphviz view — encoding, naming, the reset contract, and the
+    // transition structure over the resolved names.
+    if(m_report) {
+        FsmReport::Process process;
+        process.module_name = module->get_name();
+        process.state_variable = state_reg;
+        process.width = width;
+        process.encoding = m_encoding == Encoding::ONE_HOT
+                               ? "one_hot"
+                               : (m_encoding == Encoding::GRAY ? "gray" : "binary");
+        process.entry = state_names[entry_next];
+        process.has_hold = hold_needed;
+        process.reset_signal = reset_name;
+        process.reset_active_level = active_low ? 0 : 1;
+        process.reset_kind = m_async_reset ? "async" : "sync";
+        for(const auto &stmt : *init_stmts) {
+            if(stmt->is_node_type(AST::NodeType::NonblockingSubstitution)) {
+                process.reset_registers.push_back(
+                    nba_target(AST::cast_to<AST::NonblockingSubstitution>(stmt)));
+            }
+        }
+        process.reset_registers.push_back(state_reg);
+        for(std::size_t i = 0; i < nstates; ++i) {
+            FsmReport::State entry_state;
+            entry_state.name = state_names[i];
+            entry_state.value = encode(i);
+            entry_state.line = i < states.size() ? states[i].wait->get_line() : ln;
+            process.states.push_back(entry_state);
+        }
+        Generators::VerilogGenerator renderer;
+        for(std::size_t i = 0; i < states.size(); ++i) {
+            for(const auto &transition : states[i].out) {
+                FsmReport::Transition edge;
+                edge.from = state_names[i];
+                edge.to = state_names[transition.next];
+                if(transition.guard) {
+                    edge.guard = renderer.render(transition.guard);
+                }
+                std::vector<std::string> updates;
+                for(const auto &stmt : *transition.action) {
+                    auto text = renderer.render(stmt);
+                    while(!text.empty() && (text.back() == ';' || std::isspace(text.back()))) {
+                        text.pop_back();
+                    }
+                    updates.push_back(text);
+                }
+                edge.action = Misc::StringUtils::join("; ", updates);
+                process.transitions.push_back(edge);
+            }
+        }
+        m_report->processes.push_back(process);
+    }
 
     return result;
 }

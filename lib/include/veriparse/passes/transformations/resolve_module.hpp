@@ -5,6 +5,7 @@
 
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
+#include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <string>
 
@@ -18,11 +19,13 @@ namespace Transformations
 class ResolveModule : public TransformationBase
 {
 public:
-    ResolveModule(bool deadcode_elimination = true, bool fsm_elaboration = false);
+    ResolveModule(bool deadcode_elimination = true, bool fsm_elaboration = false,
+                  ImplicitFsmElaboration::FsmReport *fsm_report = nullptr);
 
     ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
                   const Analysis::Module::ModulesMap &modules_map, bool deadcode_elimination = true,
-                  bool fsm_elaboration = false);
+                  bool fsm_elaboration = false,
+                  ImplicitFsmElaboration::FsmReport *fsm_report = nullptr);
 
 private:
     /**
@@ -38,6 +41,10 @@ private:
     /// ADR-0014 §10.3: the FSM lowering is a per-tool opt-in — verilower
     /// enables it, veriflat's pipeline is unchanged.
     const bool m_fsm_elaboration = false;
+
+    /// §10.2: where the lowering records its state maps, null when nobody
+    /// asked.
+    ImplicitFsmElaboration::FsmReport *const m_fsm_report = nullptr;
 };
 
 } // namespace Transformations
