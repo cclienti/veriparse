@@ -283,8 +283,11 @@ int check_impure_calls(const AST::Node::Ptr &expr)
         return 0;
     }
     if(expr->is_node_type(AST::NodeType::SystemCall)) {
-        static const std::set<std::string> pure = {"clog2", "bits",   "size",    "left",
-                                                   "right", "signed", "unsigned"};
+        // §20.5-§20.8 queries and casts, plus the §20.9 bit-vector
+        // functions — every one stable and synthesizable.
+        static const std::set<std::string> pure = {"clog2",     "bits",   "size",     "left",
+                                                   "right",     "signed", "unsigned", "countones",
+                                                   "countbits", "onehot", "onehot0",  "isunknown"};
         const auto &name = AST::cast_to<AST::SystemCall>(expr)->get_syscall();
         if(!pure.count(name)) {
             LOG_ERROR_N(expr) << "system function '$" << name << "' in a marked process: "
@@ -319,6 +322,11 @@ void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &nam
     }
     switch(node->get_node_type()) {
     case AST::NodeType::Identifier:
+        // A hierarchical write (u.q, genblk.q) targets another scope, not
+        // this module's register of the same leaf name.
+        if(AST::cast_to<AST::Identifier>(node)->get_hier()) {
+            return;
+        }
         names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
         return;
     case AST::NodeType::Lvalue:
@@ -330,6 +338,12 @@ void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &nam
     case AST::NodeType::Partselect:
         collect_lvalue_bases(AST::cast_to<AST::Partselect>(node)->get_var(), names);
         return;
+    case AST::NodeType::PartselectIndexed:
+    case AST::NodeType::PartselectPlusIndexed:
+    case AST::NodeType::PartselectMinusIndexed:
+        // The base is driven; the index expression is a read.
+        collect_lvalue_bases(AST::cast_to<AST::PartselectIndexed>(node)->get_var(), names);
+        return;
     default: {
         // Concatenations and anything else: every child may name a target.
         const auto &children = node->get_children();
@@ -338,6 +352,22 @@ void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &nam
         }
         return;
     }
+    }
+}
+
+/// The subroutine names a statement tree calls — how a task's writes reach
+/// their calling process.
+void collect_call_names(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::TaskCall) || node->is_node_type(AST::NodeType::Call)) {
+        names.insert(AST::cast_to<AST::Call>(node)->get_name());
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        collect_call_names(child, names);
     }
 }
 
@@ -388,9 +418,17 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
     }
     Analysis::Module::FunctionMap functions;
     Analysis::Module::get_function_dictionary(AST::to_node(module), functions);
+
+    // Worklist over the call graph: a function is only as pure as what it
+    // calls, so callees queue behind their callers.
+    std::vector<std::string> worklist;
     std::set<std::string> checked;
     for(const auto &call : *calls) {
-        const auto &name = call->get_name();
+        worklist.push_back(call->get_name());
+    }
+    while(!worklist.empty()) {
+        const auto name = worklist.back();
+        worklist.pop_back();
         if(!checked.insert(name).second) {
             continue;
         }
@@ -400,12 +438,13 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
         }
         const auto &function = found->second;
         std::set<std::string> locals = {function->get_name()};
+        std::set<std::string> written_locals;
         const auto &args = function->get_args();
         if(args) {
             for(const auto &arg : *args) {
                 if(arg->get_direction() != AST::Arg::DirectionEnum::INPUT &&
                    arg->get_direction() != AST::Arg::DirectionEnum::NONE) {
-                    LOG_ERROR_N(call)
+                    LOG_ERROR_N(function)
                         << "function '" << name << "' carries a non-input argument: a "
                         << "side effect in expression position the (R_p, s_p) model "
                         << "would miss silently (ADR-0014 §9)";
@@ -418,17 +457,53 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
         const auto &statements = function->get_statements();
         if(statements) {
             for(const auto &stmt : *statements) {
+                // The impurity may hide in the body itself: a system call,
+                // or a further function this worklist will visit.
+                if(check_impure_calls(stmt)) {
+                    return 1;
+                }
                 collect_declaration_names(stmt, locals);
                 collect_driven(stmt, targets);
             }
         }
+        const auto &nested = Analysis::Module::get_functioncall_nodes(AST::to_node(function));
+        if(nested) {
+            for(const auto &sub : *nested) {
+                worklist.push_back(sub->get_name());
+            }
+        }
         for(const auto &target : targets) {
             if(!locals.count(target)) {
-                LOG_ERROR_N(call)
+                LOG_ERROR_N(function)
                     << "function '" << name << "' writes non-local '" << target
                     << "': a side effect in expression position the (R_p, s_p) model "
                     << "would miss silently — pure functions are accepted (ADR-0014 §9)";
                 return 1;
+            }
+            if(target != function->get_name()) {
+                written_locals.insert(target);
+            }
+        }
+        // A static-lifetime function writing a local keeps state across
+        // calls: successive evaluations differ, which breaks the walk's
+        // stable-read assumption. The return variable and the arguments
+        // are re-assigned per call and carry nothing observable.
+        if(function->get_lifetime() != AST::Function::LifetimeEnum::AUTOMATIC) {
+            for(const auto &target : written_locals) {
+                bool is_arg = false;
+                if(args) {
+                    for(const auto &arg : *args) {
+                        is_arg |= arg->get_name() == target;
+                    }
+                }
+                if(!is_arg) {
+                    LOG_ERROR_N(function)
+                        << "function '" << name << "' has static lifetime and writes "
+                        << "its local '" << target << "': the local keeps its value "
+                        << "across calls, so successive evaluations differ — declare "
+                        << "the function automatic (ADR-0014 §9)";
+                    return 1;
+                }
             }
         }
     }
@@ -1069,6 +1144,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                               << "with no hardware meaning (ADR-0014 §9)";
             return 1;
         }
+        // Both sides: the left holds index expressions.
+        if(check_impure_calls(AST::to_node(nba->get_left()))) {
+            return 1;
+        }
         return check_impure_calls(AST::to_node(nba->get_right()));
     }
 
@@ -1081,10 +1160,12 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(collect_body(ifs->get_false_statement(), waits, clock, arms_wait)) {
             return 1;
         }
+        // Rejected in condition position wherever it appears: a verbatim
+        // branch would carry the call into the always_ff (§9).
+        if(check_impure_calls(ifs->get_cond())) {
+            return 1;
+        }
         if(arms_wait || contains_jump(node)) {
-            if(check_impure_calls(ifs->get_cond())) {
-                return 1;
-            }
             m_forking.insert(node.get());
         }
         has_wait |= arms_wait;
@@ -1140,10 +1221,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 }
             }
         }
+        if(check_impure_calls(AST::cast_to<AST::CaseStatement>(node)->get_comp())) {
+            return 1;
+        }
         if(forking) {
-            if(check_impure_calls(AST::cast_to<AST::CaseStatement>(node)->get_comp())) {
-                return 1;
-            }
             m_forking.insert(node.get());
         }
         has_wait |= arms_wait;
@@ -1210,9 +1291,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
 
     case AST::NodeType::TaskCall:
     case AST::NodeType::Call:
-        LOG_ERROR_N(node) << "task call in a marked process: a cut point inside it "
-                          << "would be invisible — v1 does not inline tasks to find "
-                          << "out (ADR-0014 §9, §15)";
+        LOG_ERROR_N(node) << "subroutine call in statement position: a task is not "
+                          << "inlined in v1 — a cut point inside it would be invisible "
+                          << "— and a function called as a statement discards its "
+                          << "result (ADR-0014 §9, §15)";
         return 1;
 
     case AST::NodeType::SingleStatement: {
@@ -1835,6 +1917,12 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
         return 1;
     }
 
+    // The `iff` enable is read at every state's entry (§5.3): the least
+    // stable place of all for an impure call.
+    if(check_impure_calls(sens->get_condition())) {
+        return 1;
+    }
+
     if(!clock) {
         clock = sens;
         return 0;
@@ -2218,20 +2306,54 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             }
         }
         std::set<std::string> others;
+        const auto &tasks = Analysis::Module::get_task_nodes(AST::to_node(module));
         const auto &items = module->get_items();
         if(items) {
             for(const auto &item : *items) {
                 if(item.get() == static_cast<AST::Node *>(pragmalist.get())) {
                     continue;
                 }
-                if(item->is_node_type(AST::NodeType::Always) ||
-                   item->is_node_type(AST::NodeType::AlwaysFF) ||
-                   item->is_node_type(AST::NodeType::AlwaysComb) ||
-                   item->is_node_type(AST::NodeType::AlwaysLatch) ||
-                   item->is_node_type(AST::NodeType::Initial) ||
-                   item->is_node_type(AST::NodeType::Assign) ||
-                   item->is_node_type(AST::NodeType::Pragmalist)) {
-                    collect_driven(item, others);
+                if(!item->is_node_type(AST::NodeType::Always) &&
+                   !item->is_node_type(AST::NodeType::AlwaysFF) &&
+                   !item->is_node_type(AST::NodeType::AlwaysComb) &&
+                   !item->is_node_type(AST::NodeType::AlwaysLatch) &&
+                   !item->is_node_type(AST::NodeType::Initial) &&
+                   !item->is_node_type(AST::NodeType::Assign) &&
+                   !item->is_node_type(AST::NodeType::Pragmalist) &&
+                   !item->is_node_type(AST::NodeType::GenerateStatement)) {
+                    continue;
+                }
+                // Per item: what it drives, minus what it declares — a
+                // block-local shadowing the register's name is its own
+                // variable. A task it calls writes on its behalf.
+                std::set<std::string> driven, declared, called;
+                collect_driven(item, driven);
+                collect_declaration_names(item, declared);
+                collect_call_names(item, called);
+                if(tasks) {
+                    for(const auto &task : *tasks) {
+                        if(!called.count(task->get_name())) {
+                            continue;
+                        }
+                        const auto &statements = task->get_statements();
+                        if(statements) {
+                            for(const auto &stmt : *statements) {
+                                collect_driven(stmt, driven);
+                                collect_declaration_names(stmt, declared);
+                            }
+                        }
+                        const auto &targs = task->get_args();
+                        if(targs) {
+                            for(const auto &arg : *targs) {
+                                declared.insert(arg->get_name());
+                            }
+                        }
+                    }
+                }
+                for(const auto &name : driven) {
+                    if(!declared.count(name)) {
+                        others.insert(name);
+                    }
                 }
             }
         }

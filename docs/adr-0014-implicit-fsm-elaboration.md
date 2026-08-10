@@ -1168,18 +1168,20 @@ unmarked column has already been misread once.
 | `casex`/`casez` in a marked process | wildcard matching is not lowered in v1 (ADR §15): the fork guard would need wildcard-match semantics, and exact `==` would silently change which arm runs | IEEE §12.5.1, ADR §15 |
 | a `case` with more than one `default` arm | the grammar admits it, IEEE allows at most one, and the guard construction has no condition to give a second one | IEEE §12.5 |
 | a case item with x/z bits, in a `case` holding cut points | plain-`case` item matching is case equality, but the fork guard is built with logical `==`, which such an item never satisfies. A cut-point-free `case` stays verbatim in its action and keeps its semantics | IEEE §12.5 |
-| a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse | IEEE §9.2.2.4 |
-| two concurrent statements in one imperative block | outside the sequential model | — |
+| a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse. The check sees processes, continuous assigns, generate blocks and the tasks other processes call, scope-aware; a write through an **instance output port** is not visible without the instantiated module and is the flattener's to catch | IEEE §9.2.2.4 |
 
 **System functions are not system tasks, and the row above must not be
 written as if they were.** `$clog2`, `$bits`, `$size`, `$left`/`$right`,
 `$signed`/`$unsigned` (IEEE §20.5–§20.8) are elaboration-time or purely
 combinational, every synthesis flow accepts them, `ExpressionEvaluation`
 already folds three of them, and Appendix A.2's pre-fold listing writes
-`logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;`. Rejecting them would have the
-pass refuse on input a construct its own listings write on output, and §3 rule 1
-leaves no attribute to escape with. They are therefore **accepted**; a
-system function outside that subset is rejected by the second row.
+`logic [$clog2(BAUD_DIV)-1:0] __fsm_cnt;`. The §20.9 bit-vector
+functions — `$countones`, `$countbits`, `$onehot`, `$onehot0`,
+`$isunknown` — are the same kind of stable, synthesizable read and join
+the subset. Rejecting any of them would have the pass refuse on input a
+construct its own listings write on output, and §3 rule 1 leaves no
+attribute to escape with. They are therefore **accepted**; a system
+function outside that subset is rejected by the second row.
 
 ## 10. Generated form, naming, and pass placement
 
