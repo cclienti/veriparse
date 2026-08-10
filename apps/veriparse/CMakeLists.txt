@@ -342,6 +342,15 @@ if(NOT WIN32)
     # count entering and skipping (§11.2's back-edge coverage).
     add_verilower_sv_cosim(NAME count_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # The ADR's worked example, end to end (§2, §12 phase 6): the perpetual
+    # A.1 transmitter — prologue, forever, wait-state, unrolled DATA group,
+    # rolled baud countdowns, the back-to-back frame restart.
+    add_verilower_sv_cosim(NAME rs232_tx VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
+    # The §8 receiver: continue as the protocol's error handling — the
+    # mid-bit glitch and the framing-error drop — then recovery.
+    add_verilower_sv_cosim(NAME rs232_rx VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

@@ -256,15 +256,68 @@ AST::NonblockingSubstitution::Ptr make_nba(const std::string &target, const AST:
     return nba;
 }
 
+/// The conjuncts of a guard, flattening the && tree.
+void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conjuncts)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::Land)) {
+        const auto &land = AST::cast_to<AST::Land>(node);
+        flatten_land(land->get_left(), conjuncts);
+        flatten_land(land->get_right(), conjuncts);
+        return;
+    }
+    conjuncts.push_back(node);
+}
+
 /// Conjoin a path condition onto a guard; a null side passes the other
-/// through, so unconditional composes as identity.
+/// through, so unconditional composes as identity. A condition the guard
+/// already carries — the same test forked twice along one path — adds
+/// nothing and is dropped.
 AST::Node::Ptr conjoin(const AST::Node::Ptr &guard, const AST::Node::Ptr &extra,
                        const std::string &fn, int ln)
 {
     if(!extra) {
         return guard;
     }
-    return guard ? make_land(guard, extra, fn, ln) : extra;
+    if(!guard) {
+        return extra;
+    }
+    std::vector<AST::Node::Ptr> conjuncts;
+    flatten_land(guard, conjuncts);
+    for(const auto &conjunct : conjuncts) {
+        if(conjunct->is_equal(extra, false)) {
+            return guard;
+        }
+    }
+    return make_land(guard, extra, fn, ln);
+}
+
+/// Whether a guard is a structural contradiction — some conjunct is the
+/// negation of another. Such a path is the empty set: the walk enumerated
+/// it syntactically, but no execution takes it, so §6 must not judge it
+/// and the emission must not print it. Dropping it keeps the remaining
+/// legs a partition — the removed piece was empty.
+bool is_infeasible(const AST::Node::Ptr &guard)
+{
+    if(!guard) {
+        return false;
+    }
+    std::vector<AST::Node::Ptr> conjuncts;
+    flatten_land(guard, conjuncts);
+    for(std::size_t i = 0; i < conjuncts.size(); ++i) {
+        for(std::size_t j = 0; j < conjuncts.size(); ++j) {
+            if(i == j || !conjuncts[i]->is_node_type(AST::NodeType::Ulnot)) {
+                continue;
+            }
+            const auto &negated = AST::cast_to<AST::Ulnot>(conjuncts[i])->get_right();
+            if(negated && negated->is_equal(conjuncts[j], false)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /// §6.1 substitution, in place on a tree the caller owns: identifiers in
@@ -873,9 +926,8 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         return collect_loop(node, false, waits, clock, has_wait);
 
     case AST::NodeType::ForeverStatement:
-        LOG_ERROR_N(node) << "forever in a marked process: the perpetual form is "
-                          << "not compiled yet (ADR-0014 §2, §12 phase 6)";
-        return 1;
+        // §2: the perpetual form — the §7.3 back-edge with no exit test.
+        return collect_loop(node, false, waits, clock, has_wait);
 
     case AST::NodeType::Break:
     case AST::NodeType::Continue:
@@ -931,6 +983,11 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         info.kind = LoopInfo::Kind::WHILE;
         info.cond = loop->get_cond();
         info.body = loop->get_statement();
+        break;
+    }
+    case AST::NodeType::ForeverStatement: {
+        info.kind = LoopInfo::Kind::FOREVER;
+        info.body = AST::cast_to<AST::ForeverStatement>(node)->get_statement();
         break;
     }
     case AST::NodeType::RepeatStatement: {
@@ -1034,7 +1091,7 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
     // §7.2: the rolled lowering is forced on a bounded loop the unroller
     // left behind — a non-constant bound is no longer an error — but the
     // author should know the state count changed hands.
-    if(!kept_rolled && info.kind != LoopInfo::Kind::WHILE) {
+    if(!kept_rolled && info.kind != LoopInfo::Kind::WHILE && info.kind != LoopInfo::Kind::FOREVER) {
         LOG_WARNING_N(node) << "bounded loop with a cut point was not unrolled upstream: "
                             << "compiled rolled — mark it (* veriparse_no_unroll *) to make "
                             << "that explicit (ADR-0014 §7.2, §8)";
@@ -1075,6 +1132,14 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                                        Env env, std::set<const AST::Node *> lapped,
                                        std::vector<State> &states, std::vector<Transition> &entry)
 {
+    // A structurally contradictory guard names the empty path — the same
+    // condition forked both ways along one walk, like taking an
+    // `if (!send)` and then skipping its `while (!send)` in the same zero
+    // time. No execution takes it; it must neither trip §6 nor be emitted.
+    if(is_infeasible(guard)) {
+        return 0;
+    }
+
     const auto record = [&](std::size_t next) {
         if(from == k_entry) {
             entry.push_back(Transition{guard, action, next});
@@ -1207,8 +1272,9 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         case AST::NodeType::WhileStatement:
         case AST::NodeType::RepeatStatement:
         case AST::NodeType::ForStatement:
+        case AST::NodeType::ForeverStatement:
             // A loop the CFG keeps, registered by the collector: fork at
-            // its head (§7.2, §7.3).
+            // its head (§2, §7.2, §7.3).
             return loop_fork(stmt.get(), true, from, guard, action, frames, env, lapped, states,
                              entry);
 
@@ -1273,17 +1339,18 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                                       std::vector<State> &states, std::vector<Transition> &entry)
 {
     const auto &info = m_loops.at(loop);
-    const std::string &fn = info.cond->get_filename();
-    const int ln = info.cond->get_line();
+    const auto &anchor = info.cond ? info.cond : info.body;
+    const std::string &fn = anchor->get_filename();
+    const int ln = anchor->get_line();
 
     // Entering the body: a lap that reached this head again without
     // crossing a cut point re-enters in zero time (IEEE §9.2.2.1, §9).
     const auto enter_body = [&](const AST::Node::Ptr &leg_guard, AST::Node::ListPtr leg_action,
                                 Env leg_env) -> int {
         if(lapped.count(loop)) {
-            LOG_ERROR_N(info.cond) << "a path through this loop's body reaches the loop head again "
-                                   << "without crossing a cut point: a zero-delay lap "
-                                   << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9)";
+            LOG_ERROR_N(anchor) << "a path through this loop's body reaches the loop head again "
+                                << "without crossing a cut point: a zero-delay lap "
+                                << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9)";
             return 1;
         }
         auto leg_lapped = lapped;
@@ -1309,6 +1376,11 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         return skip_past(conjoin(guard, make_ulnot(clone_subst(info.cond, env), fn, ln), fn, ln),
                          copy_list(action), env);
     }
+
+    case LoopInfo::Kind::FOREVER:
+        // §2: the §7.3 back-edge with no exit test — the only way past it
+        // is a break (§8).
+        return enter_body(guard, entering ? action : copy_list(action), env);
 
     case LoopInfo::Kind::REPEAT: {
         const auto cnt_id = [&]() { return AST::to_node(make_id(m_cnt_name, fn, ln)); };
@@ -1917,15 +1989,25 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     const std::string &fn = module->get_filename();
     const int ln = module->get_line();
 
-    // One state per wait, plus the hold state a one-shot parks in (§2).
-    const std::size_t nstates = states.size() + 1;
+    // One state per wait, plus the hold state a one-shot parks in (§2) —
+    // omitted when no path ends the process, as none does in a perpetual
+    // machine: an unreachable state would still cost encoding width.
+    bool hold_needed = entry_next >= states.size();
+    for(const auto &state : states) {
+        for(const auto &transition : state.out) {
+            hold_needed |= transition.next >= states.size();
+        }
+    }
+    const std::size_t nstates = states.size() + (hold_needed ? 1 : 0);
     const unsigned int width = clog2(static_cast<unsigned int>(nstates));
 
     std::vector<std::string> state_names;
     for(std::size_t i = 0; i < states.size(); ++i) {
         state_names.push_back(prefix + "_state_" + std::to_string(i));
     }
-    state_names.push_back(prefix + "_hold");
+    if(hold_needed) {
+        state_names.push_back(prefix + "_hold");
+    }
     const std::string state_reg = prefix + "_state";
 
     // §10: a collision remaining after prefixing is an error, not a rename.
@@ -2049,7 +2131,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         arm->set_statement(body);
         caselist->push_back(arm);
     }
-    {
+    if(hold_needed) {
         const auto &conds = std::make_shared<AST::Node::List>();
         conds->push_back(AST::to_node(make_id(state_names.back(), fn, ln)));
         auto arm = std::make_shared<AST::Case>(fn, ln);

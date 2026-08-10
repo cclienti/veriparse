@@ -94,10 +94,11 @@ private:
         {
             WHILE,
             REPEAT,
-            FOR
+            FOR,
+            FOREVER
         };
         Kind kind = Kind::WHILE;
-        AST::Node::Ptr cond; ///< while/for: the test; repeat: the count
+        AST::Node::Ptr cond; ///< while/for: the test; repeat: the count; forever: null
         AST::Node::Ptr body;
         std::string index;        ///< rolled for: the author's index register
         AST::Node::Ptr init_rhs;  ///< rolled for: the entry value

@@ -195,3 +195,12 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err1) { TEST_ERROR_SV;
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err2) { TEST_ERROR_SV; }
 // A rolled for whose index is declared nowhere at module level (§7.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err2) { TEST_ERROR_SV; }
+// The perpetual form (§2): a multi-cycle prologue above the loop, then
+// forever on the §7.3 back-edge with no exit test — and no hold state,
+// since no path ends the process.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever0) { TEST_CORE_SV; }
+// forever escaped by break (§8): the jump is the only way past the loop,
+// and the path it opens ends the process — the hold state returns.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever1) { TEST_CORE_SV; }
+// forever with no cut point: the §9 zero-delay row, on the perpetual form.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_forever_err0) { TEST_ERROR_SV; }
