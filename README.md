@@ -1,206 +1,124 @@
 # Veriparse
 
-Veriparse is a **source-to-source transformation** toolkit for synthesizable Verilog and SystemVerilog designs. It provides **flattening** and **obfuscation** of hierarchical designs, supporting a significant subset of synthesizable SystemVerilog constructs (generate blocks, `always_ff`, `always_comb`, `logic` types, etc.). It is intended to help IP vendors protect their designs while still delivering functional, simulatable netlists. It also serves as an **RTL elaboration tool** to retarget generic, parametric designs for FPGA toolchains with limited synthesis support: for instance, complex ROM or LUT initialization expressed as Verilog functions or generate loops can be fully unrolled and constant-folded into plain, widely-supported RTL constructs.
+Veriparse is a **source-to-source transformation** toolkit for synthesizable Verilog and SystemVerilog designs. Its transformations always produce valid, human-readable RTL — never a gate-level netlist — so the output drops into any simulation or synthesis flow. Three capabilities headline it:
 
-## Overview
-
-Veriparse takes a hierarchical Verilog or SystemVerilog design, flattens it into a single module, optionally inlines parameters, eliminates dead code, and obfuscates identifiers. The resulting file is functionally equivalent to the original but is much harder to reverse-engineer. The transformation is **source-to-source**: the output is a valid, human-readable Verilog/SystemVerilog file, not a gate-level netlist.
+- **Imperative FSM elaboration** (`verilower`): write a multi-cycle sequential behaviour as a program — an `initial` process with its own `@(posedge clk)` waits, loops, and `break`/`continue` — and compile it into the explicit, synthesizable `always_ff`/`case` state machine a designer would have written by hand. The behavioural source and the lowered machine are validated against the *same* testbench.
+- **Flattening & elaboration** (`veriflat`): flatten a hierarchical design into a single module, with partial parameter inlining, constant folding, loop unrolling, and generate resolution — also useful to retarget generic, parametric designs (complex ROM/LUT initialization written as functions or generate loops) into plain RTL that FPGA toolchains with limited synthesis support accept.
+- **Obfuscation** (`veriobf`): rename all internal identifiers of a (flattened) design so IP vendors can deliver functional, simulatable netlists that are hard to reverse-engineer.
 
 The toolkit is built around a C++ library (`veriparse_static`) that implements:
-- A complete **Verilog parser** (Flex/Bison based)
+- A complete **Verilog / SystemVerilog parser** (Flex/Bison based), supporting a significant subset of the synthesizable languages (generate blocks, `always_ff`/`always_comb`, `logic` types, packages, interfaces, packed structs, enums, typedefs, …)
 - An **AST** (Abstract Syntax Tree) framework
-- A set of **transformation passes** (constant folding, dead code elimination, loop unrolling, module flattening, obfuscation, etc.)
+- A set of **transformation passes** (constant folding, dead code elimination, loop unrolling, module flattening, FSM elaboration, obfuscation, etc.)
 - **Verilog and YAML generators**
 
 ## Tools
 
+Each tool is summarized here; its full documentation — command-line
+reference, supported constructs, examples — lives in `docs/`.
+
+### `verilower` — Imperative FSM Elaboration
+
+`verilower` compiles a `(* veriparse_fsm *)`-marked multi-cycle `initial`
+process into an explicit synthesizable state machine. Statements run in
+order, `@(posedge clk)` marks each clock boundary; the tool cuts the process
+at the waits and emits the `always_ff`/`case` machine — state register,
+encoding, reset branch (inferred from the assignments before the first
+wait), optional chip enable (`@(posedge clk iff en)`), and state names
+derived from the source's block labels:
+
+```systemverilog
+(* veriparse_fsm *)
+initial begin
+   done <= 1'b0;              // init segment = the reset values
+   acc  <= 8'd0;
+   @(posedge clk iff en);     // each wait ends a state
+   acc <= 8'd1;
+   @(posedge clk iff en);
+   acc <= acc + 8'd2;
+   @(posedge clk iff en);
+   done <= 1'b1;
+end
+```
+
+Loops unroll by default; `(* veriparse_no_unroll *)` keeps a loop rolled
+with an induced counter. Alongside the RTL, `verilower` writes a JSON state
+map and a graphviz view of the compiled machines. The behavioural input
+simulates as-is (Verilator ≥ 5.050 `--timing`), so input and output are
+validated against the **same testbench** by differential cosimulation.
+Anything the model cannot lower exactly is a hard error citing the rule.
+
+**Full documentation: [docs/verilower.md](docs/verilower.md)** — design
+rationale: [docs/adr-0014-implicit-fsm-elaboration.md](docs/adr-0014-implicit-fsm-elaboration.md).
+
 ### `veriflat` — Verilog Flattener
 
-`veriflat` takes a pre-processed Verilog file and flattens the design hierarchy into a single module. It supports partial parameter inlining: you can specify which parameters to keep (preserve as module parameters) and which to inline (fold as constants).
+`veriflat` flattens a hierarchical design into a single self-contained
+module, resolving parameters, enums, typedefs, packed structs, constant
+functions, and generate blocks along the way. Partial parameter inlining
+lets you choose which top-module parameters stay parameters and which fold
+as constants:
 
-```
-Usage: veriflat [options] verilog-file [verilog-file ...]
-
-options:
-  -h [ --help ]            Produce help message
-  -v [ --version ]         Show the version and exit
-  -o [ --output ] arg      Output file
-  -t [ --top-module ] arg  Top module name
-  -p [ --param-map ] arg   YAML parameter map
-  -e [ --deadcode-end ]    Remove dead code after flatten pass
-  -d [ --deadcode-during ] Remove dead code during flatten pass
-  --sv                     Enable SystemVerilog mode
-  -s [ --seed ] arg        Seed value (default: 0)
-```
-
-**Parameter map format (YAML):**
-- `{}` — inline all parameters (fully flatten)
-- `{PARAM_A:}` — keep `PARAM_A` as a module parameter, inline all others
-- `'{PARAM_A: null, PARAM_B: null}'` — keep `PARAM_A` and `PARAM_B`, inline all others
-- `{PARAM_A: 42}` — override `PARAM_A` with value 42, inline all others
-
-**Example:**
 ```sh
 # Flatten, keeping FIFO_WIDTH as a parameter (preprocessing is built in)
 veriflat -p '{FIFO_WIDTH:}' --seed 0 --top-module top -I src/ src/top.v src/sub.v --output top_flat.v
 ```
 
-
-#### SystemVerilog Example: Generate Loop Flattening
-
-Consider a parametric N-bit register where each bit is handled by a dedicated
-`always_ff` block inside a `generate` loop:
-
-```systemverilog
-module nbit_reg
-  #(parameter int N = 4)
-  (input  logic         clk,
-   input  logic         rst_n,
-   input  logic [N-1:0] d,
-   output logic [N-1:0] q);
-
-  genvar i;
-  generate
-    for (i = 0; i < N; i = i + 1) begin : gen_bit
-      always_ff @(posedge clk or negedge rst_n) begin
-        if (!rst_n)
-          q[i] <= 1'b0;
-        else
-          q[i] <= d[i];
-      end
-    end
-  endgenerate
-
-endmodule
-```
-
-Flatten with `veriflat` (inlines `N=4` by default):
-
-```sh
-veriflat --sv -t nbit_reg -o nbit_reg_flat.sv nbit_reg.sv
-```
-
-Result — the generate loop is unrolled into four independent `always_ff` blocks:
-
-```systemverilog
-module nbit_reg (input logic clk,
-                 input logic rst_n,
-                 input logic [3:0] d,
-                 output logic [3:0] q);
-
-  genvar i;
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n) q[0] <= 1'b0;
-    else       q[0] <= d[0];
-  end
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n) q[1] <= 1'b0;
-    else       q[1] <= d[1];
-  end
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n) q[2] <= 1'b0;
-    else       q[2] <= d[2];
-  end
-
-  always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n) q[3] <= 1'b0;
-    else       q[3] <= d[3];
-  end
-
-endmodule
-```
-
-AST before flattening (with generate loop):
-
-![AST before flattening](docs/images/nbit_reg_ast_before.svg)
-
-AST after flattening (unrolled):
-
-![AST after flattening](docs/images/nbit_reg_ast_after.svg)
-
-
-### `veridump` — AST Dumper
-
-`veridump` parses a Verilog or SystemVerilog file and dumps its AST in YAML or
-Graphviz DOT format. This is useful for debugging, visualization, and scripting.
-
-```
-Usage: veridump [options] verilog-file [verilog-file ...]
-
-options:
-  -h [ --help ]         Produce help message
-  -v [ --version ]      Show the version and exit
-  -o [ --output ] arg   Output file
-  -f [ --format ] arg   Output format: yaml or dot (default: yaml)
-  --sv                  Enable SystemVerilog mode
-```
-
-**Examples:**
-
-```sh
-# Dump AST as YAML
-veridump --sv -f yaml -o design.yaml design.sv
-
-# Dump AST as DOT (render with graphviz)
-veridump --sv -f dot -o design.dot design.sv
-dot -Tsvg design.dot -o design.svg
-```
-
----
-
----
+**Full documentation: [docs/veriflat.md](docs/veriflat.md)** — including the
+parameter-map format and a worked generate-loop flattening example.
 
 ### `veriobf` — Verilog Obfuscator
 
-`veriobf` takes a flattened Verilog file and obfuscates all internal identifiers (signals, instances, etc.) using random or hashed names.
+`veriobf` renames all internal identifiers of a (typically flattened) design
+to random or hashed names, preserving the external interface — the
+IP-delivery back end of the `veriflat → veriobf` pipeline:
 
-```
-Usage: veriobf [options] verilog-file
-
-options:
-  -h [ --help ]          Produce help message
-  -v [ --version ]       Show the version and exit
-  -o [ --output ] arg    Output file
-  -l [ --id-length ] arg Maximum length of obfuscated identifiers (default: 16)
-  -a [ --hash ]          Use hashed identifiers instead of random ones
-  -s [ --seed ] arg      Seed value (default: 0)
-```
-
-**Example:**
 ```sh
 veriobf --id-length 16 --seed 0 top_flat.v --output top_obf.v
 ```
+
+**Full documentation: [docs/veriobf.md](docs/veriobf.md)**
+
+### `veridump` — AST Dumper
+
+`veridump` parses a design and dumps its AST as YAML (round-trippable
+through the library's importer) or Graphviz DOT — for debugging,
+visualization, and scripting:
+
+```sh
+veridump --sv -f dot -o design.dot design.sv && dot -Tsvg design.dot -o design.svg
+```
+
+**Full documentation: [docs/veridump.md](docs/veridump.md)**
+
+### `veripp` — Verilog Preprocessor
+
+`veripp` runs the built-in preprocessor alone (`` `include ``,
+`` `define ``, conditionals) and writes the resulting compilation unit —
+useful to inspect exactly what the parser will consume:
+
+```sh
+veripp -I rtl/include -D BOARD=de10 rtl/top.sv -o top_pp.sv
+```
+
+**Full documentation: [docs/veripp.md](docs/veripp.md)**
 
 ---
 
 ## Transformation Passes
 
-The library implements the following transformation passes:
+The library implements its transformations as composable passes over the
+AST: resolution and inlining (parameters, localparams, enums, typedefs,
+structs, type parameters, packages, interfaces, defaults), structure
+(loop unrolling, branch selection, generate removal, module flattening,
+instance/IO normalization, scope elevation), evaluation (constant folding,
+function evaluation, variable folding), FSM elaboration (ADR-0014), dead
+code elimination, and obfuscation.
 
-| Pass | Description |
-|------|-------------|
-| `AnnotateDeclaration` | Annotates declarations with scope information |
-| `AnnotateScope` | Annotates AST nodes with scope information |
-| `AstReplace` | Generic AST node replacement |
-| `BranchSelection` | Selects branches based on constant conditions |
-| `ConstantFolding` | Evaluates and folds constant expressions |
-| `DeadcodeElimination` | Removes unused signals and assignments |
-| `ExpressionEvaluation` | Evaluates expressions at compile time |
-| `FunctionEvaluation` | Inlines and evaluates Verilog functions |
-| `GenerateRemoval` | Resolves and removes `generate` blocks |
-| `LocalparamInliner` | Inlines `localparam` values |
-| `LoopUnrolling` | Unrolls `for` loops |
-| `ModuleFlattener` | Flattens module hierarchy |
-| `ModuleInstanceNormalizer` | Normalizes module instantiations |
-| `ModuleIoNormalizer` | Normalizes module I/O declarations |
-| `ModuleObfuscator` | Obfuscates internal identifiers |
-| `ParameterInliner` | Inlines parameter values |
-| `ResolveModule` | Resolves module references |
-| `ScopeElevator` | Elevates declarations to the correct scope |
-| `VariableFolding` | Folds constant variable assignments |
+**Full documentation: [docs/passes.md](docs/passes.md)** — every analysis
+and transformation pass, with its contracts and the exact `ResolveModule`
+pipeline order. Design decisions behind the passes are recorded as ADRs in
+[docs/](docs/).
 
 ---
 
@@ -211,12 +129,14 @@ veriparse/
 ├── apps/
 │   └── veriparse/
 │       ├── veriflat/       # veriflat tool
+│       ├── verilower/      # verilower tool
 │       ├── veriobf/        # veriobf tool
-│       ├── scripts/        # veriparse convenience script
-│       └── test/           # Integration tests
+│       ├── veridump/       # veridump tool
+│       ├── veripp/         # veripp tool
+│       └── test/           # Integration & cosimulation tests
 ├── cmake/                  # CMake modules and common settings
 ├── conda/                  # Conda build and dev environment
-│   └── Makefile            # Main build entry point
+├── docs/                   # Tool documentation, passes reference, ADRs
 ├── lib/
 │   ├── include/            # Public headers
 │   ├── src/                # Library source code
@@ -246,7 +166,8 @@ veriparse/
 | yaml-cpp | 0.8.0 | YAML parameter map parsing |
 | GMP / GMPXX | 6.3.0 | Arbitrary precision arithmetic |
 | GoogleTest | 1.17.0 | Unit testing |
-| Verilator | 5.x | Cosim test suite (build-time) |
+| Verilator | ≥ 5.050 | Cosim test suite (build-time); the floor is semantic — earlier versions mis-schedule initial-block `<=` under `--timing` |
+| Yosys | any recent | Synthesis checks in the verilower test suite (dev/CI only) |
 
 ---
 

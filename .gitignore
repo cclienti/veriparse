@@ -33,6 +33,13 @@ docs/*.md
 # reviewing the ADR.
 !docs/adr-*.md
 !docs/imperative-fsm-design.md
+# So are the per-tool user guides and the passes reference.
+!docs/verilower.md
+!docs/veriflat.md
+!docs/veridump.md
+!docs/veriobf.md
+!docs/veripp.md
+!docs/passes.md
 # No PDF is committed. docs/ holds working copies of the IEEE standards and of
 # the papers ADR-0014 §C.7 cites; all of them are third-party, redistribution-
 # restricted, and the standards are multi-megabyte besides — they have twice
