@@ -1217,6 +1217,10 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 // later statements, dead at its end.
                 if(stmt->is_node_type(AST::NodeType::Var)) {
                     const auto &var = AST::cast_to<AST::Var>(stmt);
+                    if(var->get_init() &&
+                       check_impure_calls(AST::to_node(var->get_init()->get_var()))) {
+                        return 1;
+                    }
                     if(contains_event_statement(node)) {
                         LOG_ERROR_N(stmt)
                             << "temporary '" << var->get_name() << "' is declared in a "
@@ -1661,10 +1665,10 @@ void ImplicitFsmElaboration::push_frame(std::vector<Frame> &frames, const AST::N
         const auto &block = AST::cast_to<AST::Block>(node);
         const auto &stmts = block->get_statements();
         if(stmts) {
-            std::vector<std::string> decls;
+            std::vector<AST::Var::Ptr> decls;
             for(const auto &stmt : *stmts) {
                 if(stmt->is_node_type(AST::NodeType::Var)) {
-                    decls.push_back(AST::cast_to<AST::Var>(stmt)->get_name());
+                    decls.push_back(AST::cast_to<AST::Var>(stmt));
                 }
             }
             frames.push_back(Frame{stmts, stmts->begin(), loop, block->get_scope(), decls});
@@ -1718,8 +1722,8 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         if(top.it == top.stmts->end()) {
             // §6: a block's temporaries die at its end — the scope is the
             // lifetime, and a read past it must not substitute.
-            for(const auto &name : top.decls) {
-                env.erase(name);
+            for(const auto &decl : top.decls) {
+                env.erase(decl->get_name());
             }
             // The end of a loop's body is its back-edge (§7.3): fork at the
             // loop head again instead of popping through.
@@ -1779,31 +1783,35 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             push_frame(frames, AST::cast_to<AST::SingleStatement>(stmt)->get_statement());
             break;
 
-        case AST::NodeType::Var:
+        case AST::NodeType::Var: {
             // §6: a temporary's declaration — its frame carries the scope,
-            // the environment carries the value; nothing is emitted.
+            // the environment carries the value, and an initializer is the
+            // first assignment.
+            const auto &var = AST::cast_to<AST::Var>(stmt);
+            if(var->get_init() && var->get_init()->get_var()) {
+                if(process_blocking(var, var->get_name(), AST::to_node(var->get_init()->get_var()),
+                                    env, fn, ln)) {
+                    return 1;
+                }
+            }
             break;
+        }
 
         case AST::NodeType::BlockingSubstitution: {
-            // §6.1: substitution, not rewriting. The value is taken over
-            // entry values through the environment; a trivial value stays
-            // inline, anything else becomes a module-level wire typed by
-            // the temporary's declaration — which is exactly where the
-            // declared width keeps doing its work (§11.6) and where a
-            // select finds a name to apply to.
+            // §6.1: substitution, not rewriting — the value dissolves into
+            // its readers through the environment (process_blocking).
             const auto &blocking = AST::cast_to<AST::BlockingSubstitution>(stmt);
             const auto &target = lvalue_target(blocking->get_left());
-            const auto &value = clone_subst(AST::to_node(blocking->get_right()->get_var()), env);
-            if(check_temp_reads(value, env)) {
+            const auto &decl = find_temp_decl(frames, target);
+            if(!decl) {
+                LOG_ERROR_N(stmt) << "'=' to '" << target << "' with no declaration in "
+                                  << "scope: the collector should have refused this — "
+                                  << "please report this input (ADR-0014 §6)";
                 return 1;
             }
-            if(value->is_node_type(AST::NodeType::Identifier) ||
-               value->is_node_type(AST::NodeType::IntConst) ||
-               value->is_node_type(AST::NodeType::IntConstN)) {
-                env[target] = value;
-            } else {
-                env[target] =
-                    AST::to_node(make_id(materialize_temp(target, value, fn, ln), fn, ln));
+            if(process_blocking(decl, target, AST::to_node(blocking->get_right()->get_var()), env,
+                                fn, ln)) {
+                return 1;
             }
             break;
         }
@@ -1831,8 +1839,11 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             const auto &ifs = AST::cast_to<AST::IfStatement>(stmt);
             {
                 bool dead = false;
-                const auto &leg_guard =
-                    conjoin(guard, clone_subst(ifs->get_cond(), env), fn, ln, &dead);
+                const auto &cond_subst = clone_subst(ifs->get_cond(), env);
+                if(check_temp_reads(cond_subst, env)) {
+                    return 1;
+                }
+                const auto &leg_guard = conjoin(guard, cond_subst, fn, ln, &dead);
                 if(!dead) {
                     warn_fork_arm_label(ifs->get_true_statement());
                     std::vector<Frame> leg = frames;
@@ -1889,8 +1900,11 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                     }
                     AST::Node::Ptr match;
                     for(const auto &value : *conds) {
-                        const auto &eq =
-                            make_eq(clone_subst(cs->get_comp(), env), value->clone(), fn, ln);
+                        const auto &comp_subst = clone_subst(cs->get_comp(), env);
+                        if(check_temp_reads(comp_subst, env)) {
+                            return 1;
+                        }
+                        const auto &eq = make_eq(comp_subst, value->clone(), fn, ln);
                         match = match ? make_lor(match, eq, fn, ln) : eq;
                     }
                     legs.emplace_back(match, arm->get_statement());
@@ -1996,14 +2010,67 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
     return 0;
 }
 
-std::string ImplicitFsmElaboration::materialize_temp(const std::string &temp,
-                                                     const AST::Node::Ptr &value,
-                                                     const std::string &fn, int ln)
+AST::Var::Ptr ImplicitFsmElaboration::find_temp_decl(const std::vector<Frame> &frames,
+                                                     const std::string &name)
 {
-    // §6.1: identical expressions share one wire — naming, not binding;
-    // mutually exclusive states never contend on it.
+    for(auto it = frames.rbegin(); it != frames.rend(); ++it) {
+        for(const auto &decl : it->decls) {
+            if(decl->get_name() == name) {
+                return decl;
+            }
+        }
+    }
+    return nullptr;
+}
+
+int ImplicitFsmElaboration::process_blocking(const AST::Var::Ptr &decl, const std::string &target,
+                                             const AST::Node::Ptr &rhs, Env &env,
+                                             const std::string &fn, int ln)
+{
+    const auto &value = clone_subst(rhs, env);
+    if(check_temp_reads(value, env)) {
+        return 1;
+    }
+    // §6.1: a constant folds inline, truncated to the declared width at
+    // substitution time — the one value that never earns a wire. Signed
+    // temporaries and widths past 32 keep the wire, whose typed
+    // declaration says the same thing without arithmetic here.
+    unsigned int width = 0;
+    mpz_class folded;
+    const bool has_signing =
+        decl->get_type() && decl->get_type()->get_signing() != AST::DataType::SigningEnum::NONE;
+    const bool atom_signed =
+        decl->get_type() && (decl->get_type()->is_node_type(AST::NodeType::IntType) ||
+                             decl->get_type()->is_node_type(AST::NodeType::IntegerType) ||
+                             decl->get_type()->is_node_type(AST::NodeType::ByteType) ||
+                             decl->get_type()->is_node_type(AST::NodeType::ShortintType) ||
+                             decl->get_type()->is_node_type(AST::NodeType::LongintType));
+    const bool is_signed = (decl->get_type() && decl->get_type()->get_signing() ==
+                                                    AST::DataType::SigningEnum::SIGNED) ||
+                           (atom_signed && !has_signing);
+    if(!is_signed && !declared_width(decl, width) && width >= 1 && width <= 32 &&
+       ExpressionEvaluation().evaluate_node(value, folded)) {
+        const mpz_class modulus = mpz_class(1) << width;
+        const mpz_class masked = ((folded % modulus) + modulus) % modulus;
+        env[target] = AST::to_node(
+            make_const(masked.convert_to<unsigned int>(), static_cast<int>(width), fn, ln));
+        return 0;
+    }
+    env[target] = AST::to_node(make_id(materialize_temp(decl, target, value), fn, ln));
+    return 0;
+}
+
+std::string ImplicitFsmElaboration::materialize_temp(const AST::Var::Ptr &decl,
+                                                     const std::string &temp,
+                                                     const AST::Node::Ptr &value)
+{
+    // §6.1: identical expressions share one wire — naming, not binding —
+    // but only under the SAME declared type: the type is the truncation.
     for(const auto &wire : m_wires) {
-        if(wire.value->is_equal(value, false)) {
+        const bool same_type = (!wire.temp->get_type() && !decl->get_type()) ||
+                               (wire.temp->get_type() && decl->get_type() &&
+                                wire.temp->get_type()->is_equal(decl->get_type(), false));
+        if(same_type && wire.value->is_equal(value, false)) {
             return wire.name;
         }
     }
@@ -2020,9 +2087,7 @@ std::string ImplicitFsmElaboration::materialize_temp(const std::string &temp,
             }
         }
     }
-    (void)fn;
-    (void)ln;
-    m_wires.push_back(MaterializedWire{name, value, m_temps.at(temp)});
+    m_wires.push_back(MaterializedWire{name, value, decl});
     return name;
 }
 
@@ -2032,7 +2097,20 @@ int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const E
         return 0;
     }
     std::set<std::string> reads;
-    collect_identifier_names(node, reads);
+    switch(node->get_node_type()) {
+    case AST::NodeType::Block:
+    case AST::NodeType::NonblockingSubstitution:
+    case AST::NodeType::IfStatement:
+    case AST::NodeType::CaseStatement:
+    case AST::NodeType::CasexStatement:
+    case AST::NodeType::CasezStatement:
+        // Statement position: assignment targets are writes, not reads.
+        collect_reads(node, reads);
+        break;
+    default:
+        collect_identifier_names(node, reads);
+        break;
+    }
     for(const auto &read : reads) {
         if(m_temps.count(read) && !env.count(read)) {
             LOG_ERROR_N(node) << "temporary '" << read << "' is read before it is "
@@ -2110,7 +2188,11 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         // alike, over the segment's values.
         {
             bool dead = false;
-            const auto &leg_guard = conjoin(guard, clone_subst(info.cond, env), fn, ln, &dead);
+            const auto &cond_subst = clone_subst(info.cond, env);
+            if(check_temp_reads(cond_subst, env)) {
+                return 1;
+            }
+            const auto &leg_guard = conjoin(guard, cond_subst, fn, ln, &dead);
             if(!dead && enter_body(leg_guard, copy_list(action), env)) {
                 return 1;
             }
@@ -2688,6 +2770,19 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         return 1;
     }
 
+    // §6: a temporary named after a module-level declaration — a register,
+    // a port, a rolled for's index — is legal SystemVerilog shadowing, but
+    // substitution and the by-name checks bind by name. Rejected, with the
+    // one-word fix.
+    for(const auto &elt : m_temps) {
+        if(find_declaration(module, elt.first)) {
+            LOG_ERROR_N(elt.second)
+                << "temporary '" << elt.first << "' shadows a module-level declaration: "
+                << "substitution binds by name — rename it (ADR-0014 §6, §9)";
+            return 1;
+        }
+    }
+
     // §9 / IEEE §9.2.2.4: no other process or continuous assign may write a
     // register this machine drives — the source is merely a race, but the
     // emitted always_ff would not conform, the stronger reason to refuse.
@@ -3081,16 +3176,40 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         }
         auto net = std::make_shared<AST::WireNet>(fn, ln);
         net->set_name(wire.name);
-        // Dims only, no data type: `wire [8:0] name` reads the same in
-        // SystemVerilog and in 1364 mode, and the declared width is the
-        // whole point (§6.1, §11.6).
-        if(wire.temp && wire.temp->get_type() && wire.temp->get_type()->get_packed_dims()) {
+        // Dims plus signing, no data-type keyword: `wire signed [8:0]`
+        // reads the same in SystemVerilog and in 1364 mode, and the
+        // declared type is the whole point (§6.1, §11.6). A keyword-width
+        // type (int, byte, ...) contributes its width and its default
+        // signedness.
+        {
+            const auto &temp_type = wire.temp ? wire.temp->get_type() : nullptr;
             auto net_type = std::make_shared<AST::ImplicitType>(fn, ln);
-            auto dims = std::make_shared<AST::Dimension::List>();
-            for(const auto &dim : *wire.temp->get_type()->get_packed_dims()) {
-                dims->push_back(AST::cast_to<AST::Dimension>(dim->clone()));
+            if(temp_type && temp_type->get_packed_dims() &&
+               !temp_type->get_packed_dims()->empty()) {
+                auto dims = std::make_shared<AST::Dimension::List>();
+                for(const auto &dim : *temp_type->get_packed_dims()) {
+                    dims->push_back(AST::cast_to<AST::Dimension>(dim->clone()));
+                }
+                net_type->set_packed_dims(dims);
+            } else if(wire.temp) {
+                unsigned int width = 0;
+                if(!declared_width(wire.temp, width) && width > 1) {
+                    net_type->set_packed_dims(make_packed_range(width - 1, fn, ln));
+                }
             }
-            net_type->set_packed_dims(dims);
+            const bool atom_signed =
+                temp_type && (temp_type->is_node_type(AST::NodeType::IntType) ||
+                              temp_type->is_node_type(AST::NodeType::IntegerType) ||
+                              temp_type->is_node_type(AST::NodeType::ByteType) ||
+                              temp_type->is_node_type(AST::NodeType::ShortintType) ||
+                              temp_type->is_node_type(AST::NodeType::LongintType));
+            const bool is_signed =
+                temp_type &&
+                (temp_type->get_signing() == AST::DataType::SigningEnum::SIGNED ||
+                 (atom_signed && temp_type->get_signing() == AST::DataType::SigningEnum::NONE));
+            if(is_signed) {
+                net_type->set_signing(AST::DataType::SigningEnum::SIGNED);
+            }
             net->set_type(net_type);
         }
         result->push_back(AST::to_node(net));

@@ -273,6 +273,37 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err6) { TEST_ERROR_SV
 // environment died with the block's frame, and the dangling read errors
 // (§6, §6.1, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err7) { TEST_ERROR_SV; }
+// A narrow temporary aliasing a wider signal: the wire carries the
+// declared [3:0], so the truncation the declaration means survives —
+// aliases materialize too, correctness before economy (§6.1, §11.6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp4) { TEST_CORE_SV; }
+// A signed temporary: the wire keeps the signing, so `>>>` and the
+// negative compare read as the source meant them (§6.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp5) { TEST_CORE_SV; }
+// A keyword-width temporary (`int`): the wire takes the keyword's 32
+// signed bits, not a 1-bit default (§6.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp6) { TEST_CORE_SV; }
+// Sibling scopes reusing one temporary name at different widths — and
+// the same expression at different declared widths: two wires, each
+// typed by its own declaration, never shared across types (§6.1, §11.6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp7) { TEST_CORE_SV; }
+// A declaration initializer is the first assignment: `logic [8:0] sum =
+// a + b;` names the value like the two-statement form (§6).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp8) { TEST_CORE_SV; }
+// A constant folds inline, truncated to the declared width at
+// substitution time — the one value that never earns a wire (§6.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp9) { TEST_CORE_SV; }
+// A temporary named after a module-level declaration: legal SystemVerilog
+// shadowing, but substitution binds by name — rejected, rename it (§6,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err8) { TEST_ERROR_SV; }
+// A temporary named after a rolled for's index register: the induced
+// entries share the environment — rejected (§6, §7.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err9) { TEST_ERROR_SV; }
+// An unassigned temporary read in a fork condition: the pass's own
+// diagnostic, not a downstream undeclared-identifier surprise (§6.1,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err10) { TEST_ERROR_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).

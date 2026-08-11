@@ -133,8 +133,9 @@ private:
         const AST::Node *loop = nullptr;
         std::string label;
         /// §6 temporaries this frame's block declares: their environment
-        /// entries die when the frame pops — the scope is the lifetime.
-        std::vector<std::string> decls;
+        /// entries die when the frame pops — the scope is the lifetime,
+        /// and the declaration supplies the wire's type.
+        std::vector<AST::Var::Ptr> decls;
     };
 
     /// §6 scoping context during collection: which temporaries are
@@ -187,11 +188,19 @@ private:
     int collect_body(const AST::Node::Ptr &node, std::vector<AST::EventStatement::Ptr> &waits,
                      AST::Sens::Ptr &clock, bool &has_wait, TempScope scope);
 
-    /// §6.1: the emission tier for one blocking value — inline when
-    /// trivial, else a module-level wire carrying the temporary's declared
-    /// type, shared when the expression is structurally identical.
-    std::string materialize_temp(const std::string &temp, const AST::Node::Ptr &value,
-                                 const std::string &fn, int ln);
+    /// §6.1: one blocking assignment — the value taken over entry values,
+    /// a constant folded and truncated to the declared width inline,
+    /// anything else materialized as a wire typed by @p decl.
+    int process_blocking(const AST::Var::Ptr &decl, const std::string &target,
+                         const AST::Node::Ptr &rhs, Env &env, const std::string &fn, int ln);
+
+    /// The §6.1 wire for one value: typed by the temporary's declaration,
+    /// shared only when expression AND declared type both match.
+    std::string materialize_temp(const AST::Var::Ptr &decl, const std::string &temp,
+                                 const AST::Node::Ptr &value);
+
+    /// The innermost frame declaring @p name — the walk's scope lookup.
+    static AST::Var::Ptr find_temp_decl(const std::vector<Frame> &frames, const std::string &name);
 
     /// §6.1: a substituted expression must not still read a temporary the
     /// environment no longer carries — dead scope, or not yet assigned.
