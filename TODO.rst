@@ -14,15 +14,6 @@ Mechanics
 
 #. 2018-08-18: Use references on shared pointer in method and function to improve the speedup.
 
-#. 2018-10-13: Change AST cast by adding a Node::as<T> method.
-
-#. 2018-10-13: Use unique_ptr instead of share_ptr. Really useful and achievable ??
-
-#. 2018-10-14: Remove indentation levels for namespaces
-
-#. 2018-08-18: Add a to_string method in each AST class to print the real derived instance values in
-   operator<<overloading.
-
 #. 2018-08-28: Manage error codes: OK, PASS_FAILED, SYNTAX_ERROR, ...
 
 
@@ -32,21 +23,9 @@ Functional
 #. 2020-05-01: In variable folding, the state map should store not only the node value but also the
    dimension of the variable to properly slice results.
 
-#. 2019-12-11: Create a pass to exchange identifier, taskcall to functioncall and vice-versa depending on what is really
-   declared in the design. Sometimes the parser cannot know easily if it deals with an identifier, a function or a task
-   identifier.
-
-#. 2019-06-23: Undeclared signals must be inferred as 1-bit wire. A pass should declare all undeclared signals. See
-   double_fpu-master file fpu_module.v:150, we added the declaration line 123 in order to flatten properly the project.
-
 #. 2019-02-19: Obfucate module instance name
 
-#. 2019-02-25: Scope are completely managed during flattening. We need to rename variable that use the scope name. Maybe
-   we should also manage nested scopes.
-
 #. 2019-02-05: Improved rendering of unnamed ports/parameter instance in verilog generator (put everything on a line).
-
-#. 2018-12-13: Module Flattener Tests: modify verilog testbench to check the validity of the test automatically.
 
 #. 2018-12-12: Verilog generator: assign and ternary operator are not properly indented (see flattener alu_dsp test).
 
