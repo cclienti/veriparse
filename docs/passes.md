@@ -350,6 +350,34 @@ pass.
 
 ---
 
+### `ImplicitFsmElaboration`
+Compiles a `(* veriparse_fsm *)`-marked multi-cycle `initial` process into an
+explicit synthesizable FSM (ADR-0014). The user-facing reference is
+[verilower.md](verilower.md).
+
+- Cuts the process at every `@(posedge clk)` and walks the path cover:
+  each path between two consecutive cut points becomes a guarded transition,
+  with infeasible paths pruned structurally.
+- Init segment → reset branch (signal/level/kind inferred or hinted);
+  uniform `iff` conditions → a single chip enable.
+- Bounded loops arrive unrolled (`LoopUnrolling`); `(* veriparse_no_unroll *)`
+  loops get an induced countdown or drive the author's index register, one
+  counter per nesting depth. `break`/`continue` are CFG edges;
+  `forever`/`while` form real back-edges.
+- Blocking temporaries (`=` on in-process declarations) materialize as typed
+  wires substituted at their uses.
+- State names derive from block labels; encodings: binary, one-hot, gray.
+- Everything outside the supported subset is a hard error citing the
+  governing rule (ADR-0014 §9): impure calls, multi-driver registers,
+  zero-delay loops, multiple clocks, `fork`/`join`, tasks holding cut
+  points, …
+- Fills an `FsmReport` (states, transitions, reset, per-process) that
+  `verilower` serializes as JSON and graphviz.
+- Opt-in: only runs when enabled in `ResolveModule` (the `verilower` driver
+  does; `veriflat` leaves it off).
+
+---
+
 ### `ModuleFlattener`
 Flattens a module hierarchy by inlining all sub-module instances.
 
@@ -384,6 +412,7 @@ ScopeElevator
 LoopUnrolling
 BranchSelection
 GenerateRemoval
+ImplicitFsmElaboration ← optional, opt-in (ADR-0014); on in verilower, off in veriflat
 ConstantFolding       ← second pass after branch/generate removal
 VariableFolding
 DeadcodeElimination   ← optional
