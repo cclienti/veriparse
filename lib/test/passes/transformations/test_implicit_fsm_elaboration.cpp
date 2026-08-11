@@ -262,6 +262,17 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err4) { TEST_ERROR_SV
 // A temporary shadowing one of an enclosing scope: substitution binds by
 // name (§6, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err5) { TEST_ERROR_SV; }
+// The wrap-around temptation: a temporary declared in a loop body whose
+// wait sits between the end-of-lap '=' and the next lap's read. The
+// declaring scope spans the cut point, so the declaration itself is the
+// error — scoping forbids the wrap before any flow analysis could (§6,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err6) { TEST_ERROR_SV; }
+// The subtler wrap: the declaration is legal — a cut-point-free block at
+// the end of the lap — but the next lap's read sits outside it. The
+// environment died with the block's frame, and the dangling read errors
+// (§6, §6.1, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err7) { TEST_ERROR_SV; }
 // repeat (1) rolled with a jump inside: the single pass still owns its
 // break/continue — break falls through past the pass, never out of an
 // enclosing loop (IEEE 1800-2017 §12.7.2, ADR-0014 §8).
