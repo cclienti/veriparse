@@ -905,6 +905,18 @@ it, and the first two are not cosmetic:
   may deserve a name even where inline is legal; §15 keeps this purely
   cosmetic half as the optional part.
 
+The v1 emitter resolves the three conditions by construction rather than
+by analysis: **every value materializes** as a wire typed by the
+temporary's declaration — dims and signing, keyword widths included — so
+the declared-width and unprintable-select conditions can never be
+mis-judged, and identical expressions share a wire only under identical
+declared types, since the type *is* the truncation. The one value that
+never earns a wire is a **constant**, folded and truncated to the declared
+width at substitution time — the fold tier done eagerly and exactly. The
+inline-alias economy this forgoes is precisely what the
+`ConstantFolding`/`VariableFolding` running right after (§10.3) exist to
+recover.
+
 The same mechanism, applied *across* states, is a lightweight resource
 sharing: two case arms reading one materialized wire present the
 synthesizer a single network, and states being mutually exclusive, nothing
