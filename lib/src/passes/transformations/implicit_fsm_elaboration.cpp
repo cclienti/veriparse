@@ -3265,6 +3265,20 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         [&](const AST::Node::Ptr &expr, const std::set<std::string> &commits,
             const std::string &name, const char *what) {
             for(const auto &operand : operands_of(expr)) {
+                // An input may change on the arrival edge itself: the
+                // always_ff read it before the edge where the emitted arm
+                // re-reads it after — measured divergent, not a style
+                // rule. A register of this process is stable for the
+                // whole arrived cycle.
+                bool is_input = false;
+                if(find_declaration(m_walk_module, operand, &is_input) && is_input) {
+                    LOG_ERROR_N(expr)
+                        << "decoded output '" << name << "': its " << what << " reads input '"
+                        << operand << "', which can change on the arrival edge — the "
+                        << "always_ff sampled it before the edge, the emitted arm re-reads "
+                        << "it after; register the input first (ADR-0014 §6.2, §9)";
+                    return 1;
+                }
                 if(commits.count(operand)) {
                     LOG_ERROR_N(expr)
                         << "decoded output '" << name << "': its " << what << " reads '" << operand
@@ -3321,20 +3335,66 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                 if(all_equal) {
                     candidate.push_back({nullptr, group.front()->decode.at(name)});
                 } else {
+                    // Only the conjuncts that differ within the group
+                    // discriminate its legs: the shared prefix (the way
+                    // into the fork, a wait-state's exit condition) holds
+                    // on every leg and is dropped before the tree — and
+                    // before stability judges the guards.
+                    std::vector<std::vector<AST::Node::Ptr>> conjuncts;
                     for(const auto &transition : group) {
-                        candidate.push_back({transition->guard, transition->decode.at(name)});
+                        std::vector<AST::Node::Ptr> terms;
+                        std::function<void(const AST::Node::Ptr &)> flatten =
+                            [&](const AST::Node::Ptr &node) {
+                                if(!node) {
+                                    return;
+                                }
+                                if(node->is_node_type(AST::NodeType::Land)) {
+                                    const auto &land = AST::cast_to<AST::Land>(node);
+                                    flatten(land->get_left());
+                                    flatten(land->get_right());
+                                    return;
+                                }
+                                terms.push_back(node);
+                            };
+                        flatten(transition->guard);
+                        conjuncts.push_back(terms);
+                    }
+                    std::set<std::string> common;
+                    for(const auto &term : conjuncts.front()) {
+                        common.insert(renderer.render(term));
+                    }
+                    for(std::size_t g = 1; g < conjuncts.size(); ++g) {
+                        std::set<std::string> here;
+                        for(const auto &term : conjuncts[g]) {
+                            here.insert(renderer.render(term));
+                        }
+                        for(auto it = common.begin(); it != common.end();) {
+                            it = here.count(*it) ? std::next(it) : common.erase(it);
+                        }
+                    }
+                    for(std::size_t g = 0; g < group.size(); ++g) {
+                        AST::Node::Ptr reduced;
+                        for(const auto &term : conjuncts[g]) {
+                            if(common.count(renderer.render(term))) {
+                                continue;
+                            }
+                            reduced = reduced ? conjoin(reduced, term, term->get_filename(),
+                                                        term->get_line())
+                                              : term;
+                        }
+                        candidate.push_back({reduced, group[g]->decode.at(name)});
                     }
                 }
-                for(const auto &transition : group) {
+                for(std::size_t g = 0; g < group.size(); ++g) {
                     std::set<std::string> commits;
-                    for(const auto &stmt : *transition->action) {
+                    for(const auto &stmt : *group[g]->action) {
                         collect_driven(stmt, commits);
                     }
-                    if(check_stable(transition->decode.at(name), commits, name, "value")) {
+                    if(check_stable(group[g]->decode.at(name), commits, name, "value")) {
                         return 1;
                     }
-                    if(!all_equal && transition->guard &&
-                       check_stable(transition->guard, commits, name, "arrival guard")) {
+                    if(!all_equal && candidate[g].first &&
+                       check_stable(candidate[g].first, commits, name, "arrival guard")) {
                         return 1;
                     }
                 }

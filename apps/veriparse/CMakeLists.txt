@@ -364,6 +364,11 @@ if(NOT WIN32)
     # corner (§11.6) through the materialized wires, alternating forever.
     add_verilower_sv_cosim(NAME temp_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §6.2 decoded outputs (ADR-0014 §12 phase 9): busy/done/sel through
+    # the §7.3 wait-state, a fork-arrival tree, and the perpetual wrap —
+    # the tracking-vs-holding window probed by the cycle-sampled bench.
+    add_verilower_sv_cosim(NAME decode_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
     # marked module instantiated twice with different parameters — the
     # shape a per-module verilower run cannot compile (§15) — each
