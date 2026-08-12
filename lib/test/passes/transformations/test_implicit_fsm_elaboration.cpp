@@ -191,6 +191,10 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err5) { TEST_ERROR_
 // A decode value reading another decoded output before its assignment
 // (§6.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err6) { TEST_ERROR_SV; }
+// A tree guard reading a raw input: the always_ff sampled it before the
+// arrival edge, the arm would re-read it after — measured divergent
+// (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err7) { TEST_ERROR_SV; }
 // A for with a non-constant bound and no mark refuses the same way (§7.2,
 // §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }

@@ -1000,10 +1000,23 @@ whose sequential next-state half is where such a value belongs. What
 passes the check trivially is what the feature exists for: the constant
 and quasi-constant Moore outputs — `busy`, `valid`, `ready`, state-typed
 flags — and expressions over registers the arriving paths leave alone.
-An input read by a decode expression is admitted with the §15 caveat kept
-verbatim: the source holds its wake-time sample where the RTL tracks, and
-equivalence **as sampled at the clock edges** assumes the input is
-edge-synchronous — the discipline §5.3 and §11's harness already assume.
+
+A module **input** is rejected wherever a decode value or a tree guard
+reads it, and this is a measurement, not a style rule: the §15 draft
+admitted inputs under an edge-synchronous caveat, and the phase-9 bench
+refuted it — an input legitimately changes *on* the arrival edge, the
+`always_ff` sampled it before that edge to choose the transition, and the
+emitted arm re-reads it after, so the two disagree for the whole arrived
+cycle whenever the input flipped. The fix is the message: register the
+input, and the register is stable for the cycle by §9.2.2.4.
+
+One reduction keeps the stability rule from over-firing: a tree's guards
+are the paths' full conjunctions, and the conjuncts **common to every leg
+of a group** — the way into the fork, typically a §7.3 wait-state's exit
+condition over an input — hold on every leg and discriminate nothing, so
+they are dropped before the tree is built and before stability judges the
+guards. Only the differing conjuncts — the fork condition itself — must
+be stable.
 
 **Mixing rules inside one segment come from §6.1 unchanged.** A later
 read in the same segment — by another `=`, by a `<=` right-hand side, by
