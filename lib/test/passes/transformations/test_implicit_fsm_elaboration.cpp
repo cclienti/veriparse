@@ -195,6 +195,28 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err6) { TEST_ERROR_
 // arrival edge, the arm would re-read it after — measured divergent
 // (§6.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err7) { TEST_ERROR_SV; }
+// Duplicate case items with differing decoded values: first match wins in
+// the source, so the later leg is unreachable and the arm keeps the first
+// (§6.2, IEEE §12.5).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode3) { TEST_CORE_SV; }
+// The raw-input rejection is not laundered away by a continuous assign:
+// stability looks through user wires to their leaves (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err8) { TEST_ERROR_SV; }
+// A register committed by another process changes on the arrival edge
+// like an input: rejected in a decode value (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err9) { TEST_ERROR_SV; }
+// An explicit net keyword is a net whatever the data type carries
+// (IEEE §23.2.2.3): not a decoded output (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err10) { TEST_ERROR_SV; }
+// '=' to a name that is not a signal at all — a localparam (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err11) { TEST_ERROR_SV; }
+// A decoded output taking a conditional value in the init segment: the
+// reset value is unconditional (§5.1, §6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err12) { TEST_ERROR_SV; }
+// A branch-local temporary shadowing the decoded output it hides from the
+// fork detection: rejected as shadowing, never double-driven (§6, §6.2,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err13) { TEST_ERROR_SV; }
 // A for with a non-constant bound and no mark refuses the same way (§7.2,
 // §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }

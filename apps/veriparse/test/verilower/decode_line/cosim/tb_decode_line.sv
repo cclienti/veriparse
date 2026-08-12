@@ -14,6 +14,12 @@
 // is nonblocking-driven and therefore pre-update) provides the actual
 // cycle, giving the two effective delays the nonblocking-driven q gets
 // for free (its sampler's commit plus the check's pre-update read).
+//
+// That first stage rides on the woken process running before the sampler
+// — both Active region, an order IEEE 1800-2017 §4.7 leaves open. This
+// suite is Verilator-only by decision, and the probe below checks the
+// assumption at runtime, so a scheduler change fails HERE with its own
+// message rather than as a phantom lowering bug.
 module tb_decode_line;
    logic clk = 0, rst_n = 0;
    logic start = 0, start_q = 0;
@@ -42,6 +48,19 @@ module tb_decode_line;
       busy_b_q <= busy_bn;
       done_b_q <= done_bn;
       sel_b_q  <= sel_bn;
+   end
+
+   logic probe = 1'b0, probe_seen = 1'b0;
+   initial forever begin
+      @(posedge clk);
+      probe = ~probe;
+   end
+   always @(posedge clk) probe_seen <= probe;
+   initial begin
+      repeat (3) @(posedge clk);
+      @(negedge clk);
+      if (probe_seen !== probe)
+         $fatal(1, "BENCH ASSUMPTION BROKEN: the scheduler runs samplers before woken processes; the reference sampling below needs one stage fewer");
    end
 
    initial begin
