@@ -743,13 +743,15 @@ begin
 end
 ```
 
-An `=` to anything else — a module-level signal, or a variable whose
-declaring scope spans a cut point — is an **error** naming the target and
-pointing at `<=`. Nothing is silently promoted, and a reader can tell a
-register from a wire by looking at the declaration rather than by running
-the analysis in their head. (§15 records the one planned exception: a
-signal declared for combinational output decode, where a module-level `=`
-on every lap becomes the per-state value of an emitted `always_comb`.)
+An `=` to a variable whose declaring scope spans a cut point — other
+than a module-level one — is an **error** naming the target and pointing
+at `<=`. Nothing is silently promoted, and a reader can tell a register
+from a wire by looking at the declaration rather than by running the
+analysis in their head. A **module-level** `=` target is the one
+exception, and it is not a loophole in the liveness rule but a third
+storage class with its own contract: a *decoded output*, §6.2, where the
+`=` on every path becomes the per-state value of an emitted
+`always_comb`.
 
 **There is no exception, and the `for` step is not one.** In a clocked
 system an `=` that crosses an edge has no meaning to give it, so the rule is
@@ -936,6 +938,103 @@ a path: by the condition under which it is taken and by what it leaves in
 each variable, both read against the values held on entry — which is the
 rule above, in other words. **Appendix C** gives it its notation and builds
 the algorithm and the data structures on it.
+
+### 6.2 Module-level `=` — combinational output decode
+
+A module-level variable assigned by `=` inside the marked process is a
+**decoded output**. The process may mix the two forms freely — that is the
+point: the behavioural model reads in program order with both — and the
+lowering splits them by discipline: every `<=` stays in the `always_ff`
+with the transitions, every module-level `=` moves into one
+**`always_comb` over the state register**, the classic Moore output
+decode. One signal, one discipline: a target taking both `=` and `<=`
+in the process is an error, and a decoded output joins the §9.2.2.4
+multi-driver check like any register.
+
+**The value model is the arriving convention.** In the source, a segment's
+`=` executes at the edge that opens the segment, and the value holds until
+some later segment reassigns it — so the value visible during a cycle is
+the one assigned by the path that **arrived** at the current state. That
+is exactly what a hand-written Moore machine's decode arm says: *in* state
+`S`, the output has the value the design gave it *entering* `S`. The arm
+for `S` is therefore built from the paths arriving at `S`: agreeing
+arrivals collapse to one assignment; disagreeing ones form a guarded tree
+over their residual guards; infeasible arrivals were already pruned
+(§C.4). The init segment is the arrival into the entry state and becomes
+the comb's own reset branch, mirroring §5 — read as a level, since a comb
+has no edge for `veriparse_reset_kind` to matter to — and its values
+double as the `default` arm, so unreachable encodings latch nothing.
+
+**Totality is the anti-latch check and the §9 gate.** Every path between
+two consecutive cut points — the init segment included — must assign every
+decoded output; the last `=` on a path binds, blocking semantics. A path
+that skips one *holds* in the source and *tracks* in the emitted comb, so
+the skip is exactly where the two forms part ways — rejected, naming the
+path. A rolled `repeat`'s lap is such a path by construction (the lap
+carries no user statement) and fails the check; §7.3's `while` idiom is
+the spelling that re-asserts per lap.
+
+**Stability is the coherency check, and it is not negotiable.** The
+emitted arm re-evaluates the assigned expression *during* the cycle, over
+post-edge register values; the source evaluated it once, at the opening
+edge, over entry values. The two agree if and only if no operand of the
+value expression — after §6.1 substitution, so temporaries are transparent
+— and no operand of a residual arrival guard is a register **committed by
+its own arriving path**. Violations are rejected naming the register and
+the commit. The trap this closes is easy to write and silently off by one:
+
+```systemverilog
+while (i < 8) begin
+  tx = data[i];             // reads entry i = v … but the same lap
+  i <= i + 1;               // commits i = v+1 at the same edge, so an
+  (* veriparse_no_unroll *) // emitted `tx = data[i]` would track v+1
+  repeat (BAUD_DIV) @(posedge clk);
+end                         // for the whole period the source shows v
+```
+
+There is no rewrite that saves this shape as a comb decode — a §6.1
+temporary substitutes to the same operand — and the honest answer is that
+a **self-advancing expression decode stays a register**: write `tx <= …`
+with §6's v1 placement, or wait for the three-process emission (§15),
+whose sequential next-state half is where such a value belongs. What
+passes the check trivially is what the feature exists for: the constant
+and quasi-constant Moore outputs — `busy`, `valid`, `ready`, state-typed
+flags — and expressions over registers the arriving paths leave alone.
+An input read by a decode expression is admitted with the §15 caveat kept
+verbatim: the source holds its wake-time sample where the RTL tracks, and
+equivalence **as sampled at the clock edges** assumes the input is
+edge-synchronous — the discipline §5.3 and §11's harness already assume.
+
+**Mixing rules inside one segment come from §6.1 unchanged.** A later
+read in the same segment — by another `=`, by a `<=` right-hand side, by
+a fork condition — sees the decoded output's new value by substitution; a
+`<=` never feeds back into its own segment (entry values, §6). A read
+*before* the segment's own `=`, or across a cut point, needs no new rule
+either, unlike §6.1 temporaries: module-level storage holds, both sides
+show the previous arrival's value, and the emitted form agrees because
+the `always_ff` samples the comb at the closing edge — which shows
+exactly the current cycle's arm.
+
+**Emission.** One `always_comb` per process, placed with the machine it
+decodes: after the state `localparam`s and register declarations, before
+the `always_ff`:
+
+```systemverilog
+always_comb
+  if (!rst_n) begin
+    busy = 1'b0;            // the init segment's `=` values
+  end
+  else
+    case (__fsm_state)
+      __fsm_IDLE:   busy = 1'b0;
+      __fsm_RUN_0:  busy = 1'b1;
+      ...
+      default:      busy = 1'b0;   // the init values again
+    endcase
+```
+
+The §10.2 state map lists each decoded output with its per-state value,
+the same way transitions carry their actions.
 
 ## 7. Decision 6 — loops
 
@@ -1198,6 +1297,9 @@ unmarked column has already been misread once.
 | a `case` with more than one `default` arm | the grammar admits it, IEEE allows at most one, and the guard construction has no condition to give a second one | IEEE §12.5 |
 | a case item with x/z bits, in a `case` holding cut points | plain-`case` item matching is case equality, but the fork guard is built with logical `==`, which such an item never satisfies. A cut-point-free `case` stays verbatim in its action and keeps its semantics | IEEE §12.5 |
 | a `=` temporary shadowing a module-level declaration or an enclosing temporary | substitution binds by name (§6.1): honouring the shadow would silently hijack values across scopes — rename it; §15 records the v2 alpha-renaming that lifts the restriction | ADR §6, §15 |
+| one signal taking both `=` and `<=` in the process | one signal, one discipline (§6.2): a target cannot be a register and a decoded output at once | ADR §6.2 |
+| a path between two cut points that skips a decoded output | totality (§6.2): the skip is where the source *holds* and the comb *tracks* — a rolled lap cannot re-assert, §7.3's `while` spells the per-lap form | ADR §6.2 |
+| a decoded output's value or arrival guard reading a register committed by its own arriving path | stability (§6.2): the arm re-evaluates over post-edge values where the source read entry values — the emitted decode would be off by one commit | ADR §6.2 |
 | a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse. The check sees processes, continuous assigns, generate blocks, the tasks other processes call, and — when the driver supplies the parsed modules, as verilower does — **instance output and inout ports**, scope-aware; an instantiated module missing from the map is a black box and skipped | IEEE §9.2.2.4 |
 
 **System functions are not system tasks, and the row above must not be
@@ -1664,6 +1766,16 @@ says the datapath transformation was exercised on every one of them.
    including the init-segment diagnostic, and the §10.2 JSON, with a `wavedisp`
    description consuming it end to end.
 
+9. **Combinational output decode** (§6.2) — decoded-output collection and
+   the `=`/`<=` discipline check; totality over the path cover (init
+   segment and rolled laps included); stability against per-arrival commit
+   sets; arm construction with arrival merging and the comb reset/default
+   branches; emission and state-map extension. Golden tests per shape, a
+   `TEST_ERROR_SV` per new §9 row, and a differential cosim whose bench
+   drives a decoded `busy`/`valid` pair through branches, a rolled timer
+   (§7.3 spelling), and a perpetual wrap — the tracking-vs-holding window
+   is exactly what the cycle-sampled comparison probes.
+
 **Why the perpetual form lands late.** Phase 2 compiles a one-shot
 `initial` — the smallest vehicle for the cut/segment/emit machinery, with no
 back-edge to close — and the `forever` that makes a machine perpetual
@@ -1725,8 +1837,7 @@ Positioning, so that later choices can be argued against something.
 | **Feature** | **v1 behavior** | **Future home** |
 |---|---|---|
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
-| Combinational output decode: module-level `=` in the process | hard error (§6) | v2, on signals declared for it: the rule is **one `=` on every path between two consecutive cut points** — a totality that is at once the anti-latch check and the coherency check, since a lap that skips the assignment *holds* in the source and *tracks* in the emitted `always_comb`. Lowered to one `always_comb` over the state register; equivalence is **as sampled at the clock edges** — between them the source holds its sample where the RTL tracks, which no synchronous consumer observes. A rolled `repeat` lap cannot re-assert and fails the check; §7.3's `while` idiom spells the per-lap re-assertion. This is also the output-decode half of the three-process emission |
-| Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10) | v2. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision |
+| Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10), plus the §6.2 `always_comb` for decoded outputs — the output-decode third, landed | v2 for the remaining split. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision; §6.2's stability analysis says where a self-advancing value must land when it comes |
 | Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
 | Counter splitting | one shared countdown per repeat-nesting **depth**, re-initialised on entry: sequential rolled `repeat` timers share their depth's register, nested ones each own their depth's (`cnt`, `cnt2`, ...), and a rolled `for` keeps its own index | further splitting (one per site) is a post-v1 optimisation, if routing says so |
