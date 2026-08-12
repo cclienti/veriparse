@@ -3878,19 +3878,18 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // §6.2: the decoded outputs — an always_comb over the state register,
     // or under output encoding each output IS its slice of the register:
-    // no decode gates — but the same always_comb shell as every other
-    // encoding: the §5 level-read reset branch is part of §6.2's
-    // observable contract (init values from the instant reset asserts,
-    // and before the first clock edge, where the register still holds
-    // its power-up value), and an always block prints legally in both
-    // output modes where an assign to a variable is SV-only.
+    // no decode gates and no reset gating either: the entry state's bits
+    // ARE the init values (coherency), so the outputs behave exactly like
+    // the registered outputs of a sync-reset machine — defined from the
+    // first reset edge, holding through a mid-run re-assert until its
+    // edge, which §5.2 keeps out of scope anyway. A level mux here would
+    // put the reset on a combinational arc to every output for a window
+    // the model does not define. The always block (never an assign, which
+    // a 1364 reg cannot take) keeps both output modes legal.
     if(!m_decoded.empty()) {
         if(m_encoding == Encoding::OUTPUT) {
-            const auto &init_block = std::make_shared<AST::Node::List>();
             const auto &slice_block = std::make_shared<AST::Node::List>();
             for(const auto &slice : m_output_slices) {
-                init_block->push_back(AST::to_node(make_blocking(
-                    std::get<0>(slice), m_init_decode.at(std::get<0>(slice)), fn, ln)));
                 const unsigned int low = std::get<1>(slice);
                 const unsigned int w = std::get<2>(slice);
                 AST::Node::Ptr select;
@@ -3907,18 +3906,9 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                 slice_block->push_back(
                     AST::to_node(make_blocking(std::get<0>(slice), select, fn, ln)));
             }
-            AST::Node::Ptr comb_reset_cond = AST::to_node(make_id(reset_name, fn, ln));
-            if(active_low) {
-                comb_reset_cond = make_ulnot(comb_reset_cond, fn, ln);
-            }
-            auto comb_guard = std::make_shared<AST::IfStatement>(fn, ln);
-            comb_guard->set_cond(comb_reset_cond);
-            comb_guard->set_true_statement(
-                AST::to_node(std::make_shared<AST::Block>(init_block, "", fn, ln)));
-            comb_guard->set_false_statement(
-                AST::to_node(std::make_shared<AST::Block>(slice_block, "", fn, ln)));
             auto comb = std::make_shared<AST::AlwaysComb>(fn, ln);
-            comb->set_statement(AST::to_node(comb_guard));
+            comb->set_statement(
+                AST::to_node(std::make_shared<AST::Block>(slice_block, "", fn, ln)));
             result->push_back(AST::to_node(comb));
         } else {
             result->push_back(emit_decode(state_reg, state_names, reset_name, active_low, fn, ln));
