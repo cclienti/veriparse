@@ -1044,15 +1044,17 @@ state `s` (each at its declared width, LSB-first in name order), and
 `D(s)` is a disambiguation field separating states that share an output
 vector (binary, `$clog2` of the largest such group, absent when vectors
 are unique). Each output is then read as a **slice of the state
-register** — `busy = __fsm_state[0];` — inside the same `always_comb`
-shell as every other encoding, whose §5 level-read reset branch stays:
-it is part of §6.2's observable contract (init values from the instant
-reset asserts, and before the first clock edge, where the register still
-holds its power-up value), and an always block prints legally in both
-output modes where an assign to a variable is SV-only. The decode
-*gates* disappear — the else branch is wires — and after the first reset
-edge the reset branch is redundant by construction, coherency having
-made the entry state's vector the init vector.
+register** — `always_comb begin busy = __fsm_state[0]; ... end` — with
+no decode gates and no reset gating either: the state register is
+already registered with a reset, and coherency made the entry state's
+bits the init values, so the outputs take their reset values through it
+at the same edge any registered output would. A level mux on the reset
+was tried and rejected — it puts the reset on a combinational arc to
+every output, to define a window the model keeps out of scope anyway
+(§5.2: a mid-run re-assert cannot re-enter the source; before the first
+reset edge the register holds its power-up value like every flop in the
+design). The always block, never an `assign` — which a 1364 `reg`
+cannot take — keeps both output modes legal.
 The timing is §6.2's unchanged: a state's bits hold during the cycle in
 the state, exactly when the arriving convention says the outputs do — a
 pure implementation choice, §3 rule 1.
