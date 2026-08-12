@@ -2,7 +2,6 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include "config.hpp"
 #include "parameters_overloading.hpp"
-#include "fsm_mark.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -26,6 +25,8 @@
 
 #include <string>
 #include <cstdint>
+#include <set>
+#include <functional>
 
 static void show_usage(char const *const progname,
                        boost::program_options::options_description const &desc)
@@ -222,13 +223,13 @@ static int veriflat(int argc, char *argv[])
     // Reject constructs outside the synthesizable RTL subset (e.g. virtual
     // interfaces, IEEE 1800-2017 §25.9) before flattening: the transformation
     // passes below only model synthesizable RTL. Runs after name resolution so
-    // promoted interface types are visible. Under --fsm the input legitimately
-    // holds processes suspending on edge waits — precisely what the subset
-    // excludes — so the verdict moves to the output (ADR-0014, ADR-0007 §1.2).
+    // promoted interface types are visible. The rules in force are
+    // mode-independent — the check passes a marked process's edge waits — so
+    // the input verdict holds under --fsm too; a future rule that a marked
+    // input may legitimately trip must gate itself on the mode, not this call.
     //---------------------------------------------------------
 
-    if(!config.fsm_elaboration &&
-       Veriparse::Passes::Analysis::SynthesizableCheck::check(sources) != 0) {
+    if(Veriparse::Passes::Analysis::SynthesizableCheck::check(sources) != 0) {
         LOG_ERROR << "design uses non-synthesizable constructs";
         return 1;
     }
@@ -271,7 +272,7 @@ static int veriflat(int argc, char *argv[])
 
     if(!config.fsm_elaboration) {
         for(const auto &elt : modules_map) {
-            if(has_veriparse_fsm_mark(elt.second)) {
+            if(Veriparse::Passes::Analysis::Module::has_veriparse_fsm_mark(elt.second)) {
                 LOG_INFO << "module '" << elt.first << "' carries (* veriparse_fsm *) "
                          << "processes: flattened as-is — pass --fsm to compile them "
                          << "into explicit machines";
@@ -289,6 +290,9 @@ static int veriflat(int argc, char *argv[])
     if(!overloaded) {
         return 1;
     }
+    if(!check_parameter_names(param_args, module)) {
+        return 1;
+    }
 
     //---------------------------------------------------------
     // Flatten the selected module
@@ -303,8 +307,10 @@ static int veriflat(int argc, char *argv[])
     }
 
     //---------------------------------------------------------
-    // Under --fsm the synthesizable-subset verdict deferred above applies
-    // here, to the compiled output (ADR-0014).
+    // Under --fsm the subset check runs again, on what the lowering emitted
+    // (ADR-0014, verilower's placement) — and §2's never-silent rule covers
+    // the module the flattening could not reach: a marked module the top
+    // never instantiates was not compiled, and the warning names its own run.
     //---------------------------------------------------------
 
     if(config.fsm_elaboration) {
@@ -313,6 +319,33 @@ static int veriflat(int argc, char *argv[])
         if(Veriparse::Passes::Analysis::SynthesizableCheck::check(compiled) != 0) {
             LOG_ERROR << "flattened output uses non-synthesizable constructs";
             return 1;
+        }
+
+        std::set<std::string> instantiated;
+        std::function<void(const Veriparse::Passes::Transformations::ModuleFlattener::TreeNode *)>
+            collect =
+                [&](const Veriparse::Passes::Transformations::ModuleFlattener::TreeNode *tree) {
+                    if(!tree) {
+                        return;
+                    }
+                    instantiated.insert(tree->get_value().first);
+                    for(const auto &child : tree->get_children()) {
+                        collect(child.get());
+                    }
+                };
+        const auto &tree = flattener.get_instance_tree();
+        collect(tree.get());
+
+        for(const auto &elt : modules_map) {
+            if(elt.first == config.top_module || instantiated.count(elt.first) != 0) {
+                continue;
+            }
+            if(Veriparse::Passes::Analysis::Module::has_veriparse_fsm_mark(elt.second)) {
+                LOG_WARNING << "module '" << elt.first << "' carries (* veriparse_fsm *) "
+                            << "processes but is not instantiated under '" << config.top_module
+                            << "': not compiled — flatten it as its own top "
+                            << "(veriflat --fsm -t " << elt.first << ")";
+            }
         }
     }
 

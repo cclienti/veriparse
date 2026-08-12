@@ -3,7 +3,6 @@
 #include "config.hpp"
 #include "report.hpp"
 #include "parameters_overloading.hpp"
-#include "fsm_mark.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -228,7 +227,7 @@ static int verilower(int argc, char *argv[])
         if(elt.first == config.top_module) {
             continue;
         }
-        if(has_veriparse_fsm_mark(elt.second)) {
+        if(Veriparse::Passes::Analysis::Module::has_veriparse_fsm_mark(elt.second)) {
             LOG_WARNING << "module '" << elt.first << "' carries (* veriparse_fsm *) "
                         << "processes but only '" << config.top_module << "' is compiled: "
                         << "run verilower with --top-module " << elt.first
@@ -249,6 +248,9 @@ static int verilower(int argc, char *argv[])
     Veriparse::AST::ParamArg::ListPtr param_args =
         overload_parameters(config.param_map, overloaded);
     if(!overloaded) {
+        return 1;
+    }
+    if(!check_parameter_names(param_args, module)) {
         return 1;
     }
 

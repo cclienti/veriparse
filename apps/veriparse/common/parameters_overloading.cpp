@@ -44,7 +44,12 @@ Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &paramet
             ssparams << "endmodule";
 
             Veriparse::Parser::Verilog verilog;
-            verilog.parse(ssparams);
+            if(verilog.parse(ssparams) != 0 || !verilog.get_source()) {
+                LOG_ERROR << "could not parse the command-line parameter map "
+                          << "as parameter declarations";
+                success = false;
+                return nullptr;
+            }
             auto params =
                 Veriparse::Passes::Analysis::Module::get_parameter_nodes(verilog.get_source());
 
@@ -75,4 +80,34 @@ Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &paramet
 
     success = true;
     return param_args;
+}
+
+bool check_parameter_names(const Veriparse::AST::ParamArg::ListPtr &param_args,
+                           const Veriparse::AST::Node::Ptr &module)
+{
+    if(!param_args) {
+        return true;
+    }
+
+    const auto &declared = Veriparse::Passes::Analysis::Module::get_parameter_nodes(module);
+
+    bool ok = true;
+    for(const auto &arg : *param_args) {
+        bool found = false;
+        if(declared) {
+            for(const auto &param : *declared) {
+                if(param->get_name() == arg->get_name()) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if(!found) {
+            LOG_ERROR << "parameter '" << arg->get_name()
+                      << "' from the command line is not declared by the top module";
+            ok = false;
+        }
+    }
+
+    return ok;
 }

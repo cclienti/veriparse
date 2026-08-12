@@ -102,9 +102,12 @@ veriflat --sv --fsm -t top -o top_flat.sv top.sv
 Each instance's machine is compiled at its own `N` — separately sized
 countdowns, states, and encodings — and the flattening uniquifies the
 generated names (`u_fast___fsm_state`, `u_slow___fsm_state`) like any
-other declaration. Under `--fsm` the synthesizable-subset check moves
-from the input (which legitimately suspends on edge waits) to the
-flattened output, exactly as in `verilower`.
+other declaration. The synthesizable-subset check keeps its input verdict under
+`--fsm` (its current rules are mode-independent, and the marked
+process's edge waits pass it) and runs again on the flattened output,
+as in `verilower` — so what the lowering emitted is vetted too. A
+marked module the top never instantiates is not compiled, and a
+warning names the run that would compile it.
 
 Without `--fsm`, a marked design still flattens: the processes pass
 through as-is with their attributes intact — so a downstream `verilower`

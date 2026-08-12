@@ -468,12 +468,43 @@ if(NOT WIN32)
                      --log ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.log \
                      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/fsm_flat/src/fsm_flat.sv \
                      && grep -q 'pass --fsm' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.log \
-                     && grep -q 'initial' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.v")
+                     && grep -q 'initial' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.v \
+                     && grep -q 'veriparse_fsm' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.v")
     set_tests_properties(test_fsm_flat PROPERTIES LABELS unittest)
 
-    # A parameter map that is not a YAML map of scalars fails cleanly
-    # before any transformation: malformed YAML, a sequence instead of a
-    # map, and a non-scalar value each exit non-zero.
+    # The mark is never skipped in silence (ADR-0014 §2), including the
+    # corners: a mark nested in a generate block still draws the no---fsm
+    # note, and under --fsm a marked module the top never instantiates
+    # draws a warning naming its own run.
+    add_test(NAME test_fsm_mark_notes
+             COMMAND sh -c "$<TARGET_FILE:veriflat> --sv -t mark_notes \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_nofsm.v \
+                     --log ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_nofsm.log \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/mark_notes/src/mark_notes.sv \
+                     && grep -q 'pass --fsm' ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_nofsm.log \
+                     && $<TARGET_FILE:veriflat> --sv --fsm -t mark_notes \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_fsm.v \
+                     --log ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_fsm.log \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/mark_notes/src/mark_notes.sv \
+                     && grep -q 'not instantiated' ${CMAKE_CURRENT_BINARY_DIR}/mark_notes_fsm.log")
+    set_tests_properties(test_fsm_mark_notes PROPERTIES LABELS unittest)
+
+    # The synthesizable-subset rules in force today are mode-independent
+    # (virtual interfaces), so --fsm must not skip the input verdict:
+    # deadcode-during-flatten can prune the offending declaration before
+    # any output-side check would see it.
+    add_test(NAME test_fsm_virtual_iface
+             COMMAND sh -c "! $<TARGET_FILE:veriflat> --sv --fsm -d \
+                     -t synthesizable_check_virtual0 \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/fsm_virtual.v \
+                     ${CMAKE_SOURCE_DIR}/lib/test/passes/analysis/testcases/synthesizable_check_virtual0.sv")
+    set_tests_properties(test_fsm_virtual_iface PROPERTIES LABELS unittest)
+
+    # A parameter map failure is never silent: malformed YAML, a sequence
+    # instead of a map, a non-scalar value, a value the Verilog parser
+    # refuses, and a name the top module does not declare each exit
+    # non-zero — the last two would otherwise compile a silently
+    # default-parameterized design.
     add_test(NAME test_param_map_errors
              COMMAND sh -c "! $<TARGET_FILE:veriflat> --sv -t flat_param -p '{N: ' \
                      -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
@@ -482,6 +513,15 @@ if(NOT WIN32)
                      -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
                      ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
                      && ! $<TARGET_FILE:verilower> --sv -t param_line -p '{N: [1, 2]}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv \
+                     && ! $<TARGET_FILE:veriflat> --sv -t flat_param -p '{N: 5px}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
+                     && ! $<TARGET_FILE:veriflat> --sv -t flat_param -p '{BAD: 1}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
+                     && ! $<TARGET_FILE:verilower> --sv -t param_line -p '{n: 6}' \
                      -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
                      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv")
     set_tests_properties(test_param_map_errors PROPERTIES LABELS unittest)
