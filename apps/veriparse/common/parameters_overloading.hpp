@@ -15,4 +15,14 @@
 Veriparse::AST::ParamArg::ListPtr overload_parameters(const std::string &parameters_string,
                                                       bool &success);
 
+/**
+ * @brief Check that every overloaded/kept parameter names one the top
+ * module declares — a typo'd name must not compile a silently
+ * default-parameterized design.
+ *
+ * @return true when all names resolve.
+ */
+bool check_parameter_names(const Veriparse::AST::ParamArg::ListPtr &param_args,
+                           const Veriparse::AST::Node::Ptr &module);
+
 #endif

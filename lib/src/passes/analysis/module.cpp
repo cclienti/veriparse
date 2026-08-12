@@ -153,6 +153,42 @@ std::vector<std::string> Module::get_module_names(AST::Node::Ptr node)
         modules, [](AST::Module::Ptr n) { return n->get_name(); });
 }
 
+namespace
+{
+
+bool search_veriparse_fsm_mark(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Pragmalist)) {
+        const auto &pragmas = AST::cast_to<AST::Pragmalist>(node)->get_pragmas();
+        if(pragmas) {
+            for(const auto &pragma : *pragmas) {
+                if(pragma && pragma->get_name() == "veriparse_fsm") {
+                    return true;
+                }
+            }
+        }
+    }
+    const AST::Node::ListPtr children = node->get_children();
+    if(children) {
+        for(const AST::Node::Ptr &child : *children) {
+            if(search_veriparse_fsm_mark(child)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+} // namespace
+
+bool Module::has_veriparse_fsm_mark(const AST::Node::Ptr &module)
+{
+    return search_veriparse_fsm_mark(module);
+}
+
 AST::Param::ListPtr Module::get_parameter_nodes(AST::Node::Ptr node)
 {
     AST::Param::ListPtr all = std::make_shared<AST::Param::List>();

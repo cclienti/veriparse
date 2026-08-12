@@ -85,6 +85,12 @@ public:
     static AST::Param::ListPtr get_parameter_nodes(AST::Node::Ptr node);
 
     /**
+     * @brief True if the module holds a (* veriparse_fsm *) marked process
+     * anywhere in its body, generate blocks included (ADR-0014 §2).
+     */
+    static bool has_veriparse_fsm_mark(const AST::Node::Ptr &module);
+
+    /**
      * @brief Return all overridable parameter declarations — value (Param)
      * and type (TypeParam) parameters interleaved in declaration order, as
      * positional instantiation actuals bind (IEEE 1800-2017 §23.10).

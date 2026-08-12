@@ -115,9 +115,10 @@ Collects all declared identifiers (I/O, variables, instances, tasks, functions) 
 ### `SynthesizableCheck`
 Rejects constructs outside the synthesizable RTL subset before flattening
 (ADR-0007). Blacklist model; first entry: virtual interfaces (IEEE 1800-2017
-§25.9). Opt-in per tool: `veriflat` runs it on the input (on the *output*
-under `--fsm`, whose input legitimately suspends on edge waits — same
-placement as `verilower`), `veridump`/`veriobf` stay permissive.
+§25.9). Opt-in per tool: `veriflat` runs it on the input (and again on the
+*output* under `--fsm`, `verilower`'s placement — the rules in force
+are mode-independent, so a marked input passes), `veridump`/`veriobf`
+stay permissive.
 
 ---
 

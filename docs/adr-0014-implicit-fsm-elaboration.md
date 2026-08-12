@@ -1300,9 +1300,13 @@ each instance's clone with that instance's parameters, so enabling the
 §10.3 slot inside that resolution compiles every marked instantiation at
 its own parameterization — two instances of one module get separately
 sized machines, names uniquified by the flattening as any declaration
-is. Under the flag the §7 synthesizable-subset verdict moves from the
-input (which legitimately suspends on edge waits) to the flattened
-output, exactly verilower's placement. Without the flag nothing changes,
+is. Under the flag the ADR-0007 subset check keeps its input
+verdict — its rules in force are mode-independent (a virtual interface
+is illegal in any mode, and the check passes a marked process's edge
+waits; a future rule a marked input may legitimately trip must gate on
+the mode, not the call site) — and gains an output verdict on the
+flattened result, verilower's placement, so what the lowering emitted
+is vetted too. Without the flag nothing changes,
 and per §2 nothing is silent: a marked design flattens as-is — attribute
 included, so a chained verilower still sees it — with an info note
 naming `--fsm` as the road not taken.
