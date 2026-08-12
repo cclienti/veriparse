@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
-#ifndef VERIFLAT_PARAMETERS_OVERLOADING_HPP
-#define VERIFLAT_PARAMETERS_OVERLOADING_HPP
+#ifndef VERIPARSE_APPS_PARAMETERS_OVERLOADING_HPP
+#define VERIPARSE_APPS_PARAMETERS_OVERLOADING_HPP
 
 #include <veriparse/AST/nodes.hpp>
 

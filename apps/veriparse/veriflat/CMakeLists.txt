@@ -12,7 +12,7 @@ project (veriflat)
 
 file (GLOB source_files
   src/main.cpp
-  src/parameters_overloading.cpp)
+  ../common/parameters_overloading.cpp)
 
 
 ########################################
@@ -20,6 +20,7 @@ file (GLOB source_files
 ########################################
 
 add_executable (veriflat ${source_files})
+target_include_directories (veriflat PRIVATE ../common)
 target_link_libraries (veriflat veriparse_static)
 target_link_libraries (veriflat Boost::program_options Boost::filesystem)
 

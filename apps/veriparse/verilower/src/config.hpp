@@ -17,6 +17,7 @@ struct Config
     std::vector<std::string> undefs;
     std::string output;
     std::string top_module;
+    std::string param_map;      ///< YAML map overriding/keeping top-module parameters
     std::string suffix;         ///< appended to the emitted module's name
     std::string log_file;       ///< empty: log to console (stderr); else log to this file
     std::string state_map;      ///< §10.2 JSON path; empty: <output>.fsm.json
@@ -40,6 +41,7 @@ static inline std::ostream &operator<<(std::ostream &os, const Config &config)
        << "inputs: [" << ss.str() << "], "
        << "output: '" << config.output << "', "
        << "top_module: '" << config.top_module << "', "
+       << "param_map: '" << config.param_map << "', "
        << "log_file: '" << config.log_file << "', "
        << "seed: " << config.seed << "}";
 
