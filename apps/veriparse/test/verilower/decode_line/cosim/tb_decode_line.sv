@@ -8,10 +8,11 @@
 // through $fatal.
 //
 // One §6.2-specific convention: the reference's decoded outputs are
-// blocking-assigned in the active region of the very edge a posedge
-// sampler would read them, so that sampler races and loses its cycle of
-// delay. A race-free NEGEDGE stage followed by the ordinary posedge stage
-// restores exactly the two effective delays the nonblocking-driven q gets
+// blocking-assigned by the woken process at the very edge the samplers
+// read them, so the first posedge stage captures the same-edge value and
+// contributes no delay — a second posedge stage (reading the first, which
+// is nonblocking-driven and therefore pre-update) provides the actual
+// cycle, giving the two effective delays the nonblocking-driven q gets
 // for free (its sampler's commit plus the check's pre-update read).
 module tb_decode_line;
    logic clk = 0, rst_n = 0;
@@ -35,15 +36,12 @@ module tb_decode_line;
       start_q  <= start;
       mode_q   <= mode;
       q_b_q    <= q_b;
+      busy_bn  <= busy_b;
+      done_bn  <= done_b;
+      sel_bn   <= sel_b;
       busy_b_q <= busy_bn;
       done_b_q <= done_bn;
       sel_b_q  <= sel_bn;
-   end
-
-   always @(negedge clk) begin
-      busy_bn <= busy_b;
-      done_bn <= done_b;
-      sel_bn  <= sel_b;
    end
 
    initial begin
