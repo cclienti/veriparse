@@ -447,11 +447,13 @@ silent rename.
 identical.
 
 `"output"` carries the [decoded outputs](#decoded-outputs--module-level-)
-in the state bits themselves: each output becomes a slice of the state
-register (`assign busy = __fsm_state[0];`), the `always_comb` disappears
-— zero decode logic, glitch-free by construction — and the reset value
-rides the state register's own reset. States sharing an output vector are
-separated by a disambiguation field. It requires every decoded output to
+in the state bits themselves: each output reads as a slice of the state
+register (`busy = __fsm_state[0];`) inside the usual `always_comb` shell
+— the decode gates disappear; only the §5 reset branch remains, redundant
+after the first reset edge since the entry state's bits are the init
+values. States sharing an output vector are separated by a disambiguation
+field. Values must be **literals** per state (constant expressions are
+not folded — sizing is the simulator's job, IEEE §11.8.2). It requires every decoded output to
 be **one constant per state** (a fork-arrival tree or a register-valued
 expression is rejected), and the composed register may be wider than
 binary — the trade is yours by hint.
