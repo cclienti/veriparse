@@ -64,6 +64,10 @@ as constants:
 veriflat -p '{FIFO_WIDTH:}' --seed 0 --top-module top -I src/ src/top.v src/sub.v --output top_flat.v
 ```
 
+With `--fsm`, the flattener also runs verilower's imperative-FSM
+elaboration on each instance at its own parameters — the road for marked
+modules instantiated with different parameter overrides.
+
 **Full documentation: [docs/veriflat.md](docs/veriflat.md)** — including the
 parameter-map format and a worked generate-loop flattening example.
 

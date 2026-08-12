@@ -6,6 +6,7 @@
 #include <veriparse/AST/nodes.hpp>
 #include <veriparse/passes/transformations/transformation_base.hpp>
 #include <veriparse/passes/transformations/interface_elaboration.hpp>
+#include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/passes/analysis/unique_declaration.hpp>
 #include <veriparse/misc/tree.hpp>
@@ -34,7 +35,9 @@ public:
     ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                     const Analysis::Module::ModulesMap &modules_map,
                     bool deadcode_elimination = true,
-                    const Analysis::Module::InterfacesMap &interfaces_map = {});
+                    const Analysis::Module::InterfacesMap &interfaces_map = {},
+                    bool fsm_elaboration = false,
+                    ImplicitFsmElaboration::FsmReport *fsm_report = nullptr);
 
     virtual ~ModuleFlattener();
 
@@ -55,7 +58,8 @@ private:
     ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                     const Analysis::Module::ModulesMap &modules_map,
                     std::shared_ptr<const InterfaceElaboration::Design> iface_design,
-                    bool deadcode_elimination);
+                    bool deadcode_elimination, bool fsm_elaboration,
+                    ImplicitFsmElaboration::FsmReport *fsm_report);
 
     /**
      * @return zero on success
@@ -118,6 +122,8 @@ private:
     InterfaceElaboration::ScopeSymbols m_scope_symbols;
     const bool m_top{true};
     const bool m_deadcode_elimination;
+    const bool m_fsm_elaboration{false};
+    ImplicitFsmElaboration::FsmReport *m_fsm_report{nullptr};
     std::map<std::string, AST::Declaration::Ptr> m_var_type_map;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::unordered_multimap<std::string, AST::Defparamlist::Ptr> m_defparams;

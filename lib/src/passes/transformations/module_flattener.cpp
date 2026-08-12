@@ -145,19 +145,24 @@ private:
 ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                                  const Analysis::Module::ModulesMap &modules_map,
                                  bool deadcode_elimination,
-                                 const Analysis::Module::InterfacesMap &interfaces_map)
+                                 const Analysis::Module::InterfacesMap &interfaces_map,
+                                 bool fsm_elaboration,
+                                 ImplicitFsmElaboration::FsmReport *fsm_report)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
-      m_interfaces_map(interfaces_map), m_deadcode_elimination(deadcode_elimination)
+      m_interfaces_map(interfaces_map), m_deadcode_elimination(deadcode_elimination),
+      m_fsm_elaboration(fsm_elaboration), m_fsm_report(fsm_report)
 {
 }
 
 ModuleFlattener::ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                                  const Analysis::Module::ModulesMap &modules_map,
                                  std::shared_ptr<const InterfaceElaboration::Design> iface_design,
-                                 bool deadcode_elimination)
+                                 bool deadcode_elimination, bool fsm_elaboration,
+                                 ImplicitFsmElaboration::FsmReport *fsm_report)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
       m_iface_design(std::move(iface_design)), m_top(false),
-      m_deadcode_elimination(deadcode_elimination)
+      m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration),
+      m_fsm_report(fsm_report)
 {
 }
 
@@ -210,7 +215,8 @@ int ModuleFlattener::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
 
     // Resolve the module
-    ResolveModule resolver(m_paramlist_inst, m_modules_map, m_deadcode_elimination);
+    ResolveModule resolver(m_paramlist_inst, m_modules_map, m_deadcode_elimination,
+                           m_fsm_elaboration, m_fsm_report);
     if(resolver.run(node)) {
         LOG_ERROR_N(node) << "failed to resolve the module";
         return 1;
@@ -373,7 +379,8 @@ int ModuleFlattener::flattener(const AST::Node::Ptr &node, const AST::Node::Ptr 
         // the connected modules reference them only after splicing (the
         // final dead-code pass prunes genuinely unused members).
         const bool is_iface = m_iface_design && m_iface_design->is_interface(module_name);
-        ModuleFlattener flattener(paramlist_inst, m_modules_map, m_iface_design, !is_iface);
+        ModuleFlattener flattener(paramlist_inst, m_modules_map, m_iface_design, !is_iface,
+                                  m_fsm_elaboration, m_fsm_report);
         if(flattener.run(module)) {
             LOG_ERROR_N(node) << "failed to flatten the module";
             return 1;

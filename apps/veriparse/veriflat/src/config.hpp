@@ -18,9 +18,11 @@ struct Config
     std::string output;
     std::string top_module;
     std::string param_map;
+    std::string suffix;   ///< appended to the emitted module's name
     std::string log_file; ///< empty: log to console (stderr); else log to this file
     bool deadcode_at_end{false};
     bool deadcode_during_flatten{false};
+    bool fsm_elaboration{false}; ///< compile (* veriparse_fsm *) processes (ADR-0014)
     bool sv_mode{false};
     std::uint64_t seed;
 };
