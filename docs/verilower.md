@@ -268,7 +268,11 @@ example to `$sdffe` cells). Different conditions on different waits
 
 **Default: bounded loops unroll.** Every iteration contributes its own
 states, uniformly, with no heuristic on the body — a `repeat (4)` around one
-wait yields four states.
+wait yields four states. The contract is hard: a bounded loop whose bound
+does not fold to a constant (a kept parameter, an unresolvable expression)
+is an **error** unless the loop is marked, never a silent rolled compile —
+the same source must not produce differently-shaped machines depending on
+what folded.
 
 **`(* veriparse_no_unroll *)` keeps a loop rolled.** The loop becomes one
 state group re-entered under an induced counter:
@@ -497,10 +501,11 @@ lowers exactly, and everything else names its rule. The categories
 - **§6 violations**: `=` to a module-level signal, a register committed twice
   on one path, a temporary read before assignment or crossing a wait,
   shadowing;
-- **structural hazards**: zero-delay loops, a register also driven by
-  another process / `assign` / instance output (multi-driver, checked
-  across generate blocks and task calls), case items with x/z in a forking
-  `case`;
+- **structural hazards**: zero-delay loops, a bounded loop whose bound
+  stopped folding without `(* veriparse_no_unroll *)`, a register also
+  driven by another process / `assign` / instance output (multi-driver,
+  checked across generate blocks and task calls), case items with x/z in a
+  forking `case`;
 - **inert hints** (see [Attribute reference](#attribute-reference)).
 
 Infeasible paths are pruned before checking: a path guarded by `send` and

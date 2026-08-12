@@ -1,4 +1,4 @@
-module fsm_repeat2 (
+module fsm_repeat_err4 (
     input logic clk,
     input logic rst_n,
     input logic [3:0] n,
@@ -9,7 +9,6 @@ module fsm_repeat2 (
     initial begin
         done <= 1'b0;
         @(posedge clk);
-        (* veriparse_no_unroll *)
         repeat (n) @(posedge clk);
         done <= 1'b1;
         @(posedge clk);

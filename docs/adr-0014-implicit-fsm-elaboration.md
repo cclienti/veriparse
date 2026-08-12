@@ -973,9 +973,10 @@ the state count is the author's decision, and it has a notation:
 > rolled-versus-unrolled is exactly a question the pass would otherwise
 > have guessed.
 
-**The rolled lowering** — taken by a `veriparse_no_unroll` loop, and
-forced on one whose bound does not fold to a constant, which is therefore
-no longer an error:
+**The rolled lowering** — taken by a `veriparse_no_unroll` loop, whose
+bound may therefore be non-constant. The mark is the only road in: a
+bounded loop whose bound stops folding *without* the mark is a §9 error,
+not a silent rolled compile (§8 records why the once-tried repair lost):
 
 - **`repeat (expr)` becomes one state with a countdown register.** IEEE
   §12.7.2 evaluates the count once, on entry — so a non-constant `expr`
@@ -1137,18 +1138,25 @@ wrongly. So a loop it refused — with or without a cut point in the body —
 inside a marked process reaches the CFG builder still rolled, in a shape
 §7.1 or §7.2 expected to be gone.
 
-What the pass does with such a survivor changed once the rolled lowering
-landed. The draft had it **notice and refuse** — say the loop could not be
-flattened rather than treat it as a cut-point loop — because at drafting
-time a surviving loop had no correct lowering. It now does: the §7.2
-rolled forms and this section's jump edges together compile exactly the
-shapes the unroller refuses, back-edges and mixed `break`/`continue`
-included. So a surviving bounded loop **with** a cut point is compiled
-rolled, with a warning naming the loop and pointing at
-`(* veriparse_no_unroll *)` to make the choice explicit — a repair, not a
-refusal, and cycle-for-cycle correct either way. A survivor **without** a
-cut point still has nothing this pass can do and errors per §9's
-zero-delay row.
+What the pass does with such a survivor has changed twice, and the second
+change is the one that holds. The draft had it **notice and refuse**,
+because at drafting time a surviving loop had no correct lowering. Once
+the §7.2 rolled forms and this section's jump edges landed, a correct
+lowering existed — the shapes the unroller refuses, back-edges and mixed
+`break`/`continue` included, compile exactly — and for a while the pass
+**repaired**: compiled the survivor rolled with a warning pointing at
+`(* veriparse_no_unroll *)`. But the repair breaks §7.2's contract in the
+one way that section calls out as the trap: *all bounded loops unroll
+uniformly*, and a warning is not a contract. The failure mode is a bound
+that stops folding after the fact — a `--param-map` keep on the parameter
+behind it, a rewrite that unbinds it — silently trading N unrolled states
+for one rolled group: cycle-for-cycle correct, structurally a different
+machine than every constant-bound build of the same source. So a
+surviving bounded loop **with** a cut point is a §9 **error** naming both
+exits — mark it `(* veriparse_no_unroll *)` to compile it rolled, or make
+the bound constant — and the rolled lowering runs only where the mark
+says the author chose it. A survivor **without** a cut point still has
+nothing this pass can do and errors per §9's zero-delay row.
 
 ## 9. Errors — rejected loudly, never silently mis-lowered
 
@@ -1175,6 +1183,7 @@ unmarked column has already been misread once.
 | `(* veriparse_no_unroll *)` on a loop without a cut point | the hint is inert — the loop runs in zero time, there is no state to save — and honouring it would need unrolling machinery this pass deliberately lacks (ADR §7.2); the fix is deleting the attribute | ADR §7.2 |
 | `break`/`continue` outside a loop the CFG sees | nothing to jump within: in an unrolled loop the jumps were the unroller's business (ADR §8), and stray ones have no target | ADR §8 |
 | a rolled `for` missing init, test or step, or whose init and step assign different registers | the lowering honours the construct's full contract on one index register; half a contract is a different construct | ADR §7.2 |
+| a bounded loop with a cut point the unroller left behind, **without** `veriparse_no_unroll` | rolled is opt-in: a bound that stopped folding (a `--param-map` keep, an unresolvable expression) or a jump shape the unroller refuses must not change the state count in silence — mark the loop rolled or make the bound constant (ADR §7.2, §8) | ADR §7.2, §8 |
 | a non-constant repeat count that is not a plain signal | the countdown takes the count signal's declared width (ADR §7.2); an arbitrary expression has none to take — bind it to a named signal first | ADR §7.2 |
 | a rolled `for` whose index is not a module-level declaration, or not a **variable** the machine can drive | the pass consumes the process, so an in-process declaration cannot survive to carry the induced register — and an input port or a net cannot take its commits (ADR §7.2) | ADR §7.2, IEEE §9.2.2.4 |
 | a constant repeat count that folds **negative**, or beyond 2^32 | a loop cannot execute a negative number of times and tools disagree on what one means — §12.7.2 gives only x/z a meaning (zero) — so it is almost always a parameterization off-by-N; and no countdown the lowering sizes holds 2^32 laps | IEEE §12.7.2, ADR §7.2 |
@@ -1276,11 +1285,14 @@ the selected module draws a **warning** naming the run that compiles it
 the module's defaults, overridden per parameter by `--param-map` — the
 `veriflat` map, same YAML, same semantics: `{N: 42}` overrides, `{N:}`
 keeps `N` a parameter of the output. A kept parameter the machine's
-*structure* depends on (an unrolled bound, a countdown size) resolves
-through the non-constant paths where §7.2/§7.3 admit one and otherwise
-fails loudly; a kept parameter only the datapath reads survives into the
-output, so a lowered machine can stay parametric where lowering does not
-need the value. What the map cannot do is compile a marked module
+*structure* depends on is an **error**: behind a bounded loop's bound it
+trips §8's refusal (the loop no longer unrolls, and rolled is opt-in);
+behind a `veriparse_no_unroll` countdown it fails §7.2's sizing (a
+parameter is not a plain signal with a declared width). Only a `while`
+condition (§7.3) reads a kept parameter legally — the data-dependent form
+never depended on the value. A kept parameter only the datapath reads
+survives into the output, so a lowered machine can stay parametric where
+lowering does not need the value. What the map cannot do is compile a marked module
 instantiated elsewhere **with per-instance overrides** — one CLI
 parameterization per run, whereas per-instance resolution is the
 flattener's job, which is what makes the in-process `veriflat --fsm`
