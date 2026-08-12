@@ -81,8 +81,7 @@ void warn_fork_arm_label(const AST::Node::Ptr &arm)
         return;
     }
     LOG_WARNING_N(arm) << "label '" << label << "' sits on one arm of a fork: it does "
-                       << "not delimit a state alone, so the name is dropped "
-                       << "(ADR-0014 §10.1)";
+                       << "not delimit a state alone, so the name is dropped";
 }
 
 /// Whether the subtree holds a break or continue: a jump transfers control,
@@ -373,7 +372,7 @@ int check_impure_calls(const AST::Node::Ptr &expr)
             LOG_ERROR_N(expr) << "system function '$" << name << "' in a marked process: "
                               << "outside the constant/query subset it has no stable value, "
                               << "and the walk assumes expressions read stably within their "
-                              << "zero-time segment (ADR-0014 §9, §C.4)";
+                              << "zero-time segment";
             return 1;
         }
     }
@@ -566,7 +565,7 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
                     LOG_ERROR_N(function)
                         << "function '" << name << "' carries a non-input argument: a "
                         << "side effect in expression position the (R_p, s_p) model "
-                        << "would miss silently (ADR-0014 §9)";
+                        << "would miss silently";
                     return 1;
                 }
                 locals.insert(arg->get_name());
@@ -596,7 +595,7 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
                 LOG_ERROR_N(function)
                     << "function '" << name << "' writes non-local '" << target
                     << "': a side effect in expression position the (R_p, s_p) model "
-                    << "would miss silently — pure functions are accepted (ADR-0014 §9)";
+                    << "would miss silently — pure functions are accepted";
                 return 1;
             }
             if(target != function->get_name()) {
@@ -620,7 +619,7 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
                         << "function '" << name << "' has static lifetime and writes "
                         << "its local '" << target << "': the local keeps its value "
                         << "across calls, so successive evaluations differ — declare "
-                        << "the function automatic (ADR-0014 §9)";
+                        << "the function automatic";
                     return 1;
                 }
             }
@@ -1236,9 +1235,8 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
                 valid &= std::isalnum(static_cast<unsigned char>(c)) != 0 || c == '_';
             }
             if(!valid) {
-                LOG_ERROR_N(marked[i].first)
-                    << "veriparse_prefix wants an identifier to prefix "
-                    << "the generated declarations with (ADR-0014 §3, §10)";
+                LOG_ERROR_N(marked[i].first) << "veriparse_prefix wants an identifier to prefix "
+                                             << "the generated declarations with";
                 return 1;
             }
             prefix = wanted;
@@ -1251,8 +1249,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
                 LOG_ERROR_N(marked[j].first)
                     << "prefix '" << prefixes[j] << "' is already taken by another "
                     << "marked process of this module — hint or ordinal — and the "
-                    << "generated declarations need distinct prefixes "
-                    << "(ADR-0014 §3, §10)";
+                    << "generated declarations need distinct prefixes";
                 return 1;
             }
         }
@@ -1291,20 +1288,18 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                             << "temporary '" << var->get_name() << "' is declared in a "
                             << "scope a cut point spans: it would have to outlive the "
                             << "cycle, which '=' cannot mean — a register takes '<=' at "
-                            << "module level (ADR-0014 §6, §9)";
+                            << "module level";
                         return 1;
                     }
                     if(var->get_unpacked_dims() && !var->get_unpacked_dims()->empty()) {
                         LOG_ERROR_N(stmt) << "array temporary '" << var->get_name()
-                                          << "': not handled by the lowering yet "
-                                          << "(ADR-0014 §6, §9)";
+                                          << "': not handled by the lowering yet";
                         return 1;
                     }
                     if(scope.visible.count(var->get_name())) {
                         LOG_ERROR_N(stmt)
                             << "temporary '" << var->get_name() << "' shadows one of an "
-                            << "enclosing scope: substitution binds by name — rename it "
-                            << "(ADR-0014 §6)";
+                            << "enclosing scope: substitution binds by name — rename it";
                         return 1;
                     }
                     scope.visible.insert(var->get_name());
@@ -1341,7 +1336,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         // itself, not on a DelayStatement.
         if(nba->get_ldelay() || nba->get_rdelay()) {
             LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
-                              << "with no hardware meaning (ADR-0014 §9)";
+                              << "with no hardware meaning";
             return 1;
         }
         // §6.2: one signal, one discipline — the set makes the check
@@ -1350,7 +1345,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(m_decoded.count(nba_target(nba))) {
             LOG_ERROR_N(node) << "'<=' to '" << nba_target(nba) << "', which already takes "
                               << "'=': a target cannot be a register and a decoded output "
-                              << "at once (ADR-0014 §6.2, §9)";
+                              << "at once";
             return 1;
         }
         // §6.1 consequence 3: one variable cannot be both a wire and a
@@ -1358,8 +1353,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(scope.visible.count(nba_target(nba))) {
             LOG_ERROR_N(node) << "'<=' to temporary '" << nba_target(nba)
                               << "': it already takes '=' — mixing the two forms on one "
-                              << "target contradicts what the variable is (ADR-0014 §6.1, "
-                              << "§9)";
+                              << "target contradicts what the variable is";
             return 1;
         }
         // Both sides: the left holds index expressions.
@@ -1424,7 +1418,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         // to give a second one.
         if(defaults > 1) {
             LOG_ERROR_N(node) << "case with " << defaults << " default arms in a marked "
-                              << "process: at most one (IEEE 1800-2017 §12.5, ADR-0014 §9)";
+                              << "process: at most one (IEEE 1800-2017 §12.5)";
             return 1;
         }
         // A forking case is if-converted with `==`, but item matching is
@@ -1447,7 +1441,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                         LOG_ERROR_N(value) << "case item '" << text << "' with x/z bits in a case "
                                            << "holding cut points: the fork guard uses logical "
                                            << "equality, which such an item never satisfies "
-                                           << "(IEEE 1800-2017 §12.5, ADR-0014 §9)";
+                                           << "(IEEE 1800-2017 §12.5)";
                         return 1;
                     }
                 }
@@ -1466,7 +1460,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
     case AST::NodeType::CasexStatement:
     case AST::NodeType::CasezStatement:
         LOG_ERROR_N(node) << "casex/casez in a marked process: wildcard matching "
-                          << "is not handled by the lowering yet (ADR-0014 §9)";
+                          << "is not handled by the lowering yet";
         return 1;
 
     case AST::NodeType::Pragmalist: {
@@ -1511,14 +1505,12 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
 
     case AST::NodeType::ParallelBlock:
         LOG_ERROR_N(node) << "fork/join in a marked process: concurrent control "
-                          << "flow the state model cannot express (IEEE 1800-2017 "
-                          << "§9.3.2, ADR-0014 §9)";
+                          << "flow the state model cannot express (IEEE 1800-2017 §9.3.2)";
         return 1;
 
     case AST::NodeType::Disable:
         LOG_ERROR_N(node) << "disable in a marked process: abortive control flow "
-                          << "the state model cannot express (IEEE 1800-2017 §9.6.2, "
-                          << "ADR-0014 §9)";
+                          << "the state model cannot express (IEEE 1800-2017 §9.6.2)";
         return 1;
 
     case AST::NodeType::TaskCall:
@@ -1526,14 +1518,14 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         LOG_ERROR_N(node) << "subroutine call in statement position: a task is not "
                           << "inlined in v1 — a cut point inside it would be invisible "
                           << "— and a function called as a statement discards its "
-                          << "result (ADR-0014 §9, §15)";
+                          << "result";
         return 1;
 
     case AST::NodeType::SingleStatement: {
         const auto &single = AST::cast_to<AST::SingleStatement>(node);
         if(single->get_delay()) {
             LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
-                              << "with no hardware meaning (ADR-0014 §9)";
+                              << "with no hardware meaning";
             return 1;
         }
         return collect_body(single->get_statement(), waits, clock, has_wait, scope);
@@ -1547,7 +1539,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         const auto &target = lvalue_target(blocking->get_left());
         if(blocking->get_ldelay() || blocking->get_rdelay()) {
             LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
-                              << "with no hardware meaning (ADR-0014 §9)";
+                              << "with no hardware meaning";
             return 1;
         }
         if(check_impure_calls(AST::to_node(blocking->get_right()))) {
@@ -1558,15 +1550,14 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         }
         if(target.empty()) {
             LOG_ERROR_N(node) << "'=' target is not a plain identifier: slice writes to "
-                              << "a temporary are not handled by the lowering yet "
-                              << "(ADR-0014 §6, §9)";
+                              << "a temporary are not handled by the lowering yet";
             return 1;
         }
         if(scope.visible.count(target)) {
             LOG_ERROR_N(node) << "'=' to temporary '" << target << "' under a branch it is not "
                               << "declared in: the value would be conditional, which v1 does not "
                               << "if-convert — declare the temporary inside the branch, or assign "
-                              << "it once before it (ADR-0014 §6.1, §9, §C.3)";
+                              << "it once before it";
             return 1;
         }
         {
@@ -1595,21 +1586,20 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 if(as_net && !port_variable) {
                     LOG_ERROR_N(node)
                         << "'=' to '" << target << "', which is a net: a decoded output "
-                        << "is a variable the emitted always_comb drives (ADR-0014 §6.2, "
-                        << "IEEE 1800-2017 §23.2.2.3)";
+                        << "is a variable the emitted always_comb drives (IEEE 1800-2017 "
+                           "§23.2.2.3)";
                     return 1;
                 }
                 if(!as_net && !std::dynamic_pointer_cast<AST::Var>(mdecl)) {
                     LOG_ERROR_N(node)
                         << "'=' to '" << target << "', which is not a variable: nothing "
-                        << "for a decoded output to drive (ADR-0014 §6.2, §9)";
+                        << "for a decoded output to drive";
                     return 1;
                 }
                 if(m_nba_targets.count(target)) {
                     LOG_ERROR_N(node)
                         << "'=' to '" << target << "', which already takes '<=': a target "
-                        << "cannot be a register and a decoded output at once "
-                        << "(ADR-0014 §6.2, §9)";
+                        << "cannot be a register and a decoded output at once";
                     return 1;
                 }
                 m_decoded[target] = AST::to_node(mdecl);
@@ -1618,24 +1608,23 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         }
         LOG_ERROR_N(node) << "'=' to '" << target << "', which is not a scope-local "
                           << "temporary: a value that must survive the edge takes '<=', "
-                          << "a temporary is declared in a scope without a cut point "
-                          << "(ADR-0014 §6, §9)";
+                          << "a temporary is declared in a scope without a cut point";
         return 1;
     }
 
     case AST::NodeType::DelayStatement:
         LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
-                          << "with no hardware meaning (ADR-0014 §9)";
+                          << "with no hardware meaning";
         return 1;
 
     case AST::NodeType::SystemCall:
         LOG_ERROR_N(node) << "system task in a marked process: no hardware "
-                          << "meaning — the mark landed on testbench code? (ADR-0014 §9)";
+                          << "meaning — the mark landed on testbench code?";
         return 1;
 
     case AST::NodeType::WaitStatement:
         LOG_ERROR_N(node) << "level-sensitive wait in a marked process: not an "
-                          << "edge, no boundary to cut at (ADR-0014 §9)";
+                          << "edge, no boundary to cut at";
         return 1;
 
     default:
@@ -1676,13 +1665,13 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
                 LOG_ERROR_N(info.cond)
                     << "repeat count folds to " << value << ": a loop cannot execute "
                     << "a negative number of times — a parameterization off-by-N? "
-                    << "(IEEE 1800-2017 §12.7.2, ADR-0014 §7.2, §9)";
+                    << "(IEEE 1800-2017 §12.7.2)";
                 return 1;
             }
             if(value > mpz_class(0xFFFFFFFFUL)) {
                 LOG_ERROR_N(info.cond)
                     << "repeat count folds to " << value << ": beyond any countdown "
-                    << "the lowering will size (ADR-0014 §7.2, §9)";
+                    << "the lowering will size";
                 return 1;
             }
             info.count_known = true;
@@ -1699,22 +1688,21 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         const auto &post = loop->get_post();
         if(!pre || !post || !info.cond) {
             LOG_ERROR_N(node) << "a rolled for honours the construct's full contract and "
-                              << "needs all three of init, test and step (ADR-0014 §7.2)";
+                              << "needs all three of init, test and step";
             return 1;
         }
         const auto &pre_target = nba_like_target(pre);
         const auto &post_target = nba_like_target(post);
         if(pre_target.empty() || pre_target != post_target) {
             LOG_ERROR_N(node) << "a rolled for's init and step assign the same plain index "
-                              << "register (ADR-0014 §7.2)";
+                              << "register";
             return 1;
         }
         info.index = pre_target;
         info.init_rhs = pre->get_right() ? pre->get_right()->get_var() : nullptr;
         info.step_rhs = post->get_right() ? post->get_right()->get_var() : nullptr;
         if(!info.init_rhs || !info.step_rhs) {
-            LOG_ERROR_N(node) << "a rolled for's init and step carry plain expressions "
-                              << "(ADR-0014 §7.2)";
+            LOG_ERROR_N(node) << "a rolled for's init and step carry plain expressions";
             return 1;
         }
         break;
@@ -1754,12 +1742,11 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         if(kept_rolled) {
             LOG_ERROR_N(node) << "(* veriparse_no_unroll *) on a loop without a cut point: "
                               << "the loop runs in zero time and there is no state to save — "
-                              << "drop the hint and let it unroll (ADR-0014 §7.2)";
+                              << "drop the hint and let it unroll";
         } else {
             LOG_ERROR_N(node) << "loop with no cut point survived to the FSM lowering: no "
                               << "static exit, or the unroller refused it — a zero-delay "
-                              << "loop has no hardware meaning (IEEE 1800-2017 §9.2.2.1, "
-                              << "ADR-0014 §9)";
+                              << "loop has no hardware meaning (IEEE 1800-2017 §9.2.2.1)";
         }
         return 1;
     }
@@ -1771,7 +1758,7 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         LOG_ERROR_N(node) << "bounded loop with a cut point was not unrolled upstream "
                           << "(non-constant bound, or a jump shape the unroller refuses): "
                           << "mark it (* veriparse_no_unroll *) to compile it rolled, or "
-                          << "make the bound constant (ADR-0014 §7.2, §8)";
+                          << "make the bound constant";
         return 1;
     }
 
@@ -1847,7 +1834,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                                         : "leaving the state at line " +
                                               std::to_string(states[from].wait->get_line()))
                     << ": every path between two cut points assigns every decoded "
-                    << "output (ADR-0014 §6.2, §9)";
+                    << "output";
                 return 1;
             }
             decode[elt.first] = it->second;
@@ -1895,16 +1882,14 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                     // that does names its states through the stack instead.
                     LOG_WARNING_N(stmt)
                         << "label '" << label << "' names the init segment: the reset "
-                        << "branch is not a state, so the name is dropped "
-                        << "(ADR-0014 §5.1, §10.1)";
+                        << "branch is not a state, so the name is dropped";
                 } else if(guard) {
                     // Under a fork guard the block does not delimit the
                     // state alone: naming it after one arm would be wrong on
                     // the paths that take the other (§10.1).
                     LOG_WARNING_N(stmt)
                         << "label '" << label << "' sits under a fork condition: it does "
-                        << "not delimit a state alone, so the name is dropped "
-                        << "(ADR-0014 §10.1)";
+                        << "not delimit a state alone, so the name is dropped";
                 } else if(states[from].stem.empty()) {
                     // A cut-point-free labelled block is one state's action:
                     // the state it belongs to takes the name (§10.1).
@@ -1961,7 +1946,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             if(!decl) {
                 LOG_ERROR_N(stmt) << "'=' to '" << target << "' with no declaration in "
                                   << "scope: the collector should have refused this — "
-                                  << "please report this input (ADR-0014 §6)";
+                                  << "please report this input";
                 return 1;
             }
             if(process_blocking(decl, target, AST::to_node(blocking->get_right()->get_var()), env,
@@ -2118,7 +2103,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             }
             if(depth == 0) {
                 LOG_ERROR_N(stmt) << "break/continue outside a loop the CFG sees: nothing "
-                                  << "to jump within (ADR-0014 §8)";
+                                  << "to jump within";
                 return 1;
             }
             const AST::Node *loop = frames[depth - 1].loop;
@@ -2271,7 +2256,7 @@ int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const E
         if(m_temps.count(read) && !env.count(read)) {
             LOG_ERROR_N(node) << "temporary '" << read << "' is read before it is "
                               << "assigned in this segment — or outside the scope that "
-                              << "declares it (ADR-0014 §6, §6.1, §9)";
+                              << "declares it";
             return 1;
         }
     }
@@ -2311,7 +2296,7 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         if(lapped.count(loop)) {
             LOG_ERROR_N(anchor) << "a path through this loop's body reaches the loop head again "
                                 << "without crossing a cut point: a zero-delay lap "
-                                << "(IEEE 1800-2017 §9.2.2.1, ADR-0014 §9). If a rolled "
+                                << "(IEEE 1800-2017 §9.2.2.1). If a rolled "
                                 << "repeat with a possibly-zero count sits on that path, "
                                 << "its skip is the lap: a cut point after it breaks it";
             return 1;
@@ -2478,7 +2463,7 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
     const auto &senslist = event->get_senslist();
     if(!senslist || !senslist->get_list() || senslist->get_list()->size() != 1) {
         LOG_ERROR_N(event) << "a marked process waits on exactly one event "
-                           << "term: one clock, one edge (ADR-0014 §2)";
+                           << "term: one clock, one edge";
         return 1;
     }
 
@@ -2486,7 +2471,7 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
     if(sens->get_type() != AST::Sens::TypeEnum::POSEDGE &&
        sens->get_type() != AST::Sens::TypeEnum::NEGEDGE) {
         LOG_ERROR_N(event) << "a marked process waits on a clock edge — "
-                           << "posedge or negedge, never a level (ADR-0014 §2)";
+                           << "posedge or negedge, never a level";
         return 1;
     }
 
@@ -2511,7 +2496,7 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
     if(clock_name != sens_name || clock->get_type() != sens->get_type()) {
         LOG_ERROR_N(event) << "cut point over '" << sens_name
                            << "' disagrees with the process clock '" << clock_name
-                           << "': one clock, one edge, per process (ADR-0014 §2, §9)";
+                           << "': one clock, one edge, per process";
         return 1;
     }
 
@@ -2562,11 +2547,13 @@ int ImplicitFsmElaboration::check_enable(const std::vector<AST::EventStatement::
         auto describe = [](const std::pair<std::size_t, std::string> &lines) {
             return (lines.first > 1 ? "the waits at lines " : "the wait at line ") + lines.second;
         };
-        LOG_ERROR_N(odd.front())
-            << describe(odd_lines) << (odd_lines.first > 1 ? " carry" : " carries")
-            << (bare_odd ? " no `iff`" : " an `iff`") << " while " << describe(rest_lines)
-            << (rest_lines.first > 1 ? " carry" : " carries") << (bare_odd ? " one" : " none")
-            << ": a chip enable qualifies every transition or none (ADR-0014 §5.3)";
+        LOG_ERROR_N(odd.front()) << describe(odd_lines)
+                                 << (odd_lines.first > 1 ? " carry" : " carries")
+                                 << (bare_odd ? " no `iff`" : " an `iff`") << " while "
+                                 << describe(rest_lines)
+                                 << (rest_lines.first > 1 ? " carry" : " carries")
+                                 << (bare_odd ? " one" : " none")
+                                 << ": a chip enable qualifies every transition or none";
         return 1;
     }
 
@@ -2575,11 +2562,11 @@ int ImplicitFsmElaboration::check_enable(const std::vector<AST::EventStatement::
         const auto &wait = qualified[i];
         const auto &condition = wait->get_senslist()->get_list()->front()->get_condition();
         if(!reference->is_equal(condition, false)) {
-            LOG_ERROR_N(wait)
-                << "the wait at line " << wait->get_line() << " carries a different `iff` "
-                << "condition than the wait at line " << qualified.front()->get_line()
-                << ": a uniform chip enable is one condition for the whole machine — "
-                << "gating states differently is a separate feature (ADR-0014 §5.3, §15)";
+            LOG_ERROR_N(wait) << "the wait at line " << wait->get_line()
+                              << " carries a different `iff` "
+                              << "condition than the wait at line " << qualified.front()->get_line()
+                              << ": a uniform chip enable is one condition for the whole machine — "
+                              << "gating states differently is a separate feature";
             return 1;
         }
     }
@@ -2601,7 +2588,7 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
             reset_name = AST::cast_to<AST::Identifier>(expr)->get_name();
         } else {
             LOG_ERROR_N(pragmalist) << "veriparse_reset names the reset input, "
-                                    << "as a string or an identifier (ADR-0014 §5)";
+                                    << "as a string or an identifier";
             return 1;
         }
     } else {
@@ -2618,7 +2605,7 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
             LOG_ERROR_N(module) << "reset signal neither hinted nor uniquely "
                                 << "inferable: " << matches.size()
                                 << " candidate input(s) — name it with "
-                                << "(* veriparse_reset = \"<port>\" *) (ADR-0014 §5)";
+                                << "(* veriparse_reset = \"<port>\" *)";
             return 1;
         }
         reset_name = matches.front();
@@ -2635,7 +2622,7 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
         if(!level->get_expression() ||
            !ExpressionEvaluation().evaluate_node(level->get_expression(), value) ||
            (value != 0 && value != 1)) {
-            LOG_ERROR_N(pragmalist) << "veriparse_reset_level is 0 or 1 (ADR-0014 §3)";
+            LOG_ERROR_N(pragmalist) << "veriparse_reset_level is 0 or 1";
             return 1;
         }
         active_low = value == 0;
@@ -2648,8 +2635,7 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
             wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
         }
         if(wanted != "sync" && wanted != "async") {
-            LOG_ERROR_N(pragmalist) << "veriparse_reset_kind is \"sync\" or \"async\" "
-                                    << "(ADR-0014 §3)";
+            LOG_ERROR_N(pragmalist) << "veriparse_reset_kind is \"sync\" or \"async\"";
             return 1;
         }
         m_async_reset = wanted == "async";
@@ -2705,7 +2691,7 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
                 }
                 LOG_ERROR_N(anchor)
                     << "register '" << elt.first << "' committed twice on one path: "
-                    << "the first '<=' never takes effect (ADR-0014 §6)";
+                    << "the first '<=' never takes effect";
                 return 1;
             }
         }
@@ -2724,7 +2710,7 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
            stmt->is_node_type(AST::NodeType::CaseStatement)) {
             LOG_ERROR_N(stmt) << "a branch in the preamble: the reset branch loads reset "
                               << "values once, while emitted into the reset arm it would be "
-                              << "re-evaluated on every reset cycle (ADR-0014 §5.1)";
+                              << "re-evaluated on every reset cycle";
             return 1;
         }
     }
@@ -2739,7 +2725,7 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
             if(process_regs.count(read)) {
                 LOG_ERROR_N(stmt) << "the preamble reads register '" << read
                                   << "': nothing is assigned at reset entry, so the reset "
-                                  << "value would be undefined (ADR-0014 §5.1, §6)";
+                                  << "value would be undefined";
                 return 1;
             }
         }
@@ -2764,8 +2750,7 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
                 LOG_ERROR_N(enable)
                     << "the `iff` enable reads register '" << read << "' which no path "
                     << "out of reset assigns: the enable gates every state including "
-                    << "the first, and the init segment gives it no value "
-                    << "(ADR-0014 §5.1, §5.3, §6)";
+                    << "the first, and the init segment gives it no value";
                 return 1;
             }
         }
@@ -2842,7 +2827,7 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
                         LOG_ERROR_N(anchor)
                             << "register '" << read << "' is read before every path "
                             << "out of reset assigns it, and the init segment gives "
-                            << "it no value (ADR-0014 §5.1, §6)";
+                            << "it no value";
                         return 1;
                     }
                 }
@@ -3017,7 +3002,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             m_encoding = Encoding::OUTPUT;
         } else {
             LOG_ERROR_N(pragmalist) << "veriparse_encoding is \"binary\", \"one_hot\", "
-                                    << "\"gray\" or \"output\" (ADR-0014 §3, §6.2)";
+                                    << "\"gray\" or \"output\"";
             return 1;
         }
     }
@@ -3030,7 +3015,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
 
     if(!clock) {
         LOG_ERROR_N(initial) << "(* veriparse_fsm *) on an initial with no wait: "
-                             << "there is nothing to compile (ADR-0014 §2, §9)";
+                             << "there is nothing to compile";
         return 1;
     }
 
@@ -3046,7 +3031,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         if(find_declaration(module, elt.first)) {
             LOG_ERROR_N(elt.second)
                 << "temporary '" << elt.first << "' shadows a module-level declaration: "
-                << "substitution binds by name — rename it (ADR-0014 §6, §9)";
+                << "substitution binds by name — rename it";
             return 1;
         }
     }
@@ -3074,7 +3059,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 LOG_ERROR_N(initial)
                     << "register '" << name << "' is also written by another process "
                     << "or a continuous assign: the emitted always_ff would not "
-                    << "conform (IEEE 1800-2017 §9.2.2.4, ADR-0014 §9)";
+                    << "conform (IEEE 1800-2017 §9.2.2.4)";
                 return 1;
             }
         }
@@ -3095,7 +3080,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 LOG_ERROR_N(info.cond)
                     << "rolled for index '" << info.index << "' is not a module-level "
                     << "declaration: the induced register takes the index's declared "
-                    << "type (ADR-0014 §7.2)";
+                    << "type";
                 return 1;
             }
             // The machine drives the index from its always_ff: an input
@@ -3104,7 +3089,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 LOG_ERROR_N(info.cond)
                     << "rolled for index '" << info.index << "' is not a variable the "
                     << "machine can drive: an input port or a net cannot take the "
-                    << "induced register's commits (ADR-0014 §7.2, §9)";
+                    << "induced register's commits";
                 return 1;
             }
             continue;
@@ -3127,16 +3112,15 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         if(!info.cond->is_node_type(AST::NodeType::Identifier)) {
             LOG_ERROR_N(info.cond) << "non-constant repeat count must be a plain signal, so the "
                                    << "countdown can take its declared width — bind the expression "
-                                   << "to a named signal first (ADR-0014 §7.2)";
+                                   << "to a named signal first";
             return 1;
         }
         const auto &count_name = AST::cast_to<AST::Identifier>(info.cond)->get_name();
         const auto &decl = find_declaration(module, count_name);
         unsigned int width = 0;
         if(!decl || declared_width(decl, width)) {
-            LOG_ERROR_N(info.cond)
-                << "cannot size the countdown for repeat count '" << count_name
-                << "': its declaration or packed range is not resolvable (ADR-0014 §7.2)";
+            LOG_ERROR_N(info.cond) << "cannot size the countdown for repeat count '" << count_name
+                                   << "': its declaration or packed range is not resolvable";
             return 1;
         }
         widen(info.depth, width);
@@ -3183,10 +3167,10 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             LOG_ERROR_N(initial)
                 << "a decoded output takes a conditional value in the init segment: the "
                 << "reset value is unconditional — assign it once before the branch, or "
-                << "move the branch after the first wait (ADR-0014 §5.1, §6.2, §9)";
+                << "move the branch after the first wait";
         } else {
             LOG_ERROR_N(initial) << "a cut point inside a branch before the first wait: "
-                                 << "the reset branch cannot fork (ADR-0014 §5.1)";
+                                 << "the reset branch cannot fork";
         }
         return 1;
     }
@@ -3221,8 +3205,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         if(m_encoding == Encoding::OUTPUT) {
             LOG_ERROR_N(m_walk_pragmalist)
                 << "veriparse_encoding = \"output\" with no decoded output: the state "
-                << "bits carry the outputs, and there are none — the hint is inert "
-                << "(ADR-0014 §3, §6.2, §9)";
+                << "bits carry the outputs, and there are none — the hint is inert";
             return 1;
         }
         return 0;
@@ -3239,8 +3222,8 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         if(counting) {
             LOG_ERROR_N(info.body)
                 << "a rolled loop's lap cannot re-assert a decoded output: every path "
-                << "between two cut points must assign it — spell the loop with §7.3's "
-                << "while idiom, or keep the output a register (ADR-0014 §6.2, §7.3, §9)";
+                << "between two cut points must assign it — spell the loop as a while "
+                << "re-asserting the output per lap, or keep the output a register";
             return 1;
         }
     }
@@ -3350,8 +3333,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "decoded output '" << name << "': its " << what << " reads input '"
                         << operand << "', which can change on the arrival edge — the "
                         << "always_ff sampled it before the edge, the emitted arm re-reads "
-                        << "it after; register the input first, in this process "
-                        << "(ADR-0014 §6.2, §9)";
+                        << "it after; register the input first, in this process";
                     return 1;
                 }
                 if(foreign.count(operand)) {
@@ -3359,7 +3341,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "decoded output '" << name << "': its " << what << " reads '" << operand
                         << "', which is driven outside this process and can "
                         << "change on the arrival edge like an input — register it in "
-                        << "this process (ADR-0014 §6.2, §9)";
+                        << "this process";
                     return 1;
                 }
                 if(commits.count(operand)) {
@@ -3367,8 +3349,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "decoded output '" << name << "': its " << what << " reads '" << operand
                         << "', which the same arriving path commits — the emitted arm would "
                         << "track the new value where the source held the entry value; keep "
-                        << "the output a register, or commit '" << operand
-                        << "' on another path (ADR-0014 §6.2, §9)";
+                        << "the output a register, or commit '" << operand << "' on another path";
                     return 1;
                 }
                 if(m_decoded.count(operand)) {
@@ -3376,7 +3357,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "decoded output '" << name << "': its " << what << " reads decoded "
                         << "output '" << operand << "' from the previous cycle, which the "
                         << "emitted comb cannot show — assign '" << operand
-                        << "' first, or keep one of them a register (ADR-0014 §6.2, §9)";
+                        << "' first, or keep one of them a register";
                     return 1;
                 }
             }
@@ -3500,7 +3481,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "decoded output '" << name << "': paths from different states "
                         << "arrive at one state with different values — the state register "
                         << "cannot tell them apart; make the arrivals agree, or keep the "
-                        << "output a register (ADR-0014 §6.2, §9)";
+                        << "output a register";
                     return 1;
                 }
             }
@@ -3520,8 +3501,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             if(!decl || declared_width(decl, width) || width < 1) {
                 LOG_ERROR_N(elt.second)
                     << "output encoding: cannot size decoded output '" << elt.first
-                    << "': its declaration or packed range is not resolvable "
-                    << "(ADR-0014 §6.2)";
+                    << "': its declaration or packed range is not resolvable";
                 return 1;
             }
             m_output_slices.push_back({elt.first, lsb, width});
@@ -3546,7 +3526,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                 if(arm == m_decode_arms[state].end()) {
                     LOG_ERROR_N(m_walk_pragmalist)
                         << "output encoding: no decode value for '" << std::get<0>(slice)
-                        << "' in a state — please report this input (ADR-0014 §6.2)";
+                        << "' in a state — please report this input";
                     return 1;
                 }
                 const auto &chain = arm->second;
@@ -3555,7 +3535,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "output encoding: decoded output '" << std::get<0>(slice)
                         << "' takes different values within one state — a state bit is "
                         << "one value per state; make the arrivals agree, or pick "
-                        << "binary/one_hot/gray (ADR-0014 §6.2, §9)";
+                        << "binary/one_hot/gray";
                     return 1;
                 }
                 // A literal, not a folded expression: the evaluator's
@@ -3568,7 +3548,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "output encoding: decoded output '" << std::get<0>(slice)
                         << "' is not a literal in every state — a state bit is a "
                         << "literal; pick binary/one_hot/gray, or keep the output a "
-                        << "register (ADR-0014 §6.2, §9)";
+                        << "register";
                     return 1;
                 }
                 const mpz_class folded =
@@ -3597,7 +3577,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         if(out_width + d_width > 32) {
             LOG_ERROR_N(m_walk_pragmalist)
                 << "output encoding beyond 32 state bits (" << out_width << " output + " << d_width
-                << " disambiguation): pick binary or gray (ADR-0014 §3, §6.2)";
+                << " disambiguation): pick binary or gray";
             return 1;
         }
         m_output_width = out_width + d_width;
@@ -3702,7 +3682,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     // binary and gray pack into clog2 bits, one-hot spends one per state.
     if(m_encoding == Encoding::ONE_HOT && nstates > 32) {
         LOG_ERROR_N(module) << "one_hot encoding beyond 32 states (" << nstates
-                            << "): pick binary or gray (ADR-0014 §3)";
+                            << "): pick binary or gray";
         return nullptr;
     }
     const unsigned int width =
@@ -3771,7 +3751,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         if(unique.size() != expected) {
             LOG_ERROR_N(module) << "a state name collides with another state or with a "
                                 << "generated declaration (the state register or the "
-                                << "countdown): rename the label (ADR-0014 §10, §10.1)";
+                                << "countdown): rename the label";
             return nullptr;
         }
     }
@@ -3783,13 +3763,13 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     for(const auto &name : state_names) {
         if(Analysis::UniqueDeclaration::identifier_declaration_exists(name, declared)) {
             LOG_ERROR_N(module) << "generated declaration '" << name
-                                << "' collides with an existing one (ADR-0014 §10)";
+                                << "' collides with an existing one";
             return nullptr;
         }
     }
     if(Analysis::UniqueDeclaration::identifier_declaration_exists(state_reg, declared)) {
         LOG_ERROR_N(module) << "generated declaration '" << state_reg
-                            << "' collides with an existing one (ADR-0014 §10)";
+                            << "' collides with an existing one";
         return nullptr;
     }
 
@@ -3824,7 +3804,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         const auto &name = cnt_name(static_cast<unsigned int>(depth));
         if(Analysis::UniqueDeclaration::identifier_declaration_exists(name, declared)) {
             LOG_ERROR_N(module) << "generated declaration '" << name
-                                << "' collides with an existing one (ADR-0014 §10)";
+                                << "' collides with an existing one";
             return nullptr;
         }
         auto cnt_type = std::make_shared<AST::LogicType>(fn, ln);
@@ -3844,7 +3824,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     for(const auto &wire : m_wires) {
         if(Analysis::UniqueDeclaration::identifier_declaration_exists(wire.name, declared)) {
             LOG_ERROR_N(module) << "generated declaration '" << wire.name
-                                << "' collides with an existing one (ADR-0014 §10)";
+                                << "' collides with an existing one";
             return nullptr;
         }
         auto net = std::make_shared<AST::WireNet>(fn, ln);
@@ -4111,8 +4091,8 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                 const auto &chain = arm->second;
                 for(std::size_t leg = 0; leg < chain.size(); ++leg) {
                     if(chain[leg].first && leg + 1 < chain.size()) {
-                        text += renderer.render(chain[leg].first) + " ? ";
-                        text += renderer.render(chain[leg].second) + " : ";
+                        text += renderer.render(chain[leg].first) + " ?";
+                        text += renderer.render(chain[leg].second) + " :";
                     } else {
                         text += renderer.render(chain[leg].second);
                     }

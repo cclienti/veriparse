@@ -71,7 +71,7 @@ static int verilower(int argc, char *argv[])
         "Seed value")("log", boost::program_options::value<std::string>(&config.log_file),
                       "Log to FILE instead of stderr")(
         "state-map", boost::program_options::value<std::string>(&config.state_map),
-        "Write the ADR-0014 state map (JSON) to FILE; default <output>.fsm.json")(
+        "Write the FSM state map (JSON) to FILE; default <output>.fsm.json")(
         "fsm-dot", boost::program_options::value<std::string>(&config.fsm_dot),
         "Write a graphviz view of the compiled machines to FILE")(
         "fsm-dot-values", boost::program_options::bool_switch(&config.fsm_dot_values),
