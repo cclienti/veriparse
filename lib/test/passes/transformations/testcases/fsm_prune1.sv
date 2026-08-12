@@ -11,8 +11,10 @@ module fsm_prune1 (
         q <= '0;
         done <= 1'b0;
         @(posedge clk);
+        (* veriparse_no_unroll *)
         repeat (n) @(posedge clk);
         q <= 8'd2;
+        (* veriparse_no_unroll *)
         repeat (n) @(posedge clk);
         done <= 1'b1;
         @(posedge clk);

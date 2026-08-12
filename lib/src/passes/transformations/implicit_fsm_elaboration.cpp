@@ -1641,13 +1641,15 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         return 1;
     }
 
-    // §7.2: the rolled lowering is forced on a bounded loop the unroller
-    // left behind — a non-constant bound is no longer an error — but the
-    // author should know the state count changed hands.
+    // §7.2/§8: a bounded loop the unroller left behind has a correct rolled
+    // lowering, but rolled is opt-in — a bound that stopped folding or a
+    // refused jump shape must not change the state count in silence.
     if(!kept_rolled && info.kind != LoopInfo::Kind::WHILE && info.kind != LoopInfo::Kind::FOREVER) {
-        LOG_WARNING_N(node) << "bounded loop with a cut point was not unrolled upstream: "
-                            << "compiled rolled — mark it (* veriparse_no_unroll *) to make "
-                            << "that explicit (ADR-0014 §7.2, §8)";
+        LOG_ERROR_N(node) << "bounded loop with a cut point was not unrolled upstream "
+                          << "(non-constant bound, or a jump shape the unroller refuses): "
+                          << "mark it (* veriparse_no_unroll *) to compile it rolled, or "
+                          << "make the bound constant (ADR-0014 §7.2, §8)";
+        return 1;
     }
 
     m_loops[node.get()] = info;

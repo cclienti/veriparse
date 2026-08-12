@@ -158,11 +158,18 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat0) { TEST_CORE_SV; }
 // repeat (1) rolled: a single pass needs no countdown at all — the body
 // runs once, inline (§7.2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat1) { TEST_CORE_SV; }
-// A non-constant repeat count, unmarked: the rolled lowering is forced and
-// warned about (§7.2). IEEE §12.7.2 evaluates the count once on entry, so
-// the countdown captures it there, sized to the count signal's declared
-// width, and a zero count skips the state through the entry guard.
+// A non-constant repeat count under the mark: IEEE §12.7.2 evaluates the
+// count once on entry, so the countdown captures it there, sized to the
+// count signal's declared width, and a zero count skips the state through
+// the entry guard.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat2) { TEST_CORE_SV; }
+// The same count without the mark: rolled is opt-in, so a bounded loop the
+// unroller could not flatten refuses rather than change the state count in
+// silence (§7.2, §8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err4) { TEST_ERROR_SV; }
+// A for with a non-constant bound and no mark refuses the same way (§7.2,
+// §8).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }
 // A rolled for (§7.2): the author's index register honours init, test and
 // step — the init and step commit once per entry/lap, and their values
 // substitute forward within their own segment (§6.1), which is when the
