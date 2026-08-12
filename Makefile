@@ -69,7 +69,9 @@ dev-env-file: conda/recipe-release/meta.yaml
 	  grep -vE '# *\[(win|build_platform.startswith\("win-"\))\]' | \
 	  sed 's/^ *- /  - /' >> conda/environment.yml
 	@echo "  - verilator>=5.050"      >> conda/environment.yml
-	@echo "  - yosys"                 >> conda/environment.yml
+	@if [ "$$(uname -s)-$$(uname -m)" != "Darwin-arm64" ]; then \
+	  echo "  - yosys"                >> conda/environment.yml; \
+	fi # conda-forge has no yosys for osx-arm64; the synth check skips without it
 	@echo "  - gcovr"                 >> conda/environment.yml
 
 dev-env: dev-env-file

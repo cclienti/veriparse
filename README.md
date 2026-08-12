@@ -167,7 +167,7 @@ veriparse/
 | GMP / GMPXX | 6.3.0 | Arbitrary precision arithmetic |
 | GoogleTest | 1.17.0 | Unit testing |
 | Verilator | ≥ 5.050 | Cosim test suite (build-time); the floor is semantic — earlier versions mis-schedule initial-block `<=` under `--timing` |
-| Yosys | any recent | Synthesis checks in the verilower test suite (dev/CI only) |
+| Yosys | ≥ 0.10 | Synthesis checks in the verilower test suite (dev/CI only, optional — skipped when absent; conda-forge has no yosys for osx-arm64 or win-64) |
 
 ---
 
