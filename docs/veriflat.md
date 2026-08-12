@@ -29,6 +29,11 @@ options:
   -p [ --param-map ] arg     YAML parameter map
   -e [ --deadcode-end ]      Remove deadcode after flatten pass
   -d [ --deadcode-during ]   Remove deadcode during flatten pass
+  --fsm                      Compile (* veriparse_fsm *) processes into explicit
+                             machines, each instance at its own parameters
+                             (ADR-0014)
+  --suffix arg               Append to the emitted module's name, so the output
+                             can sit beside its source in one testbench
   --sv                       Enable SystemVerilog mode
   -I [ --include-dir ] arg   Add directory to `include search path (repeatable)
   -D [ --define ] arg        Predefine a macro as NAME or NAME=BODY (repeatable)
@@ -75,6 +80,38 @@ arrays — until a single module remains.
 
 Dead-code elimination is optional: `-d` prunes unused logic while
 flattening (keeps intermediate results small), `-e` prunes once at the end.
+
+## `--fsm` — compile marked processes while flattening
+
+With `--fsm`, the flattener enables [`verilower`](verilower.md)'s
+imperative-FSM elaboration (ADR-0014) inside its per-instance resolution.
+Since every instance is resolved with **its own parameters** before
+inlining, this compiles the one shape a per-module `verilower` run cannot:
+a marked module instantiated several times with different parameter
+overrides.
+
+```systemverilog
+pulse_ctr #(.N(3)) u_fast (...);   // both instances of a
+pulse_ctr #(.N(6)) u_slow (...);   // (* veriparse_fsm *) marked module
+```
+
+```sh
+veriflat --sv --fsm -t top -o top_flat.sv top.sv
+```
+
+Each instance's machine is compiled at its own `N` — separately sized
+countdowns, states, and encodings — and the flattening uniquifies the
+generated names (`u_fast___fsm_state`, `u_slow___fsm_state`) like any
+other declaration. Under `--fsm` the synthesizable-subset check moves
+from the input (which legitimately suspends on edge waits) to the
+flattened output, exactly as in `verilower`.
+
+Without `--fsm`, a marked design still flattens: the processes pass
+through as-is with their attributes intact — so a downstream `verilower`
+run per module still works — and an info note names the flag. The
+`--suffix` option renames the emitted module (as in `verilower`) so a
+flattened machine can sit beside its behavioural source in one
+differential testbench.
 
 ## SystemVerilog example: generate-loop flattening
 

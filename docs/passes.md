@@ -115,8 +115,9 @@ Collects all declared identifiers (I/O, variables, instances, tasks, functions) 
 ### `SynthesizableCheck`
 Rejects constructs outside the synthesizable RTL subset before flattening
 (ADR-0007). Blacklist model; first entry: virtual interfaces (IEEE 1800-2017
-§25.9). Opt-in per tool: `veriflat` runs it, `veridump`/`veriobf` stay
-permissive.
+§25.9). Opt-in per tool: `veriflat` runs it on the input (on the *output*
+under `--fsm`, whose input legitimately suspends on edge waits — same
+placement as `verilower`), `veridump`/`veriobf` stay permissive.
 
 ---
 
@@ -373,8 +374,10 @@ explicit synthesizable FSM (ADR-0014). The user-facing reference is
   points, …
 - Fills an `FsmReport` (states, transitions, reset, per-process) that
   `verilower` serializes as JSON and graphviz.
-- Opt-in: only runs when enabled in `ResolveModule` (the `verilower` driver
-  does; `veriflat` leaves it off).
+- Opt-in: only runs when enabled in `ResolveModule` — the `verilower`
+  driver does, and `veriflat --fsm` enables it inside `ModuleFlattener`'s
+  per-instance resolution, compiling every marked instantiation at its own
+  parameters.
 
 ---
 
@@ -412,7 +415,7 @@ ScopeElevator
 LoopUnrolling
 BranchSelection
 GenerateRemoval
-ImplicitFsmElaboration ← optional, opt-in (ADR-0014); on in verilower, off in veriflat
+ImplicitFsmElaboration ← optional, opt-in (ADR-0014); on in verilower and veriflat --fsm
 ConstantFolding       ← second pass after branch/generate removal
 VariableFolding
 DeadcodeElimination   ← optional

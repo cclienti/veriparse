@@ -163,8 +163,9 @@ parameter the machine's *structure* depends on — an unrolled loop bound, a
 rolled countdown's size — is rejected loudly rather than compiled into a
 silently different machine. A marked module instantiated elsewhere with
 per-instance parameter overrides is reported, not silently compiled —
-resolving each instantiation with its own parameters is the flattener's job
-(a planned `veriflat --fsm` mode, ADR-0014 §15).
+resolving each instantiation with its own parameters is the flattener's
+job: run [`veriflat --fsm`](veriflat.md#fsm-compile-marked-processes-while-flattening),
+which compiles every marked instantiation at its own parameterization.
 
 ---
 

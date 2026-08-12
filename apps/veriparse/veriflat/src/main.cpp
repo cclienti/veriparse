@@ -2,6 +2,7 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include "config.hpp"
 #include "parameters_overloading.hpp"
+#include "fsm_mark.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -61,7 +62,13 @@ static int veriflat(int argc, char *argv[])
         "Remove deadcode after flatten pass")(
         "deadcode-during,d", boost::program_options::bool_switch(&config.deadcode_during_flatten),
         "Remove deadcode during flatten pass")(
-        "sv", boost::program_options::bool_switch(&config.sv_mode), "Enable SystemVerilog mode")(
+        "fsm", boost::program_options::bool_switch(&config.fsm_elaboration),
+        "Compile (* veriparse_fsm *) processes into explicit machines, each "
+        "instance at its own parameters (ADR-0014)")(
+        "suffix", boost::program_options::value<std::string>(&config.suffix)->default_value(""),
+        "Append to the emitted module's name, so the output can sit beside "
+        "its source in one testbench")("sv", boost::program_options::bool_switch(&config.sv_mode),
+                                       "Enable SystemVerilog mode")(
         "include-dir,I",
         boost::program_options::value<std::vector<std::string>>(&config.include_dirs),
         "Add directory to `include search path (repeatable)")(
@@ -215,10 +222,13 @@ static int veriflat(int argc, char *argv[])
     // Reject constructs outside the synthesizable RTL subset (e.g. virtual
     // interfaces, IEEE 1800-2017 §25.9) before flattening: the transformation
     // passes below only model synthesizable RTL. Runs after name resolution so
-    // promoted interface types are visible.
+    // promoted interface types are visible. Under --fsm the input legitimately
+    // holds processes suspending on edge waits — precisely what the subset
+    // excludes — so the verdict moves to the output (ADR-0014, ADR-0007 §1.2).
     //---------------------------------------------------------
 
-    if(Veriparse::Passes::Analysis::SynthesizableCheck::check(sources) != 0) {
+    if(!config.fsm_elaboration &&
+       Veriparse::Passes::Analysis::SynthesizableCheck::check(sources) != 0) {
         LOG_ERROR << "design uses non-synthesizable constructs";
         return 1;
     }
@@ -253,6 +263,23 @@ static int veriflat(int argc, char *argv[])
     auto module = modules_map[config.top_module];
 
     //---------------------------------------------------------
+    // The mark is never skipped in silence (ADR-0014 §2): without --fsm a
+    // marked process flattens as-is — attribute included, so a downstream
+    // verilower still sees it — and the note points at the flag that
+    // compiles it here.
+    //---------------------------------------------------------
+
+    if(!config.fsm_elaboration) {
+        for(const auto &elt : modules_map) {
+            if(has_veriparse_fsm_mark(elt.second)) {
+                LOG_INFO << "module '" << elt.first << "' carries (* veriparse_fsm *) "
+                         << "processes: flattened as-is — pass --fsm to compile them "
+                         << "into explicit machines";
+            }
+        }
+    }
+
+    //---------------------------------------------------------
     // Prepare parameter overloading
     //---------------------------------------------------------
 
@@ -268,10 +295,25 @@ static int veriflat(int argc, char *argv[])
     //---------------------------------------------------------
 
     Veriparse::Passes::Transformations::ModuleFlattener flattener(
-        param_args, modules_map, config.deadcode_during_flatten, interfaces_map);
+        param_args, modules_map, config.deadcode_during_flatten, interfaces_map,
+        config.fsm_elaboration);
     if(flattener.run(module) != 0) {
         LOG_ERROR << "flattening failed";
         return 1;
+    }
+
+    //---------------------------------------------------------
+    // Under --fsm the synthesizable-subset verdict deferred above applies
+    // here, to the compiled output (ADR-0014).
+    //---------------------------------------------------------
+
+    if(config.fsm_elaboration) {
+        std::vector<Veriparse::AST::Node::Ptr> compiled;
+        compiled.push_back(module);
+        if(Veriparse::Passes::Analysis::SynthesizableCheck::check(compiled) != 0) {
+            LOG_ERROR << "flattened output uses non-synthesizable constructs";
+            return 1;
+        }
     }
 
     //---------------------------------------------------------
@@ -294,8 +336,15 @@ static int veriflat(int argc, char *argv[])
         wire_split.run(module);
     }
 
-    // Write the result into the output file
+    // Write the result into the output file, renamed on request: the
+    // differential cosim of ADR-0014 §11 puts the flattened module beside
+    // its own source in one testbench, which needs distinct names.
     //---------------------------------------------------------
+
+    if(!config.suffix.empty()) {
+        const auto &module_node = Veriparse::AST::cast_to<Veriparse::AST::Module>(module);
+        module_node->set_name(module_node->get_name() + config.suffix);
+    }
 
     const std::string str = Veriparse::Generators::VerilogGenerator().render(module);
     std::ofstream fout(config.output);

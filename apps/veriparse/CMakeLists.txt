@@ -364,6 +364,13 @@ if(NOT WIN32)
     # corner (§11.6) through the materialized wires, alternating forever.
     add_verilower_sv_cosim(NAME temp_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
+    # marked module instantiated twice with different parameters — the
+    # shape a per-module verilower run cannot compile (§15) — each
+    # instance's machine at its own N.
+    add_verilower_sv_cosim(NAME fsm_flat TOOL veriflat TOOL_ARGS --fsm
+                           VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # A production RMII MAC receiver, three ways: the behavioural rewrite
     # against its verilower output AND against the pre-existing
     # three-process implementation it was rewritten from — an independent
@@ -443,6 +450,26 @@ if(NOT WIN32)
                      && grep -q 'SEED\\[5:0\\]' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v \
                      && ! grep -q 'parameter int N' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v")
     set_tests_properties(test_flat_param_map PROPERTIES LABELS unittest)
+
+    # veriflat --fsm resolves each instance with its own parameters before
+    # the FSM slot: two instantiations of one marked module get separately
+    # sized machines (N=3 -> a 2-bit countdown from 2'd2, N=6 -> a 3-bit
+    # one from 3'd5) and no behavioural initial survives. Without --fsm the
+    # marked processes flatten as-is and the log says so (ADR-0014 §2).
+    add_test(NAME test_fsm_flat
+             COMMAND sh -c "$<TARGET_FILE:veriflat> --sv --fsm -t fsm_flat \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_flat.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/fsm_flat/src/fsm_flat.sv \
+                     && grep -q \"u_fast___fsm_cnt <= 2'd2\" ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_flat.v \
+                     && grep -q \"u_slow___fsm_cnt <= 3'd5\" ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_flat.v \
+                     && ! grep -q 'initial' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_flat.v \
+                     && $<TARGET_FILE:veriflat> --sv -t fsm_flat \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.v \
+                     --log ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.log \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/fsm_flat/src/fsm_flat.sv \
+                     && grep -q 'pass --fsm' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.log \
+                     && grep -q 'initial' ${CMAKE_CURRENT_BINARY_DIR}/fsm_flat_nofsm.v")
+    set_tests_properties(test_fsm_flat PROPERTIES LABELS unittest)
 
     # A parameter map that is not a YAML map of scalars fails cleanly
     # before any transformation: malformed YAML, a sequence instead of a

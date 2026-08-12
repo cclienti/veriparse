@@ -26,9 +26,9 @@
   RTL emission is FSM-specific. The two tools stay separate and **chain**:
   verilower's source-to-source output is a first-class deliverable,
   reviewed and simulated on its own, and `veriflat` consumes it like any
-  source. A future `veriflat --fsm` running the pass in-process stays
-  open, and cheaply — precisely because §10's default emission is safe in
-  that position too.
+  source. `veriflat --fsm` runs the pass in-process besides — cheaply,
+  precisely because §10's default emission is safe in that position too —
+  and §10 says why both roads exist.
 - **Hard constraint, inherited unchanged**: the source must run as-is in
   any conforming simulator. Anything that would require veriparse to run
   before a behavioural simulation is rejected — this rules out a custom
@@ -1230,7 +1230,7 @@ enum created at that point survives into the `ConstantFolding`,
 `VariableFolding` and `DeadcodeElimination` that follow the slot, none of
 which was ever taught it: the mid-pipeline breakage ADR-0009 was written
 to remove, reintroduced from the far end. Second, deployment: the pass is
-a library pass any front end may invoke (§2), including a future
+a library pass any front end may invoke (§2), including
 `veriflat --fsm` running it in-process ahead of the flattener — which has
 no `Typedef` or `Enum` case at all — so the default emission must be safe
 in *every* pipeline position, not just verilower's. Third, output
@@ -1294,9 +1294,18 @@ never depended on the value. A kept parameter only the datapath reads
 survives into the output, so a lowered machine can stay parametric where
 lowering does not need the value. What the map cannot do is compile a marked module
 instantiated elsewhere **with per-instance overrides** — one CLI
-parameterization per run, whereas per-instance resolution is the
-flattener's job, which is what makes the in-process `veriflat --fsm`
-option below load-bearing rather than a convenience (§15).
+parameterization per run. Per-instance resolution is the flattener's
+job, and **`veriflat --fsm`** does it: the flattener already resolves
+each instance's clone with that instance's parameters, so enabling the
+§10.3 slot inside that resolution compiles every marked instantiation at
+its own parameterization — two instances of one module get separately
+sized machines, names uniquified by the flattening as any declaration
+is. Under the flag the §7 synthesizable-subset verdict moves from the
+input (which legitimately suspends on edge waits) to the flattened
+output, exactly verilower's placement. Without the flag nothing changes,
+and per §2 nothing is silent: a marked design flattens as-is — attribute
+included, so a chained verilower still sees it — with an info note
+naming `--fsm` as the road not taken.
 
 Generated declarations take the `veriparse_prefix` (default `__fsm`), settling
 the note's open question on collisions: readable in a waveform, safe
@@ -1728,7 +1737,6 @@ Positioning, so that later choices can be argued against something.
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
-| A marked module instantiated with parameter overrides | verilower compiles the `-t` module at its defaults or one `--param-map` parameterization per run (§10), and warns about every other marked module | `veriflat --fsm`: the flattener resolves each instance with its own parameters, so the §10.3 slot compiles every instantiation correctly — the in-process option §10 keeps open, load-bearing here |
 | Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
 
 ### 15.1 Why `always` is refused rather than supported

@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "report.hpp"
 #include "parameters_overloading.hpp"
+#include "fsm_mark.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -227,33 +228,12 @@ static int verilower(int argc, char *argv[])
         if(elt.first == config.top_module) {
             continue;
         }
-        const auto &items =
-            Veriparse::AST::cast_to<Veriparse::AST::Module>(elt.second)->get_items();
-        if(!items) {
-            continue;
-        }
-        for(const auto &item : *items) {
-            if(!item || !item->is_node_type(Veriparse::AST::NodeType::Pragmalist)) {
-                continue;
-            }
-            const auto &pragmas =
-                Veriparse::AST::cast_to<Veriparse::AST::Pragmalist>(item)->get_pragmas();
-            if(!pragmas) {
-                continue;
-            }
-            bool marked = false;
-            for(const auto &pragma : *pragmas) {
-                if(pragma && pragma->get_name() == "veriparse_fsm") {
-                    marked = true;
-                }
-            }
-            if(marked) {
-                LOG_WARNING << "module '" << elt.first << "' carries (* veriparse_fsm *) "
-                            << "processes but only '" << config.top_module << "' is compiled: "
-                            << "run verilower with --top-module " << elt.first
-                            << " as its own step";
-                break;
-            }
+        if(has_veriparse_fsm_mark(elt.second)) {
+            LOG_WARNING << "module '" << elt.first << "' carries (* veriparse_fsm *) "
+                        << "processes but only '" << config.top_module << "' is compiled: "
+                        << "run verilower with --top-module " << elt.first
+                        << " as its own step, or veriflat --fsm to compile every "
+                        << "instantiation";
         }
     }
 
