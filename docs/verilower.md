@@ -442,8 +442,19 @@ silent rename.
 ## Encodings
 
 `veriparse_encoding` selects the state encoding: `"binary"` (default),
-`"one_hot"`, or `"gray"`. The encoding changes the `localparam` values and
-the state register width; the machine's shape is identical.
+`"one_hot"`, `"gray"`, or `"output"`. The first three change only the
+`localparam` values and the state register width; the machine's shape is
+identical.
+
+`"output"` carries the [decoded outputs](#decoded-outputs--module-level-)
+in the state bits themselves: each output becomes a slice of the state
+register (`assign busy = __fsm_state[0];`), the `always_comb` disappears
+— zero decode logic, glitch-free by construction — and the reset value
+rides the state register's own reset. States sharing an output vector are
+separated by a disambiguation field. It requires every decoded output to
+be **one constant per state** (a fork-arrival tree or a register-valued
+expression is rejected), and the composed register may be wider than
+binary — the trade is yours by hint.
 
 ---
 
@@ -459,7 +470,7 @@ with no attribute except the `veriparse_fsm` mark compiles with defaults.
 | `veriparse_reset = "<port>"` | the process | names the reset input | inferred (see [Reset](#reset)) |
 | `veriparse_reset_level = 0\|1` | the process | reset active level | `1`, or `0` when the name ends in `_n` |
 | `veriparse_reset_kind = "sync"\|"async"` | the process | reset flavour of the generated `always_ff` | `"sync"` |
-| `veriparse_encoding = "binary"\|"one_hot"\|"gray"` | the process | state encoding | `"binary"` |
+| `veriparse_encoding = "binary"\|"one_hot"\|"gray"\|"output"` | the process | state encoding; `"output"` puts the decoded outputs in the state bits ([Encodings](#encodings)) | `"binary"` |
 | `veriparse_prefix = "<id>"` | the process | prefix for generated declarations; must be distinct across a module's marked processes | `__fsm`, `__fsm<N>` |
 | `veriparse_no_unroll` | a `repeat`/`for` loop | keeps the loop rolled (induced countdown / index) | bounded loops unroll |
 

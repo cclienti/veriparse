@@ -347,9 +347,16 @@ private:
     {
         BINARY,
         ONE_HOT,
-        GRAY
+        GRAY,
+        OUTPUT
     };
     Encoding m_encoding = Encoding::BINARY;
+    /// §6.2 output encoding: the state bits are the outputs — per-state
+    /// composed values, the register's total width, and each decoded
+    /// output's slice of it as (name, lsb, width).
+    std::vector<unsigned int> m_output_values;
+    unsigned int m_output_width = 0;
+    std::vector<std::tuple<std::string, unsigned int, unsigned int>> m_output_slices;
     bool m_async_reset = false;
 
     /// §6 temporaries of the walked segments (name → declaration, for the

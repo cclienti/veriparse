@@ -217,6 +217,19 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err12) { TEST_ERROR
 // fork detection: rejected as shadowing, never double-driven (§6, §6.2,
 // §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err13) { TEST_ERROR_SV; }
+// §6.2 output encoding: the state bits are the outputs — composed
+// {disambiguation, outputs} values, outputs as slices of the register, no
+// always_comb, and two states sharing an output vector split on the
+// disambiguation bit.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc0) { TEST_CORE_SV; }
+// Output encoding with a guarded-tree arm: a state bit is one value per
+// state (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err1) { TEST_ERROR_SV; }
+// Output encoding with a non-constant arm value (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err2) { TEST_ERROR_SV; }
+// Output encoding with no decoded output: the hint is inert (§3, §6.2,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err3) { TEST_ERROR_SV; }
 // A for with a non-constant bound and no mark refuses the same way (§7.2,
 // §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }
