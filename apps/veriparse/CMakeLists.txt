@@ -369,6 +369,10 @@ if(NOT WIN32)
     # the tracking-vs-holding window probed by the cycle-sampled bench.
     add_verilower_sv_cosim(NAME decode_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §6.2 output encoding (§12 phase 10): the same cycle-sampled bench
+    # over a machine whose state bits ARE the outputs.
+    add_verilower_sv_cosim(NAME decode_enc VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
     # marked module instantiated twice with different parameters — the
     # shape a per-module verilower run cannot compile (§15) — each

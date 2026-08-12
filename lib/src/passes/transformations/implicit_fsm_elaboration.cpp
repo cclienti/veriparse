@@ -2888,6 +2888,9 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_decode_arms.clear();
     m_walk_module = module;
     m_walk_pragmalist = pragmalist;
+    m_output_values.clear();
+    m_output_width = 0;
+    m_output_slices.clear();
     m_repeat_depth = 0;
     m_hold_needed = false;
     m_encoding = Encoding::BINARY;
@@ -2907,9 +2910,11 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             m_encoding = Encoding::ONE_HOT;
         } else if(wanted == "gray") {
             m_encoding = Encoding::GRAY;
+        } else if(wanted == "output") {
+            m_encoding = Encoding::OUTPUT;
         } else {
-            LOG_ERROR_N(pragmalist) << "veriparse_encoding is \"binary\", \"one_hot\" or "
-                                    << "\"gray\" (ADR-0014 §3)";
+            LOG_ERROR_N(pragmalist) << "veriparse_encoding is \"binary\", \"one_hot\", "
+                                    << "\"gray\" or \"output\" (ADR-0014 §3, §6.2)";
             return 1;
         }
     }
@@ -3199,6 +3204,13 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                                          std::size_t entry_next)
 {
     if(m_decoded.empty()) {
+        if(m_encoding == Encoding::OUTPUT) {
+            LOG_ERROR_N(m_walk_pragmalist)
+                << "veriparse_encoding = \"output\" with no decoded output: the state "
+                << "bits carry the outputs, and there are none — the hint is inert "
+                << "(ADR-0014 §3, §6.2, §9)";
+            return 1;
+        }
         return 0;
     }
 
@@ -3492,6 +3504,82 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             m_decode_arms[state][name] = arm;
         }
     }
+
+    // §6.2 output encoding: the state bits ARE the outputs. Legal exactly
+    // when every arm is one constant per state — totality made the value
+    // a function of the state, this asks it to be a literal one — with a
+    // disambiguation field separating states that share an output vector.
+    if(m_encoding == Encoding::OUTPUT) {
+        unsigned int lsb = 0;
+        for(const auto &elt : m_decoded) {
+            const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(elt.second);
+            unsigned int width = 0;
+            if(!decl || declared_width(decl, width) || width < 1) {
+                LOG_ERROR_N(elt.second)
+                    << "output encoding: cannot size decoded output '" << elt.first
+                    << "': its declaration or packed range is not resolvable "
+                    << "(ADR-0014 §6.2)";
+                return 1;
+            }
+            m_output_slices.push_back({elt.first, lsb, width});
+            lsb += width;
+        }
+        const unsigned int out_width = lsb;
+        std::vector<unsigned long> vectors(m_decode_arms.size(), 0);
+        for(std::size_t state = 0; state < m_decode_arms.size(); ++state) {
+            for(const auto &slice : m_output_slices) {
+                const auto &arm = m_decode_arms[state].find(std::get<0>(slice));
+                if(arm == m_decode_arms[state].end()) {
+                    LOG_ERROR_N(m_walk_pragmalist)
+                        << "output encoding: no decode value for '" << std::get<0>(slice)
+                        << "' in a state — please report this input (ADR-0014 §6.2)";
+                    return 1;
+                }
+                const auto &chain = arm->second;
+                if(chain.size() != 1 || chain.front().first) {
+                    LOG_ERROR_N(chain.front().second)
+                        << "output encoding: decoded output '" << std::get<0>(slice)
+                        << "' takes different values within one state — a state bit is "
+                        << "one value per state; make the arrivals agree, or pick "
+                        << "binary/one_hot/gray (ADR-0014 §6.2, §9)";
+                    return 1;
+                }
+                mpz_class folded;
+                if(!ExpressionEvaluation().evaluate_node(chain.front().second, folded)) {
+                    LOG_ERROR_N(chain.front().second)
+                        << "output encoding: decoded output '" << std::get<0>(slice)
+                        << "' is not a constant in every state — a state bit is a "
+                        << "literal; pick binary/one_hot/gray, or keep the output a "
+                        << "register (ADR-0014 §6.2, §9)";
+                    return 1;
+                }
+                const unsigned int width = std::get<2>(slice);
+                const mpz_class modulus = mpz_class(1) << width;
+                const mpz_class masked = ((folded % modulus) + modulus) % modulus;
+                vectors[state] |= static_cast<unsigned long>(masked.convert_to<unsigned int>())
+                                  << std::get<1>(slice);
+            }
+        }
+        std::map<unsigned long, unsigned int> multiplicity;
+        std::vector<unsigned int> disamb(vectors.size(), 0);
+        unsigned int largest = 0;
+        for(std::size_t state = 0; state < vectors.size(); ++state) {
+            disamb[state] = multiplicity[vectors[state]]++;
+            largest = std::max(largest, multiplicity[vectors[state]]);
+        }
+        const unsigned int d_width = largest > 1 ? clog2(largest) : 0;
+        if(out_width + d_width > 32) {
+            LOG_ERROR_N(m_walk_pragmalist)
+                << "output encoding beyond 32 state bits (" << out_width << " output + " << d_width
+                << " disambiguation): pick binary or gray (ADR-0014 §3, §6.2)";
+            return 1;
+        }
+        m_output_width = out_width + d_width;
+        for(std::size_t state = 0; state < vectors.size(); ++state) {
+            m_output_values.push_back(static_cast<unsigned int>(
+                vectors[state] | (static_cast<unsigned long>(disamb[state]) << out_width)));
+        }
+    }
     return 0;
 }
 
@@ -3591,15 +3679,20 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                             << "): pick binary or gray (ADR-0014 §3)";
         return nullptr;
     }
-    const unsigned int width = m_encoding == Encoding::ONE_HOT
-                                   ? static_cast<unsigned int>(nstates)
-                                   : clog2(static_cast<unsigned int>(nstates));
+    const unsigned int width =
+        m_encoding == Encoding::ONE_HOT
+            ? static_cast<unsigned int>(nstates)
+            : (m_encoding == Encoding::OUTPUT ? m_output_width
+                                              : clog2(static_cast<unsigned int>(nstates)));
     const auto encode = [&](std::size_t index) -> unsigned int {
         switch(m_encoding) {
         case Encoding::ONE_HOT:
             return 1U << index;
         case Encoding::GRAY:
             return static_cast<unsigned int>(index ^ (index >> 1));
+        case Encoding::OUTPUT:
+            // §6.2: the composed {disambiguation, outputs} value.
+            return m_output_values[index];
         case Encoding::BINARY:
         default:
             return static_cast<unsigned int>(index);
@@ -3777,9 +3870,37 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         result->push_back(AST::to_node(cont));
     }
 
-    // §6.2: the decoded outputs' always_comb, beside the machine it reads.
+    // §6.2: the decoded outputs — an always_comb over the state register,
+    // or under output encoding each output IS its slice of the register:
+    // no decode logic, and the reset value rides the state reset.
     if(!m_decoded.empty()) {
-        result->push_back(emit_decode(state_reg, state_names, reset_name, active_low, fn, ln));
+        if(m_encoding == Encoding::OUTPUT) {
+            for(const auto &slice : m_output_slices) {
+                const unsigned int low = std::get<1>(slice);
+                const unsigned int w = std::get<2>(slice);
+                AST::Node::Ptr select;
+                if(w == 1) {
+                    select = AST::to_node(std::make_shared<AST::Pointer>(
+                        AST::to_node(make_const(low, -1, fn, ln)),
+                        AST::to_node(make_id(state_reg, fn, ln)), fn, ln));
+                } else {
+                    select = AST::to_node(std::make_shared<AST::Partselect>(
+                        AST::to_node(make_const(low + w - 1, -1, fn, ln)),
+                        AST::to_node(make_const(low, -1, fn, ln)),
+                        AST::to_node(make_id(state_reg, fn, ln)), fn, ln));
+                }
+                auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+                lvalue->set_var(AST::to_node(make_id(std::get<0>(slice), fn, ln)));
+                auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+                rvalue->set_var(select);
+                auto cont = std::make_shared<AST::Assign>(fn, ln);
+                cont->set_left(lvalue);
+                cont->set_right(rvalue);
+                result->push_back(AST::to_node(cont));
+            }
+        } else {
+            result->push_back(emit_decode(state_reg, state_names, reset_name, active_low, fn, ln));
+        }
     }
 
     // Reset branch: the init segment verbatim, plus the state register
@@ -3913,7 +4034,9 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         process.width = width;
         process.encoding = m_encoding == Encoding::ONE_HOT
                                ? "one_hot"
-                               : (m_encoding == Encoding::GRAY ? "gray" : "binary");
+                               : (m_encoding == Encoding::GRAY
+                                      ? "gray"
+                                      : (m_encoding == Encoding::OUTPUT ? "output" : "binary"));
         process.entry = state_names[entry_next];
         process.has_hold = hold_needed;
         process.reset_signal = reset_name;

@@ -338,7 +338,7 @@ non-empty), so nothing is lost on output.
 | `veriparse_reset = "<port>"` | names the reset input | inferred (§5) |
 | `veriparse_reset_level = 0\|1` | active level | `1`, or `0` when the name ends in `_n` |
 | `veriparse_reset_kind = "sync"\|"async"` | reset flavour of the generated `always_ff` | `"sync"` |
-| `veriparse_encoding = "binary"\|"one_hot"\|"gray"` | state encoding | `"binary"` |
+| `veriparse_encoding = "binary"\|"one_hot"\|"gray"\|"output"` | state encoding; `"output"` carries the decoded outputs in the state bits themselves (§6.2) | `"binary"` |
 | `veriparse_prefix = "<id>"` | prefix for generated declarations; must be **distinct** across a module's marked processes — a hint colliding with another process's hint or ordinal is rejected where the prefix is assigned | `__fsm` (§10), `__fsm<N>` when several processes are marked |
 | `veriparse_no_unroll` on a loop | keeps the loop rolled: one state group with an induced countdown or index register (§7.2) | bounded loops unroll |
 
@@ -1035,6 +1035,34 @@ they are dropped before the tree is built and before stability judges the
 guards. Only the differing conjuncts — the fork condition itself — must
 be stable.
 
+**Output encoding — the state bits are the outputs.** With
+`veriparse_encoding = "output"` the state values are chosen as
+`{D(s), O(s)}`: `O(s)` concatenates the decoded outputs' constants in
+state `s` (each at its declared width, LSB-first in name order), and
+`D(s)` is a disambiguation field separating states that share an output
+vector (binary, `$clog2` of the largest such group, absent when vectors
+are unique). Each output is then emitted as a **slice of the state
+register** — `assign busy = __fsm_state[0];` — the `always_comb`
+disappears, and the reset value rides the state register's own reset,
+since coherency already made the entry state's vector the init vector.
+The timing is §6.2's unchanged: a state's bits hold during the cycle in
+the state, exactly when the arriving convention says the outputs do — a
+pure implementation choice, §3 rule 1.
+
+It is legal exactly when every arm is **one literal per state**: a
+guarded tree (the value is not state-determined) and a non-constant
+value are errors naming the alternative, an `"output"` hint over a
+process with no decoded output is inert and errors per §3, and the
+composed register is capped at 32 bits like one-hot. Why only decoded
+outputs — never `<=` — closes on the latch taxonomy: a `=` that
+re-asserts on every path is state-determined and encodable; a `=` that
+would *hold* across a state is a latch, which totality already forbids;
+and `<=` is the one legal spelling of hold-until-reassigned — genuine
+history, a flop, with no decode logic for the encoding to delete in the
+first place. The trade is stated rather than hidden: the register can be
+wider than binary (outputs plus disambiguation against `$clog2(n)`),
+which is why `"output"` is an opt-in hint and never a default.
+
 **Mixing rules inside one segment come from §6.1 unchanged.** A later
 read in the same segment — by another `=`, by a `<=` right-hand side, by
 a fork condition — sees the decoded output's new value by substitution; a
@@ -1330,6 +1358,7 @@ unmarked column has already been misread once.
 | one signal taking both `=` and `<=` in the process | one signal, one discipline (§6.2): a target cannot be a register and a decoded output at once | ADR §6.2 |
 | a path between two cut points that skips a decoded output | totality (§6.2): the skip is where the source *holds* and the comb *tracks* — a rolled lap cannot re-assert, §7.3's `while` spells the per-lap form | ADR §6.2 |
 | a decoded output's value or arrival guard reading a register committed by its own arriving path | stability (§6.2): the arm re-evaluates over post-edge values where the source read entry values — the emitted decode would be off by one commit | ADR §6.2 |
+| `"output"` encoding with a guarded-tree or non-constant arm, or with no decoded output at all | a state bit is one literal per state (§6.2); a hint with nothing to encode is inert (§3) | ADR §3, §6.2 |
 | a target written by two schedulable processes, or by one and any other process | IEEE §9.2.2.4: *"Variables on the left-hand side of assignments within an `always_ff` procedure … shall not be written to by any other process."* The source is merely a race; the **output would not conform**, which is the stronger reason to refuse. The check sees processes, continuous assigns, generate blocks, the tasks other processes call, and — when the driver supplies the parsed modules, as verilower does — **instance output and inout ports**, scope-aware; an instantiated module missing from the map is a black box and skipped | IEEE §9.2.2.4 |
 
 **System functions are not system tasks, and the row above must not be
@@ -1806,6 +1835,12 @@ says the datapath transformation was exercised on every one of them.
    (§7.3 spelling), and a perpetual wrap — the tracking-vs-holding window
    is exactly what the cycle-sampled comparison probes.
 
+10. **Output encoding** (§6.2) — the `"output"` value beside
+   binary/one-hot/gray: composed `{disambiguation, outputs}` state
+   values from the decode arms, slice-assign emission with no
+   `always_comb`, the literal-per-state checks, and the same
+   differential bench over a machine whose state bits are the outputs.
+
 **Why the perpetual form lands late.** Phase 2 compiles a one-shot
 `initial` — the smallest vehicle for the cut/segment/emit machinery, with no
 back-edge to close — and the `forever` that makes a machine perpetual
@@ -1868,7 +1903,6 @@ Positioning, so that later choices can be argued against something.
 |---|---|---|
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10), plus the §6.2 `always_comb` for decoded outputs — the output-decode third, landed | v2 for the remaining split. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision; §6.2's stability analysis says where a self-advancing value must land when it comes |
-| Output encoding (outputs carried by the state encoding itself) | not attempted | v2, as an `veriparse_encoding` value beside binary/one-hot/gray |
 | `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
 | Counter splitting | one shared countdown per repeat-nesting **depth**, re-initialised on entry: sequential rolled `repeat` timers share their depth's register, nested ones each own their depth's (`cnt`, `cnt2`, ...), and a rolled `for` keeps its own index | further splitting (one per site) is a post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
