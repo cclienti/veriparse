@@ -63,6 +63,12 @@ public:
             std::string guard;  ///< empty = unconditional
             std::string action; ///< the register updates, `;`-joined
         };
+        /// §6.2: a decoded output and its per-state value, rendered.
+        struct Decode
+        {
+            std::string signal;
+            std::vector<std::pair<std::string, std::string>> values;
+        };
         struct Process
         {
             std::string module_name;
@@ -77,6 +83,7 @@ public:
             std::vector<std::string> reset_registers;
             std::vector<State> states;
             std::vector<Transition> transitions;
+            std::vector<Decode> decodes;
         };
         std::vector<Process> processes;
     };
@@ -104,6 +111,9 @@ private:
         AST::Node::Ptr guard;
         AST::Node::ListPtr action;
         std::size_t next;
+        /// §6.2: the decoded outputs' values at this path's end — the
+        /// arrival values of the state it enters.
+        std::map<std::string, AST::Node::Ptr> decode;
     };
 
     /// One state per cut point, in source order; its transitions in
@@ -177,6 +187,18 @@ private:
     int compile_process(const AST::Module::Ptr &module, const AST::Node::Ptr &parent,
                         const AST::Pragmalist::Ptr &pragmalist, const AST::Initial::Ptr &initial,
                         const std::string &prefix);
+
+    /// §6.2: build the per-state decode arms from the arrivals — totality
+    /// was checked at record time; this checks stability and coherency and
+    /// fills m_decode_arms / m_init_decode.
+    int build_decode(const std::vector<State> &states, const std::vector<Transition> &entry,
+                     std::size_t entry_next);
+
+    /// §6.2: the emitted always_comb over the state register.
+    AST::Node::Ptr emit_decode(const std::string &state_reg,
+                               const std::vector<std::string> &state_names,
+                               const std::string &reset_name, bool active_low,
+                               const std::string &fn, int ln) const;
 
     /// Collect the process's waits in source order, validating each
     /// statement against what the lowering can express. Fills @p has_wait
@@ -334,6 +356,20 @@ private:
     /// materialized wire's type), and the §6.1 wires the emission owes:
     /// name, the substituted value, and the temporary supplying the type.
     std::map<std::string, AST::Var::Ptr> m_temps;
+    /// §6.2 decoded outputs: name -> the module-level declaration (anchor).
+    std::map<std::string, AST::Node::Ptr> m_decoded;
+    /// Targets taking '<=' anywhere in the process: the §6.2 discipline
+    /// check is order-independent through this set.
+    std::set<std::string> m_nba_targets;
+    /// §6.2: the init segment's decode values (comb reset + default arm).
+    std::map<std::string, AST::Node::Ptr> m_init_decode;
+    /// §6.2 per-state arms: name -> (guard, value) chain; a single entry
+    /// with a null guard is unconditional, else the last entry is the else.
+    std::vector<std::map<std::string, std::vector<std::pair<AST::Node::Ptr, AST::Node::Ptr>>>>
+        m_decode_arms;
+    /// The module under compilation, for by-name declaration lookups
+    /// during collection.
+    AST::Module::Ptr m_walk_module;
     struct MaterializedWire
     {
         std::string name;

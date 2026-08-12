@@ -83,6 +83,18 @@ static inline std::string render_state_map(
                  << json_escape(edge.guard) << "\", \"action\": \"" << json_escape(edge.action)
                  << "\"}";
         }
+        json << "\n      ],\n";
+        json << "      \"decoded_outputs\": [";
+        for(std::size_t i = 0; i < process.decodes.size(); ++i) {
+            const auto &decode = process.decodes[i];
+            json << (i ? "," : "") << "\n        {\"signal\": \"" << json_escape(decode.signal)
+                 << "\", \"values\": {";
+            for(std::size_t v = 0; v < decode.values.size(); ++v) {
+                json << (v ? ", " : "") << "\"" << json_escape(decode.values[v].first) << "\": \""
+                     << json_escape(decode.values[v].second) << "\"";
+            }
+            json << "}}";
+        }
         json << "\n      ]\n    }";
     }
     json << "\n  ]\n}\n";
