@@ -370,6 +370,9 @@ private:
     /// The module under compilation, for by-name declaration lookups
     /// during collection.
     AST::Module::Ptr m_walk_module;
+    /// The marked process under compilation, excluded from the §6.2
+    /// foreign-driver scan.
+    AST::Pragmalist::Ptr m_walk_pragmalist;
     struct MaterializedWire
     {
         std::string name;

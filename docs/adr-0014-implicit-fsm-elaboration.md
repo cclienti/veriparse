@@ -1008,7 +1008,24 @@ refuted it — an input legitimately changes *on* the arrival edge, the
 `always_ff` sampled it before that edge to choose the transition, and the
 emitted arm re-reads it after, so the two disagree for the whole arrived
 cycle whenever the input flipped. The fix is the message: register the
-input, and the register is stable for the cycle by §9.2.2.4.
+input, **in this process**, and the register is stable for the cycle by
+§9.2.2.4. The same edge-time hazard makes anything **driven outside the
+process** an input in disguise — another process's register, an instance
+output — so those operands are rejected identically, and the check is not
+laundered away by indirection: a continuous assign, the author's or a
+§6.1 wire alike, is looked through to its leaves before the verdict.
+
+The classification is equally literal about §23.2.2.3: an ANSI port with
+a data type and no net keyword is a variable and may decode; an explicit
+net keyword is a net whatever data type it carries, and a name that
+declares no signal at all — a parameter, a type — has nothing for the
+`always_comb` to drive. Both are rejected where the `=` stands.
+
+Duplicate `case` items — legal, first-match-wins (§12.5) — reach the arm
+builder as legs whose reduced guards coincide: the later leg is
+unreachable in the source and is pruned, as is everything after a leg
+whose residual guard emptied entirely (it is the `else`), so the arm
+keeps exactly the source's first match.
 
 One reduction keeps the stability rule from over-firing: a tree's guards
 are the paths' full conjunctions, and the conjuncts **common to every leg

@@ -210,65 +210,50 @@ AST::NonblockingSubstitution::Ptr make_state_assign(const std::string &state_reg
 constexpr std::size_t k_entry = static_cast<std::size_t>(-1);
 
 /// Every identifier read in a subtree, by name.
-void collect_identifiers(const AST::Node::Ptr &node, std::set<std::string> &names)
+/// §6.2: whether a subtree holds a '=' whose target no declaration in
+/// scope covers — a write to an enclosing scope or to module level,
+/// either of which forces the branch onto the path cover. Scope-aware:
+/// a declaration hides the name only for its own block's statements, so
+/// a sibling branch's local never masks a module-level write.
+bool contains_outer_blocking_scan(const AST::Node::Ptr &node, std::set<std::string> locals)
 {
     if(!node) {
-        return;
+        return false;
     }
-    if(node->is_node_type(AST::NodeType::Identifier)) {
-        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
+    if(node->is_node_type(AST::NodeType::Block)) {
+        const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
+        if(stmts) {
+            for(const auto &stmt : *stmts) {
+                if(stmt->is_node_type(AST::NodeType::Var)) {
+                    locals.insert(AST::cast_to<AST::Var>(stmt)->get_name());
+                    continue;
+                }
+                if(contains_outer_blocking_scan(stmt, locals)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::BlockingSubstitution)) {
+        const auto &target =
+            lvalue_target(AST::cast_to<AST::BlockingSubstitution>(node)->get_left());
+        return !target.empty() && !locals.count(target);
     }
     const AST::Node::ListPtr children = node->get_children();
     if(children) {
         for(const AST::Node::Ptr &child : *children) {
-            collect_identifiers(child, names);
+            if(contains_outer_blocking_scan(child, locals)) {
+                return true;
+            }
         }
     }
+    return false;
 }
 
-/// §6.2: whether a subtree holds a '=' whose target no declaration inside
-/// the subtree covers — a write to an enclosing scope or to module level,
-/// either of which forces the branch onto the path cover.
 bool contains_outer_blocking(const AST::Node::Ptr &node)
 {
-    std::set<std::string> local;
-    std::function<void(const AST::Node::Ptr &)> gather = [&](const AST::Node::Ptr &n) {
-        if(!n) {
-            return;
-        }
-        if(n->is_node_type(AST::NodeType::Var)) {
-            local.insert(AST::cast_to<AST::Var>(n)->get_name());
-        }
-        const AST::Node::ListPtr children = n->get_children();
-        if(children) {
-            for(const AST::Node::Ptr &child : *children) {
-                gather(child);
-            }
-        }
-    };
-    gather(node);
-    bool found = false;
-    std::function<void(const AST::Node::Ptr &)> scan = [&](const AST::Node::Ptr &n) {
-        if(!n || found) {
-            return;
-        }
-        if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
-            const auto &target =
-                lvalue_target(AST::cast_to<AST::BlockingSubstitution>(n)->get_left());
-            if(!target.empty() && !local.count(target)) {
-                found = true;
-                return;
-            }
-        }
-        const AST::Node::ListPtr children = n->get_children();
-        if(children) {
-            for(const AST::Node::Ptr &child : *children) {
-                scan(child);
-            }
-        }
-    };
-    scan(node);
-    return found;
+    return contains_outer_blocking_scan(node, {});
 }
 
 AST::BlockingSubstitution::Ptr make_blocking(const std::string &name, const AST::Node::Ptr &value,
@@ -1595,19 +1580,27 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                 }
                 // A decoded output is a variable the emitted always_comb
                 // drives. Before DefaultResolution an ANSI `output logic`
-                // is still an ImplicitNet carrying its data type, so the
-                // §23.2.2.3 reading applies: a port with an explicit data
-                // type is a variable; an implicit one — and any body-item
-                // net — is not.
+                // is still an ImplicitNet carrying its data type, and
+                // §23.2.2.3 makes that port a variable; an explicit net
+                // keyword is a net whatever data type it carries, and a
+                // name that declares no signal at all — a parameter, a
+                // typedef — has nothing to drive.
                 const auto &as_net = std::dynamic_pointer_cast<AST::Net>(mdecl);
-                const bool net_like =
-                    as_net && (!is_port || !as_net->get_type() ||
-                               as_net->get_type()->is_node_type(AST::NodeType::ImplicitType));
-                if(net_like) {
+                const bool port_variable =
+                    is_port && mdecl->is_node_type(AST::NodeType::ImplicitNet) && as_net &&
+                    as_net->get_type() &&
+                    !as_net->get_type()->is_node_type(AST::NodeType::ImplicitType);
+                if(as_net && !port_variable) {
                     LOG_ERROR_N(node)
                         << "'=' to '" << target << "', which is a net: a decoded output "
                         << "is a variable the emitted always_comb drives (ADR-0014 §6.2, "
                         << "IEEE 1800-2017 §23.2.2.3)";
+                    return 1;
+                }
+                if(!as_net && !std::dynamic_pointer_cast<AST::Var>(mdecl)) {
+                    LOG_ERROR_N(node)
+                        << "'=' to '" << target << "', which is not a variable: nothing "
+                        << "for a decoded output to drive (ADR-0014 §6.2, §9)";
                     return 1;
                 }
                 if(m_nba_targets.count(target)) {
@@ -2894,6 +2887,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_init_decode.clear();
     m_decode_arms.clear();
     m_walk_module = module;
+    m_walk_pragmalist = pragmalist;
     m_repeat_depth = 0;
     m_hold_needed = false;
     m_encoding = Encoding::BINARY;
@@ -3158,8 +3152,23 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     // unconditional path. A branch there whose arms hold cut points would
     // make the state out of reset input-dependent.
     if(entry.size() != 1 || entry.front().guard) {
-        LOG_ERROR_N(initial) << "a cut point inside a branch before the first wait: "
-                             << "the reset branch cannot fork (ADR-0014 §5.1)";
+        // A fork whose arms all reach the same first wait carries no cut
+        // point: it landed here because a decoded output takes a
+        // conditional value in the init segment (§6.2 forces such a
+        // branch onto the path cover).
+        bool same_next = true;
+        for(const auto &leg : entry) {
+            same_next &= leg.next == entry.front().next;
+        }
+        if(same_next && !m_decoded.empty()) {
+            LOG_ERROR_N(initial)
+                << "a decoded output takes a conditional value in the init segment: the "
+                << "reset value is unconditional — assign it once before the branch, or "
+                << "move the branch after the first wait (ADR-0014 §5.1, §6.2, §9)";
+        } else {
+            LOG_ERROR_N(initial) << "a cut point inside a branch before the first wait: "
+                                 << "the reset branch cannot fork (ADR-0014 §5.1)";
+        }
         return 1;
     }
     const auto &init_stmts = entry.front().action;
@@ -3236,14 +3245,64 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
 
     // §6.2 stability: an arm re-evaluates over post-edge values what the
     // source read at the edge, so no operand may be a register the same
-    // arriving path commits — looking through §6.1 wires, which substitute.
+    // arriving path commits, an input, or anything driven outside this
+    // process — looking through wires, §6.1's and the author's alike,
+    // which substitute down to those leaves.
     std::map<std::string, AST::Node::Ptr> wire_values;
     for(const auto &wire : m_wires) {
         wire_values[wire.name] = wire.value;
     }
+    std::set<std::string> input_names;
+    if(m_walk_module->get_ports()) {
+        for(const auto &port : *m_walk_module->get_ports()) {
+            if(port->get_decl() && (port->get_direction() == AST::Port::DirectionEnum::INPUT ||
+                                    port->get_direction() == AST::Port::DirectionEnum::INOUT)) {
+                input_names.insert(port->get_decl()->get_name());
+            }
+        }
+    }
+    std::set<std::string> foreign;
+    if(m_walk_module->get_items()) {
+        for(const auto &item : *m_walk_module->get_items()) {
+            if(item.get() == static_cast<AST::Node *>(m_walk_pragmalist.get())) {
+                continue;
+            }
+            switch(item->get_node_type()) {
+            case AST::NodeType::Assign: {
+                const auto &assign = AST::cast_to<AST::Assign>(item);
+                const auto &target = lvalue_target(assign->get_left());
+                if(!target.empty() && assign->get_right() && assign->get_right()->get_var() &&
+                   !wire_values.count(target)) {
+                    wire_values[target] = AST::to_node(assign->get_right()->get_var());
+                } else {
+                    collect_driven(item, foreign);
+                }
+                break;
+            }
+            case AST::NodeType::Always:
+            case AST::NodeType::AlwaysFF:
+            case AST::NodeType::AlwaysComb:
+            case AST::NodeType::AlwaysLatch:
+            case AST::NodeType::Initial:
+            case AST::NodeType::Pragmalist:
+            case AST::NodeType::Task:
+                collect_driven(item, foreign);
+                break;
+            default:
+                if(const auto &net = std::dynamic_pointer_cast<AST::Net>(item)) {
+                    if(net->get_cont_assign() && net->get_cont_assign()->get_var() &&
+                       !wire_values.count(net->get_name())) {
+                        wire_values[net->get_name()] =
+                            AST::to_node(net->get_cont_assign()->get_var());
+                    }
+                }
+                break;
+            }
+        }
+    }
     const auto operands_of = [&](const AST::Node::Ptr &node) {
         std::set<std::string> raw;
-        collect_identifiers(node, raw);
+        collect_identifier_names(node, raw);
         std::set<std::string> names;
         std::vector<std::string> todo(raw.begin(), raw.end());
         while(!todo.empty()) {
@@ -3255,7 +3314,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             const auto &wire = wire_values.find(name);
             if(wire != wire_values.end()) {
                 std::set<std::string> inner;
-                collect_identifiers(wire->second, inner);
+                collect_identifier_names(wire->second, inner);
                 todo.insert(todo.end(), inner.begin(), inner.end());
             }
         }
@@ -3269,14 +3328,23 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                 // always_ff read it before the edge where the emitted arm
                 // re-reads it after — measured divergent, not a style
                 // rule. A register of this process is stable for the
-                // whole arrived cycle.
-                bool is_input = false;
-                if(find_declaration(m_walk_module, operand, &is_input) && is_input) {
+                // whole arrived cycle; one committed by anything outside
+                // it changes on that edge like the input it usually is.
+                if(input_names.count(operand)) {
                     LOG_ERROR_N(expr)
                         << "decoded output '" << name << "': its " << what << " reads input '"
                         << operand << "', which can change on the arrival edge — the "
                         << "always_ff sampled it before the edge, the emitted arm re-reads "
-                        << "it after; register the input first (ADR-0014 §6.2, §9)";
+                        << "it after; register the input first, in this process "
+                        << "(ADR-0014 §6.2, §9)";
+                    return 1;
+                }
+                if(foreign.count(operand)) {
+                    LOG_ERROR_N(expr)
+                        << "decoded output '" << name << "': its " << what << " reads '" << operand
+                        << "', which is driven outside this process and can "
+                        << "change on the arrival edge like an input — register it in "
+                        << "this process (ADR-0014 §6.2, §9)";
                     return 1;
                 }
                 if(commits.count(operand)) {
@@ -3332,8 +3400,10 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                     }
                 }
                 std::vector<std::pair<AST::Node::Ptr, AST::Node::Ptr>> candidate;
+                std::vector<const Transition *> survivors;
                 if(all_equal) {
                     candidate.push_back({nullptr, group.front()->decode.at(name)});
+                    survivors.assign(group.begin(), group.end());
                 } else {
                     // Only the conjuncts that differ within the group
                     // discriminate its legs: the shared prefix (the way
@@ -3343,20 +3413,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                     std::vector<std::vector<AST::Node::Ptr>> conjuncts;
                     for(const auto &transition : group) {
                         std::vector<AST::Node::Ptr> terms;
-                        std::function<void(const AST::Node::Ptr &)> flatten =
-                            [&](const AST::Node::Ptr &node) {
-                                if(!node) {
-                                    return;
-                                }
-                                if(node->is_node_type(AST::NodeType::Land)) {
-                                    const auto &land = AST::cast_to<AST::Land>(node);
-                                    flatten(land->get_left());
-                                    flatten(land->get_right());
-                                    return;
-                                }
-                                terms.push_back(node);
-                            };
-                        flatten(transition->guard);
+                        flatten_land(transition->guard, terms);
                         conjuncts.push_back(terms);
                     }
                     std::set<std::string> common;
@@ -3372,6 +3429,13 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                             it = here.count(*it) ? std::next(it) : common.erase(it);
                         }
                     }
+                    // First match wins in the source (§12.5), so after
+                    // the reduction a leg repeating an earlier guard is
+                    // unreachable — duplicate case items — and a leg with
+                    // no residual guard is the else, making later legs
+                    // unreachable too. Prune both, keeping the surviving
+                    // legs paired with their transitions.
+                    std::set<std::string> seen_guards;
                     for(std::size_t g = 0; g < group.size(); ++g) {
                         AST::Node::Ptr reduced;
                         for(const auto &term : conjuncts[g]) {
@@ -3382,15 +3446,22 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                                                         term->get_line())
                                               : term;
                         }
+                        if(reduced && !seen_guards.insert(renderer.render(reduced)).second) {
+                            continue;
+                        }
                         candidate.push_back({reduced, group[g]->decode.at(name)});
+                        survivors.push_back(group[g]);
+                        if(!reduced) {
+                            break;
+                        }
                     }
                 }
-                for(std::size_t g = 0; g < group.size(); ++g) {
+                for(std::size_t g = 0; g < survivors.size(); ++g) {
                     std::set<std::string> commits;
-                    for(const auto &stmt : *group[g]->action) {
+                    for(const auto &stmt : *survivors[g]->action) {
                         collect_driven(stmt, commits);
                     }
-                    if(check_stable(group[g]->decode.at(name), commits, name, "value")) {
+                    if(check_stable(survivors[g]->decode.at(name), commits, name, "value")) {
                         return 1;
                     }
                     if(!all_equal && candidate[g].first &&
