@@ -215,7 +215,7 @@ constexpr std::size_t k_entry = static_cast<std::size_t>(-1);
 /// either of which forces the branch onto the path cover. Scope-aware:
 /// a declaration hides the name only for its own block's statements, so
 /// a sibling branch's local never masks a module-level write.
-bool contains_outer_blocking_scan(const AST::Node::Ptr &node, std::set<std::string> locals)
+bool contains_outer_blocking_scan(const AST::Node::Ptr &node, const std::set<std::string> &locals)
 {
     if(!node) {
         return false;
@@ -223,12 +223,14 @@ bool contains_outer_blocking_scan(const AST::Node::Ptr &node, std::set<std::stri
     if(node->is_node_type(AST::NodeType::Block)) {
         const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
         if(stmts) {
+            // The one copy, at the one scope boundary.
+            std::set<std::string> scope = locals;
             for(const auto &stmt : *stmts) {
                 if(stmt->is_node_type(AST::NodeType::Var)) {
-                    locals.insert(AST::cast_to<AST::Var>(stmt)->get_name());
+                    scope.insert(AST::cast_to<AST::Var>(stmt)->get_name());
                     continue;
                 }
-                if(contains_outer_blocking_scan(stmt, locals)) {
+                if(contains_outer_blocking_scan(stmt, scope)) {
                     return true;
                 }
             }
@@ -2865,6 +2867,107 @@ int ImplicitFsmElaboration::check_paths(const AST::Node::ListPtr &init_stmts,
     return 0;
 }
 
+/// Every name driven outside @p pragmalist: other processes and continuous
+/// assigns — their block-locals subtracted, their called tasks' writes
+/// included — and instance output/inout connections when the instantiated
+/// definition is in @p modules (a black box is skipped). One walk shared by
+/// the §9.2.2.4 conflict check and the §6.2 stability scan, so neither is
+/// ever the weaker of the two.
+void collect_foreign_drivers(const AST::Module::Ptr &module, const AST::Pragmalist::Ptr &pragmalist,
+                             const Analysis::Module::ModulesMap *modules,
+                             std::set<std::string> &others)
+{
+    const auto &tasks = Analysis::Module::get_task_nodes(AST::to_node(module));
+    const auto &items = module->get_items();
+    if(items) {
+        for(const auto &item : *items) {
+            if(item.get() == static_cast<AST::Node *>(pragmalist.get())) {
+                continue;
+            }
+            // An instance drives whatever its output and inout ports
+            // connect to — visible when the instantiated module's
+            // definition is in the map, skipped as a black box when not.
+            if(item->is_node_type(AST::NodeType::Instancelist) && modules) {
+                const auto &instancelist = AST::cast_to<AST::Instancelist>(item);
+                const auto &definition = modules->find(instancelist->get_module());
+                const auto &instances = instancelist->get_instances();
+                if(definition == modules->end() || !instances) {
+                    continue;
+                }
+                const auto &def_ports = definition->second->get_ports();
+                for(const auto &instance : *instances) {
+                    const auto &connections = instance->get_portlist();
+                    if(!connections || !def_ports) {
+                        continue;
+                    }
+                    std::size_t position = 0;
+                    for(const auto &connection : *connections) {
+                        // Resolve the connected port's NAME — given, or
+                        // positional through the header — then its
+                        // direction, which a non-ANSI module states in
+                        // its body, not its header.
+                        std::string port_name = connection->get_name();
+                        if(port_name.empty() && position < def_ports->size()) {
+                            auto it_port = def_ports->begin();
+                            std::advance(it_port, position);
+                            port_name = header_port_name(*it_port);
+                        }
+                        ++position;
+                        const auto direction = child_port_direction(definition->second, port_name);
+                        if(direction == AST::Port::DirectionEnum::OUTPUT ||
+                           direction == AST::Port::DirectionEnum::INOUT) {
+                            collect_lvalue_bases(connection->get_value(), others);
+                        }
+                    }
+                }
+                continue;
+            }
+            if(!item->is_node_type(AST::NodeType::Always) &&
+               !item->is_node_type(AST::NodeType::AlwaysFF) &&
+               !item->is_node_type(AST::NodeType::AlwaysComb) &&
+               !item->is_node_type(AST::NodeType::AlwaysLatch) &&
+               !item->is_node_type(AST::NodeType::Initial) &&
+               !item->is_node_type(AST::NodeType::Assign) &&
+               !item->is_node_type(AST::NodeType::Pragmalist) &&
+               !item->is_node_type(AST::NodeType::GenerateStatement)) {
+                continue;
+            }
+            // Per item: what it drives, minus what it declares — a
+            // block-local shadowing the register's name is its own
+            // variable. A task it calls writes on its behalf.
+            std::set<std::string> driven, declared, called;
+            collect_driven(item, driven);
+            collect_declaration_names(item, declared);
+            collect_call_names(item, called);
+            if(tasks) {
+                for(const auto &task : *tasks) {
+                    if(!called.count(task->get_name())) {
+                        continue;
+                    }
+                    const auto &statements = task->get_statements();
+                    if(statements) {
+                        for(const auto &stmt : *statements) {
+                            collect_driven(stmt, driven);
+                            collect_declaration_names(stmt, declared);
+                        }
+                    }
+                    const auto &targs = task->get_args();
+                    if(targs) {
+                        for(const auto &arg : *targs) {
+                            declared.insert(arg->get_name());
+                        }
+                    }
+                }
+            }
+            for(const auto &name : driven) {
+                if(!declared.count(name)) {
+                    others.insert(name);
+                }
+            }
+        }
+    }
+}
+
 int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                                             const AST::Node::Ptr &parent,
                                             const AST::Pragmalist::Ptr &pragmalist,
@@ -2965,96 +3068,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             mine.erase(elt.first);
         }
         std::set<std::string> others;
-        const auto &tasks = Analysis::Module::get_task_nodes(AST::to_node(module));
-        const auto &items = module->get_items();
-        if(items) {
-            for(const auto &item : *items) {
-                if(item.get() == static_cast<AST::Node *>(pragmalist.get())) {
-                    continue;
-                }
-                // An instance drives whatever its output and inout ports
-                // connect to — visible when the instantiated module's
-                // definition is in the map, skipped as a black box when not.
-                if(item->is_node_type(AST::NodeType::Instancelist) && m_modules) {
-                    const auto &instancelist = AST::cast_to<AST::Instancelist>(item);
-                    const auto &definition = m_modules->find(instancelist->get_module());
-                    const auto &instances = instancelist->get_instances();
-                    if(definition == m_modules->end() || !instances) {
-                        continue;
-                    }
-                    const auto &def_ports = definition->second->get_ports();
-                    for(const auto &instance : *instances) {
-                        const auto &connections = instance->get_portlist();
-                        if(!connections || !def_ports) {
-                            continue;
-                        }
-                        std::size_t position = 0;
-                        for(const auto &connection : *connections) {
-                            // Resolve the connected port's NAME — given, or
-                            // positional through the header — then its
-                            // direction, which a non-ANSI module states in
-                            // its body, not its header.
-                            std::string port_name = connection->get_name();
-                            if(port_name.empty() && position < def_ports->size()) {
-                                auto it_port = def_ports->begin();
-                                std::advance(it_port, position);
-                                port_name = header_port_name(*it_port);
-                            }
-                            ++position;
-                            const auto direction =
-                                child_port_direction(definition->second, port_name);
-                            if(direction == AST::Port::DirectionEnum::OUTPUT ||
-                               direction == AST::Port::DirectionEnum::INOUT) {
-                                collect_lvalue_bases(connection->get_value(), others);
-                            }
-                        }
-                    }
-                    continue;
-                }
-                if(!item->is_node_type(AST::NodeType::Always) &&
-                   !item->is_node_type(AST::NodeType::AlwaysFF) &&
-                   !item->is_node_type(AST::NodeType::AlwaysComb) &&
-                   !item->is_node_type(AST::NodeType::AlwaysLatch) &&
-                   !item->is_node_type(AST::NodeType::Initial) &&
-                   !item->is_node_type(AST::NodeType::Assign) &&
-                   !item->is_node_type(AST::NodeType::Pragmalist) &&
-                   !item->is_node_type(AST::NodeType::GenerateStatement)) {
-                    continue;
-                }
-                // Per item: what it drives, minus what it declares — a
-                // block-local shadowing the register's name is its own
-                // variable. A task it calls writes on its behalf.
-                std::set<std::string> driven, declared, called;
-                collect_driven(item, driven);
-                collect_declaration_names(item, declared);
-                collect_call_names(item, called);
-                if(tasks) {
-                    for(const auto &task : *tasks) {
-                        if(!called.count(task->get_name())) {
-                            continue;
-                        }
-                        const auto &statements = task->get_statements();
-                        if(statements) {
-                            for(const auto &stmt : *statements) {
-                                collect_driven(stmt, driven);
-                                collect_declaration_names(stmt, declared);
-                            }
-                        }
-                        const auto &targs = task->get_args();
-                        if(targs) {
-                            for(const auto &arg : *targs) {
-                                declared.insert(arg->get_name());
-                            }
-                        }
-                    }
-                }
-                for(const auto &name : driven) {
-                    if(!declared.count(name)) {
-                        others.insert(name);
-                    }
-                }
-            }
-        }
+        collect_foreign_drivers(module, pragmalist, m_modules, others);
         for(const auto &name : mine) {
             if(others.count(name)) {
                 LOG_ERROR_N(initial)
@@ -3273,45 +3287,29 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             }
         }
     }
-    std::set<std::string> foreign;
+    // The author's continuous assigns and net initializers join the wire
+    // map: the look-through reaches their leaves, where the verdict falls.
     if(m_walk_module->get_items()) {
         for(const auto &item : *m_walk_module->get_items()) {
-            if(item.get() == static_cast<AST::Node *>(m_walk_pragmalist.get())) {
-                continue;
-            }
-            switch(item->get_node_type()) {
-            case AST::NodeType::Assign: {
+            if(item->is_node_type(AST::NodeType::Assign)) {
                 const auto &assign = AST::cast_to<AST::Assign>(item);
                 const auto &target = lvalue_target(assign->get_left());
                 if(!target.empty() && assign->get_right() && assign->get_right()->get_var() &&
                    !wire_values.count(target)) {
                     wire_values[target] = AST::to_node(assign->get_right()->get_var());
-                } else {
-                    collect_driven(item, foreign);
                 }
-                break;
-            }
-            case AST::NodeType::Always:
-            case AST::NodeType::AlwaysFF:
-            case AST::NodeType::AlwaysComb:
-            case AST::NodeType::AlwaysLatch:
-            case AST::NodeType::Initial:
-            case AST::NodeType::Pragmalist:
-            case AST::NodeType::Task:
-                collect_driven(item, foreign);
-                break;
-            default:
-                if(const auto &net = std::dynamic_pointer_cast<AST::Net>(item)) {
-                    if(net->get_cont_assign() && net->get_cont_assign()->get_var() &&
-                       !wire_values.count(net->get_name())) {
-                        wire_values[net->get_name()] =
-                            AST::to_node(net->get_cont_assign()->get_var());
-                    }
+            } else if(const auto &net = std::dynamic_pointer_cast<AST::Net>(item)) {
+                if(net->get_cont_assign() && net->get_cont_assign()->get_var() &&
+                   !wire_values.count(net->get_name())) {
+                    wire_values[net->get_name()] = AST::to_node(net->get_cont_assign()->get_var());
                 }
-                break;
             }
         }
     }
+    // Everything driven outside this process — instance outputs and
+    // generate regions included — by the same walk §9.2.2.4 trusts.
+    std::set<std::string> foreign;
+    collect_foreign_drivers(m_walk_module, m_walk_pragmalist, m_modules, foreign);
     const auto operands_of = [&](const AST::Node::Ptr &node) {
         std::set<std::string> raw;
         collect_identifier_names(node, raw);
@@ -3336,6 +3334,11 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         [&](const AST::Node::Ptr &expr, const std::set<std::string> &commits,
             const std::string &name, const char *what) {
             for(const auto &operand : operands_of(expr)) {
+                // A wire was expanded to its leaves: the verdict falls on
+                // them, not on its name.
+                if(wire_values.count(operand)) {
+                    continue;
+                }
                 // An input may change on the arrival edge itself: the
                 // always_ff read it before the edge where the emitted arm
                 // re-reads it after — measured divergent, not a style
@@ -3525,8 +3528,19 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             lsb += width;
         }
         const unsigned int out_width = lsb;
-        std::vector<unsigned long> vectors(m_decode_arms.size(), 0);
+        // Bignum composition end to end: a shift never exceeds a host
+        // integer's width, whatever the platform's long is — the one cap
+        // that matters is checked before anything converts.
+        std::vector<mpz_class> vectors(m_decode_arms.size(), mpz_class(0));
+        std::vector<bool> unreachable(m_decode_arms.size(), false);
         for(std::size_t state = 0; state < m_decode_arms.size(); ++state) {
+            // A state no path reaches — a constant-zero repeat's body —
+            // has no arrival values: it takes the entry vector below,
+            // like the always_comb's default arm would have served it.
+            if(m_decode_arms[state].empty()) {
+                unreachable[state] = true;
+                continue;
+            }
             for(const auto &slice : m_output_slices) {
                 const auto &arm = m_decode_arms[state].find(std::get<0>(slice));
                 if(arm == m_decode_arms[state].end()) {
@@ -3544,23 +3558,35 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "binary/one_hot/gray (ADR-0014 §6.2, §9)";
                     return 1;
                 }
-                mpz_class folded;
-                if(!ExpressionEvaluation().evaluate_node(chain.front().second, folded)) {
+                // A literal, not a folded expression: the evaluator's
+                // bignum arithmetic does not follow IEEE §11.8.2's
+                // self-determined sizing, and a wrong wrap baked into a
+                // state constant would diverge silently where the other
+                // encodings emit the expression verbatim.
+                if(!chain.front().second->is_node_type(AST::NodeType::IntConstN)) {
                     LOG_ERROR_N(chain.front().second)
                         << "output encoding: decoded output '" << std::get<0>(slice)
-                        << "' is not a constant in every state — a state bit is a "
+                        << "' is not a literal in every state — a state bit is a "
                         << "literal; pick binary/one_hot/gray, or keep the output a "
                         << "register (ADR-0014 §6.2, §9)";
                     return 1;
                 }
+                const mpz_class folded =
+                    AST::cast_to<AST::IntConstN>(chain.front().second)->get_value();
                 const unsigned int width = std::get<2>(slice);
                 const mpz_class modulus = mpz_class(1) << width;
                 const mpz_class masked = ((folded % modulus) + modulus) % modulus;
-                vectors[state] |= static_cast<unsigned long>(masked.convert_to<unsigned int>())
-                                  << std::get<1>(slice);
+                vectors[state] |= masked << std::get<1>(slice);
             }
         }
-        std::map<unsigned long, unsigned int> multiplicity;
+        if(entry_next < vectors.size()) {
+            for(std::size_t state = 0; state < vectors.size(); ++state) {
+                if(unreachable[state]) {
+                    vectors[state] = vectors[entry_next];
+                }
+            }
+        }
+        std::map<mpz_class, unsigned int> multiplicity;
         std::vector<unsigned int> disamb(vectors.size(), 0);
         unsigned int largest = 0;
         for(std::size_t state = 0; state < vectors.size(); ++state) {
@@ -3576,8 +3602,8 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         }
         m_output_width = out_width + d_width;
         for(std::size_t state = 0; state < vectors.size(); ++state) {
-            m_output_values.push_back(static_cast<unsigned int>(
-                vectors[state] | (static_cast<unsigned long>(disamb[state]) << out_width)));
+            const mpz_class composed = vectors[state] | (mpz_class(disamb[state]) << out_width);
+            m_output_values.push_back(composed.convert_to<unsigned int>());
         }
     }
     return 0;
@@ -3872,10 +3898,19 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // §6.2: the decoded outputs — an always_comb over the state register,
     // or under output encoding each output IS its slice of the register:
-    // no decode logic, and the reset value rides the state reset.
+    // no decode gates — but the same always_comb shell as every other
+    // encoding: the §5 level-read reset branch is part of §6.2's
+    // observable contract (init values from the instant reset asserts,
+    // and before the first clock edge, where the register still holds
+    // its power-up value), and an always block prints legally in both
+    // output modes where an assign to a variable is SV-only.
     if(!m_decoded.empty()) {
         if(m_encoding == Encoding::OUTPUT) {
+            const auto &init_block = std::make_shared<AST::Node::List>();
+            const auto &slice_block = std::make_shared<AST::Node::List>();
             for(const auto &slice : m_output_slices) {
+                init_block->push_back(AST::to_node(make_blocking(
+                    std::get<0>(slice), m_init_decode.at(std::get<0>(slice)), fn, ln)));
                 const unsigned int low = std::get<1>(slice);
                 const unsigned int w = std::get<2>(slice);
                 AST::Node::Ptr select;
@@ -3889,15 +3924,22 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
                         AST::to_node(make_const(low, -1, fn, ln)),
                         AST::to_node(make_id(state_reg, fn, ln)), fn, ln));
                 }
-                auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
-                lvalue->set_var(AST::to_node(make_id(std::get<0>(slice), fn, ln)));
-                auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
-                rvalue->set_var(select);
-                auto cont = std::make_shared<AST::Assign>(fn, ln);
-                cont->set_left(lvalue);
-                cont->set_right(rvalue);
-                result->push_back(AST::to_node(cont));
+                slice_block->push_back(
+                    AST::to_node(make_blocking(std::get<0>(slice), select, fn, ln)));
             }
+            AST::Node::Ptr comb_reset_cond = AST::to_node(make_id(reset_name, fn, ln));
+            if(active_low) {
+                comb_reset_cond = make_ulnot(comb_reset_cond, fn, ln);
+            }
+            auto comb_guard = std::make_shared<AST::IfStatement>(fn, ln);
+            comb_guard->set_cond(comb_reset_cond);
+            comb_guard->set_true_statement(
+                AST::to_node(std::make_shared<AST::Block>(init_block, "", fn, ln)));
+            comb_guard->set_false_statement(
+                AST::to_node(std::make_shared<AST::Block>(slice_block, "", fn, ln)));
+            auto comb = std::make_shared<AST::AlwaysComb>(fn, ln);
+            comb->set_statement(AST::to_node(comb_guard));
+            result->push_back(AST::to_node(comb));
         } else {
             result->push_back(emit_decode(state_reg, state_names, reset_name, active_low, fn, ln));
         }

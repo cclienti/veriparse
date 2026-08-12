@@ -230,6 +230,24 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err2) { TEST_ERROR_SV;
 // Output encoding with no decoded output: the hint is inert (§3, §6.2,
 // §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err3) { TEST_ERROR_SV; }
+// A state no path reaches — a constant-zero rolled repeat's body — takes
+// the entry vector, like the comb's default arm would have served it
+// (§6.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc1) { TEST_CORE_SV; }
+// Output encoding folds nothing: a constant expression is not a literal,
+// and the evaluator's sizing is not IEEE §11.8.2's (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err4) { TEST_ERROR_SV; }
+// The 32-bit composition cap, reached through the bignum path (§3, §6.2,
+// §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_enc_err5) { TEST_ERROR_SV; }
+// An instance output read by a decode value: driven outside the process,
+// it changes on the arrival edge like an input (§6.2, §9, §9.2.2.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err14) { TEST_ERROR_MAP_SV; }
+// The same, driven from inside a generate region (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err15) { TEST_ERROR_SV; }
+// A foreign process's block-local sharing our register's name: driven
+// minus declared, so the name does not poison the foreign set (§6.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode5) { TEST_CORE_SV; }
 // A for with a non-constant bound and no mark refuses the same way (§7.2,
 // §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }

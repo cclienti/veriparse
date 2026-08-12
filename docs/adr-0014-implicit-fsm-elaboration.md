@@ -1025,7 +1025,9 @@ Duplicate `case` items — legal, first-match-wins (§12.5) — reach the arm
 builder as legs whose reduced guards coincide: the later leg is
 unreachable in the source and is pruned, as is everything after a leg
 whose residual guard emptied entirely (it is the `else`), so the arm
-keeps exactly the source's first match.
+keeps exactly the source's first match. A pruned leg is dead code, and
+like the dead branches `BranchSelection` folds away, it is not
+stability-checked — the checks judge what the emission carries.
 
 One reduction keeps the stability rule from over-firing: a tree's guards
 are the paths' full conjunctions, and the conjuncts **common to every leg
@@ -1041,10 +1043,16 @@ be stable.
 state `s` (each at its declared width, LSB-first in name order), and
 `D(s)` is a disambiguation field separating states that share an output
 vector (binary, `$clog2` of the largest such group, absent when vectors
-are unique). Each output is then emitted as a **slice of the state
-register** — `assign busy = __fsm_state[0];` — the `always_comb`
-disappears, and the reset value rides the state register's own reset,
-since coherency already made the entry state's vector the init vector.
+are unique). Each output is then read as a **slice of the state
+register** — `busy = __fsm_state[0];` — inside the same `always_comb`
+shell as every other encoding, whose §5 level-read reset branch stays:
+it is part of §6.2's observable contract (init values from the instant
+reset asserts, and before the first clock edge, where the register still
+holds its power-up value), and an always block prints legally in both
+output modes where an assign to a variable is SV-only. The decode
+*gates* disappear — the else branch is wires — and after the first reset
+edge the reset branch is redundant by construction, coherency having
+made the entry state's vector the init vector.
 The timing is §6.2's unchanged: a state's bits hold during the cycle in
 the state, exactly when the arriving convention says the outputs do — a
 pure implementation choice, §3 rule 1.
