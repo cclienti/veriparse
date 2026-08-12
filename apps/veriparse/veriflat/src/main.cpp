@@ -65,7 +65,7 @@ static int veriflat(int argc, char *argv[])
         "Remove deadcode during flatten pass")(
         "fsm", boost::program_options::bool_switch(&config.fsm_elaboration),
         "Compile (* veriparse_fsm *) processes into explicit machines, each "
-        "instance at its own parameters (ADR-0014)")(
+        "instance at its own parameters")(
         "suffix", boost::program_options::value<std::string>(&config.suffix)->default_value(""),
         "Append to the emitted module's name, so the output can sit beside "
         "its source in one testbench")("sv", boost::program_options::bool_switch(&config.sv_mode),
