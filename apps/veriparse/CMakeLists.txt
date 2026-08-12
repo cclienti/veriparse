@@ -431,6 +431,34 @@ if(NOT WIN32)
                      ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv")
     set_tests_properties(test_fsm_param_map PROPERTIES LABELS unittest)
 
+    # The same map through veriflat: an override folds into the flattened
+    # module (N=6 re-sizes the [N-1:0] ports), a kept parameter survives
+    # with its symbolic uses intact — the two tools share one contract.
+    add_test(NAME test_flat_param_map
+             COMMAND sh -c "$<TARGET_FILE:veriflat> --sv -t flat_param -p '{N: 6, SEED:}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
+                     && grep -q 'logic \\[5:0\\] q' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v \
+                     && grep -q 'parameter logic \\[7:0\\] SEED' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v \
+                     && grep -q 'SEED\\[5:0\\]' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v \
+                     && ! grep -q 'parameter int N' ${CMAKE_CURRENT_BINARY_DIR}/flat_param.v")
+    set_tests_properties(test_flat_param_map PROPERTIES LABELS unittest)
+
+    # A parameter map that is not a YAML map of scalars fails cleanly
+    # before any transformation: malformed YAML, a sequence instead of a
+    # map, and a non-scalar value each exit non-zero.
+    add_test(NAME test_param_map_errors
+             COMMAND sh -c "! $<TARGET_FILE:veriflat> --sv -t flat_param -p '{N: ' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
+                     && ! $<TARGET_FILE:veriflat> --sv -t flat_param -p '[1, 2]' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/flat_param/src/flat_param.sv \
+                     && ! $<TARGET_FILE:verilower> --sv -t param_line -p '{N: [1, 2]}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_err.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv")
+    set_tests_properties(test_param_map_errors PROPERTIES LABELS unittest)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys
