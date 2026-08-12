@@ -414,6 +414,23 @@ if(NOT WIN32)
                      && test \"$(grep -c 'subgraph' ${CMAKE_CURRENT_BINARY_DIR}/dual_map.dot)\" = 2")
     set_tests_properties(test_fsm_state_map_dual PROPERTIES LABELS unittest)
 
+    # --param-map parameterizes the top from the command line, veriflat-style:
+    # an override re-sizes the machine (the repeat(N) countdown), a kept
+    # parameter survives as a parameter of the output while only the datapath
+    # reads it, and one the machine's structure depends on fails loudly
+    # (§7.2) rather than compile a silently different machine.
+    add_test(NAME test_fsm_param_map
+             COMMAND sh -c "$<TARGET_FILE:verilower> --sv -t param_line -p '{N: 6, SEED:}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_line.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv \
+                     && grep -q \"__fsm_cnt <= 3'd5\" ${CMAKE_CURRENT_BINARY_DIR}/param_line.v \
+                     && grep -q 'parameter logic \\[7:0\\] SEED' ${CMAKE_CURRENT_BINARY_DIR}/param_line.v \
+                     && ! grep -q 'parameter int N' ${CMAKE_CURRENT_BINARY_DIR}/param_line.v \
+                     && ! $<TARGET_FILE:verilower> --sv -t param_line -p '{N:}' \
+                     -o ${CMAKE_CURRENT_BINARY_DIR}/param_line_keep.v \
+                     ${CMAKE_CURRENT_SOURCE_DIR}/test/verilower/param_line/src/param_line.sv")
+    set_tests_properties(test_fsm_param_map PROPERTIES LABELS unittest)
+
     # §5.3 is normative on synthesis: the sync reset stays outside the clock
     # enable, which the flop primitive already provides — through yosys the
     # flops are $sdffe, never the fabric-costing $sdffce. Skipped when yosys

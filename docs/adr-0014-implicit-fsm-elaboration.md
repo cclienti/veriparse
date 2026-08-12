@@ -1272,12 +1272,19 @@ output holds exactly that module; other modules in the input serve as
 context — packages, name resolution, instance references — and are absent
 from it. Each marked module is its own run, and a marked process outside
 the selected module draws a **warning** naming the run that compiles it
-(§2: the mark is never skipped in silence). Inlining defaults is right by
-definition for a top; a marked module instantiated elsewhere **with
-parameter overrides** cannot be compiled standalone at all — per-instance
-resolution is the flattener's job, which is what makes the in-process
-`veriflat --fsm` option below load-bearing rather than a convenience
-(§15).
+(§2: the mark is never skipped in silence). The run's parameterization is
+the module's defaults, overridden per parameter by `--param-map` — the
+`veriflat` map, same YAML, same semantics: `{N: 42}` overrides, `{N:}`
+keeps `N` a parameter of the output. A kept parameter the machine's
+*structure* depends on (an unrolled bound, a countdown size) resolves
+through the non-constant paths where §7.2/§7.3 admit one and otherwise
+fails loudly; a kept parameter only the datapath reads survives into the
+output, so a lowered machine can stay parametric where lowering does not
+need the value. What the map cannot do is compile a marked module
+instantiated elsewhere **with per-instance overrides** — one CLI
+parameterization per run, whereas per-instance resolution is the
+flattener's job, which is what makes the in-process `veriflat --fsm`
+option below load-bearing rather than a convenience (§15).
 
 Generated declarations take the `veriparse_prefix` (default `__fsm`), settling
 the note's open question on collisions: readable in a waveform, safe
@@ -1709,7 +1716,7 @@ Positioning, so that later choices can be argued against something.
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
-| A marked module instantiated with parameter overrides | verilower compiles the `-t` module at its default parameterization — right for a top — and warns about every other marked module (§10) | `veriflat --fsm`: the flattener resolves each instance with its own parameters, so the §10.3 slot compiles every instantiation correctly — the in-process option §10 keeps open, load-bearing here |
+| A marked module instantiated with parameter overrides | verilower compiles the `-t` module at its defaults or one `--param-map` parameterization per run (§10), and warns about every other marked module | `veriflat --fsm`: the flattener resolves each instance with its own parameters, so the §10.3 slot compiles every instantiation correctly — the in-process option §10 keeps open, load-bearing here |
 | Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
 
 ### 15.1 Why `always` is refused rather than supported

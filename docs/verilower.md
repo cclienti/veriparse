@@ -124,6 +124,8 @@ options:
   -v [ --version ]          Show the version and exit
   -o [ --output ] arg       output
   -t [ --top-module ] arg   top-module
+  -p [ --param-map ] arg    YAML parameter map for the top module: {N: 42}
+                            overrides, {N:} keeps
   --suffix arg              Append to the emitted module's name, so the output
                             can sit beside its source in one testbench
   --sv                      Enable SystemVerilog mode
@@ -145,10 +147,24 @@ synthesizability. `--suffix` renames the emitted module (e.g.
 `enable_line` → `enable_line_fsm`) so the behavioural source and the lowered
 result can be instantiated side by side in one differential testbench.
 
-The `-t` module is compiled at its **default parameterization**. A marked
-module instantiated elsewhere with parameter overrides is reported, not
-silently compiled — resolving each instantiation with its own parameters is
-the flattener's job (a planned `veriflat --fsm` mode, ADR-0014 §15).
+The `-t` module is compiled at its **default parameterization**, overridden
+per parameter by `--param-map` — the same YAML map as
+[`veriflat`](veriflat.md):
+
+```sh
+# Fix the control structure at N=6, keep SEED a parameter of the output
+verilower --sv -t param_line -p '{N: 6, SEED:}' -o param_line_fsm.sv param_line.sv
+```
+
+`{N: 42}` overrides the default and inlines; `{N:}` keeps `N` as a
+parameter of the lowered module. Keeping works for parameters only the
+**datapath** reads (a constant an action assigns, a width); a kept
+parameter the machine's *structure* depends on — an unrolled loop bound, a
+rolled countdown's size — is rejected loudly rather than compiled into a
+silently different machine. A marked module instantiated elsewhere with
+per-instance parameter overrides is reported, not silently compiled —
+resolving each instantiation with its own parameters is the flattener's job
+(a planned `veriflat --fsm` mode, ADR-0014 §15).
 
 ---
 

@@ -11,7 +11,8 @@ project (verilower)
 ########################################
 
 file (GLOB source_files
-  src/main.cpp)
+  src/main.cpp
+  ../common/parameters_overloading.cpp)
 
 
 ########################################
@@ -19,6 +20,7 @@ file (GLOB source_files
 ########################################
 
 add_executable (verilower ${source_files})
+target_include_directories (verilower PRIVATE ../common)
 target_link_libraries (verilower veriparse_static)
 target_link_libraries (verilower Boost::program_options Boost::filesystem)
 

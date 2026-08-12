@@ -2,6 +2,7 @@
 // Copyright (C) 2013-2026 Christophe Clienti
 #include "config.hpp"
 #include "report.hpp"
+#include "parameters_overloading.hpp"
 
 #include <veriparse/logger/logger.hpp>
 #include <veriparse/parser/preprocessor.hpp>
@@ -51,9 +52,10 @@ static int verilower(int argc, char *argv[])
     options.add_options()("help,h", "Produce help message")("version,v",
                                                             "Show the version and exit")(
         "output,o", boost::program_options::value<std::string>(&config.output)->required(),
-        "output")("top-module,t",
-                  boost::program_options::value<std::string>(&config.top_module)->required(),
-                  "top-module")(
+        "output")(
+        "top-module,t", boost::program_options::value<std::string>(&config.top_module)->required(),
+        "top-module")("param-map,p", boost::program_options::value<std::string>(&config.param_map),
+                      "YAML parameter map for the top module: {N: 42} overrides, {N:} keeps")(
         "suffix", boost::program_options::value<std::string>(&config.suffix)->default_value(""),
         "Append to the emitted module's name, so the output can sit beside "
         "its source in one testbench")("sv", boost::program_options::bool_switch(&config.sv_mode),
@@ -216,8 +218,9 @@ static int verilower(int argc, char *argv[])
     //---------------------------------------------------------
     // A marked process outside the selected module is not compiled, and the
     // mark is never skipped in silence (ADR-0014 §2): each marked module is
-    // its own run, at its default parameterization — an instantiation with
-    // parameter overrides needs a per-instance flow instead.
+    // its own run, parameterized by --param-map or its defaults — an
+    // instantiation with parameter overrides inside the design needs a
+    // per-instance flow instead.
     //---------------------------------------------------------
 
     for(const auto &elt : modules_map) {
@@ -255,14 +258,29 @@ static int verilower(int argc, char *argv[])
     }
 
     //---------------------------------------------------------
+    // Parameterize the top from the command line: {N: 42} overrides the
+    // default, {N:} keeps N a parameter of the output. A parameter left
+    // symbolic that the machine's structure depends on resolves through
+    // the non-constant paths (§7.2 counts, §7.3 conditions) or fails
+    // loudly — never a silently different machine.
+    //---------------------------------------------------------
+
+    bool overloaded;
+    Veriparse::AST::ParamArg::ListPtr param_args =
+        overload_parameters(config.param_map, overloaded);
+    if(!overloaded) {
+        return 1;
+    }
+
+    //---------------------------------------------------------
     // Resolve the module with the FSM slot enabled (ADR-0014 §10.3): the
     // marked processes compile into explicit machines, and the folding
     // passes clean the result.
     //---------------------------------------------------------
 
     Veriparse::Passes::Transformations::ImplicitFsmElaboration::FsmReport fsm_report;
-    Veriparse::Passes::Transformations::ResolveModule resolver(
-        Veriparse::AST::ParamArg::ListPtr(), modules_map, true, true, &fsm_report);
+    Veriparse::Passes::Transformations::ResolveModule resolver(param_args, modules_map, true, true,
+                                                               &fsm_report);
     if(resolver.run(module) != 0) {
         LOG_ERROR << "FSM elaboration failed";
         return 1;
