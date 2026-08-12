@@ -167,6 +167,30 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat2) { TEST_CORE_SV; }
 // unroller could not flatten refuses rather than change the state count in
 // silence (§7.2, §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat_err4) { TEST_ERROR_SV; }
+// §6.2 decoded outputs: module-level = splits into an always_comb over the
+// state register — the arriving convention, init values as comb reset and
+// default, the hold arm carrying the final segment's values.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode0) { TEST_CORE_SV; }
+// A cut-point-free fork carrying a decoded write joins the path cover, and
+// the rejoined arrivals form the guarded tree in one arm (§6.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode1) { TEST_CORE_SV; }
+// Perpetual machine: §7.3's while spelled with per-lap re-assertion; init,
+// wrap and lap arrivals agree at the wait state (§6.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode2) { TEST_CORE_SV; }
+// One signal, one discipline: = and <= on one target (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err1) { TEST_ERROR_SV; }
+// Totality: a segment that skips a decoded output (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err2) { TEST_ERROR_SV; }
+// A rolled repeat's lap cannot re-assert (§6.2, §7.3, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err3) { TEST_ERROR_SV; }
+// Stability: the value reads a register its own arriving path commits
+// (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err4) { TEST_ERROR_SV; }
+// Coherency: arrivals from different states disagree (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err5) { TEST_ERROR_SV; }
+// A decode value reading another decoded output before its assignment
+// (§6.2, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err6) { TEST_ERROR_SV; }
 // A for with a non-constant bound and no mark refuses the same way (§7.2,
 // §8).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_for_err3) { TEST_ERROR_SV; }
