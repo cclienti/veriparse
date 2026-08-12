@@ -79,6 +79,9 @@ jobs:
       - name: Install micromamba
         uses: mamba-org/setup-micromamba@v3
         with:
+          # Unpinned 'latest' races upstream release publication: a fresh
+          # tag whose binaries are still uploading fails the download.
+          micromamba-version: '2.8.1-1'
           init-shell: bash
 
       - name: Generate conda environment file
