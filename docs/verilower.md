@@ -211,6 +211,7 @@ source line and the governing rule — there is no silent approximation
 | statements before the first wait (the *init segment*) | the reset branch: those `<=` right-hand sides are the reset values |
 | `<=` to a module-level signal | a register, assigned in the state where the statement sits |
 | `=` to a local variable (declared in-process) | a combinational temporary: a `wire` per assigned expression, substituted at its uses ([Blocking temporaries](#blocking-temporaries)) |
+| `=` to a module-level variable | a decoded output: one `always_comb` arm per state over the state register ([Decoded outputs](#decoded-outputs--module-level-)) |
 | `if` / `else` around waits | a control-flow fork: one transition per path, guarded by the condition's **entry value** |
 | `case` around waits | the same fork, one guarded transition per item (`==` against each label); items must be x/z-free |
 | bounded `for` / `repeat` / `while` | **unrolled** — each iteration contributes its own states |
@@ -363,6 +364,38 @@ Rules the checker enforces:
   temporary — rename it (alpha-renaming is planned for v2).
 
 ---
+
+## Decoded outputs — module-level `=`
+
+A module-level signal assigned with `=` in the process is a **decoded
+output**: it moves into one `always_comb` over the state register — the
+classic Moore output decode — while every `<=` stays in the `always_ff`
+with the transitions. The arm for a state carries the values assigned by
+the paths *entering* it; the init segment's values become the comb's
+reset branch and `default` arm.
+
+```systemverilog
+busy = 1'b1;              // decoded: one always_comb arm per state
+q    <= q + 8'd1;         // registered: stays in the always_ff
+@(posedge clk);
+```
+
+The rules, each a hard error when violated:
+
+- **one discipline per signal** — a target cannot take both `=` and `<=`;
+- **totality** — every path between two cut points assigns every decoded
+  output (a rolled `repeat` lap cannot, so a decoded output crossing a
+  rolled timer is spelled with the `while` idiom re-asserting per lap);
+- **stability** — a decode value or fork guard may not read a register
+  its own arriving path commits, nor a **raw input** (an input can change
+  on the arrival edge itself; register it first), nor another decoded
+  output not yet assigned;
+- **coherency** — paths from different states arriving at one state must
+  agree on the value.
+
+Self-advancing expression decode (`tx = data[i]` beside `i <= i + 1`)
+cannot be a comb and stays a register — see ADR-0014 §6.2 for the
+analysis. The state map lists each decoded output's per-state value.
 
 ## Naming the states
 
