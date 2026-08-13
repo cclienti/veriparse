@@ -1313,15 +1313,21 @@ the module's task definitions.
   entry segment through the same machinery as a rolled repeat's count
   capture — so the task reads the value the source read at the call,
   however the actual's operands move while the sub-sequence runs.
-- **An `output` or `inout` formal substitutes to its actual**, which
-  must be a plain register lvalue of the process. Formal writes are the
-  actual's writes under a rename; §6's one-commit-per-path and the reset
-  rules apply to the actual as if the statements were written in place —
-  which after inlining they are. True deferred copy-out semantics would
-  only be observable through aliasing, so aliasing is rejected instead:
-  two formals bound to one actual, or an actual also read or written by
-  the surrounding segment where the IEEE ordering would show, are
-  errors, not silently re-ordered.
+- **`output` and `inout` formals are rejected in v1 — by measurement,
+  not caution.** The strategy is that the RTL does what the behavioural
+  does, so the behavioural was measured (Verilator 5.050 `--timing` and
+  iverilog agree exactly): §13.3 copy-out means an output formal is a
+  private copy whose actual updates **only at task return** — writes
+  through it hold invisible across every wait in between, and an input
+  actual changed mid-task never reaches its formal. A task therefore
+  cannot wiggle pins through its arguments at all; the spelling that
+  works, in simulation and here alike, is the task writing the
+  **module-level registers directly** — Appendix B's style. What an
+  output formal can legitimately mean is an end-of-task result, which
+  costs a private induced register per formal with forward substitution
+  across the task's states plus one copy-out commit at return: machinery
+  deferred until a design asks (§15), with the error message carrying
+  the direct-write rewrite.
 - **States inside the task name themselves through §10.1** with the call
   site in the stem: the clone wraps in a block labelled
   `<TASK>_<ordinal>` (the author's enclosing labels compose outward-in as
@@ -1415,7 +1421,7 @@ unmarked column has already been misread once.
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
 | a recursive task call (direct or through a cycle) reaching a marked process | inlining is the model — there is no stack to give recursion meaning (§7.4) | ADR §7.4, IEEE §13.3 |
-| task-call aliasing: two formals bound to one actual, or an output actual that is not a plain register lvalue of the process | output formals substitute to their actuals (§7.4): aliasing is where substitution and IEEE copy-out part ways, so it is refused rather than silently re-ordered | ADR §7.4, IEEE §13.3 |
+| an `output`, `inout` or `ref` formal on a task called from a marked process | §13.3 copy-out updates the actual only at task return — measured in both simulators — so arguments cannot drive pins; the task writes the module-level registers directly (§7.4) | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
@@ -1911,10 +1917,9 @@ says the datapath transformation was exercised on every one of them.
 
 11. **Task inlining** (§7.4) — the per-call-site clone with alpha-renamed
    locals, copy-in capture for non-constant `input` actuals (induced
-   register through the rolled-capture machinery), output/inout
-   substitution with the aliasing rejections, depth-first task-in-task
-   inlining with the recursion cycle check, and `<TASK>_<ordinal>` state
-   naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
+   register through the rolled-capture machinery), the measured
+   output/inout rejection, depth-first task-in-task inlining with the
+   recursion cycle check, and `<TASK>_<ordinal>` state naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
    Appendix B I2C byte write as the differential cosim — the `LOW`/`HIGH`
    tasks called per bit, benched behavioural against lowered.
 
@@ -1993,6 +1998,7 @@ Positioning, so that later choices can be argued against something.
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
 | Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
+| `output`/`inout` task formals (end-of-task results) | rejected (§7.4, §9): measured §13.3 copy-out updates the actual only at return, so arguments cannot drive pins — the task writes module-level registers directly | a private induced register per formal, forward-substituted across the task's states, one copy-out commit at return — when a design asks |
 
 ### 15.1 Why `always` is refused rather than supported
 
