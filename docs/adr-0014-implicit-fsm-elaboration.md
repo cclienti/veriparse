@@ -2027,7 +2027,7 @@ Positioning, so that later choices can be argued against something.
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
 | Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
-| `output`/`inout` task formals (end-of-task results) | rejected (§7.4, §9): measured §13.3 copy-out updates the actual only at return, so arguments cannot drive pins — the task writes module-level registers directly | a private induced register per formal, forward-substituted across the task's states, one copy-out commit at return — when a design asks |
+| `output`/`inout` task formals (end-of-task results) | rejected (§7.4, §9): measured §13.3 copy-out updates the actual only at return, so arguments cannot drive pins — the task writes module-level registers directly | a private induced register per formal, forward-substituted across the task's states, one copy-out commit at return — when a design asks. **Coupled to the fork/join row**: a v1 task writes module-level registers directly, binding it to one fork branch's write set (the decomposition's disjointness check catches reuse loudly) — argument-carried storage is what would make one task callable from concurrent branches |
 
 ### 15.1 Why `always` is refused rather than supported
 
