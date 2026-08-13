@@ -1285,6 +1285,62 @@ preamble**: reset it once and the second, back-to-back frame enters `DATA`
 with `i == 8` and skips it entirely — precisely the frame-chaining case
 §A.3 records as the one that catches translation bugs.
 
+### 7.4 Called tasks — reusable sub-sequences, inlined per call site
+
+A `task` called from a marked process is **inlined at each call site
+before the cut walk**. A task spanning waits is a *reusable
+sub-sequence* — Appendix B's `LOW`/`HIGH` halves, called once per bit —
+and inlining makes it exactly the statements it names: the walk gains no
+new CFG concept, no call/return edges, no sub-machine protocol. The
+inliner is the FSM pass's own pre-step on the marked process, not a
+shared pipeline pass: only marked processes may take it (an unmarked
+process keeps its task calls untouched), and the §9 checks already hold
+the module's task definitions.
+
+**Per call site, in IEEE §13.3's terms:**
+
+- **The body is cloned and its locals alpha-renamed** —
+  `LoopUnrolling`-style uniquification, `<task>_<ordinal>_<name>` — after
+  which a task local is an ordinary in-process temporary under §6's
+  rules: legal in a scope no cut point spans, dead at its end. A local
+  that must survive the task's own waits is the same thing it is
+  anywhere else in the model — a register — and takes §6's existing
+  error, whose fix is declaring it at module level. The static/automatic
+  lifetime distinction dissolves with the call frame itself.
+- **An `input` formal is copy-in, captured at entry.** A constant actual
+  substitutes directly into the clone. A non-constant actual becomes an
+  **induced register per call site** — committed once at the call's
+  entry segment through the same machinery as a rolled repeat's count
+  capture — so the task reads the value the source read at the call,
+  however the actual's operands move while the sub-sequence runs.
+- **An `output` or `inout` formal substitutes to its actual**, which
+  must be a plain register lvalue of the process. Formal writes are the
+  actual's writes under a rename; §6's one-commit-per-path and the reset
+  rules apply to the actual as if the statements were written in place —
+  which after inlining they are. True deferred copy-out semantics would
+  only be observable through aliasing, so aliasing is rejected instead:
+  two formals bound to one actual, or an actual also read or written by
+  the surrounding segment where the IEEE ordering would show, are
+  errors, not silently re-ordered.
+- **States inside the task name themselves through §10.1** with the call
+  site in the stem: the clone wraps in a block labelled
+  `<TASK>_<ordinal>` (the author's enclosing labels compose outward-in as
+  ever), so Appendix B's four calls yield `BIT_0_LOW` … `BIT_3_HIGH`
+  rather than one reused name.
+
+**Tasks calling tasks inline depth-first; recursion is a cycle in that
+walk and is rejected** naming the cycle — the model has no stack to give
+it meaning (the same reason §9 rejects recursive functions). Everything
+else about the body is checked *after* inlining by the machinery that
+already exists: its waits join §2's uniformity check, its loops take
+§7's rules, its `=` targets classify under §6/§6.2, and a delay or an
+event control that would be rejected inline is rejected exactly the
+same when it arrives through a task.
+
+What stays out: hierarchical task names (the referent is not in the
+module), `ref` arguments (aliasing by construction), and tasks whose
+formals take defaults with no actual — until a design asks.
+
 ## 8. Decision 7 — `break` and `continue` are CFG edges
 
 `continue` transitions to the first state of the innermost enclosing loop;
@@ -1358,6 +1414,8 @@ unmarked column has already been misread once.
 | the mark on an item that is not a process, or on an `initial` with no wait | the mark says the author meant it, and there is nothing to compile | ADR §2 |
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
+| a recursive task call (direct or through a cycle) reaching a marked process | inlining is the model — there is no stack to give recursion meaning (§7.4) | ADR §7.4, IEEE §13.3 |
+| task-call aliasing: two formals bound to one actual, or an output actual that is not a plain register lvalue of the process | output formals substitute to their actuals (§7.4): aliasing is where substitution and IEEE copy-out part ways, so it is refused rather than silently re-ordered | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
@@ -1851,6 +1909,15 @@ says the datapath transformation was exercised on every one of them.
    `always_comb`, the literal-per-state checks, and the same
    differential bench over a machine whose state bits are the outputs.
 
+11. **Task inlining** (§7.4) — the per-call-site clone with alpha-renamed
+   locals, copy-in capture for non-constant `input` actuals (induced
+   register through the rolled-capture machinery), output/inout
+   substitution with the aliasing rejections, depth-first task-in-task
+   inlining with the recursion cycle check, and `<TASK>_<ordinal>` state
+   naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
+   Appendix B I2C byte write as the differential cosim — the `LOW`/`HIGH`
+   tasks called per bit, benched behavioural against lowered.
+
 **Why the perpetual form lands late.** Phase 2 compiles a one-shot
 `initial` — the smallest vehicle for the cut/segment/emit machinery, with no
 back-edge to close — and the `forever` that makes a machine perpetual
@@ -1921,7 +1988,6 @@ Positioning, so that later choices can be argued against something.
 | `casex`/`casez` holding cut points, and x/z case items in a forking `case` | hard error (§9) — the fork guards are exact `==` | v2, if a design asks: wildcard-match guard expressions (`casez` semantics per item), the same if-conversion with a different comparison |
 | Temporary **shadowing** — a `=` temporary named after a module-level declaration (a register, a port, a rolled `for`'s index) or after an enclosing temporary | hard error (§6, §9), with the one-word fix: rename. Legal SystemVerilog, but substitution and every by-name check (the environment, `check_temp_reads`, the §9.2.2.4 exclusion) bind by name — honouring the shadow silently would hijack values across scopes | v2: **alpha-rename** temporaries to unique names at collection — the `ScopeElevator` rename discipline, applied inside the process — after which the by-name machinery never sees two scopes share a name and the shadowed forms (the `fsm_temp_err9` shape included) compile as written |
 | `fork`/`join` — concurrent control flow inside one marked process | hard error (§9): the model rests on **one control position** — a single state register over one sequential CFG — and `fork` creates several at once. The supported spelling today is the decomposition the language already has: **two marked processes in one module**, each its own machine, rendezvousing through registers (`while (!other_done) @(posedge clk);`), the §9.2.2.4 check keeping their write sets disjoint | v2, as mechanized decomposition — not the product automaton, which explodes and is unreadable, but **one sub-machine per branch** with generated done flags and the `join` lowered to the rendezvous wait on all of them: exactly the cooperating-processes idiom, written by the pass instead of the author. `join_any`/`join_none` are further semantics on top and stay out until a design asks |
-| Cut point inside a called `task` (multi-cycle sub-sequence) | hard error (§9); a pure `function` is accepted, IEEE §13.4 keeping it cut-point-free by construction | v2 `TaskInliner` before the cut walk: a task spanning waits is a *reusable sub-sequence* — Appendix B's `LOW`/`HIGH` pairs, called four times. IEEE §13.3's copy-in gives an `input` argument defined capture-at-entry semantics — an induced register per call — with per-call-site state naming (§10.1 composition, `LoopUnrolling`-style uniquification), copy-out at task end, recursion rejected |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule; the shared-wire CSE above is the structural subset that needs no allocation | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
