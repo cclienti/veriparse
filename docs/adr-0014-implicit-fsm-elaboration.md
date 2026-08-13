@@ -1297,58 +1297,66 @@ shared pipeline pass: only marked processes may take it (an unmarked
 process keeps its task calls untouched), and the §9 checks already hold
 the module's task definitions.
 
-**Per call site, in IEEE §13.3's terms:**
+**The inlined form is one labelled block, and the arguments are its
+locals.** Per call site the clone is
 
-- **The body is cloned and its locals alpha-renamed** —
-  `LoopUnrolling`-style uniquification, `<task>_<ordinal>_<name>` — after
-  which a task local is an ordinary in-process temporary under §6's
-  rules: legal in a scope no cut point spans, dead at its end. A local
-  that must survive the task's own waits is the same thing it is
-  anywhere else in the model — a register — and takes §6's existing
-  error, whose fix is declaring it at module level. That rewrite is the
-  semantics, not a concession: a module task's locals have **static
-  lifetime** — one storage shared across every call — which is exactly
-  what one module-level register is, and call sites execute in disjoint
-  states, so the sharing is safe by the countdown argument. Auto-hoisting
-  such locals is the same induced-register-with-forward-substitution
-  machinery as output formals, banked with them in §15.
-- **An `input` formal is copy-in, captured at entry.** A constant actual
-  substitutes directly into the clone. A non-constant actual becomes an
-  **induced register per call site** — committed once at the call's
-  entry segment through the same machinery as a rolled repeat's count
-  capture — so the task reads the value the source read at the call,
-  however the actual's operands move while the sub-sequence runs.
-- **`output` and `inout` formals written only with `<=` are supported —
-  because the measurement prices them at one register.** The formal
-  becomes a private induced register per call site: an `inout` takes a
-  copy-in commit at entry, body writes rename onto it as ordinary
-  register commits, and the copy-out is an induced `<=` to the actual in
-  the return continuation — which executes at the return wake, the very
-  edge where §13.3's zero-time copy-out lands, so the actual holds
-  through the task and takes the final value from the return edge
-  exactly as measured. The actual must be a plain register lvalue; §6's
-  one-commit-per-path covers collisions between the copy-out and the
-  caller's own writes.
-- **A formal written with `=` is rejected — by measurement,
-  not caution.** The strategy is that the RTL does what the behavioural
-  does, so the behavioural was measured (Verilator 5.050 `--timing` and
-  iverilog agree exactly): §13.3 copy-out means an output formal is a
-  private copy whose actual updates **only at task return** — writes
-  through it hold invisible across every wait in between, and an input
-  actual changed mid-task never reaches its formal. A task therefore
-  cannot wiggle pins through its arguments at all; the spelling that
-  works, in simulation and here alike, is the task writing the
-  **module-level registers directly** — Appendix B's style. What an
-  output formal can legitimately mean is an end-of-task result, which
-  costs a private induced register per formal with forward substitution
-  across the task's states plus one copy-out commit at return: machinery
-  deferred until a design asks (§15), with the error message carrying
-  the direct-write rewrite.
-- **States inside the task name themselves through §10.1** with the call
-  site in the stem: the clone wraps in a block labelled
-  `<TASK>_<ordinal>` (the author's enclosing labels compose outward-in as
-  ever), so Appendix B's four calls yield `BIT_0_LOW` … `BIT_3_HIGH`
-  rather than one reused name.
+```systemverilog
+begin : <TASK>_<ordinal>
+  <formal declarations, alpha-renamed>   // and the body's own locals
+  <copy-in>                              // input/inout: formal takes actual
+  <body>
+  <copy-out>                             // output/inout: actual <= formal
+end
+```
+
+after which nothing task-shaped is left to handle: scoping, §10.1
+naming (the block label *is* the call-site stem — Appendix B's four
+calls yield `BIT_0_LOW` … `BIT_3_HIGH`), temporaries, loops, and every
+§6/§6.2 rule apply to this block as to any other. The reduction costs
+exactly one new general mechanism and one lifetime rule:
+
+- **Hoisting.** A block-scoped local written **only with `<=`** in a
+  scope a cut point spans becomes a uniquified module-level induced
+  register — the storage such a value was always going to need, written
+  down by the pass instead of the author. (Today that declaration is a
+  §6 error; the hoist legalizes precisely the NBA-written kind, whose
+  commits are ordinary register commits. One written with `=` stays
+  refused: its intermediate values are the §15 forward-substitution
+  machinery.) The mechanism is general — task formals, task locals, and
+  the author's own blocks take it identically.
+- **Lifetime picks the hoist's granularity.** A `static` task's locals
+  (the module default) are one IEEE storage shared across calls, so they
+  hoist **per task** — one register, all call sites sharing, a later
+  call legitimately reading what the previous one left. An `automatic`
+  task's locals are fresh per activation, so they hoist **per call
+  site** — and since a register persists where a fresh local starts
+  uninitialized, an automatic hoisted local must be **assigned before
+  read on every activation** (the must-write analysis), refusing the one
+  shape where register and fresh local part ways. Formals hoist per call
+  site under either lifetime: copy-in overwrites at entry before any
+  read could tell the difference.
+- **Copy-in and copy-out are ordinary statements of the block.** An
+  `input` or `inout` formal takes its actual at entry — a constant
+  actual substitutes outright, a dynamic one is a capture commit through
+  the rolled-count machinery, so the task reads what the source read at
+  the call. An `output` or `inout` formal writes back with one induced
+  `<=` to the actual at the block's end, executing at the return wake —
+  the very edge where §13.3's measured zero-time copy-out lands, so the
+  actual holds through the task and takes the final value from the
+  return edge exactly as both simulators show. The actual must be a
+  plain register lvalue; §6's one-commit-per-path covers collisions
+  between the copy-out and the caller's own writes.
+
+**The measurement behind the `=` refusal on cut-spanning formals**
+(Verilator 5.050 `--timing` and iverilog agree exactly): §13.3 makes a
+formal a private copy whose actual updates **only at task return** —
+writes hold invisible across every wait between, and an input actual
+changed mid-task never reaches its formal. A task therefore cannot
+wiggle pins through its arguments in any conforming simulator; the
+spelling that wiggles is the task writing the **module-level registers
+directly**, Appendix B's style. In a **cut-point-free** task the same
+formals are ordinary §6 temporaries and `=` is fine — the general scope
+rule decides, not a formal-specific one.
 
 **After inlining and copy-in substitution, the shared `LoopUnrolling`
 runs again on the marked process.** The pipeline unrolled the module
@@ -1373,14 +1381,12 @@ event control that would be rejected inline is rejected exactly the
 same when it arrives through a task.
 
 Everything the process may write, the inlined body may write the same
-way: `=` to a task local is a §6.1 temporary, `=` to a module-level
-signal is a §6.2 decoded output under the process-wide discipline, and
-`<=` is a register. The one new rejection is **`=` to an input
-formal** — legal IEEE (the formal is a local copy), but a substituted
-constant has no storage to take the write and a captured formal is an
-induced register, whose blocking writes are the §15 forward-substitution
-machinery — so v1 refuses it with the rewrite: copy the formal into a
-local first.
+way: `=` to a segment-confined local is a §6.1 temporary, `=` to a
+module-level signal is a §6.2 decoded output under the process-wide
+discipline, `<=` is a register — and formals are just locals, so no
+formal-specific write rule exists: the general scope rule sorts every
+case, including `=` to a formal (fine in a cut-point-free task, refused
+where the scope spans a cut).
 
 What stays out: hierarchical task names (the referent is not in the
 module), `ref` arguments (aliasing by construction), and tasks whose
