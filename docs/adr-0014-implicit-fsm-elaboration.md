@@ -1361,6 +1361,16 @@ already exists: its waits join §2's uniformity check, its loops take
 event control that would be rejected inline is rejected exactly the
 same when it arrives through a task.
 
+Everything the process may write, the inlined body may write the same
+way: `=` to a task local is a §6.1 temporary, `=` to a module-level
+signal is a §6.2 decoded output under the process-wide discipline, and
+`<=` is a register. The one new rejection is **`=` to an input
+formal** — legal IEEE (the formal is a local copy), but a substituted
+constant has no storage to take the write and a captured formal is an
+induced register, whose blocking writes are the §15 forward-substitution
+machinery — so v1 refuses it with the rewrite: copy the formal into a
+local first.
+
 What stays out: hierarchical task names (the referent is not in the
 module), `ref` arguments (aliasing by construction), and tasks whose
 formals take defaults with no actual — until a design asks.
