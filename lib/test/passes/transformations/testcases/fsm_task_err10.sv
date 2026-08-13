@@ -1,5 +1,5 @@
-module fsm_task0 (input logic clk, input logic rst_n,
-                  output logic scl, output logic done);
+module fsm_task_err10 (input logic clk, input logic rst_n,
+                       output logic scl, output logic [7:0] q);
     task pulse();
         begin
             scl <= 1'b0;
@@ -10,10 +10,16 @@ module fsm_task0 (input logic clk, input logic rst_n,
     endtask
     (* veriparse_fsm *)
     initial begin
-        scl <= 1'b1; done <= 1'b0;
+        scl <= 1'b1;
         @(posedge clk);
         pulse();
+    end
+    (* veriparse_fsm *)
+    initial begin
+        q <= '0;
+        @(posedge clk);
         pulse();
-        done <= 1'b1;
+        q <= 8'd1;
+        @(posedge clk);
     end
 endmodule

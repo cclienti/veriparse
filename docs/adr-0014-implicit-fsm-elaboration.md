@@ -1310,9 +1310,12 @@ end
 ```
 
 after which nothing task-shaped is left to handle: scoping, §10.1
-naming (the block label *is* the call-site stem — Appendix B's four
-calls yield `BIT_0_LOW` … `BIT_3_HIGH`), temporaries, loops, and every
-§6/§6.2 rule apply to this block as to any other. The reduction costs
+naming (the block label *is* the call-site stem, composing outward-in
+with the author's enclosing labels as ever — two `pulse()` calls yield
+`PULSE_0` and `PULSE_1` stems, and a call site inside Appendix B's
+rolled bit loop yields one `BIT_LOW_0` stem whose states the laps
+revisit), temporaries, loops, and every §6/§6.2 rule apply to this
+block as to any other. The reduction costs
 exactly one new general mechanism and one lifetime rule:
 
 - **Hoisting.** A block-scoped local written **only with `<=`** in a
@@ -1322,8 +1325,14 @@ exactly one new general mechanism and one lifetime rule:
   §6 error; the hoist legalizes precisely the NBA-written kind, whose
   commits are ordinary register commits. One written with `=` stays
   refused: its intermediate values are the §15 forward-substitution
-  machinery.) The mechanism is general — task formals, task locals, and
-  the author's own blocks take it identically.
+  machinery.) In v1 the hoist applies to **task-originated blocks only**:
+  an author's own cut-spanning `<=`-written block local keeps today's
+  §6 error, because two rules it needs are unwritten — a naming scheme
+  with no task name to build from, and a sharing story that survives
+  §7.2's unrolling, which clones and uniquifies a loop body's
+  declarations per copy where IEEE gives a static block local one
+  storage across iterations. Generalizing to author blocks is banked in
+  §15 with those two questions attached.
 - **Lifetime picks the hoist's granularity.** A `static` task's locals
   (the module default) are one IEEE storage shared across calls, so they
   hoist **per task** — one register, all call sites sharing, a later
@@ -1333,16 +1342,25 @@ exactly one new general mechanism and one lifetime rule:
   uninitialized, an automatic hoisted local must be **assigned before
   read on every activation** (the must-write analysis), refusing the one
   shape where register and fresh local part ways. Formals hoist per call
-  site under either lifetime: copy-in overwrites at entry before any
-  read could tell the difference. The granularity is legible in the
+  site under either lifetime — `input` and `inout` because copy-in
+  overwrites at entry before any read could tell the difference, and
+  `output`, which has no copy-in, because it takes the
+  **assign-before-read check under both lifetimes**: an output formal
+  read before its first write would expose per-site storage against a
+  static task's one shared storage, so that read is refused rather than
+  silently resolved either way. The granularity is legible in the
   emitted names: a static local hoists as `<task>_<local>` — one
   register however many call sites — an automatic one as
   `<task>_<ordinal>_<local>`, the per-site shape formals always take.
 - **Copy-in and copy-out are ordinary statements of the block.** An
   `input` or `inout` formal takes its actual at entry — a constant
   actual substitutes outright, a dynamic one is a capture commit through
-  the rolled-count machinery, so the task reads what the source read at
-  the call. An `output` or `inout` formal writes back with one induced
+  the rolled-count machinery, **and like the rolled `for`'s init the
+  capture forward-substitutes within its own segment (§6.1): a reader
+  before the first cut sees the actual's value, exactly the immediate
+  copy-in both simulators show, while later segments read the register
+  the commit loaded with that same value.** Either way the task reads
+  what the source read at the call. An `output` or `inout` formal writes back with one induced
   `<=` to the actual at the block's end, executing at the return wake —
   the very edge where §13.3's measured zero-time copy-out lands, so the
   actual holds through the task and takes the final value from the
@@ -1369,10 +1387,25 @@ a formal could not unroll at the definition — and without the re-run,
 actual substitutes. The re-run keeps §7.2's contract — all bounded
 loops unroll uniformly, wherever the text came from — without giving
 this pass unrolling machinery of its own: it is the same shared pass,
-invoked once more on the one process inlining changed. A rolled
+invoked once more on the one process inlining changed — **after
+hoisting**, so the hoisted registers are module-level declarations the
+loop cloning never duplicates, and per-site names stay one register per
+call site however many copies the re-run makes of the surrounding text.
+The re-run's uniquifier is **seeded with the module-wide declaration
+set** (its stock invocation analyzes only the node it is handed, which
+here would let it mint a name colliding with a module-level declaration
+or another process's) while its rewriting stays guarded to the one
+process. A rolled
 `veriparse_no_unroll` repeat needs no such help: §7.2's capture accepts
 a formal's induced register like any non-constant count, and a
 genuinely non-constant bound keeps §8's refusal.
+
+**After inlining, a task definition with no remaining call site
+anywhere in the module is dropped** — kept, it would be emitted dead
+code still writing the machine's registers, tripping §9.2.2.4 against
+the very process it was inlined into. One still called from an unmarked
+process (whose calls the inliner never touches) survives verbatim: the
+rule is per task, drop iff call-site count reaches zero.
 
 **Tasks calling tasks inline depth-first; recursion is a cycle in that
 walk and is rejected** naming the cycle — the model has no stack to give
@@ -1469,7 +1502,6 @@ unmarked column has already been misread once.
 | `WaitStatement` / level-sensitive control | not an edge; no boundary to cut at | IEEE §9.4.3 |
 | `fork`/`join` | concurrent control flow the state model cannot express: one control position per machine. Write cooperating marked processes instead; §15 records the v2 decomposition that would write them for you | IEEE §9.3.2, ADR §15 |
 | `disable` | abortive control flow the state model cannot express | IEEE §9.6.2 |
-| cut point inside a called `task` | not visible in the process body; v1 does not inline to find it (§15). A `function` can never hold one — IEEE §13.4 forbids time-controlled statements there | IEEE §13.4, ADR §15 |
 | a `function` called in a marked process that writes non-local state | expression position is no place for a side effect: the `(R_p, s_p)` model would miss the write silently. **Pure functions are accepted** and pass through to the output as the ordinary combinational calls they are | IEEE §13.4 |
 | loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
 | a path through a kept loop's body that reaches the head again without crossing a cut point | the same zero-delay lap, hidden in one arm of a branch: the loop has cut points, that path has none | IEEE §9.2.2.1 |
@@ -1980,12 +2012,18 @@ says the datapath transformation was exercised on every one of them.
    `always_comb`, the literal-per-state checks, and the same
    differential bench over a machine whose state bits are the outputs.
 
-11. **Task inlining** (§7.4) — the per-call-site clone with alpha-renamed
+11. **Task inlining** (§7.4) — prerequisite first, its own commit like
+   phase 1's `iff`: the grammar does not yet parse `ref` in a task
+   header, nor bare multi-statement task bodies (a body is one
+   statement; the tests spell `begin/end`). Then the per-call-site
+   clone with alpha-renamed
    locals, copy-in capture for non-constant `input` actuals (induced
-   register through the rolled-capture machinery), the measured
-   output/inout rejection, the post-inline `LoopUnrolling` re-run,
-   depth-first task-in-task inlining with the recursion cycle check,
-   and `<TASK>_<ordinal>` state naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
+   register through the rolled-capture machinery with its §6.1
+   same-segment substitution), the lifetime-directed hoist with its
+   assign-before-read checks, `ref` substitution, the hoist-then-re-run
+   ordering with module-wide uniquifier seeding, zero-call-site task
+   disposal, depth-first task-in-task inlining with the recursion cycle
+   check, and `<TASK>_<ordinal>` state naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
    Appendix B I2C byte write as the differential cosim — the `LOW`/`HIGH`
    tasks called per bit, benched behavioural against lowered.
 
@@ -2064,7 +2102,7 @@ Positioning, so that later choices can be argued against something.
 | Per-state clock enable (waits gated by different conditions) | hard error (§9); v1 takes one uniform enable | per-state enable logic, once a design asks for it |
 | A marked `always` process | hard error (§9), with the one-line rewrite in the message | see below — not planned, because there is nothing left for it to add |
 | Reset asserted again mid-run | out of scope: nothing can re-enter a suspended multi-wait process from outside (§5.2) | would need a restartable reference, which the input form cannot express |
-| `output`/`inout` task formals (end-of-task results) | rejected (§7.4, §9): measured §13.3 copy-out updates the actual only at return, so arguments cannot drive pins — the task writes module-level registers directly | a private induced register per formal, forward-substituted across the task's states, one copy-out commit at return — when a design asks. **Coupled to the fork/join row**: a v1 task writes module-level registers directly, binding it to one fork branch's write set (the decomposition's disjointness check catches reuse loudly) — argument-carried storage is what would make one task callable from concurrent branches |
+| `=`-written cut-spanning task formals and locals, and author-block hoisting | refused (§6, §7.4, §9): blocking intermediate values crossing a cut need forward substitution across states; `<=`-written formals/locals hoist today (§7.4) | the forward-substitution machinery when a design asks; author-block hoisting additionally needs a naming scheme without a task name and a sharing story that survives §7.2's per-copy uniquification. **Coupled to the fork/join row**: a task writing module-level registers directly binds to one fork branch's write set (the decomposition's disjointness check catches reuse loudly) — argument-carried storage is what would make one task callable from concurrent branches |
 
 ### 15.1 Why `always` is refused rather than supported
 
