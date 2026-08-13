@@ -1318,7 +1318,18 @@ the module's task definitions.
   entry segment through the same machinery as a rolled repeat's count
   capture — so the task reads the value the source read at the call,
   however the actual's operands move while the sub-sequence runs.
-- **`output` and `inout` formals are rejected in v1 — by measurement,
+- **`output` and `inout` formals written only with `<=` are supported —
+  because the measurement prices them at one register.** The formal
+  becomes a private induced register per call site: an `inout` takes a
+  copy-in commit at entry, body writes rename onto it as ordinary
+  register commits, and the copy-out is an induced `<=` to the actual in
+  the return continuation — which executes at the return wake, the very
+  edge where §13.3's zero-time copy-out lands, so the actual holds
+  through the task and takes the final value from the return edge
+  exactly as measured. The actual must be a plain register lvalue; §6's
+  one-commit-per-path covers collisions between the copy-out and the
+  caller's own writes.
+- **A formal written with `=` is rejected — by measurement,
   not caution.** The strategy is that the RTL does what the behavioural
   does, so the behavioural was measured (Verilator 5.050 `--timing` and
   iverilog agree exactly): §13.3 copy-out means an output formal is a
@@ -1449,7 +1460,7 @@ unmarked column has already been misread once.
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
 | a recursive task call (direct or through a cycle) reaching a marked process | inlining is the model — there is no stack to give recursion meaning (§7.4) | ADR §7.4, IEEE §13.3 |
-| an `output`, `inout` or `ref` formal on a task called from a marked process | §13.3 copy-out updates the actual only at task return — measured in both simulators — so arguments cannot drive pins; the task writes the module-level registers directly (§7.4) | ADR §7.4, IEEE §13.3 |
+| a task formal written with `=`, or a `ref` formal | §13.3 makes a formal a private copy — measured — and its blocking intermediate values need the §15 forward-substitution machinery; `<=`-written output/inout formals are the supported form (§7.4), and pin-wiggling writes module-level registers directly | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
