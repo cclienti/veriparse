@@ -1305,8 +1305,13 @@ the module's task definitions.
   rules: legal in a scope no cut point spans, dead at its end. A local
   that must survive the task's own waits is the same thing it is
   anywhere else in the model — a register — and takes §6's existing
-  error, whose fix is declaring it at module level. The static/automatic
-  lifetime distinction dissolves with the call frame itself.
+  error, whose fix is declaring it at module level. That rewrite is the
+  semantics, not a concession: a module task's locals have **static
+  lifetime** — one storage shared across every call — which is exactly
+  what one module-level register is, and call sites execute in disjoint
+  states, so the sharing is safe by the countdown argument. Auto-hoisting
+  such locals is the same induced-register-with-forward-substitution
+  machinery as output formals, banked with them in §15.
 - **An `input` formal is copy-in, captured at entry.** A constant actual
   substitutes directly into the clone. A non-constant actual becomes an
   **induced register per call site** — committed once at the call's
@@ -1333,6 +1338,19 @@ the module's task definitions.
   `<TASK>_<ordinal>` (the author's enclosing labels compose outward-in as
   ever), so Appendix B's four calls yield `BIT_0_LOW` … `BIT_3_HIGH`
   rather than one reused name.
+
+**After inlining and copy-in substitution, the shared `LoopUnrolling`
+runs again on the marked process.** The pipeline unrolled the module
+before the FSM pass, so a bounded loop in a task body whose bound names
+a formal could not unroll at the definition — and without the re-run,
+§8 would refuse a loop that becomes constant-bounded the moment the
+actual substitutes. The re-run keeps §7.2's contract — all bounded
+loops unroll uniformly, wherever the text came from — without giving
+this pass unrolling machinery of its own: it is the same shared pass,
+invoked once more on the one process inlining changed. A rolled
+`veriparse_no_unroll` repeat needs no such help: §7.2's capture accepts
+a formal's induced register like any non-constant count, and a
+genuinely non-constant bound keeps §8's refusal.
 
 **Tasks calling tasks inline depth-first; recursion is a cycle in that
 walk and is rejected** naming the cycle — the model has no stack to give
@@ -1918,8 +1936,9 @@ says the datapath transformation was exercised on every one of them.
 11. **Task inlining** (§7.4) — the per-call-site clone with alpha-renamed
    locals, copy-in capture for non-constant `input` actuals (induced
    register through the rolled-capture machinery), the measured
-   output/inout rejection, depth-first task-in-task inlining with the
-   recursion cycle check, and `<TASK>_<ordinal>` state naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
+   output/inout rejection, the post-inline `LoopUnrolling` re-run,
+   depth-first task-in-task inlining with the recursion cycle check,
+   and `<TASK>_<ordinal>` state naming. Goldens per shape, a `TEST_ERROR_SV` per new §9 row, and the
    Appendix B I2C byte write as the differential cosim — the `LOW`/`HIGH`
    tasks called per bit, benched behavioural against lowered.
 
