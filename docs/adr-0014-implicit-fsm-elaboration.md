@@ -1334,7 +1334,10 @@ exactly one new general mechanism and one lifetime rule:
   read on every activation** (the must-write analysis), refusing the one
   shape where register and fresh local part ways. Formals hoist per call
   site under either lifetime: copy-in overwrites at entry before any
-  read could tell the difference.
+  read could tell the difference. The granularity is legible in the
+  emitted names: a static local hoists as `<task>_<local>` — one
+  register however many call sites — an automatic one as
+  `<task>_<ordinal>_<local>`, the per-site shape formals always take.
 - **Copy-in and copy-out are ordinary statements of the block.** An
   `input` or `inout` formal takes its actual at entry — a constant
   actual substitutes outright, a dynamic one is a capture commit through
