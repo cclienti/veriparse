@@ -1391,9 +1391,25 @@ formal-specific write rule exists: the general scope rule sorts every
 case, including `=` to a formal (fine in a cut-point-free task, refused
 where the scope spans a cut).
 
+**A `ref` formal is pure substitution — measured, and cheaper than
+every other kind.** IEEE §13.5.2 makes it a true alias, and both vsim
+and Verilator 5.050 `--timing` implement exactly that for
+blocking-written refs on `automatic` tasks: the actual tracks every
+`=` live, mid-task (iverilog alone lacks `ref` support — a portability
+caveat on the behavioural source, recorded here). So the formal name
+substitutes to its actual — a plain identifier of the process — with
+no local, no hoist, no copy anything, and the writes classify as
+written in place: module-level `=` under the §6.2 decode discipline.
+Two refs on one actual are exact aliases by substitution, no
+restriction needed. The boundary is also measured: **`<=` through a
+`ref` is illegal IEEE** (no nonblocking assignment to an automatic —
+vsim and iverilog both enforce it), so it is refused here with the
+choice spelled out: alias with `ref` and `=`, or capture with `input`
+and commit registers directly.
+
 What stays out: hierarchical task names (the referent is not in the
-module), `ref` arguments (aliasing by construction), and tasks whose
-formals take defaults with no actual — until a design asks.
+module) and tasks whose formals take defaults with no actual — until a
+design asks.
 
 ## 8. Decision 7 — `break` and `continue` are CFG edges
 
@@ -1469,7 +1485,8 @@ unmarked column has already been misread once.
 | a hierarchical reference into a marked process (`COUNT.cnt_tmp` from outside it, or across its labels) | the referent is consumed by the lowering — no state block survives to the output for the reference to bind to. Caught at scope elevation, where the reference would otherwise be silently rewritten to a name that no longer resolves | ADR §10.1 |
 | reset signal neither hinted nor uniquely inferable | an unresettable state register is a synthesis defect | ADR §5 |
 | a recursive task call (direct or through a cycle) reaching a marked process | inlining is the model — there is no stack to give recursion meaning (§7.4) | ADR §7.4, IEEE §13.3 |
-| a formal (or any block local) written with `=` in a scope a cut point spans, or a `ref` formal | the general §6 scope rule after the block-model reduction (§7.4): blocking intermediate values crossing a cut are the §15 forward-substitution machinery; `<=`-written locals hoist, and pin-wiggling writes module-level registers directly | ADR §6, §7.4, IEEE §13.3 |
+| a formal (or any block local) written with `=` in a scope a cut point spans | the general §6 scope rule after the block-model reduction (§7.4): blocking intermediate values crossing a cut are the §15 forward-substitution machinery; `<=`-written locals hoist, and pin-wiggling aliases with `ref` or writes module-level registers directly | ADR §6, §7.4, IEEE §13.3 |
+| `<=` through a `ref` formal, or `ref` on a non-`automatic` task | no nonblocking assignment to an automatic (measured: vsim and iverilog enforce it), and §13.5.2 ties `ref` to automatic lifetime — alias with `=`, or capture with `input` and commit registers directly (§7.4) | ADR §7.4, IEEE §13.5.2 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
