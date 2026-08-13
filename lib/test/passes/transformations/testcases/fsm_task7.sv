@@ -1,4 +1,4 @@
-module fsm_task_err0 (
+module fsm_task7 (
     input logic clk,
     input logic rst_n,
     output logic q
