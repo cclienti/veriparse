@@ -1,8 +1,8 @@
-module fsm_task_err5 (input logic clk, input logic rst_n,
+module fsm_task_err4 (input logic clk, input logic rst_n,
                       output logic [7:0] r);
-    task automatic use_ref(ref logic [7:0] x);
+    task adjust(inout logic [7:0] io);
         begin
-            x <= 8'd1;
+            io = io + 8'd1;
             @(posedge clk);
         end
     endtask
@@ -10,7 +10,7 @@ module fsm_task_err5 (input logic clk, input logic rst_n,
     initial begin
         r <= '0;
         @(posedge clk);
-        use_ref(r);
+        adjust(r);
         @(posedge clk);
     end
 endmodule

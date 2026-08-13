@@ -476,11 +476,37 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_reset_err0) { TEST_ERROR_S
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_fork_err0) { TEST_ERROR_SV; }
 // disable: abortive control flow the state model cannot express (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_disable_err0) { TEST_ERROR_SV; }
-// A cut-point-free task folding entirely into its caller's action.
-// Until §7.4's inliner lands, every task call is refused wholesale — a
-// cut point inside would be invisible — so this registers as an error
-// today and flips to a golden with the inliner (§7.4, §9).
+// §7.4's task matrix. Until the inliner lands, every task call is
+// refused wholesale, so the whole family registers as errors today;
+// the fsm_task<N> goldens flip to TEST_CORE_SV with the inliner, the
+// fsm_task_err<N> rows keep their verdicts for the §7.4 reasons their
+// files spell (formals, lifetimes, hoisting, loops, recursion).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task1) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task2) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task3) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task4) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task5) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task6) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_ERROR_SV; }
+// fsm_task8 (ref-alias golden) awaits the ref-formal grammar
+// prerequisite of §12 item 11 — `ref` in a task header does not parse
+// yet, so neither it nor fsm_task_err5 registers today.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err1) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err2) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err3) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err4) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err6) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err7) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err8) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err9) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err10) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err11) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err12) { TEST_ERROR_SV; }
+// A second clock domain beside the marked process: the mark is
+// per-process, the clk2 always_ff passes through verbatim (§2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clk2_0) { TEST_CORE_SV; }
 // A system function outside the constant/query subset in expression
 // position (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc_err0) { TEST_ERROR_SV; }
