@@ -476,9 +476,11 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_reset_err0) { TEST_ERROR_S
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_fork_err0) { TEST_ERROR_SV; }
 // disable: abortive control flow the state model cannot express (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_disable_err0) { TEST_ERROR_SV; }
-// A task call: a cut point inside it would be invisible — v1 does not
-// inline to find out (§9, §15).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err0) { TEST_ERROR_SV; }
+// A cut-point-free task folding entirely into its caller's action.
+// Until §7.4's inliner lands, every task call is refused wholesale — a
+// cut point inside would be invisible — so this registers as an error
+// today and flips to a golden with the inliner (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_ERROR_SV; }
 // A system function outside the constant/query subset in expression
 // position (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_sysfunc_err0) { TEST_ERROR_SV; }
