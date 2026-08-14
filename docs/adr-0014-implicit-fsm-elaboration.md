@@ -1507,12 +1507,14 @@ alike. The conforming clock port is **`input var logic clk`**
 which the grammar now parses: a `var` port declares as a genuine
 variable (`Port.decl` holds a `Var`), the kind participates in
 §23.2.2.3 port-kind inheritance, `var` beside a net type is a parse
-error, and the generators re-emit the keyword. One admission remains
-deliberately loose: an **output** port actual always passes, because
-§23.2.2.3 makes an output with an explicit data type a variable but
-the AST keeps no trace of the type's explicitness — refusing outputs
-would reject the conforming `output logic` majority to catch the rare
-implicit-type `output o` net.
+error, and the generators re-emit the keyword. Output ports classify exactly
+too: §23.2.2.3 makes an output with an explicit data type a variable
+and an implicit one a net, and the AST keeps the distinction — an
+implicit data type is exactly an `ImplicitType` node (ADR-0012 §3),
+and in the tool flow `DefaultResolution` has already turned the
+variable case into a genuine `Var` — so `output logic s` passes by
+`ref` while the implicit-type `output s` is refused as the net it
+defaults to.
 
 What stays out: hierarchical task names (the referent is not in the
 module) and tasks whose formals take defaults with no actual — until a

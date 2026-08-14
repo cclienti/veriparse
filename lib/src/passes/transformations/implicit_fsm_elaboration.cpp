@@ -543,11 +543,12 @@ void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string>
 }
 
 /// §13.5.2: "Nets and selects into nets shall not be passed by reference."
-/// True when `name` is storage the module makes definitely a net: an explicit
-/// net declaration, or an input/inout port without the `var` kind (§23.2.2.3
-/// defaults those to nets). Output ports pass: the AST keeps no trace of
-/// whether their data type was explicit — §23.2.2.3's variable case — so
-/// refusing them would reject conforming source.
+/// True when `name` is storage the module makes a net under the §23.2.2.3
+/// kind rules: an explicit net declaration, an input/inout port without the
+/// `var` kind, or an output port whose data type is omitted or implicit —
+/// an output with an explicit data type is a variable (the AST keeps the
+/// distinction: an implicit data type is exactly an ImplicitType node, and
+/// DefaultResolution turns the variable case into a Var outright).
 bool is_net_signal(const AST::Module::Ptr &module, const std::string &name)
 {
     const auto port_verdict = [&name](const AST::Port::Ptr &port) -> int {
@@ -561,10 +562,21 @@ bool is_net_signal(const AST::Module::Ptr &module, const std::string &name)
         if(decl && decl->is_node_type(AST::NodeType::Var)) {
             return 0;
         }
-        return (port->get_direction() == AST::Port::DirectionEnum::INPUT ||
-                port->get_direction() == AST::Port::DirectionEnum::INOUT)
-                   ? 1
-                   : 0;
+        switch(port->get_direction()) {
+        case AST::Port::DirectionEnum::INPUT:
+        case AST::Port::DirectionEnum::INOUT:
+            return 1;
+        case AST::Port::DirectionEnum::OUTPUT: {
+            if(decl && decl->is_node_type(AST::NodeType::ImplicitNet)) {
+                const auto &type = AST::cast_to<AST::ImplicitNet>(decl)->get_type();
+                const bool implicit_type = !type || type->is_node_type(AST::NodeType::ImplicitType);
+                return implicit_type ? 1 : 0;
+            }
+            return decl && decl->is_node_category(AST::NodeType::Net) ? 1 : 0;
+        }
+        default:
+            return 0; // a ref port is always a variable (§23.2.2.3)
+        }
     };
     const auto &ports = module->get_ports();
     if(ports) {
