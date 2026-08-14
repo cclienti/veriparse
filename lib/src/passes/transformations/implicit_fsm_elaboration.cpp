@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/fsm_loop_lowering.hpp>
 #include <veriparse/passes/transformations/fsm_task_inliner.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
@@ -82,6 +83,12 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // caller working unchanged, and a pipeline that already ran it costs
     // one no-op.
     if(FsmTaskInliner().run(node)) {
+        return 1;
+    }
+    // §7.2: the rolled bounded loops canonicalize next — after this the
+    // walk meets only while and forever, their induced storage arriving
+    // as the same pragma markers the inliner uses.
+    if(FsmLoopLowering().run(node)) {
         return 1;
     }
 
@@ -526,90 +533,24 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         info.body = AST::cast_to<AST::ForeverStatement>(node)->get_statement();
         break;
     }
-    case AST::NodeType::RepeatStatement: {
-        const auto &loop = AST::cast_to<AST::RepeatStatement>(node);
-        info.kind = LoopInfo::Kind::REPEAT;
-        info.cond = loop->get_times();
-        info.body = loop->get_statement();
-        mpz_class value;
-        if(ExpressionEvaluation().evaluate_node(info.cond, value)) {
-            // §12.7.2 gives x/z a meaning (zero) but a negative count none,
-            // and tools disagree on one: almost always a parameterization
-            // off-by-N, so it is rejected rather than silently guessed.
-            if(value < 0) {
-                LOG_ERROR_N(info.cond)
-                    << "repeat count folds to " << value << ": a loop cannot execute "
-                    << "a negative number of times — a parameterization off-by-N? "
-                    << "(IEEE 1800-2017 §12.7.2)";
-                return 1;
-            }
-            if(value > mpz_class(0xFFFFFFFFUL)) {
-                LOG_ERROR_N(info.cond)
-                    << "repeat count folds to " << value << ": beyond any countdown "
-                    << "the lowering will size";
-                return 1;
-            }
-            info.count_known = true;
-            info.count_value = value.convert_to<unsigned long>();
-        }
-        break;
-    }
-    case AST::NodeType::ForStatement: {
-        const auto &loop = AST::cast_to<AST::ForStatement>(node);
-        info.kind = LoopInfo::Kind::FOR;
-        info.cond = loop->get_cond();
-        info.body = loop->get_statement();
-        const auto &pre = loop->get_pre();
-        const auto &post = loop->get_post();
-        if(!pre || !post || !info.cond) {
-            LOG_ERROR_N(node) << "a rolled for honours the construct's full contract and "
-                              << "needs all three of init, test and step";
-            return 1;
-        }
-        const auto &pre_target = nba_like_target(pre);
-        const auto &post_target = nba_like_target(post);
-        if(pre_target.empty() || pre_target != post_target) {
-            LOG_ERROR_N(node) << "a rolled for's init and step assign the same plain index "
-                              << "register";
-            return 1;
-        }
-        info.index = pre_target;
-        info.init_rhs = pre->get_right() ? pre->get_right()->get_var() : nullptr;
-        info.step_rhs = post->get_right() ? post->get_right()->get_var() : nullptr;
-        if(!info.init_rhs || !info.step_rhs) {
-            LOG_ERROR_N(node) << "a rolled for's init and step carry plain expressions";
-            return 1;
-        }
-        break;
-    }
+    case AST::NodeType::RepeatStatement:
+    case AST::NodeType::ForStatement:
+        // FsmLoopLowering canonicalizes every rolled bounded loop before
+        // the walk; one arriving here means it did not run.
+        LOG_ERROR_N(node) << "rolled bounded loop reached the walk without lowering — "
+                          << "please report this input";
+        return 1;
     default:
         return 1;
     }
 
-    // Loop conditions — and a rolled for's init/step, which the walk
-    // substitutes and duplicates — must read stably in their segment.
-    if(check_impure_calls(info.cond) || check_impure_calls(info.init_rhs) ||
-       check_impure_calls(info.step_rhs)) {
+    // Loop conditions must read stably in their segment.
+    if(check_impure_calls(info.cond)) {
         return 1;
     }
 
-    // §15 gives each repeat-nesting depth its own shared countdown:
-    // sequential repeats at a depth re-initialise on entry and share its
-    // register; a nested counting repeat uses the next depth's, so its
-    // reload leaves the outer count alone. A repeat that induces no
-    // counter (a folded count of 0 or 1) consumes no depth.
-    const bool counting_repeat =
-        info.kind == LoopInfo::Kind::REPEAT && (!info.count_known || info.count_value >= 2);
-    if(counting_repeat) {
-        info.depth = m_proc.repeat_depth;
-        ++m_proc.repeat_depth;
-    }
     bool body_wait = false;
-    const int body_rc = collect_body(info.body, waits, clock, body_wait, TempScope{});
-    if(counting_repeat) {
-        --m_proc.repeat_depth;
-    }
-    if(body_rc) {
+    if(collect_body(info.body, waits, clock, body_wait, TempScope{})) {
         return 1;
     }
 
@@ -623,17 +564,6 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
                               << "static exit, or the unroller refused it — a zero-delay "
                               << "loop has no hardware meaning (IEEE 1800-2017 §9.2.2.1)";
         }
-        return 1;
-    }
-
-    // §7.2/§8: a bounded loop the unroller left behind has a correct rolled
-    // lowering, but rolled is opt-in — a bound that stopped folding or a
-    // refused jump shape must not change the state count in silence.
-    if(!kept_rolled && info.kind != LoopInfo::Kind::WHILE && info.kind != LoopInfo::Kind::FOREVER) {
-        LOG_ERROR_N(node) << "bounded loop with a cut point was not unrolled upstream "
-                          << "(non-constant bound, or a jump shape the unroller refuses): "
-                          << "mark it (* veriparse_no_unroll *) to compile it rolled, or "
-                          << "make the bound constant";
         return 1;
     }
 
@@ -1213,7 +1143,24 @@ void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
                              nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == target;
         it = induced ? action->erase(it) : std::next(it);
     }
-    const auto &commit = AST::to_node(make_nba(target, rhs, fn, ln));
+    // A value the environment made constant folds to the register's width
+    // — the coalesced `count - 1` of a lowered repeat's entry, a capture
+    // superseded by an arithmetic body write — rather than riding as an
+    // expression the RTL reader must fold by eye.
+    AST::Node::Ptr value = rhs;
+    if(!value->is_node_category(AST::NodeType::Constant)) {
+        mpz_class folded;
+        unsigned int width = 0;
+        const auto &decl = find_declaration(m_proc.module, target);
+        if(decl && !declared_width(decl, width) && width >= 1 && width <= 32 &&
+           ExpressionEvaluation().evaluate_node(value, folded) && folded >= 0) {
+            const mpz_class modulus = mpz_class(1) << width;
+            const mpz_class masked = folded % modulus;
+            value = AST::to_node(
+                make_const(masked.convert_to<unsigned int>(), static_cast<int>(width), fn, ln));
+        }
+    }
+    const auto &commit = AST::to_node(make_nba(target, value, fn, ln));
     m_proc.induced.insert(commit.get());
     action->push_back(commit);
 }
@@ -1257,9 +1204,11 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
     case LoopInfo::Kind::WHILE: {
         // A constant test folds at the head: while (1) is the perpetual
         // form spelled differently (§2) — no dead exit leg, no hold state
-        // it would otherwise force — and while (0) never runs.
+        // it would otherwise force — and while (0) never runs. The fold
+        // reads through the environment, so a lowered repeat's known
+        // count folds its entry test away like today's direct form.
         mpz_class value;
-        if(ExpressionEvaluation().evaluate_node(info.cond, value)) {
+        if(ExpressionEvaluation().evaluate_node(clone_subst(info.cond, env), value)) {
             if(value == 0) {
                 return skip_past(guard, copy_list(action), env);
             }
@@ -1288,112 +1237,6 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         // §2: the §7.3 back-edge with no exit test — the only way past it
         // is a break (§8).
         return enter_body(guard, action, env);
-
-    case LoopInfo::Kind::REPEAT: {
-        // A repeat that induces no counter (count 0 or 1) has no width
-        // slot at its depth; its legs never touch the countdown.
-        const std::string depth_cnt = cnt_name(info.depth);
-        const unsigned int depth_width =
-            info.depth < m_proc.cnt_widths.size() ? m_proc.cnt_widths[info.depth] : 0;
-        const auto cnt_id = [&]() { return AST::to_node(make_id(depth_cnt, fn, ln)); };
-        const auto cnt_zero = [&]() {
-            return AST::to_node(make_const(0, static_cast<int>(depth_width), fn, ln));
-        };
-        if(entering) {
-            if(info.count_known) {
-                if(info.count_value == 0) {
-                    return skip_past(guard, action, env);
-                }
-                if(info.count_value == 1) {
-                    // §7.2: a single pass needs no countdown, but the body
-                    // still owns its jumps (§8): it enters as a loop whose
-                    // back-edge exits unconditionally.
-                    return enter_body(guard, action, env);
-                }
-                auto leg_action = copy_list(action);
-                push_induced(
-                    leg_action, depth_cnt,
-                    AST::to_node(make_const(static_cast<unsigned int>(info.count_value - 1),
-                                            static_cast<int>(depth_width), fn, ln)),
-                    fn, ln);
-                return enter_body(guard, leg_action, env);
-            }
-            // §12.7.2: the count is evaluated once, on entry — captured
-            // into the countdown — and a zero count skips the state
-            // through the entry guard.
-            {
-                bool dead = false;
-                const auto &leg_guard =
-                    conjoin(guard, make_noteq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn,
-                            ln, &dead);
-                if(!dead) {
-                    auto leg_action = copy_list(action);
-                    push_induced(leg_action, depth_cnt,
-                                 make_minus(clone_subst(info.cond, env),
-                                            AST::to_node(make_const(
-                                                1, static_cast<int>(depth_width), fn, ln)),
-                                            fn, ln),
-                                 fn, ln);
-                    if(enter_body(leg_guard, leg_action, env)) {
-                        return 1;
-                    }
-                }
-            }
-            bool dead = false;
-            const auto &leg_guard = conjoin(
-                guard, make_eq(clone_subst(info.cond, env), cnt_zero(), fn, ln), fn, ln, &dead);
-            return dead ? 0 : skip_past(leg_guard, copy_list(action), env);
-        }
-        // Back-edge of the single pass: exit unconditionally — which is
-        // also where a continue inside it lands (§12.7.2: no next lap).
-        if(info.count_known && info.count_value == 1) {
-            return skip_past(guard, copy_list(action), env);
-        }
-        // Back-edge: the countdown decides, and decrements on the lap.
-        {
-            bool dead = false;
-            const auto &leg_guard =
-                conjoin(guard, make_noteq(cnt_id(), cnt_zero(), fn, ln), fn, ln, &dead);
-            if(!dead) {
-                auto leg_action = copy_list(action);
-                push_induced(
-                    leg_action, depth_cnt,
-                    make_minus(cnt_id(),
-                               AST::to_node(make_const(1, static_cast<int>(depth_width), fn, ln)),
-                               fn, ln),
-                    fn, ln);
-                if(enter_body(leg_guard, leg_action, env)) {
-                    return 1;
-                }
-            }
-        }
-        bool dead = false;
-        const auto &leg_guard =
-            conjoin(guard, make_eq(cnt_id(), cnt_zero(), fn, ln), fn, ln, &dead);
-        return dead ? 0 : skip_past(leg_guard, copy_list(action), env);
-    }
-
-    case LoopInfo::Kind::FOR: {
-        // §7.2: the init or the step commits once, and its value is
-        // substituted forward within its own segment (§6.1) — which is when
-        // the source evaluates the test.
-        const auto &value = clone_subst(entering ? info.init_rhs : info.step_rhs, env);
-        Env leg_env = env;
-        leg_env[info.index] = value;
-        auto base = copy_list(action);
-        push_induced(base, info.index, value->clone(), fn, ln);
-        {
-            bool dead = false;
-            const auto &leg_guard = conjoin(guard, clone_subst(info.cond, leg_env), fn, ln, &dead);
-            if(!dead && enter_body(leg_guard, copy_list(base), leg_env)) {
-                return 1;
-            }
-        }
-        bool dead = false;
-        const auto &leg_guard =
-            conjoin(guard, make_ulnot(clone_subst(info.cond, leg_env), fn, ln), fn, ln, &dead);
-        return dead ? 0 : skip_past(leg_guard, base, leg_env);
-    }
     }
     return 1;
 }
@@ -1569,7 +1412,6 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     // missed by a clear list.
     m_proc = ProcessState{};
     m_inline = InlineState{};
-    m_proc.cnt_name = prefix + "_cnt";
     m_proc.prefix = prefix;
     m_proc.module = module;
     m_proc.pragmalist = pragmalist;
@@ -1637,11 +1479,6 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     {
         std::set<std::string> mine;
         collect_driven(initial->get_statement(), mine);
-        for(const auto &elt : m_proc.loops) {
-            if(elt.second.kind == LoopInfo::Kind::FOR) {
-                mine.insert(elt.second.index);
-            }
-        }
         // §6 temporaries dissolve into values: they are not registers of
         // this process, and a same-named variable elsewhere is unrelated.
         for(const auto &elt : m_proc.temps) {
@@ -1658,67 +1495,6 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                 return 1;
             }
         }
-    }
-
-    // Size the shared countdowns (§15: one per repeat-nesting depth)
-    // over every rolled
-    // repeat: $clog2(N) for a folded count, the count signal's declared
-    // width otherwise — the capture `cnt <= expr - 1` must hold any value
-    // the signal can carry. Rolled for indices are the author's registers:
-    // they must exist at module level, with their declared type (§7.2).
-    for(const auto &elt : m_proc.loops) {
-        const auto &info = elt.second;
-        if(info.kind == LoopInfo::Kind::FOR) {
-            bool is_input = false;
-            const auto &decl = find_declaration(module, info.index, &is_input);
-            if(!decl) {
-                LOG_ERROR_N(info.cond)
-                    << "rolled for index '" << info.index << "' is not a module-level "
-                    << "declaration: the induced register takes the index's declared "
-                    << "type";
-                return 1;
-            }
-            // The machine drives the index from its always_ff: an input
-            // port or a net cannot take the commits.
-            if(is_input || !std::dynamic_pointer_cast<AST::Var>(decl)) {
-                LOG_ERROR_N(info.cond)
-                    << "rolled for index '" << info.index << "' is not a variable the "
-                    << "machine can drive: an input port or a net cannot take the "
-                    << "induced register's commits";
-                return 1;
-            }
-            continue;
-        }
-        if(info.kind != LoopInfo::Kind::REPEAT) {
-            continue;
-        }
-        const auto widen = [this](unsigned int depth, unsigned int width) {
-            if(m_proc.cnt_widths.size() <= depth) {
-                m_proc.cnt_widths.resize(depth + 1, 0);
-            }
-            m_proc.cnt_widths[depth] = std::max(m_proc.cnt_widths[depth], width);
-        };
-        if(info.count_known) {
-            if(info.count_value >= 2) {
-                widen(info.depth, clog2(static_cast<unsigned int>(info.count_value)));
-            }
-            continue;
-        }
-        if(!info.cond->is_node_type(AST::NodeType::Identifier)) {
-            LOG_ERROR_N(info.cond) << "non-constant repeat count must be a plain signal, so the "
-                                   << "countdown can take its declared width — bind the expression "
-                                   << "to a named signal first";
-            return 1;
-        }
-        const auto &count_name = AST::cast_to<AST::Identifier>(info.cond)->get_name();
-        const auto &decl = find_declaration(module, count_name);
-        unsigned int width = 0;
-        if(!decl || declared_width(decl, width)) {
-            LOG_ERROR_N(info.cond) << "cannot size the countdown for repeat count '" << count_name
-                                   << "': its declaration or packed range is not resolvable";
-            return 1;
-        }
-        widen(info.depth, width);
     }
 
     AST::Node::Ptr enable;
@@ -1804,23 +1580,6 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
             return 1;
         }
         return 0;
-    }
-
-    // §6.2: a rolled counting loop's lap is a path with no user statement,
-    // so it can re-assert nothing — totality cannot hold across it. §7.3's
-    // while idiom is the spelling that re-asserts per lap.
-    for(const auto &elt : m_proc.loops) {
-        const auto &info = elt.second;
-        const bool counting =
-            info.kind == LoopInfo::Kind::FOR ||
-            (info.kind == LoopInfo::Kind::REPEAT && (!info.count_known || info.count_value >= 2));
-        if(counting) {
-            LOG_ERROR_N(info.body)
-                << "a rolled loop's lap cannot re-assert a decoded output: every path "
-                << "between two cut points must assign it — spell the loop as a while "
-                << "re-asserting the output per lap, or keep the output a register";
-            return 1;
-        }
     }
 
     m_proc.init_decode = entry.front().decode;
@@ -2333,12 +2092,6 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         std::set<std::string> unique(state_names.begin(), state_names.end());
         std::size_t expected = state_names.size() + 1;
         unique.insert(prefix + "_state");
-        for(std::size_t depth = 0; depth < m_proc.cnt_widths.size(); ++depth) {
-            if(m_proc.cnt_widths[depth] > 0) {
-                unique.insert(cnt_name(static_cast<unsigned int>(depth)));
-                ++expected;
-            }
-        }
         for(const auto &wire : m_proc.wires) {
             unique.insert(wire.name);
             ++expected;
@@ -2389,28 +2142,6 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     reg->set_name(state_reg);
     reg->set_type(reg_type);
     result->push_back(AST::to_node(reg));
-
-    // logic [w-1:0] <prefix>_cnt, _cnt2, ...; — one shared countdown per
-    // repeat-nesting depth that induced one (§7.2, §15).
-    for(std::size_t depth = 0; depth < m_proc.cnt_widths.size(); ++depth) {
-        if(m_proc.cnt_widths[depth] == 0) {
-            continue;
-        }
-        const auto &name = cnt_name(static_cast<unsigned int>(depth));
-        if(Analysis::UniqueDeclaration::identifier_declaration_exists(name, declared)) {
-            LOG_ERROR_N(module) << "generated declaration '" << name
-                                << "' collides with an existing one";
-            return nullptr;
-        }
-        auto cnt_type = std::make_shared<AST::LogicType>(fn, ln);
-        if(m_proc.cnt_widths[depth] > 1) {
-            cnt_type->set_packed_dims(make_packed_range(m_proc.cnt_widths[depth] - 1, fn, ln));
-        }
-        auto cnt = std::make_shared<AST::Var>(fn, ln);
-        cnt->set_name(name);
-        cnt->set_type(cnt_type);
-        result->push_back(AST::to_node(cnt));
-    }
 
     // §6.1: the materialized temporaries — a wire per surviving value,
     // typed by the temporary's declaration so the declared width keeps

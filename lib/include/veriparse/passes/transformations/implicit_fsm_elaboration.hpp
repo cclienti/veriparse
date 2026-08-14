@@ -176,26 +176,19 @@ private:
         bool verbatim = false; ///< inside a cut-point-free branch kept verbatim
     };
 
-    /// A loop the CFG keeps — §7.3 data-dependent, or §7.2 rolled with its
-    /// induced storage contract.
+    /// A loop the CFG keeps: the §7.3 data-dependent while, or forever —
+    /// the only forms reaching the walk, FsmLoopLowering having
+    /// canonicalized the rolled bounded ones.
     struct LoopInfo
     {
         enum class Kind
         {
             WHILE,
-            REPEAT,
-            FOR,
             FOREVER
         };
         Kind kind = Kind::WHILE;
-        AST::Node::Ptr cond; ///< while/for: the test; repeat: the count; forever: null
+        AST::Node::Ptr cond; ///< while: the test; forever: null
         AST::Node::Ptr body;
-        std::string index;        ///< rolled for: the author's index register
-        AST::Node::Ptr init_rhs;  ///< rolled for: the entry value
-        AST::Node::Ptr step_rhs;  ///< rolled for: the per-lap value
-        bool count_known = false; ///< rolled repeat: the count folded
-        unsigned long count_value = 0;
-        unsigned int depth = 0; ///< rolled repeat: nesting depth, one countdown per depth
     };
 
     /// §6.1 for the induced registers: the blocking init/step values,
@@ -328,13 +321,6 @@ private:
                             const std::vector<State> &states, std::size_t entry_next,
                             const std::string &prefix);
 
-    /// Depth d's countdown register name: the bare prefix at depth zero,
-    /// then cnt2, cnt3, ...
-    std::string cnt_name(unsigned int depth) const
-    {
-        return depth == 0 ? m_proc.cnt_name : m_proc.cnt_name + std::to_string(depth + 1);
-    }
-
     /// §3 hints steering the emission: the state encoding, and the reset
     /// flavour of the generated always_ff.
     enum class Encoding
@@ -385,15 +371,6 @@ private:
 
         /// The loops the CFG keeps, filled by collect_body.
         std::map<const AST::Node *, LoopInfo> loops;
-
-        /// The shared countdowns (§15: one per repeat-nesting depth,
-        /// re-initialised on entry): sequential repeats at one depth share
-        /// a register, nested ones each own their depth's, so an inner
-        /// reload leaves the outer count alone. cnt_widths[d] is depth d's
-        /// width — zero when nothing at that depth needs one.
-        std::string cnt_name;
-        std::vector<unsigned int> cnt_widths;
-        unsigned int repeat_depth = 0;
 
         /// The induced-register commits this pass created (§7.2): when a
         /// later induced commit to the same register lands in the same

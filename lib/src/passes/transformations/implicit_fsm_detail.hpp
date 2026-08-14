@@ -47,6 +47,20 @@ inline bool has_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string
     return false;
 }
 
+inline AST::Pragma::Ptr get_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string &name)
+{
+    const auto &pragmas = pragmalist->get_pragmas();
+    if(!pragmas) {
+        return nullptr;
+    }
+    for(const auto &pragma : *pragmas) {
+        if(pragma && pragma->get_name() == name) {
+            return pragma;
+        }
+    }
+    return nullptr;
+}
+
 /// The module's (* veriparse_fsm *)-marked statements, in source order:
 /// each marked pragmalist paired with every statement under it. The FSM
 /// passes filter the Initial ones; the elaborator diagnoses the rest.
@@ -85,6 +99,29 @@ inline void log_net_actual(const AST::Node::Ptr &at, const char *kind, const std
                     << "' is a net — nets and selects into nets shall not be passed by "
                     << "reference (IEEE 1800-2017 §13.5.2); make it a variable "
                     << "('input var logic " << actual << "')";
+}
+
+/// The declaration prefix of the index-th marked process (of `total`):
+/// the veriparse_prefix hint's text when one is written — validated by
+/// the elaborator, which owns the diagnostics — else __fsm, ordinal-
+/// suffixed when several processes share the module (§3, §10.1).
+inline std::string marked_prefix(const AST::Pragmalist::Ptr &pragmalist, std::size_t index,
+                                 std::size_t total)
+{
+    const auto &hint = get_pragma(pragmalist, "veriparse_prefix");
+    if(hint) {
+        const auto &expr = hint->get_expression();
+        std::string wanted;
+        if(expr && expr->is_node_type(AST::NodeType::StringConst)) {
+            wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
+        } else if(expr && expr->is_node_type(AST::NodeType::Identifier)) {
+            wanted = AST::cast_to<AST::Identifier>(expr)->get_name();
+        }
+        if(!wanted.empty()) {
+            return wanted;
+        }
+    }
+    return (total > 1) ? ("__fsm" + std::to_string(index)) : "__fsm";
 }
 
 /// §7.4 induced-commit markers: the inliner's copy-in captures and
@@ -146,20 +183,6 @@ inline AST::Node::Ptr make_induced_marker(const AST::NonblockingSubstitution::Pt
     wrapper->set_pragmas(pragmas);
     wrapper->set_statements(stmts);
     return AST::to_node(wrapper);
-}
-
-inline AST::Pragma::Ptr get_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string &name)
-{
-    const auto &pragmas = pragmalist->get_pragmas();
-    if(!pragmas) {
-        return nullptr;
-    }
-    for(const auto &pragma : *pragmas) {
-        if(pragma && pragma->get_name() == name) {
-            return pragma;
-        }
-    }
-    return nullptr;
 }
 
 inline bool contains_event_statement(const AST::Node::Ptr &node)

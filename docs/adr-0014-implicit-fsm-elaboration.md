@@ -1414,9 +1414,31 @@ induced index takes stable pointers. The marking is total — a cloned
 capture keeps its marker while a cloned body write has none — so even
 a `<=`-written formal's clones stay unambiguous, and the internal
 pragmas never reach the output: the walk rebuilds every induced
-commit it emits. A rolled repeat needs none of this: §7.2's capture
-accepts a formal's induced register like any non-constant count, and
-a genuinely non-constant bound keeps §8's refusal.
+commit it emits. A rolled repeat needs none of this: `FsmLoopLowering`
+canonicalizes it after the inlining, and a genuinely non-constant
+bound keeps §8's refusal.
+
+**The rolled loops lower in their own pass, `FsmLoopLowering`** — the
+second stage of the structural pre-lowering, after `FsmTaskInliner`,
+before the walk. A rolled `repeat (count)` becomes a countdown while
+loop: the count loads into the depth's shared register (a marked
+induced commit, captured at entry per §12.7.3), the head tests
+`cnt != 0`, and the lap decrements *first*, so a `continue` skips
+nothing it should not and the entry load coalesces with the first
+decrement into the familiar `count - 1`. A folded count of 0 deletes
+the loop; a count of 1 becomes a run-once `forever` whose `continue`s
+and tail turn into `break` — no countdown, and the body still owns its
+jumps (§8). A rolled `for` keeps the author's index register: the init
+precedes the loop, the step closes the body — re-arming every
+`continue` on the way — and the head keeps the author's test, which
+the walk still evaluates through the environment, so the entry test
+folds over the init exactly as before. After this pass the walk meets
+only `while` and `forever`: one loop shape, its induced storage
+arriving as the same markers the task inliner emits, and the shared
+countdown declarations hoisted at module level by the pass that sizes
+them. The refusals ride along: rolled is opt-in, a cut-point-free
+rolled loop has no state to save, a non-constant count needs a named
+signal's declared width.
 
 **Copy-outs carry §13.3's immediate visibility the same way captures
 do:** the induced `actual <= <site>_<formal>` commit forward-substitutes
