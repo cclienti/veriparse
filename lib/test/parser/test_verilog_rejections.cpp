@@ -155,6 +155,31 @@ TEST(VerilogParserRejection, sv_var_port_inout)
     EXPECT_PARSE_FATAL(parse_sv(src), "variable type");
 }
 
+// A tf default argument value belongs to the parenthesized (ANSI) list
+// alone: "The use of defaults shall only be allowed with the ANSI style
+// declarations" (IEEE 1800-2017 §13.5.3), and the body
+// tf_port_declaration BNF has no default slot (A.2.7).
+TEST(VerilogParserRejection, tf_body_default_value)
+{
+    const std::string src = "module m;\n"
+                            "  task t;\n"
+                            "    input logic [7:0] n = 8'd2;\n"
+                            "    begin\n"
+                            "    end\n"
+                            "  endtask\n"
+                            "endmodule\n";
+    EXPECT_PARSE_FATAL(parse_sv(src), "parenthesized");
+}
+
+// Module port default values (§23.2.2.4) are not admitted — the tf
+// default grammar must not leak into module ANSI ports.
+TEST(VerilogParserRejection, sv_module_port_default_value)
+{
+    const std::string src = "module m(input logic x = 1'b0);\n"
+                            "endmodule\n";
+    EXPECT_PARSE_FATAL(parse_sv(src), "syntax error");
+}
+
 // 'var' names a variable kind; a net type on the same port contradicts it.
 TEST(VerilogParserRejection, sv_var_port_net_kind)
 {
