@@ -176,14 +176,17 @@ Note the parser already implements the *inheritance* half for ANSI ports
 completes the missing admission cases there and puts the first-port seed
 and the kind rules in the pass.
 
-### 3.2 Still parser-gated — `var` and `ref` port kinds
+### 3.2 Still parser-gated — `ref` port kinds
 
-`var` is not accepted in a port list and `ref`/`const ref` is not a port
-direction token, so the mh rows needing them (mh4, mh6/7/9 of the LRM's
-own numbering, mh12, mh17/18) stay syntax errors. Admitting them is a
-grammar feature of its own (and `ref` ports are outside the
-synthesizable subset anyway); the kind rules below are written so those
-forms slot in when the grammar lands.
+`var` after a direction is now parsed (ADR-0014 §7.4 made it
+load-bearing: a `ref`/`const ref` subroutine actual must be a variable,
+§13.5.2, so the conforming clock port is `input var logic clk`) — the
+port declares a genuine variable (`Port.decl` holds a `Var`) and the
+kind participates in inheritance. Directionless leading `var` (mh4-style
+rows) and `ref`/`const ref` as a *module port* direction remain
+unparsed; admitting those is a grammar feature of its own (and `ref`
+ports are outside the synthesizable subset anyway); the kind rules below
+are written so those forms slot in when the grammar lands.
 
 ## 4. Decision 3 — `direction == NONE` is overloaded; disambiguate by declaration
 
