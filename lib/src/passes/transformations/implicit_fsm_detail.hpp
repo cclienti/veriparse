@@ -6,6 +6,9 @@
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
+#include <veriparse/passes/analysis/statement.hpp>
+#include <veriparse/passes/analysis/storage_kind.hpp>
+#include <veriparse/passes/transformations/ast_replace.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
 #include <veriparse/misc/string_utils.hpp>
 #include <veriparse/logger/logger.hpp>
@@ -113,38 +116,21 @@ inline bool contains_jump(const AST::Node::Ptr &node)
     return false;
 }
 
+/// Statement-tree queries live in Analysis::Statement; these forwarders
+/// keep the pass's unqualified idiom.
 inline void collect_identifier_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    if(node->is_node_type(AST::NodeType::Identifier)) {
-        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
-        return;
-    }
-    const auto &children = node->get_children();
-    for(const auto &child : *children) {
-        collect_identifier_names(child, names);
-    }
+    Analysis::Statement::collect_identifier_names(node, names);
 }
 
-/// The plain-identifier target of an assignment's left-hand side, or empty
-/// when the shape is outside the subset.
 inline std::string lvalue_target(const AST::Lvalue::Ptr &lvalue)
 {
-    if(!lvalue || !lvalue->get_var()) {
-        return "";
-    }
-    if(!lvalue->get_var()->is_node_type(AST::NodeType::Identifier)) {
-        return "";
-    }
-    return AST::cast_to<AST::Identifier>(lvalue->get_var())->get_name();
+    return Analysis::Statement::lvalue_target(lvalue);
 }
 
-/// The target register of a straight-line nonblocking assignment.
 inline std::string nba_target(const AST::NonblockingSubstitution::Ptr &nba)
 {
-    return lvalue_target(nba->get_left());
+    return Analysis::Statement::nba_target(nba);
 }
 
 /// The target of a for's blocking init or step (§7.2).
@@ -630,46 +616,9 @@ inline int check_impure_calls(const AST::Node::Ptr &expr)
 /// calls they are.
 int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::Ptr &initial);
 
-/// The base register a left-hand side drives: through selects and
-/// concatenations down to the named variables, index expressions excluded.
 inline void collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    switch(node->get_node_type()) {
-    case AST::NodeType::Identifier:
-        // A hierarchical write (u.q, genblk.q) targets another scope, not
-        // this module's register of the same leaf name.
-        if(AST::cast_to<AST::Identifier>(node)->get_hier()) {
-            return;
-        }
-        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
-        return;
-    case AST::NodeType::Lvalue:
-        collect_lvalue_bases(AST::cast_to<AST::Lvalue>(node)->get_var(), names);
-        return;
-    case AST::NodeType::Pointer:
-        collect_lvalue_bases(AST::cast_to<AST::Pointer>(node)->get_var(), names);
-        return;
-    case AST::NodeType::Partselect:
-        collect_lvalue_bases(AST::cast_to<AST::Partselect>(node)->get_var(), names);
-        return;
-    case AST::NodeType::PartselectIndexed:
-    case AST::NodeType::PartselectPlusIndexed:
-    case AST::NodeType::PartselectMinusIndexed:
-        // The base is driven; the index expression is a read.
-        collect_lvalue_bases(AST::cast_to<AST::PartselectIndexed>(node)->get_var(), names);
-        return;
-    default: {
-        // Concatenations and anything else: every child may name a target.
-        const auto &children = node->get_children();
-        for(const auto &child : *children) {
-            collect_lvalue_bases(child, names);
-        }
-        return;
-    }
-    }
+    Analysis::Statement::collect_lvalue_bases(node, names);
 }
 
 /// The name a header port answers to: the inner declaration's for an ANSI
@@ -711,72 +660,30 @@ inline AST::Port::DirectionEnum child_port_direction(const AST::Module::Ptr &def
     return AST::Port::DirectionEnum::NONE;
 }
 
-/// The subroutine names a statement tree calls — how a task's writes reach
-/// their calling process.
 inline void collect_call_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    if(node->is_node_type(AST::NodeType::TaskCall) || node->is_node_type(AST::NodeType::Call)) {
-        names.insert(AST::cast_to<AST::Call>(node)->get_name());
-    }
-    const auto &children = node->get_children();
-    for(const auto &child : *children) {
-        collect_call_names(child, names);
-    }
+    Analysis::Statement::collect_call_names(node, names);
 }
 
-/// Every register a statement tree drives — procedural or continuous —
-/// harvested at the assignment nodes, their right-hand sides left alone.
 inline void collect_driven(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    switch(node->get_node_type()) {
-    case AST::NodeType::NonblockingSubstitution:
-    case AST::NodeType::BlockingSubstitution:
-    case AST::NodeType::Assign:
-        collect_lvalue_bases(AST::to_node(AST::cast_to<AST::Assign>(node)->get_left()), names);
-        return;
-    default: {
-        const auto &children = node->get_children();
-        for(const auto &child : *children) {
-            collect_driven(child, names);
-        }
-        return;
-    }
-    }
+    Analysis::Statement::collect_driven(node, names);
 }
 
 inline void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
-    if(!node) {
-        return;
-    }
-    const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(node);
-    if(decl) {
-        names.insert(decl->get_name());
-        return;
-    }
-    const auto &children = node->get_children();
-    for(const auto &child : *children) {
-        collect_declaration_names(child, names);
-    }
+    Analysis::Statement::collect_declaration_names(node, names);
 }
 
-/// §13.5.2: "Nets and selects into nets shall not be passed by reference."
-/// True when `name` is storage the module makes a net under the §23.2.2.3
-/// kind rules: an explicit net declaration, an input/inout port without the
-/// `var` kind, or an output port whose data type is omitted or implicit —
-/// an output with an explicit data type is a variable (the AST keeps the
-/// distinction: an implicit data type is exactly an ImplicitType node, and
-/// DefaultResolution turns the variable case into a Var outright).
-
-/// §9 checks defined in implicit_fsm_checks.cpp.
-bool is_net_signal(const AST::Module::Ptr &module, const std::string &name);
-AST::Identifier::Ptr select_base(const AST::Node::Ptr &node);
+/// §13.5.2 classification lives in Analysis::StorageKind.
+inline bool is_net_signal(const AST::Module::Ptr &module, const std::string &name)
+{
+    return Analysis::StorageKind::is_net(module, name);
+}
+inline AST::Identifier::Ptr select_base(const AST::Node::Ptr &node)
+{
+    return Analysis::StorageKind::select_base(node);
+}
 
 inline bool complements(const AST::Node::Ptr &a, const AST::Node::Ptr &b)
 {
@@ -906,9 +813,11 @@ inline AST::Node::Ptr conjoin(const AST::Node::Ptr &guard, const AST::Node::Ptr 
     return result;
 }
 
-/// §6.1 substitution, in place on a tree the caller owns: identifiers in
-/// read position take their environment value; write positions — Lvalue
-/// subtrees — are left alone.
+/// §6.1 substitution: read positions take their environment value; write
+/// positions (Lvalue subtrees) are left alone; a null value marks a
+/// branch-dependent name the reads check refuses, left in place. The
+/// engine is ASTReplace::substitute_values; a root identifier substitutes
+/// directly, there being no parent to relink.
 inline AST::Node::Ptr subst_into(AST::Node::Ptr node,
                                  const std::map<std::string, AST::Node::Ptr> &env)
 {
@@ -917,40 +826,15 @@ inline AST::Node::Ptr subst_into(AST::Node::Ptr node,
     }
     if(node->is_node_type(AST::NodeType::Identifier)) {
         const auto &id = AST::cast_to<AST::Identifier>(node);
-        // A hierarchical reference names another scope: its leaf matching
-        // a substituted name is a coincidence, not a binding. The hier
-        // labels' index expressions still substitute, below.
-        if(id->get_hier() && id->get_hier()->get_labellist() &&
-           !id->get_hier()->get_labellist()->empty()) {
-            const auto &kids = node->get_children();
-            if(kids) {
-                for(const auto &kid : *kids) {
-                    const auto &replacement = subst_into(kid, env);
-                    if(replacement != kid) {
-                        node->replace(kid, replacement);
-                    }
-                }
+        if(!id->get_hier()) {
+            const auto &found = env.find(id->get_name());
+            if(found != env.end() && found->second) {
+                return found->second->clone();
             }
             return node;
         }
-        const auto &found = env.find(id->get_name());
-        if(found == env.end() || !found->second) {
-            // Absent, or null — a branch-dependent induced value the reads
-            // check refuses; either way the name stays.
-            return node;
-        }
-        return found->second->clone();
     }
-    if(node->is_node_type(AST::NodeType::Lvalue)) {
-        return node;
-    }
-    const auto &children = node->get_children();
-    for(const auto &child : *children) {
-        const auto &replacement = subst_into(child, env);
-        if(replacement != child) {
-            node->replace(child, replacement);
-        }
-    }
+    ASTReplace::substitute_values(node, env);
     return node;
 }
 
@@ -1058,56 +942,9 @@ inline AST::Node::ListPtr copy_list(const AST::Node::ListPtr &list)
     return result;
 }
 
-/// Reads of a statement run: identifiers in expression position —
-/// right-hand sides and branch conditions — never assignment targets.
 inline void collect_reads(const AST::Node::Ptr &node, std::set<std::string> &reads)
 {
-    if(!node) {
-        return;
-    }
-    switch(node->get_node_type()) {
-    case AST::NodeType::Block: {
-        const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
-        if(stmts) {
-            for(const auto &stmt : *stmts) {
-                collect_reads(stmt, reads);
-            }
-        }
-        break;
-    }
-    case AST::NodeType::NonblockingSubstitution:
-        collect_identifier_names(
-            AST::to_node(AST::cast_to<AST::NonblockingSubstitution>(node)->get_right()), reads);
-        break;
-    case AST::NodeType::IfStatement: {
-        const auto &ifs = AST::cast_to<AST::IfStatement>(node);
-        collect_identifier_names(ifs->get_cond(), reads);
-        collect_reads(ifs->get_true_statement(), reads);
-        collect_reads(ifs->get_false_statement(), reads);
-        break;
-    }
-    case AST::NodeType::CaseStatement:
-    case AST::NodeType::CasexStatement:
-    case AST::NodeType::CasezStatement: {
-        const auto &cs = AST::cast_to<AST::CaseStatement>(node);
-        collect_identifier_names(cs->get_comp(), reads);
-        const auto &caselist = cs->get_caselist();
-        if(caselist) {
-            for(const auto &arm : *caselist) {
-                const auto &conds = arm->get_cond();
-                if(conds) {
-                    for(const auto &value : *conds) {
-                        collect_identifier_names(value, reads);
-                    }
-                }
-                collect_reads(arm->get_statement(), reads);
-            }
-        }
-        break;
-    }
-    default:
-        break;
-    }
+    Analysis::Statement::collect_reads(node, reads);
 }
 
 /// Register targets of a statement run, recursing through the branches an

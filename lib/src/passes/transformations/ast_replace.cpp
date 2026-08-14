@@ -125,6 +125,78 @@ int ASTReplace::replace_identifier(AST::Node::ListPtr node_list, const ReplaceMa
     return ret;
 }
 
+int ASTReplace::substitute_values(AST::Node::Ptr node, const ReplaceMap &replace_map,
+                                  AST::Node::Ptr parent)
+{
+    int ret = 0;
+
+    if(replace_map.size() == 0) {
+        return 0;
+    }
+
+    if(node) {
+        switch(node->get_node_type()) {
+        case AST::NodeType::Lvalue:
+            // Write position: the target keeps its name.
+            break;
+
+        case AST::NodeType::Identifier: {
+            const auto &identifier = AST::cast_to<AST::Identifier>(node);
+            if(!identifier->get_hier()) {
+                ReplaceMap::const_iterator it = replace_map.find(identifier->get_name());
+                if(it != replace_map.cend()) {
+                    // A null value marks a name deliberately left in place.
+                    if(it->second) {
+                        parent->replace(node, it->second->clone());
+                    }
+                    break;
+                }
+            }
+
+            // Recurse in scopes and hier-label index expressions.
+            AST::Node::ListPtr children = node->get_children();
+            for(AST::Node::Ptr &child : *children) {
+                ret += substitute_values(child, replace_map, node);
+            }
+        } break;
+
+        case AST::NodeType::Function: {
+            std::set<std::string> locals =
+                merge_set(to_set(Analysis::Function::get_iodir_names(node)),
+                          to_set(Analysis::Function::get_variable_names(node)));
+            ReplaceMap new_replace_map = remove_keys(replace_map, locals);
+            AST::Node::ListPtr children = node->get_children();
+            for(AST::Node::Ptr &child : *children) {
+                ret |= substitute_values(child, new_replace_map, node);
+            }
+        } break;
+
+        case AST::NodeType::Task: {
+            std::set<std::string> locals =
+                merge_set(to_set(Analysis::Task::get_iodir_names(node)),
+                          to_set(Analysis::Task::get_variable_names(node)));
+            ReplaceMap new_replace_map = remove_keys(replace_map, locals);
+            AST::Node::ListPtr children = node->get_children();
+            for(AST::Node::Ptr &child : *children) {
+                ret |= substitute_values(child, new_replace_map, node);
+            }
+        } break;
+
+        default: {
+            AST::Node::ListPtr children = node->get_children();
+            for(AST::Node::Ptr &child : *children) {
+                ret += substitute_values(child, replace_map, node);
+            }
+        }
+        }
+    } else {
+        LOG_ERROR << "Empty node, parent is " << parent;
+        return 1;
+    }
+
+    return ret;
+}
+
 } // namespace Transformations
 } // namespace Passes
 } // namespace Veriparse

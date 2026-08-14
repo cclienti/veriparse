@@ -46,6 +46,15 @@ struct ASTReplace
      * given value (stored in the map as a value).
      */
     static int replace_identifier(AST::Node::ListPtr node_list, const ReplaceMap &replace_map);
+
+    /**
+     * Value substitution: like replace_identifier, but read positions
+     * only — Lvalue subtrees are left alone — and a null mapped value
+     * marks a name deliberately left in place. Hierarchical leaves and
+     * shadowing subroutine scopes are skipped the same way.
+     */
+    static int substitute_values(AST::Node::Ptr node, const ReplaceMap &replace_map,
+                                 AST::Node::Ptr parent = nullptr);
 };
 
 } // namespace Transformations
