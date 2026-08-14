@@ -178,15 +178,23 @@ and the kind rules in the pass.
 
 ### 3.2 Still parser-gated — `ref` port kinds
 
-`var` after a direction is now parsed (ADR-0014 §7.4 made it
-load-bearing: a `ref`/`const ref` subroutine actual must be a variable,
-§13.5.2, so the conforming clock port is `input var logic clk`) — the
-port declares a genuine variable (`Port.decl` holds a `Var`) and the
-kind participates in inheritance. Directionless leading `var` (mh4-style
-rows) and `ref`/`const ref` as a *module port* direction remain
-unparsed; admitting those is a grammar feature of its own (and `ref`
-ports are outside the synthesizable subset anyway); the kind rules below
-are written so those forms slot in when the grammar lands.
+`var` is now parsed in full (ADR-0014 §7.4 made it load-bearing: a
+`ref`/`const ref` subroutine actual must be a variable, §13.5.2, so the
+conforming clock port is `input var logic clk`) — after a direction,
+directionless mid-list (`input logic a, var logic b`: inherits the
+direction, takes its own kind and its own default `logic`), on
+task/function formals (A.2.7 `[var]`), with explicit, implicit or
+user-defined types. The port declares a genuine variable (`Port.decl`
+holds a `Var`), the kind participates in §23.2.2.3 inheritance
+(kind-not-inherited unless everything is omitted — mh17/mh18/mh20
+measured against the standard's own table), and two refusals implement
+A.1.3 note 1 ("an inout port shall not be [of a variable type]"):
+`inout var` and the leading directionless `var x`, whose default
+direction is inout — the standard's own mh4 error case. Only
+`ref`/`const ref` as a *module port* direction remains unparsed
+(mh12/mh13-style rows); `ref` ports are outside the synthesizable
+subset anyway, and the kind rules below are written so the form slots
+in when the grammar lands.
 
 ## 4. Decision 3 — `direction == NONE` is overloaded; disambiguate by declaration
 
