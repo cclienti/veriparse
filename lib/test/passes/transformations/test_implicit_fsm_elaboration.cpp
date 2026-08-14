@@ -491,14 +491,17 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task4) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task5) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task6) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_CORE_SV; }
-// fsm_task8 (ref-alias golden) awaits the ref-formal grammar
-// prerequisite of §12 item 11 — `ref` in a task header does not parse
-// yet, so neither it nor fsm_task_err5 registers today.
+// A ref formal is pure substitution — measured aliasing: the decoded
+// strobe is driven through the ref with per-lap re-assertion (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task8) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err1) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err2) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err3) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err4) { TEST_ERROR_SV; }
+// '<=' through a ref: no nonblocking assignment to an automatic —
+// measured, vsim and iverilog both enforce it (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err5) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err6) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err7) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err8) { TEST_ERROR_SV; }
