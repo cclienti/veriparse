@@ -1292,10 +1292,14 @@ before the cut walk**. A task spanning waits is a *reusable
 sub-sequence* — Appendix B's `LOW`/`HIGH` halves, called once per bit —
 and inlining makes it exactly the statements it names: the walk gains no
 new CFG concept, no call/return edges, no sub-machine protocol. The
-inliner is the FSM pass's own pre-step on the marked process, not a
-shared pipeline pass: only marked processes may take it (an unmarked
-process keeps its task calls untouched), and the §9 checks already hold
-the module's task definitions.
+inliner is its own pass, `FsmTaskInliner` — the structural pre-lowering,
+runnable and testable on its own, with the inlined-but-not-lowered form
+as its golden — which `ImplicitFsmElaboration` invokes per module so
+every driver keeps working unchanged (a pipeline that already ran it
+costs one no-op: the calls are gone). Only marked processes take it (an
+unmarked process keeps its task calls untouched), its induced commits
+cross the pass boundary as the pragma markers below, and the §9 checks
+already hold the module's task definitions.
 
 **The inlined form is one labelled block, and the arguments are its
 locals.** Per call site the clone is
