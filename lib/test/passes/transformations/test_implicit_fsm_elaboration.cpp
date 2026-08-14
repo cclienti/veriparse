@@ -3,6 +3,7 @@
 #include "../../helpers/helpers.hpp"
 
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/importers/yaml_importer.hpp>
 #include <veriparse/parser/verilog.hpp>
@@ -21,6 +22,38 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
     AST::Node::Ptr source = verilog.get_source();                                                  \
     ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    Passes::Analysis::Module::ModulesMap modules_map;                                              \
+    Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
+    ASSERT_TRUE(modules_map.count(test_name) == 1);                                                \
+    const auto &module = modules_map[test_name];                                                   \
+                                                                                                   \
+    test_helpers.render_node_to_verilog_file(module, test_string + "_before.v");                   \
+    ASSERT_EQ(0, Passes::Transformations::ImplicitFsmElaboration().run(module));                   \
+    ASSERT_AST_IS_TREE(module); /* pass output must stay a proper tree */                          \
+    test_helpers.render_node_to_verilog_file(module, test_string + ".v");                          \
+    test_helpers.render_node_to_yaml_file(module, test_string + ".yaml");                          \
+                                                                                                   \
+    std::string test_ref_suffix = "refs/implicit_fsm_";                                            \
+    const std::string ref_filename = test_ref_suffix + test_name;                                  \
+    AST::Node::Ptr module_ref =                                                                    \
+        Importers::YAMLImporter().import(test_helpers.get_yaml_filename(ref_filename).c_str());    \
+    ASSERT_TRUE(module_ref != nullptr);                                                            \
+                                                                                                   \
+    ASSERT_TRUE(module_ref->is_equal(*module, false))
+
+// Same as TEST_CORE_SV, but the source holds a package beside the module and
+// PackageInliner resolves it first — how the tools feed the pass (§26.3).
+#define TEST_CORE_PKG_SV                                                                           \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    ASSERT_EQ(0, Passes::Transformations::PackageInliner().run(source));                           \
                                                                                                    \
     Passes::Analysis::Module::ModulesMap modules_map;                                              \
     Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
@@ -535,6 +568,15 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err12) { TEST_ERROR_S
 // '<='-committed inout formal are both refused (§7.4, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err17) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err18) { TEST_ERROR_SV; }
+// Tasks declared in a package, reached by import or by pkg:: scope: the
+// package cannot see module scope (IEEE §26.2), so its only channel to the
+// machine is its formals — PackageInliner splices the task into the module
+// and the inliner takes over unchanged (§7.4). The legal shapes: a static
+// task commits through output/inout and cannot wait; an automatic task
+// waits through a const ref clock and drives decoded outputs by ref.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg0) { TEST_CORE_PKG_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg1) { TEST_CORE_PKG_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg2) { TEST_CORE_PKG_SV; }
 // A second clock domain beside the marked process: the mark is
 // per-process, the clk2 always_ff passes through verbatim (§2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clk2_0) { TEST_CORE_SV; }
