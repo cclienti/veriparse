@@ -336,6 +336,19 @@ AST::NonblockingSubstitution::Ptr make_nba(const std::string &target, const AST:
     return nba;
 }
 
+AST::BlockingSubstitution::Ptr make_ba(const std::string &target, const AST::Node::Ptr &rhs,
+                                       const std::string &fn, int ln)
+{
+    auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+    lvalue->set_var(AST::to_node(make_id(target, fn, ln)));
+    auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+    rvalue->set_var(rhs);
+    auto ba = std::make_shared<AST::BlockingSubstitution>(fn, ln);
+    ba->set_left(lvalue);
+    ba->set_right(rvalue);
+    return ba;
+}
+
 /// The conjuncts of a guard, flattening the && tree.
 void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conjuncts)
 {
@@ -3185,6 +3198,35 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
     auto block = std::make_shared<AST::Block>(stmts, upper_of(site), fn, ln);
     const auto &block_node = AST::to_node(block);
 
+    // The body's written names by flavor, computed once. '<=' matters to
+    // §6.21 — no nonblocking assignment to automatic storage, so an
+    // automatic task's formals and locals may not take it (vsim enforces
+    // it, and a package task is automatic whenever it waits, since its
+    // clock arrives by ref); '=' picks the temporary lowering for a formal.
+    std::set<std::string> body_nba_targets;
+    std::set<std::string> body_ba_targets;
+    {
+        std::function<void(const AST::Node::Ptr &)> scan = [&](const AST::Node::Ptr &n) {
+            if(!n) {
+                return;
+            }
+            if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
+                body_nba_targets.insert(nba_target(AST::cast_to<AST::NonblockingSubstitution>(n)));
+            } else if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
+                body_ba_targets.insert(
+                    lvalue_target(AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
+            }
+            const auto &kids = n->get_children();
+            if(kids) {
+                for(const auto &c : *kids) {
+                    scan(c);
+                }
+            }
+        };
+        scan(block_node);
+    }
+    const bool task_automatic = task->get_lifetime() == AST::Task::LifetimeEnum::AUTOMATIC;
+
     // ---- Formals (§7.4, §13.3): arity, then per-direction lowering.
     std::map<std::string, AST::Node::Ptr> subst;
     std::vector<AST::Node::Ptr> head, tail;
@@ -3204,8 +3246,39 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
             ++actual_it;
             const std::string &fname = formal->get_name();
             const std::string rname = site + "_" + fname;
+            const bool is_ref = formal->get_direction() == AST::Arg::DirectionEnum::REF ||
+                                formal->get_direction() == AST::Arg::DirectionEnum::CONST_REF;
+            const bool ba_written = body_ba_targets.count(fname) != 0;
+            if(!is_ref && task_automatic && body_nba_targets.count(fname)) {
+                LOG_ERROR_N(call) << "task '" << name << "': '<=' to '" << fname
+                                  << "' — no nonblocking assignment to automatic storage (IEEE "
+                                  << "1800-2017 §6.21); a task that commits through its formals "
+                                  << "must be static";
+                return nullptr;
+            }
+            if(!is_ref && ba_written && body_nba_targets.count(fname)) {
+                LOG_ERROR_N(call) << "task '" << name << "': '" << fname
+                                  << "' is written with both '=' and '<=' — a formal is one "
+                                  << "storage, pick one flavor";
+                return nullptr;
+            }
             switch(formal->get_direction()) {
             case AST::Arg::DirectionEnum::INPUT:
+                if(ba_written) {
+                    // The local-copy idiom: a '='-written formal is a §6.1
+                    // temporary declared in the task block — legal only where
+                    // no cut spans, which §6 checks on the declaration —
+                    // seeded from the actual.
+                    auto tmp = std::make_shared<AST::Var>(fn, ln);
+                    tmp->set_name(rname);
+                    if(formal->get_type()) {
+                        tmp->set_type(AST::cast_to<AST::DataType>(formal->get_type()->clone()));
+                    }
+                    head.push_back(AST::to_node(tmp));
+                    head.push_back(AST::to_node(make_ba(rname, actual, fn, ln)));
+                    subst[fname] = AST::to_node(make_id(rname, fn, ln));
+                    break;
+                }
                 if(actual->is_node_category(AST::NodeType::Constant)) {
                     subst[fname] = actual;
                     break;
@@ -3227,6 +3300,28 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                                       << "' must be a plain register of the process — copy-out has "
                                       << "one storage to write";
                     return nullptr;
+                }
+                if(ba_written) {
+                    // A '='-written output/inout formal is the same §6.1
+                    // temporary, copied out to the actual at return — the
+                    // no-wait helper shape a package task takes when its
+                    // result must land the same cycle.
+                    auto tmp = std::make_shared<AST::Var>(fn, ln);
+                    tmp->set_name(rname);
+                    if(formal->get_type()) {
+                        tmp->set_type(AST::cast_to<AST::DataType>(formal->get_type()->clone()));
+                    }
+                    head.push_back(AST::to_node(tmp));
+                    if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
+                        head.push_back(AST::to_node(make_ba(rname, actual, fn, ln)));
+                    } else {
+                        check_read_first.push_back(rname);
+                    }
+                    tail.push_back(
+                        AST::to_node(make_nba(AST::cast_to<AST::Identifier>(actual)->get_name(),
+                                              AST::to_node(make_id(rname, fn, ln)), fn, ln)));
+                    subst[fname] = AST::to_node(make_id(rname, fn, ln));
+                    break;
                 }
                 if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
                     return nullptr;
@@ -3264,55 +3359,17 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                                       << "' must be a plain signal of the process";
                     return nullptr;
                 }
-                std::set<std::string> nba_targets;
-                std::function<void(const AST::Node::Ptr &)> scan_nba =
-                    [&](const AST::Node::Ptr &n) {
-                        if(!n) {
-                            return;
-                        }
-                        if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
-                            nba_targets.insert(
-                                nba_target(AST::cast_to<AST::NonblockingSubstitution>(n)));
-                        }
-                        const auto &kids = n->get_children();
-                        if(kids) {
-                            for(const auto &c : *kids) {
-                                scan_nba(c);
-                            }
-                        }
-                    };
-                scan_nba(block_node);
-                if(nba_targets.count(fname)) {
+                if(body_nba_targets.count(fname)) {
                     LOG_ERROR_N(call) << "task '" << name << "': '<=' through ref '" << fname
                                       << "' — no nonblocking assignment to an automatic (IEEE "
                                       << "1800-2017 §10.4.2, §13.5.2); alias with '=', or capture "
                                       << "with 'input' and commit registers directly";
                     return nullptr;
                 }
-                if(read_only) {
-                    std::set<std::string> ba_targets;
-                    std::function<void(const AST::Node::Ptr &)> scan_ba_ref =
-                        [&](const AST::Node::Ptr &n) {
-                            if(!n) {
-                                return;
-                            }
-                            if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
-                                ba_targets.insert(lvalue_target(
-                                    AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
-                            }
-                            const auto &kids = n->get_children();
-                            if(kids) {
-                                for(const auto &c : *kids) {
-                                    scan_ba_ref(c);
-                                }
-                            }
-                        };
-                    scan_ba_ref(block_node);
-                    if(ba_targets.count(fname)) {
-                        LOG_ERROR_N(call) << "task '" << name << "': write through const "
-                                          << "ref '" << fname << "' (IEEE 1800-2017 §13.5.2)";
-                        return nullptr;
-                    }
+                if(read_only && ba_written) {
+                    LOG_ERROR_N(call) << "task '" << name << "': write through const "
+                                      << "ref '" << fname << "' (IEEE 1800-2017 §13.5.2)";
+                    return nullptr;
                 }
                 subst[fname] = actual;
                 break;
@@ -3325,8 +3382,9 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         }
     }
 
-    // ---- Locals: rename per site; a <=-written cut-spanning one hoists
-    // per lifetime; a =-written cut-spanning one is refused (§6, §7.4).
+    // ---- Locals: rename per site; a cut-spanning one hoists to a shared
+    // register on a static task; a =-written cut-spanning one is refused
+    // (§6, §7.4, IEEE §6.21).
     {
         std::function<int(const AST::Node::Ptr &)> visit = [&](const AST::Node::Ptr &node) -> int {
             if(!node) {
@@ -3377,18 +3435,22 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                                 << "scope with no wait";
                             return 1;
                         }
-                        const bool is_static =
-                            task->get_lifetime() != AST::Task::LifetimeEnum::AUTOMATIC;
-                        const std::string hname =
-                            is_static ? (name + "_" + lname) : (site + "_" + lname);
-                        if(is_static) {
-                            m_static_hoist[hname] = name;
-                        }
-                        if(hoist_declaration(hname, AST::to_node(var->get_type()), fn, ln)) {
+                        // A local that lives across a wait is a register, and
+                        // only a static task's locals are static storage —
+                        // automatic ones cannot take '<=' (IEEE 1800-2017
+                        // §6.21), and unwritten ones would read garbage.
+                        if(task->get_lifetime() == AST::Task::LifetimeEnum::AUTOMATIC) {
+                            LOG_ERROR_N(var)
+                                << "task local '" << lname << "' lives across a wait in an "
+                                << "automatic task: automatic storage cannot be written with "
+                                << "'<=' (IEEE 1800-2017 §6.21) — make the task static, or "
+                                << "keep the local within one segment";
                             return 1;
                         }
-                        if(!is_static) {
-                            check_read_first.push_back(hname);
+                        const std::string hname = name + "_" + lname;
+                        m_static_hoist[hname] = name;
+                        if(hoist_declaration(hname, AST::to_node(var->get_type()), fn, ln)) {
+                            return 1;
                         }
                         subst[lname] = AST::to_node(make_id(hname, fn, ln));
                         it = inner->erase(it);
