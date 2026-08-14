@@ -78,30 +78,14 @@ int FsmTaskInliner::inline_module(const AST::Module::Ptr &module)
     if(!items) {
         return 0;
     }
-    // The marked initial processes, collected first: inlining rewrites
-    // their statements in place, never the item list being iterated.
-    std::vector<std::pair<AST::Pragmalist::Ptr, AST::Initial::Ptr>> marked;
-    for(const auto &item : *items) {
-        if(!item || !item->is_node_type(AST::NodeType::Pragmalist)) {
-            continue;
+    // The marked initial processes: inlining rewrites their statements
+    // in place, never the item list collect_marked iterated.
+    for(const auto &pair : collect_marked(module)) {
+        if(!pair.second->is_node_type(AST::NodeType::Initial)) {
+            continue; // the elaborator diagnoses a mark on anything else
         }
-        const auto &pragmalist = AST::cast_to<AST::Pragmalist>(item);
-        if(!has_pragma(pragmalist, "veriparse_fsm")) {
-            continue;
-        }
-        const auto &statements = pragmalist->get_statements();
-        if(!statements) {
-            continue;
-        }
-        for(const auto &stmt : *statements) {
-            if(stmt->is_node_type(AST::NodeType::Initial)) {
-                marked.emplace_back(pragmalist, AST::cast_to<AST::Initial>(stmt));
-            }
-        }
-    }
-    for(const auto &pair : marked) {
         m_pragmalist = pair.first;
-        if(inline_process(pair.second)) {
+        if(inline_process(AST::cast_to<AST::Initial>(pair.second))) {
             return 1;
         }
     }
@@ -405,11 +389,7 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                 {
                     const std::string &aname = AST::cast_to<AST::Identifier>(actual)->get_name();
                     if(is_net_signal(m_module, aname)) {
-                        LOG_ERROR_N(call)
-                            << "task '" << name << "': actual '" << aname << "' for ref '" << fname
-                            << "' is a net — nets shall not be passed by reference (IEEE "
-                            << "1800-2017 §13.5.2); make it a variable ('input var logic " << aname
-                            << "')";
+                        log_net_actual(AST::to_node(call), "task", name, fname, aname);
                         return nullptr;
                     }
                 }

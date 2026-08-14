@@ -47,19 +47,10 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     std::vector<std::pair<AST::Pragmalist::Ptr, AST::Initial::Ptr>> marked;
     int ret = 0;
 
-    for(const auto &item : *items) {
-        if(!item || !item->is_node_type(AST::NodeType::Pragmalist)) {
-            continue;
-        }
-        const auto &pragmalist = AST::cast_to<AST::Pragmalist>(item);
-        if(!has_pragma(pragmalist, "veriparse_fsm")) {
-            continue;
-        }
-        const auto &statements = pragmalist->get_statements();
-        if(!statements) {
-            continue;
-        }
-        for(const auto &stmt : *statements) {
+    for(const auto &pair : collect_marked(module)) {
+        const auto &pragmalist = pair.first;
+        const auto &stmt = pair.second;
+        {
             if(stmt->is_node_type(AST::NodeType::Initial)) {
                 marked.emplace_back(pragmalist, AST::cast_to<AST::Initial>(stmt));
             } else if(stmt->is_node_category(AST::NodeType::Always)) {

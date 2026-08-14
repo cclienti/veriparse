@@ -47,6 +47,46 @@ inline bool has_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string
     return false;
 }
 
+/// The module's (* veriparse_fsm *)-marked statements, in source order:
+/// each marked pragmalist paired with every statement under it. The FSM
+/// passes filter the Initial ones; the elaborator diagnoses the rest.
+inline std::vector<std::pair<AST::Pragmalist::Ptr, AST::Node::Ptr>>
+collect_marked(const AST::Module::Ptr &module)
+{
+    std::vector<std::pair<AST::Pragmalist::Ptr, AST::Node::Ptr>> marked;
+    const auto &items = module->get_items();
+    if(!items) {
+        return marked;
+    }
+    for(const auto &item : *items) {
+        if(!item || !item->is_node_type(AST::NodeType::Pragmalist)) {
+            continue;
+        }
+        const auto &pragmalist = AST::cast_to<AST::Pragmalist>(item);
+        if(!has_pragma(pragmalist, "veriparse_fsm")) {
+            continue;
+        }
+        const auto &statements = pragmalist->get_statements();
+        if(!statements) {
+            continue;
+        }
+        for(const auto &stmt : *statements) {
+            marked.emplace_back(pragmalist, stmt);
+        }
+    }
+    return marked;
+}
+
+/// §13.5.2's net-actual refusal, worded once for task and function calls.
+inline void log_net_actual(const AST::Node::Ptr &at, const char *kind, const std::string &callee,
+                           const std::string &formal, const std::string &actual)
+{
+    LOG_ERROR_N(at) << kind << " '" << callee << "': actual '" << actual << "' for ref '" << formal
+                    << "' is a net — nets and selects into nets shall not be passed by "
+                    << "reference (IEEE 1800-2017 §13.5.2); make it a variable "
+                    << "('input var logic " << actual << "')";
+}
+
 /// §7.4 induced-commit markers: the inliner's copy-in captures and
 /// copy-outs travel as pragma-wrapped nonblocking assignments —
 /// `(* veriparse_fsm_capture *)` / `(* veriparse_fsm_copyout *)` — so the
