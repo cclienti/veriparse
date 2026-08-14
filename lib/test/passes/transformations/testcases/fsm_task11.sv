@@ -1,4 +1,4 @@
-module fsm_task11 (input logic clk, input logic rst_n, input logic en,
+module fsm_task11 (input var logic clk, input logic rst_n, input var logic en,
                    output logic [7:0] q, output logic done);
     task automatic step(const ref logic ck, const ref logic ce);
         begin

@@ -542,6 +542,61 @@ void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string>
     }
 }
 
+/// §13.5.2: "Nets and selects into nets shall not be passed by reference."
+/// True when `name` is storage the module makes definitely a net: an explicit
+/// net declaration, or an input/inout port without the `var` kind (§23.2.2.3
+/// defaults those to nets). Output ports pass: the AST keeps no trace of
+/// whether their data type was explicit — §23.2.2.3's variable case — so
+/// refusing them would reject conforming source.
+bool is_net_signal(const AST::Module::Ptr &module, const std::string &name)
+{
+    const auto port_verdict = [&name](const AST::Port::Ptr &port) -> int {
+        if(port->get_name() != name) {
+            return -1;
+        }
+        const auto &decl = port->get_decl();
+        if(!decl && port->get_direction() == AST::Port::DirectionEnum::NONE) {
+            return -1; // non-ANSI header reference: the body declaration decides
+        }
+        if(decl && decl->is_node_type(AST::NodeType::Var)) {
+            return 0;
+        }
+        return (port->get_direction() == AST::Port::DirectionEnum::INPUT ||
+                port->get_direction() == AST::Port::DirectionEnum::INOUT)
+                   ? 1
+                   : 0;
+    };
+    const auto &ports = module->get_ports();
+    if(ports) {
+        for(const auto &port : *ports) {
+            if(!port->is_node_type(AST::NodeType::Port)) {
+                continue;
+            }
+            const int verdict = port_verdict(AST::cast_to<AST::Port>(port));
+            if(verdict >= 0) {
+                return verdict == 1;
+            }
+        }
+    }
+    const auto &items = module->get_items();
+    if(items) {
+        for(const auto &item : *items) {
+            if(item->is_node_type(AST::NodeType::Port)) {
+                const int verdict = port_verdict(AST::cast_to<AST::Port>(item));
+                if(verdict >= 0) {
+                    return verdict == 1;
+                }
+                continue;
+            }
+            if(item->is_node_category(AST::NodeType::Net) &&
+               AST::cast_to<AST::Net>(item)->get_name() == name) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::Ptr &initial)
 {
     const auto &calls = Analysis::Module::get_functioncall_nodes(AST::to_node(initial));
@@ -660,6 +715,41 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
                         << "the function automatic";
                     return 1;
                 }
+            }
+        }
+    }
+
+    // §13.5.2 on the process's own call sites: a reference formal must bind
+    // a variable actual, never a net. Only the process-level calls resolve
+    // against module scope; a call nested in a function body binds that
+    // function's locals, which the loop above already vetted.
+    for(const auto &call : *calls) {
+        const auto &found = functions.find(call->get_name());
+        if(found == functions.end() || !found->second->get_args() || !call->get_args()) {
+            continue;
+        }
+        auto actual_it = call->get_args()->begin();
+        for(const auto &arg : *found->second->get_args()) {
+            if(actual_it == call->get_args()->end()) {
+                break;
+            }
+            const AST::Node::Ptr actual = *actual_it;
+            ++actual_it;
+            if(arg->get_direction() != AST::Arg::DirectionEnum::REF &&
+               arg->get_direction() != AST::Arg::DirectionEnum::CONST_REF) {
+                continue;
+            }
+            if(!actual || !actual->is_node_type(AST::NodeType::Identifier)) {
+                continue;
+            }
+            const std::string &aname = AST::cast_to<AST::Identifier>(actual)->get_name();
+            if(is_net_signal(module, aname)) {
+                LOG_ERROR_N(call) << "function '" << call->get_name() << "': actual '" << aname
+                                  << "' for ref '" << arg->get_name()
+                                  << "' is a net — nets shall not be passed by reference (IEEE "
+                                  << "1800-2017 §13.5.2); make it a variable ('input var logic "
+                                  << aname << "')";
+                return 1;
             }
         }
     }
@@ -3358,6 +3448,17 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                     LOG_ERROR_N(call) << "task '" << name << "': the actual for ref '" << fname
                                       << "' must be a plain signal of the process";
                     return nullptr;
+                }
+                {
+                    const std::string &aname = AST::cast_to<AST::Identifier>(actual)->get_name();
+                    if(is_net_signal(m_walk_module, aname)) {
+                        LOG_ERROR_N(call)
+                            << "task '" << name << "': actual '" << aname << "' for ref '" << fname
+                            << "' is a net — nets shall not be passed by reference (IEEE "
+                            << "1800-2017 §13.5.2); make it a variable ('input var logic " << aname
+                            << "')";
+                        return nullptr;
+                    }
                 }
                 if(body_nba_targets.count(fname)) {
                     LOG_ERROR_N(call) << "task '" << name << "': '<=' through ref '" << fname

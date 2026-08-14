@@ -7,7 +7,7 @@ package seqlib2;
     endtask
 endpackage
 
-module fsm_pkg2 import seqlib2::*; (input logic clk, input logic rst_n,
+module fsm_pkg2 import seqlib2::*; (input var logic clk, input logic rst_n,
                                     input logic [7:0] t_hold,
                                     output logic [7:0] q, output logic done);
     (* veriparse_fsm *)

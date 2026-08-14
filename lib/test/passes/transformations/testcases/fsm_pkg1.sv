@@ -9,7 +9,7 @@ package seqlib1;
     endtask
 endpackage
 
-module fsm_pkg1 (input logic clk, input logic rst_n,
+module fsm_pkg1 (input var logic clk, input logic rst_n,
                  output logic strobe, output logic done);
     (* veriparse_fsm *)
     initial begin
