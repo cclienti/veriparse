@@ -543,6 +543,10 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err15) { TEST_ERROR_S
 // again, so the source would hang on it — const ref is the spelling
 // (§7.4, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err16) { TEST_ERROR_SV; }
+// A net actual on a reference formal: "Nets and selects into nets shall
+// not be passed by reference" — an input logic port is a net (§23.2.2.3),
+// the conforming clock port is 'input var logic clk' (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err19) { TEST_ERROR_SV; }
 // Reference formals on functions: a const ref reads its actual live and
 // stays pure; a write through any ref is the side effect the model
 // would miss; ref needs function automatic (§7.4, §9, IEEE §13.5.2).

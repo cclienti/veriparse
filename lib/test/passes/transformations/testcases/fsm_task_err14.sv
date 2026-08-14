@@ -1,4 +1,4 @@
-module fsm_task_err14 (input logic clk, input logic clk2, input logic rst_n,
+module fsm_task_err14 (input var logic clk, input var logic clk2, input logic rst_n,
                        output logic [7:0] q);
     task automatic tick(const ref logic ck);
         begin

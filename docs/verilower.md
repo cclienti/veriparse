@@ -467,11 +467,12 @@ package seqlib;
 endpackage
 ```
 
-One portability note: IEEE §13.5.2 wants a *variable* actual for
-`ref`/`const ref`, and an ANSI `input logic clk` port is a net — vsim
-rejects passing it where Verilator accepts it. The conforming spelling
-is `input var logic clk`, which the parser does not accept yet;
-verilower follows Verilator meanwhile.
+IEEE §13.5.2 wants a *variable* actual for `ref`/`const ref` — "nets
+and selects into nets shall not be passed by reference" — and an ANSI
+`input logic clk` port is a net. verilower enforces it: a clock or
+enable port passed to a task by `const ref` must be declared with the
+`var` kind, `input var logic clk`, which is also what conforming
+simulators require of the behavioral source.
 
 ## Naming the states
 

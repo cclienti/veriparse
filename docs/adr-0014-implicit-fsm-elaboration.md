@@ -1494,16 +1494,25 @@ reach it: a copied-in formal never toggles, and the closure bars the
 module's own. Per-cycle registered pin-wiggling stays module-task
 territory, where direct visibility does it — Appendix B's style.
 
-**One §13.5.2 boundary is measured but not yet enforced:** "Nets and
-selects into nets shall not be passed by reference" (§13.5.2, verbatim),
-and an ANSI `input logic clk` port is a **net** (§23.2.2.3: input and
-inout ports default to a net of the default net type; an output port
-with an explicit data type defaults to a variable, which is why a `ref`
-on an `output logic` actual conforms) — vsim rejects `step(clk, en)`
-outright where Verilator 5.050 accepts it. The conforming spelling is
-`input var logic clk`, which the grammar does not parse yet (the
-var-port gap, §15); until it does, the pass accepts net actuals as
-Verilator does, and the portability caveat rides here.
+**The §13.5.2 net boundary is enforced:** "Nets and selects into nets
+shall not be passed by reference" (§13.5.2, verbatim), and an ANSI
+`input logic clk` port is a **net** (§23.2.2.3: input and inout ports
+default to a net of the default net type) — vsim rejects `step(clk,
+en)` outright where Verilator 5.050 accepts it, and this pass sides
+with the text: a reference actual that is definitely a net — an
+explicit net declaration, or an input/inout port without the `var`
+kind — is refused, on task calls and on the process's function calls
+alike. The conforming clock port is **`input var logic clk`**
+(§23.2.2.3's explicit variable kind, A.1.3 `variable_port_header`),
+which the grammar now parses: a `var` port declares as a genuine
+variable (`Port.decl` holds a `Var`), the kind participates in
+§23.2.2.3 port-kind inheritance, `var` beside a net type is a parse
+error, and the generators re-emit the keyword. One admission remains
+deliberately loose: an **output** port actual always passes, because
+§23.2.2.3 makes an output with an explicit data type a variable but
+the AST keeps no trace of the type's explicitness — refusing outputs
+would reject the conforming `output logic` majority to catch the rare
+implicit-type `output o` net.
 
 What stays out: hierarchical task names (the referent is not in the
 module) and tasks whose formals take defaults with no actual — until a
@@ -1587,6 +1596,7 @@ unmarked column has already been misread once.
 | `<=` to a formal or cut-spanning local of an `automatic` task | no nonblocking assignment to automatic storage (measured: vsim enforces it) — a task that commits through its formals or holds state in its locals must be static (§7.4) | ADR §7.4, IEEE §6.21 |
 | one formal written with both `=` and `<=` | a formal is one storage — a §6.1 temporary or a hoisted register, not both (§7.4) | ADR §7.4 |
 | a package item naming a module-scope identifier | a package body is a closed scope — module state travels through subroutine arguments. Refused by `PackageInliner`, where the name would otherwise splice into whatever it lands on in the importing module (§7.4) | ADR-0004, IEEE §26.2 |
+| a net actual on a `ref`/`const ref` formal (task or function call) | "Nets and selects into nets shall not be passed by reference" — an `input logic` port is a net (§23.2.2.3); the conforming clock port is `input var logic clk` (§7.4) | ADR §7.4, IEEE §13.5.2, §23.2.2.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |

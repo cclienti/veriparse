@@ -1,5 +1,5 @@
-module fsm_task_err15 (input logic clk, input logic rst_n,
-                       input logic en, input logic en2,
+module fsm_task_err15 (input var logic clk, input logic rst_n,
+                       input var logic en, input var logic en2,
                        output logic [7:0] q);
     task automatic step(const ref logic ck, const ref logic ce);
         begin

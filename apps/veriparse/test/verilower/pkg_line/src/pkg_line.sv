@@ -14,7 +14,7 @@ package pkg_line_lib;
 endpackage
 
 module pkg_line import pkg_line_lib::*;
-   (input  logic clk,
+   (input  var logic clk,
     input  logic rst_n,
     input  logic start,
     input  logic [7:0] step,
