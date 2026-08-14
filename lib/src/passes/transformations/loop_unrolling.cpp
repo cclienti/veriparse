@@ -252,6 +252,11 @@ bool names_unrolled_scope(const std::string &scope_str,
 
 LoopUnrolling::LoopUnrolling(const FunctionMap &function_map) : m_function_map(function_map) {}
 
+LoopUnrolling::LoopUnrolling(Analysis::UniqueDeclaration::IdentifierSet pre_declared)
+{
+    m_scope_declared = std::move(pre_declared);
+}
+
 int LoopUnrolling::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     int ret;
