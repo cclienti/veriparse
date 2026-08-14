@@ -204,16 +204,10 @@ private:
 
     /// §7.4: inline every task call in the marked process — one labelled
     /// block per call site, formals as locals, hoisting per lifetime.
-    int inline_tasks(const AST::Initial::Ptr &initial);
-    int inline_calls_in(const AST::Node::Ptr &node, std::set<std::string> &visiting);
-    AST::Node::Ptr expand_call(const AST::Call::Ptr &call, std::set<std::string> &visiting);
     void adopt_markers(const AST::Node::Ptr &node);
     bool contains_induced(const AST::Node::Ptr &node) const;
     AST::Node::Ptr emit_verbatim(const AST::Node::Ptr &stmt, Env &env,
                                  std::set<std::string> &committed);
-    int hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
-                          const std::string &fn, int ln);
-
     int compile_process(const AST::Module::Ptr &module, const AST::Node::Ptr &parent,
                         const AST::Pragmalist::Ptr &pragmalist, const AST::Initial::Ptr &initial,
                         const std::string &prefix);
@@ -359,23 +353,10 @@ private:
     };
 
     /// The members are grouped by lifetime, and reconstruction is the
-    /// reset: process() rebuilds the module state per module,
-    /// compile_process() the walk and inlining state per process — a
-    /// member added to a group can never be missed by a clear list.
-
-    /// One module's §7.4 task-inlining registry: the module's tasks,
-    /// per-task call ordinals (module-wide, so names stay unique across
-    /// processes), the static-hoist registry, which tasks were inlined
-    /// (disposal), and the module's declared names for collision checks.
-    struct ModuleState
-    {
-        std::map<std::string, AST::Task::Ptr> tasks;
-        std::map<std::string, unsigned int> task_ordinal;
-        std::map<std::string, std::string> static_hoist;
-        std::set<std::string> inlined_tasks;
-        Analysis::UniqueDeclaration::IdentifierSet declared;
-    };
-    ModuleState m_module_state;
+    /// reset: compile_process() rebuilds the walk and inlining state per
+    /// process — a member added to a group can never be missed by a
+    /// clear list. The §7.4 module-level inlining state lives in the
+    /// FsmTaskInliner pass.
 
     /// One process's §7.4 inlining state. The induced copy-in and
     /// copy-out commits travel through inlining and unrolling as pragma
@@ -390,9 +371,6 @@ private:
         /// the captures, carrying §13.3's immediate visibility through
         /// the environment.
         std::set<const AST::Node *> copyouts;
-        /// Blocks already produced by expand_call: the caller's locals
-        /// visit must not re-rename what a nested expansion owns.
-        std::set<const AST::Node *> expanded;
     };
     InlineState m_inline;
 

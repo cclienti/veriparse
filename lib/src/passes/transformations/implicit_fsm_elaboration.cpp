@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/fsm_task_inliner.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
@@ -83,21 +84,14 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return ret;
     }
 
-    // §7.4: the module's tasks and declared names, module-wide so a
-    // static hoist is one register and call ordinals never collide
-    // across processes. Reconstruction is the reset.
-    m_module_state = ModuleState{};
-    if(Analysis::UniqueDeclaration::analyze(node, m_module_state.declared)) {
-        LOG_ERROR_N(node) << "failed to analyze declarations";
+    // §7.4: every task call of the marked processes inlines first — its
+    // own pass, so the structural pre-lowering is runnable and testable
+    // on its own; the induced commits arrive as pragma markers this
+    // pass adopts per process. Running it here keeps every driver and
+    // caller working unchanged, and a pipeline that already ran it costs
+    // one no-op.
+    if(FsmTaskInliner().run(node)) {
         return 1;
-    }
-    {
-        const auto &task_nodes = Analysis::Module::get_task_nodes(node);
-        if(task_nodes) {
-            for(const auto &task : *task_nodes) {
-                m_module_state.tasks[task->get_name()] = task;
-            }
-        }
     }
 
     // §3: veriparse_prefix overrides the default; several processes
@@ -145,35 +139,6 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
     for(std::size_t i = 0; i < marked.size(); ++i) {
         ret += compile_process(module, node, marked[i].first, marked[i].second, prefixes[i]);
-    }
-
-    // §7.4: a task definition with no remaining call site is dropped —
-    // kept, it would be dead code still writing the machine's registers.
-    // One still called (an unmarked process) survives verbatim.
-    if(ret == 0 && !m_module_state.inlined_tasks.empty()) {
-        // To a fixpoint: dropping a task removes the call sites its own
-        // body held, which can strand its callees in turn. The list is
-        // re-fetched each round — compiling a process rebuilds it, so the
-        // one captured above may no longer back the module.
-        for(bool removed = true; removed;) {
-            removed = false;
-            std::set<std::string> called;
-            collect_call_names(node, called);
-            const auto &live = module->get_items();
-            if(!live) {
-                break;
-            }
-            for(auto it = live->begin(); it != live->end();) {
-                if((*it)->is_node_type(AST::NodeType::Task) &&
-                   m_module_state.inlined_tasks.count(AST::cast_to<AST::Task>(*it)->get_name()) &&
-                   !called.count(AST::cast_to<AST::Task>(*it)->get_name())) {
-                    it = live->erase(it);
-                    removed = true;
-                    continue;
-                }
-                ++it;
-            }
-        }
     }
 
     return ret;
@@ -1442,6 +1407,165 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
     return 1;
 }
 
+/// The induced commits travelled as pragma markers, which any cloning
+/// copies along; with the process's text final, each marker unwraps to
+/// its nonblocking assignment and the walk's induced index takes the
+/// pointer — stable from here, nothing clones again.
+void ImplicitFsmElaboration::adopt_markers(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return;
+    }
+    for(const auto &child : *children) {
+        const int kind = induced_marker_kind(child);
+        if(kind == 0) {
+            adopt_markers(child);
+            continue;
+        }
+        const auto &nba = induced_marker_nba(child);
+        if(!nba) {
+            continue;
+        }
+        node->replace(child, AST::to_node(nba));
+        if(kind == 1) {
+            m_inline.captures.insert(nba.get());
+        } else {
+            m_inline.copyouts.insert(nba.get());
+        }
+    }
+}
+
+bool ImplicitFsmElaboration::contains_induced(const AST::Node::Ptr &node) const
+{
+    if(!node) {
+        return false;
+    }
+    if(m_inline.captures.count(node.get()) || m_inline.copyouts.count(node.get())) {
+        return true;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return false;
+    }
+    for(const auto &child : *children) {
+        if(contains_induced(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// A cut-point-free subtree holding induced commits, emitted into an
+/// action: reads substitute against a branch-local environment that the
+/// captures and copy-outs update in program order — §13.3's immediate
+/// visibility inside the branch — while each nested arm diverges on a
+/// copy. The caller marks the committed targets branch-dependent in the
+/// segment's own environment.
+AST::Node::Ptr ImplicitFsmElaboration::emit_verbatim(const AST::Node::Ptr &stmt, Env &env,
+                                                     std::set<std::string> &committed)
+{
+    const std::string &fn = stmt->get_filename();
+    const int ln = stmt->get_line();
+
+    if(stmt->is_node_type(AST::NodeType::NonblockingSubstitution) &&
+       (m_inline.captures.count(stmt.get()) || m_inline.copyouts.count(stmt.get()))) {
+        const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(stmt);
+        const auto &value = clone_subst(AST::to_node(nba->get_right()->get_var()), env);
+        if(check_temp_reads(value, env)) {
+            return nullptr;
+        }
+        env[nba_target(nba)] = value;
+        committed.insert(nba_target(nba));
+        return AST::to_node(make_nba(nba_target(nba), value, fn, ln));
+    }
+
+    if(stmt->is_node_type(AST::NodeType::Block)) {
+        const auto &blk = AST::cast_to<AST::Block>(stmt);
+        auto out = std::make_shared<AST::Node::List>();
+        if(blk->get_statements()) {
+            for(const auto &child : *blk->get_statements()) {
+                if(!child) {
+                    continue;
+                }
+                if(child->is_node_type(AST::NodeType::Var)) {
+                    out->push_back(child->clone());
+                    continue;
+                }
+                const auto &emitted = emit_verbatim(child, env, committed);
+                if(!emitted) {
+                    return nullptr;
+                }
+                out->push_back(emitted);
+            }
+        }
+        return AST::to_node(std::make_shared<AST::Block>(out, blk->get_scope(), fn, ln));
+    }
+
+    if(stmt->is_node_type(AST::NodeType::SingleStatement)) {
+        const auto &single = AST::cast_to<AST::SingleStatement>(stmt);
+        if(single->get_statement() && contains_induced(single->get_statement())) {
+            const auto &inner = emit_verbatim(single->get_statement(), env, committed);
+            if(!inner) {
+                return nullptr;
+            }
+            const auto &out = AST::cast_to<AST::SingleStatement>(stmt->clone());
+            out->set_statement(inner);
+            return AST::to_node(out);
+        }
+    }
+
+    if(stmt->is_node_type(AST::NodeType::IfStatement) && contains_induced(stmt)) {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(stmt);
+        const auto &cond = clone_subst(ifs->get_cond(), env);
+        if(check_temp_reads(cond, env)) {
+            return nullptr;
+        }
+        AST::Node::Ptr t;
+        AST::Node::Ptr e;
+        std::set<std::string> arm_committed;
+        if(ifs->get_true_statement()) {
+            Env arm_env = env;
+            t = emit_verbatim(ifs->get_true_statement(), arm_env, arm_committed);
+            if(!t) {
+                return nullptr;
+            }
+        }
+        if(ifs->get_false_statement()) {
+            Env arm_env = env;
+            e = emit_verbatim(ifs->get_false_statement(), arm_env, arm_committed);
+            if(!e) {
+                return nullptr;
+            }
+        }
+        for(const auto &target : arm_committed) {
+            env[target] = nullptr; // arm-dependent past this if
+            committed.insert(target);
+        }
+        auto out = std::make_shared<AST::IfStatement>(fn, ln);
+        out->set_cond(cond);
+        out->set_true_statement(t);
+        out->set_false_statement(e);
+        return AST::to_node(out);
+    }
+
+    if(contains_induced(stmt)) {
+        LOG_ERROR_N(stmt) << "a task call under this construct, inside a branch no cut point "
+                          << "spans, is not lowered — hoist the call out of the branch, or put "
+                          << "a wait inside it";
+        return nullptr;
+    }
+
+    const auto &placed = clone_subst(stmt, env);
+    if(check_temp_reads(placed, env)) {
+        return nullptr;
+    }
+    return placed;
+}
+
 int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                                             const AST::Node::Ptr &parent,
                                             const AST::Pragmalist::Ptr &pragmalist,
@@ -1481,11 +1605,10 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             return 1;
         }
     }
-    // §7.4: tasks inline first — after this the process holds no call,
-    // and the walk sees only the block model's ordinary text.
-    if(inline_tasks(initial)) {
-        return 1;
-    }
+    // The inliner ran per module; its induced commits arrived as pragma
+    // markers, adopted here — unwrapped, and indexed by pointer for the
+    // walk, stable because nothing clones after this point.
+    adopt_markers(AST::to_node(initial));
 
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
