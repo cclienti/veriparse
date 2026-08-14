@@ -1,4 +1,4 @@
-module fsm_task_err23 (input logic clk, input logic rst_n, input logic [7:0] d,
+module fsm_alpha3 (input logic clk, input logic rst_n, input logic [7:0] d,
                        output logic [7:0] q, output logic done);
     task step();
         begin

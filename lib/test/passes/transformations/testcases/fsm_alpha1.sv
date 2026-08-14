@@ -1,4 +1,4 @@
-module fsm_temp_err8 (
+module fsm_alpha1 (
     input logic clk,
     input logic rst_n,
     input logic [7:0] a,
