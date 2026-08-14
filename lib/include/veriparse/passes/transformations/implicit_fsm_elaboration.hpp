@@ -189,6 +189,10 @@ private:
     int inline_tasks(const AST::Initial::Ptr &initial);
     int inline_calls_in(const AST::Node::Ptr &node, std::set<std::string> &visiting);
     AST::Node::Ptr expand_call(const AST::Call::Ptr &call, std::set<std::string> &visiting);
+    int readopt_induced(const AST::Node::Ptr &node);
+    bool contains_induced(const AST::Node::Ptr &node) const;
+    AST::Node::Ptr emit_verbatim(const AST::Node::Ptr &stmt, Env &env,
+                                 std::set<std::string> &committed);
     int hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
                           const std::string &fn, int ln);
 
@@ -398,6 +402,20 @@ private:
     std::map<std::string, std::string> m_static_hoist;
     std::set<std::string> m_inlined_tasks;
     std::set<const AST::Node *> m_captures;
+    /// Copy-out commits (`actual <= <site>_<formal>`): induced like the
+    /// captures, carrying §13.3's immediate visibility through the
+    /// environment. The name maps re-identify both kinds when loop
+    /// unrolling clones them (pointers alone would dangle): a pure capture
+    /// register has exactly one writer, its capture; an impure one is also
+    /// '<='-written by the body, so its clones are ambiguous and refused.
+    std::set<const AST::Node *> m_copyouts;
+    std::set<std::string> m_capture_pure;
+    std::set<std::string> m_capture_impure;
+    std::map<std::string, std::string> m_copyout_actual;
+    std::map<std::string, bool> m_site_impure;
+    /// Blocks already produced by expand_call: the caller's locals visit
+    /// must not re-rename what a nested expansion owns.
+    std::set<const AST::Node *> m_expanded;
     Analysis::UniqueDeclaration::IdentifierSet m_module_declared;
     struct MaterializedWire
     {

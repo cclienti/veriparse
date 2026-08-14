@@ -569,6 +569,39 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err1) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err2) { TEST_ERROR_SV; }
+// The review round's regressions, test-first. A call inside an unrolled
+// loop: each clone is its own call site with its own copy-in — the
+// unroll runs before inlining for user loops, and cloned induced
+// commits re-adopt after the post-substitution re-run (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop1) { TEST_CORE_SV; }
+// A capture inside a cut-point-free branch still forward-substitutes:
+// the branch's reader sees the actual, per §13.3 blocking copy-in.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_br0) { TEST_CORE_SV; }
+// An author signal colliding with a static local's hoist name is an
+// error, not a silent alias (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err21) { TEST_ERROR_SV; }
+// Substitution binds by name (§6.1): a task local shadowing a formal,
+// or two siblings sharing one cut-spanning name, is refused — rename.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err22) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err23) { TEST_ERROR_SV; }
+// A nested call copying out into the caller's formal: the induced
+// commit carries §13.3's immediate visibility to same-segment readers.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_nest0) { TEST_CORE_SV; }
+// The assign-before-read check sees reads everywhere — an if condition
+// is a read as much as an rvalue is (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err24) { TEST_ERROR_SV; }
+// A constant actual on a '<='-written input formal takes the capture
+// register like any written formal — never a constant lvalue (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task12) { TEST_CORE_SV; }
+// A hierarchical reference whose leaf matches a formal stays itself:
+// substitution binds simple names only (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_hier0) { TEST_CORE_SV; }
+// A select into a net passed by ref is the same §13.5.2 refusal as the
+// whole net.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_funcref_err2) { TEST_ERROR_SV; }
+// A statement call naming no known task (§9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err25) { TEST_ERROR_SV; }
 // Reference formals on functions: a const ref reads its actual live and
 // stays pure; a write through any ref is the side effect the model
 // would miss; ref needs function automatic (§7.4, §9, IEEE §13.5.2).
