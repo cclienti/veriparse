@@ -2025,10 +2025,11 @@ says the datapath transformation was exercised on every one of them.
    `always_comb`, the literal-per-state checks, and the same
    differential bench over a machine whose state bits are the outputs.
 
-11. **Task inlining** (§7.4) — prerequisite first, its own commit like
-   phase 1's `iff`: the grammar does not yet parse `ref` in a task
-   header, nor bare multi-statement task bodies (a body is one
-   statement; the tests spell `begin/end`). Then the per-call-site
+11. **Task inlining** (§7.4) — the `ref` grammar prerequisite landed
+   (scanner keyword gated on SV mode, a `task_portdir` alternative, the
+   `Arg` direction the AST already carried); bare multi-statement task
+   bodies still parse as one statement, so the tests spell `begin/end`.
+   Then the per-call-site
    clone with alpha-renamed
    locals, copy-in capture for non-constant `input` actuals (induced
    register through the rolled-capture machinery with its §6.1

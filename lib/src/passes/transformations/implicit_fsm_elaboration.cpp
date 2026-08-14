@@ -3220,6 +3220,51 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
             }
+            case AST::Arg::DirectionEnum::REF: {
+                // §7.4, measured: a ref is a true alias for blocking
+                // writes on an automatic task — pure substitution, no
+                // local, no copy anything. '<=' through it is illegal
+                // IEEE (no nonblocking assignment to an automatic), and
+                // §13.5.2 ties ref to automatic lifetime.
+                if(task->get_lifetime() != AST::Task::LifetimeEnum::AUTOMATIC) {
+                    LOG_ERROR_N(call)
+                        << "task '" << name << "': a ref argument needs 'task automatic' "
+                        << "(IEEE 1800-2017 §13.5.2)";
+                    return nullptr;
+                }
+                if(!actual->is_node_type(AST::NodeType::Identifier)) {
+                    LOG_ERROR_N(call) << "task '" << name << "': the actual for ref '" << fname
+                                      << "' must be a plain signal of the process";
+                    return nullptr;
+                }
+                std::set<std::string> nba_targets;
+                std::function<void(const AST::Node::Ptr &)> scan_nba =
+                    [&](const AST::Node::Ptr &n) {
+                        if(!n) {
+                            return;
+                        }
+                        if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
+                            nba_targets.insert(
+                                nba_target(AST::cast_to<AST::NonblockingSubstitution>(n)));
+                        }
+                        const auto &kids = n->get_children();
+                        if(kids) {
+                            for(const auto &c : *kids) {
+                                scan_nba(c);
+                            }
+                        }
+                    };
+                scan_nba(block_node);
+                if(nba_targets.count(fname)) {
+                    LOG_ERROR_N(call) << "task '" << name << "': '<=' through ref '" << fname
+                                      << "' — no nonblocking assignment to an automatic (IEEE "
+                                      << "1800-2017 §10.4.2, §13.5.2); alias with '=', or capture "
+                                      << "with 'input' and commit registers directly";
+                    return nullptr;
+                }
+                subst[fname] = actual;
+                break;
+            }
             default:
                 LOG_ERROR_N(call) << "task '" << name << "': argument '" << fname
                                   << "' has a direction the inliner does not carry";

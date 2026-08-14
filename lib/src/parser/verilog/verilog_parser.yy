@@ -181,7 +181,7 @@ static inline const char *data_type_kind_keyword(data_type_kind_t kind)
 }
 
 enum class direction_t {
-	 INPUT, INOUT, OUTPUT, NONE
+	 INPUT, INOUT, OUTPUT, REF, NONE
 };
 
 struct port_info_t {
@@ -419,6 +419,7 @@ AST::Port::ListPtr create_ports_decls(const std::list<port_info_t> &port_list,
 %token                  TK_TASK         "'task'"
 %token                  TK_ENDTASK      "'endtask'"
 %token                  TK_INPUT        "'input'"
+%token                  TK_REF          "'ref'"
 %token                  TK_INOUT        "'inout'"
 %token                  TK_OUTPUT       "'output'"
 %token                  TK_TRI          "'tri'"
@@ -5923,6 +5924,11 @@ task_portdir:   TK_INPUT
                 {
                     $$ = direction_t::INOUT;
                 }
+
+        |       TK_REF
+                {
+                    $$ = direction_t::REF;
+                }
         ;
 
 
@@ -6365,6 +6371,7 @@ namespace Veriparse {
                 switch(d) {
                 case direction_t::OUTPUT: return AST::Arg::DirectionEnum::OUTPUT;
                 case direction_t::INOUT:  return AST::Arg::DirectionEnum::INOUT;
+                case direction_t::REF:    return AST::Arg::DirectionEnum::REF;
                 default:                  return AST::Arg::DirectionEnum::INPUT;
                 }
             }
