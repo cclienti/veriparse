@@ -184,6 +184,14 @@ private:
     /// substituted forward within their own segment.
     using Env = std::map<std::string, AST::Node::Ptr>;
 
+    /// §7.4: inline every task call in the marked process — one labelled
+    /// block per call site, formals as locals, hoisting per lifetime.
+    int inline_tasks(const AST::Initial::Ptr &initial);
+    int inline_calls_in(const AST::Node::Ptr &node, std::set<std::string> &visiting);
+    AST::Node::Ptr expand_call(const AST::Call::Ptr &call, std::set<std::string> &visiting);
+    int hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
+                          const std::string &fn, int ln);
+
     int compile_process(const AST::Module::Ptr &module, const AST::Node::Ptr &parent,
                         const AST::Pragmalist::Ptr &pragmalist, const AST::Initial::Ptr &initial,
                         const std::string &prefix);
@@ -380,6 +388,17 @@ private:
     /// The marked process under compilation, excluded from the §6.2
     /// foreign-driver scan.
     AST::Pragmalist::Ptr m_walk_pragmalist;
+    /// §7.4 task inlining state: the module's tasks, per-task call
+    /// ordinals (module-wide, so names stay unique across processes),
+    /// the static-hoist registry, which tasks were inlined (disposal),
+    /// the copy-in commits the walk both induces and substitutes, and
+    /// the module's declared names for collision checks.
+    std::map<std::string, AST::Task::Ptr> m_tasks;
+    std::map<std::string, unsigned int> m_task_ordinal;
+    std::map<std::string, std::string> m_static_hoist;
+    std::set<std::string> m_inlined_tasks;
+    std::set<const AST::Node *> m_captures;
+    Analysis::UniqueDeclaration::IdentifierSet m_module_declared;
     struct MaterializedWire
     {
         std::string name;

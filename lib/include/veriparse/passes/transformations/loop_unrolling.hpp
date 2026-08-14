@@ -43,6 +43,11 @@ public:
 
     LoopUnrolling(const FunctionMap &function_map);
 
+    /// Seed the uniquifier with names beyond the invoked node's own —
+    /// a re-run scoped to one process must still avoid the module's
+    /// declarations (ADR-0014 §7.4).
+    explicit LoopUnrolling(Analysis::UniqueDeclaration::IdentifierSet pre_declared);
+
 private:
     /**
      * @brief Apply the LoopUnrolling transform.

@@ -3,9 +3,11 @@ module fsm_task1 (input logic clk, input logic rst_n,
                   output logic scl, output logic done);
     task phase(input logic v, input logic [7:0] n);
         begin
-            scl <= v;
             (* veriparse_no_unroll *)
-            repeat (n) @(posedge clk);
+            repeat (n) begin
+                scl <= v;
+                @(posedge clk);
+            end
         end
     endtask
     (* veriparse_fsm *)

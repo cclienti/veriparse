@@ -1400,6 +1400,19 @@ process. A rolled
 a formal's induced register like any non-constant count, and a
 genuinely non-constant bound keeps §8's refusal.
 
+**One composition consequence, found by the tests rather than argued:**
+two sequential calls whose bodies commit one register around a
+possibly-zero rolled count collide on the skip path — the zero-count
+guard forks a path on which both calls' entry commits land in one
+segment, and §6's one-commit rule refuses it exactly as it would the
+same shape written inline. The spelling that composes is asserting
+inside the lap (`repeat (n) begin scl <= v; @(posedge clk); end`),
+where a zero count commits nothing at all. A user commit in the entry
+segment does supersede its own call's **induced capture** — the
+capture's value already reached its readers through the environment,
+and storage takes the last write as in the source — but two *user*
+commits stay refused.
+
 **After inlining, a task definition with no remaining call site
 anywhere in the module is dropped** — kept, it would be emitted dead
 code still writing the machine's registers, tripping §9.2.2.4 against

@@ -476,23 +476,25 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_reset_err0) { TEST_ERROR_S
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_fork_err0) { TEST_ERROR_SV; }
 // disable: abortive control flow the state model cannot express (§9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_disable_err0) { TEST_ERROR_SV; }
-// §7.4's task matrix. Until the inliner lands, every task call is
-// refused wholesale, so the whole family registers as errors today;
-// the fsm_task<N> goldens flip to TEST_CORE_SV with the inliner, the
-// fsm_task_err<N> rows keep their verdicts for the §7.4 reasons their
-// files spell (formals, lifetimes, hoisting, loops, recursion).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task0) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task1) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task2) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task3) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task4) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task5) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task6) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_ERROR_SV; }
+// §7.4's task matrix: the inliner makes each golden the machine its
+// file spells — reuse and naming (task0), captures with the shared
+// countdown (task1), the post-inline unroll re-run (task2), task-in-
+// task composition (task3), temporaries and decoded outputs from task
+// text (task4), the automatic per-site hoist (task5), the NBA inout
+// with copy-out at return (task6), a cut-point-free body folding into
+// its caller (task7), and the static shared hoist (task9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task1) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task2) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task3) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task4) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task5) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task6) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_CORE_SV; }
 // fsm_task8 (ref-alias golden) awaits the ref-formal grammar
 // prerequisite of §12 item 11 — `ref` in a task header does not parse
 // yet, so neither it nor fsm_task_err5 registers today.
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err1) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err2) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err3) { TEST_ERROR_SV; }

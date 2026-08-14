@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/loop_unrolling.hpp>
 #include <veriparse/passes/transformations/expression_evaluation.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/generators/verilog_generator.hpp>
@@ -1211,6 +1212,27 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         return ret;
     }
 
+    // §7.4: the module's tasks and declared names, module-wide so a
+    // static hoist is one register and call ordinals never collide
+    // across processes.
+    m_tasks.clear();
+    m_task_ordinal.clear();
+    m_static_hoist.clear();
+    m_inlined_tasks.clear();
+    m_module_declared.clear();
+    if(Analysis::UniqueDeclaration::analyze(node, m_module_declared)) {
+        LOG_ERROR_N(node) << "failed to analyze declarations";
+        return 1;
+    }
+    {
+        const auto &task_nodes = Analysis::Module::get_task_nodes(node);
+        if(task_nodes) {
+            for(const auto &task : *task_nodes) {
+                m_tasks[task->get_name()] = task;
+            }
+        }
+    }
+
     // §3: veriparse_prefix overrides the default; several processes
     // without hints get an ordinal each. Every prefix must be distinct —
     // a hint that collides with another process's hint or ordinal is
@@ -1256,6 +1278,23 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     }
     for(std::size_t i = 0; i < marked.size(); ++i) {
         ret += compile_process(module, node, marked[i].first, marked[i].second, prefixes[i]);
+    }
+
+    // §7.4: a task definition with no remaining call site is dropped —
+    // kept, it would be dead code still writing the machine's registers.
+    // One still called (an unmarked process) survives verbatim.
+    if(ret == 0 && !m_inlined_tasks.empty()) {
+        std::set<std::string> called;
+        collect_call_names(node, called);
+        for(auto it = items->begin(); it != items->end();) {
+            if((*it)->is_node_type(AST::NodeType::Task) &&
+               m_inlined_tasks.count(AST::cast_to<AST::Task>(*it)->get_name()) &&
+               !called.count(AST::cast_to<AST::Task>(*it)->get_name())) {
+                it = items->erase(it);
+                continue;
+            }
+            ++it;
+        }
     }
 
     return ret;
@@ -1957,9 +1996,37 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         }
 
         case AST::NodeType::NonblockingSubstitution: {
+            // §7.4: a copy-in capture is an induced commit that forward-
+            // substitutes within its own segment (§6.1) — a reader before
+            // the first cut sees the actual, later segments the register.
+            if(m_captures.count(stmt.get())) {
+                const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(stmt);
+                const auto &value = clone_subst(AST::to_node(nba->get_right()->get_var()), env);
+                if(check_temp_reads(value, env)) {
+                    return 1;
+                }
+                push_induced(action, nba_target(nba), value, fn, ln);
+                env[nba_target(nba)] = value;
+                break;
+            }
             const auto &placed = env.empty() ? stmt : subst_into(stmt->clone(), env);
             if(check_temp_reads(placed, env)) {
                 return 1;
+            }
+            // A user commit supersedes an induced capture to the same
+            // target in this segment: the capture's value already reached
+            // its readers through the environment, and storage takes the
+            // last write, as in the source (§6.1, §7.4).
+            {
+                const std::string &target =
+                    nba_target(AST::cast_to<AST::NonblockingSubstitution>(placed));
+                for(auto it = action->begin(); it != action->end();) {
+                    const bool induced =
+                        m_induced.count(it->get()) &&
+                        (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
+                        nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == target;
+                    it = induced ? action->erase(it) : std::next(it);
+                }
             }
             action->push_back(placed);
             break;
@@ -2953,6 +3020,385 @@ void collect_foreign_drivers(const AST::Module::Ptr &module, const AST::Pragmali
     }
 }
 
+namespace
+{
+
+/// Program-order scan: does the first reference to @p name in the subtree
+/// read it rather than write it? Writes are assignment targets; anything
+/// else is a read (§7.4's assign-before-read checks).
+int first_reference(const AST::Node::Ptr &node, const std::string &name)
+{
+    if(!node) {
+        return 0;
+    }
+    if(node->is_node_type(AST::NodeType::NonblockingSubstitution) ||
+       node->is_node_type(AST::NodeType::BlockingSubstitution)) {
+        const auto &parts = node->get_children();
+        if(!parts || parts->empty()) {
+            return 0;
+        }
+        const AST::Node::Ptr left = parts->front();
+        std::set<std::string> targets;
+        collect_driven(node, targets);
+        if(targets.count(name)) {
+            // Program order within one statement is RHS-then-commit, so
+            // a self-read on the right counts as a read.
+            std::set<std::string> rhs_reads;
+            for(const auto &child : *parts) {
+                if(child != left) {
+                    collect_identifier_names(child, rhs_reads);
+                }
+            }
+            return rhs_reads.count(name) ? -1 : 1;
+        }
+        std::set<std::string> reads;
+        collect_identifier_names(node, reads);
+        return reads.count(name) ? -1 : 0;
+    }
+    const auto &children = node->get_children();
+    if(children) {
+        for(const auto &child : *children) {
+            const int verdict = first_reference(child, name);
+            if(verdict) {
+                return verdict;
+            }
+        }
+    }
+    return 0;
+}
+
+/// Rename identifiers everywhere, assignment targets included —
+/// subst_into deliberately skips Lvalue for §6.1's value substitution,
+/// but an inlined clone renames its writes too (§7.4).
+void rename_into(const AST::Node::Ptr &node, const std::map<std::string, AST::Node::Ptr> &map)
+{
+    if(!node) {
+        return;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return;
+    }
+    for(const auto &child : *children) {
+        if(child && child->is_node_type(AST::NodeType::Identifier)) {
+            const auto &found = map.find(AST::cast_to<AST::Identifier>(child)->get_name());
+            if(found != map.end()) {
+                node->replace(child, found->second->clone());
+            }
+            continue;
+        }
+        rename_into(child, map);
+    }
+}
+
+std::string upper_of(const std::string &text)
+{
+    std::string out = text;
+    for(auto &c : out) {
+        c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+    }
+    return out;
+}
+
+} // namespace
+
+int ImplicitFsmElaboration::hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
+                                              const std::string &fn, int ln)
+{
+    if(m_module_declared.count(name)) {
+        // Re-hoist of a static local from a later call site: the single
+        // shared register already exists.
+        if(m_static_hoist.count(name)) {
+            return 0;
+        }
+        LOG_ERROR << "generated declaration '" << name
+                  << "' collides with an existing one; rename the task, argument or local";
+        return 1;
+    }
+    auto reg = std::make_shared<AST::Var>(fn, ln);
+    reg->set_name(name);
+    if(type) {
+        reg->set_type(AST::cast_to<AST::DataType>(type->clone()));
+    }
+    const auto &items = m_walk_module->get_items();
+    for(auto it = items->begin(); it != items->end(); ++it) {
+        if(it->get() == static_cast<AST::Node *>(m_walk_pragmalist.get())) {
+            items->insert(it, AST::to_node(reg));
+            m_module_declared.insert(name);
+            return 0;
+        }
+    }
+    items->push_back(AST::to_node(reg));
+    m_module_declared.insert(name);
+    return 0;
+}
+
+AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
+                                                   std::set<std::string> &visiting)
+{
+    const std::string &name = call->get_name();
+    const auto &task = m_tasks.at(name);
+    const std::string &fn = call->get_filename();
+    const int ln = call->get_line();
+
+    if(visiting.count(name)) {
+        LOG_ERROR_N(call) << "recursive task call: '" << name << "' reaches itself — "
+                          << "inlining is the model, and there is no stack to give "
+                          << "recursion meaning";
+        return nullptr;
+    }
+
+    const unsigned int ordinal = m_task_ordinal[name]++;
+    const std::string site = name + "_" + std::to_string(ordinal);
+
+    // Clone the body.
+    const auto &stmts = std::make_shared<AST::Node::List>();
+    if(task->get_statements()) {
+        for(const auto &stmt : *task->get_statements()) {
+            stmts->push_back(stmt->clone());
+        }
+    }
+    auto block = std::make_shared<AST::Block>(stmts, upper_of(site), fn, ln);
+    const auto &block_node = AST::to_node(block);
+
+    // ---- Formals (§7.4, §13.3): arity, then per-direction lowering.
+    std::map<std::string, AST::Node::Ptr> subst;
+    std::vector<AST::Node::Ptr> head, tail;
+    std::vector<std::string> check_read_first;
+    const auto &formals = task->get_args();
+    const std::size_t formal_count = formals ? formals->size() : 0;
+    const std::size_t actual_count = call->get_args() ? call->get_args()->size() : 0;
+    if(formal_count != actual_count) {
+        LOG_ERROR_N(call) << "task '" << name << "' takes " << formal_count << " argument"
+                          << (formal_count == 1 ? "" : "s") << ", called with " << actual_count;
+        return nullptr;
+    }
+    if(formals) {
+        auto actual_it = call->get_args()->begin();
+        for(const auto &formal : *formals) {
+            const AST::Node::Ptr actual = (*actual_it)->clone();
+            ++actual_it;
+            const std::string &fname = formal->get_name();
+            const std::string rname = site + "_" + fname;
+            switch(formal->get_direction()) {
+            case AST::Arg::DirectionEnum::INPUT:
+                if(actual->is_node_category(AST::NodeType::Constant)) {
+                    subst[fname] = actual;
+                    break;
+                }
+                if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
+                    return nullptr;
+                }
+                {
+                    const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
+                    m_captures.insert(capture.get());
+                    head.push_back(capture);
+                }
+                subst[fname] = AST::to_node(make_id(rname, fn, ln));
+                break;
+            case AST::Arg::DirectionEnum::OUTPUT:
+            case AST::Arg::DirectionEnum::INOUT: {
+                if(!actual->is_node_type(AST::NodeType::Identifier)) {
+                    LOG_ERROR_N(call) << "task '" << name << "': the actual for " << "'" << fname
+                                      << "' must be a plain register of the process — copy-out has "
+                                      << "one storage to write";
+                    return nullptr;
+                }
+                if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
+                    return nullptr;
+                }
+                if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
+                    const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
+                    m_captures.insert(capture.get());
+                    head.push_back(capture);
+                } else {
+                    check_read_first.push_back(rname);
+                }
+                tail.push_back(
+                    AST::to_node(make_nba(AST::cast_to<AST::Identifier>(actual)->get_name(),
+                                          AST::to_node(make_id(rname, fn, ln)), fn, ln)));
+                subst[fname] = AST::to_node(make_id(rname, fn, ln));
+                break;
+            }
+            default:
+                LOG_ERROR_N(call) << "task '" << name << "': argument '" << fname
+                                  << "' has a direction the inliner does not carry";
+                return nullptr;
+            }
+        }
+    }
+
+    // ---- Locals: rename per site; a <=-written cut-spanning one hoists
+    // per lifetime; a =-written cut-spanning one is refused (§6, §7.4).
+    {
+        std::function<int(const AST::Node::Ptr &)> visit = [&](const AST::Node::Ptr &node) -> int {
+            if(!node) {
+                return 0;
+            }
+            if(node->is_node_type(AST::NodeType::Block)) {
+                const auto &inner = AST::cast_to<AST::Block>(node)->get_statements();
+                if(inner) {
+                    const bool spans = contains_event_statement(node);
+                    for(auto it = inner->begin(); it != inner->end();) {
+                        if(!(*it)->is_node_type(AST::NodeType::Var)) {
+                            ++it;
+                            continue;
+                        }
+                        const auto &var = AST::cast_to<AST::Var>(*it);
+                        // By value: set_name below mutates the member a
+                        // reference would alias.
+                        const std::string lname = var->get_name();
+                        if(!spans) {
+                            var->set_name(site + "_" + lname);
+                            subst[lname] = AST::to_node(make_id(site + "_" + lname, fn, ln));
+                            ++it;
+                            continue;
+                        }
+                        std::set<std::string> blocking;
+                        std::function<void(const AST::Node::Ptr &)> scan_ba =
+                            [&](const AST::Node::Ptr &n) {
+                                if(!n) {
+                                    return;
+                                }
+                                if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
+                                    blocking.insert(lvalue_target(
+                                        AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
+                                }
+                                const auto &kids = n->get_children();
+                                if(kids) {
+                                    for(const auto &c : *kids) {
+                                        scan_ba(c);
+                                    }
+                                }
+                            };
+                        scan_ba(node);
+                        if(blocking.count(lname)) {
+                            LOG_ERROR_N(var)
+                                << "task local '" << lname << "' is written with '=' in a "
+                                << "scope a cut point spans: its intermediate values would "
+                                << "need storage — write it with '<=', or keep it inside a "
+                                << "scope with no wait";
+                            return 1;
+                        }
+                        const bool is_static =
+                            task->get_lifetime() != AST::Task::LifetimeEnum::AUTOMATIC;
+                        const std::string hname =
+                            is_static ? (name + "_" + lname) : (site + "_" + lname);
+                        if(is_static) {
+                            m_static_hoist[hname] = name;
+                        }
+                        if(hoist_declaration(hname, AST::to_node(var->get_type()), fn, ln)) {
+                            return 1;
+                        }
+                        if(!is_static) {
+                            check_read_first.push_back(hname);
+                        }
+                        subst[lname] = AST::to_node(make_id(hname, fn, ln));
+                        it = inner->erase(it);
+                    }
+                }
+            }
+            const auto &children = node->get_children();
+            if(children) {
+                for(const auto &child : *children) {
+                    if(visit(child)) {
+                        return 1;
+                    }
+                }
+            }
+            return 0;
+        };
+        if(visit(block_node)) {
+            return nullptr;
+        }
+    }
+
+    // ---- Apply the renames, then splice copy-in/copy-out.
+    if(!subst.empty()) {
+        rename_into(block_node, subst);
+    }
+    for(auto it = head.rbegin(); it != head.rend(); ++it) {
+        stmts->push_front(*it);
+    }
+    for(const auto &stmt : tail) {
+        stmts->push_back(stmt);
+    }
+
+    // §7.4: an automatic hoisted local and an output formal must be
+    // assigned before read — a register persists where the fresh local
+    // (or the not-yet-copied-out formal) holds nothing readable.
+    for(const auto &checked : check_read_first) {
+        if(first_reference(block_node, checked) < 0) {
+            LOG_ERROR_N(call)
+                << "'" << checked << "' is read before it is assigned in this activation: "
+                << "a register persists where the task's storage starts fresh — assign it "
+                << "first";
+            return nullptr;
+        }
+    }
+
+    // ---- Depth-first: tasks calling tasks.
+    visiting.insert(name);
+    if(inline_calls_in(block_node, visiting)) {
+        visiting.erase(name);
+        return nullptr;
+    }
+    visiting.erase(name);
+    m_inlined_tasks.insert(name);
+    return block_node;
+}
+
+int ImplicitFsmElaboration::inline_calls_in(const AST::Node::Ptr &node,
+                                            std::set<std::string> &visiting)
+{
+    if(!node) {
+        return 0;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return 0;
+    }
+    for(const auto &child : *children) {
+        const bool statement_call = child && (child->is_node_type(AST::NodeType::TaskCall) ||
+                                              child->is_node_type(AST::NodeType::Call));
+        if(statement_call) {
+            const auto &call = AST::cast_to<AST::Call>(child);
+            if(m_tasks.count(call->get_name())) {
+                const auto &expansion = expand_call(call, visiting);
+                if(!expansion) {
+                    return 1;
+                }
+                node->replace(child, expansion);
+                continue;
+            }
+        }
+        if(inline_calls_in(child, visiting)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int ImplicitFsmElaboration::inline_tasks(const AST::Initial::Ptr &initial)
+{
+    if(m_tasks.empty()) {
+        return 0;
+    }
+    const std::size_t before = m_inlined_tasks.size();
+    std::set<std::string> visiting;
+    if(inline_calls_in(AST::to_node(initial), visiting)) {
+        return 1;
+    }
+    // §7.4: the shared LoopUnrolling runs again on the one process
+    // inlining changed — after hoisting, seeded module-wide.
+    if(m_inlined_tasks.size() != before || !m_inlined_tasks.empty()) {
+        if(LoopUnrolling(m_module_declared).run(AST::to_node(initial))) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                                             const AST::Node::Ptr &parent,
                                             const AST::Pragmalist::Ptr &pragmalist,
@@ -2979,6 +3425,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_output_values.clear();
     m_output_width = 0;
     m_output_slices.clear();
+    m_captures.clear();
     m_repeat_depth = 0;
     m_hold_needed = false;
     m_encoding = Encoding::BINARY;
@@ -3006,6 +3453,12 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             return 1;
         }
     }
+    // §7.4: tasks inline first — after this the process holds no call,
+    // and the walk sees only the block model's ordinary text.
+    if(inline_tasks(initial)) {
+        return 1;
+    }
+
     AST::Sens::Ptr clock;
     std::vector<AST::EventStatement::Ptr> waits;
     bool has_wait = false;
