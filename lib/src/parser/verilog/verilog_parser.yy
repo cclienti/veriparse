@@ -181,7 +181,7 @@ static inline const char *data_type_kind_keyword(data_type_kind_t kind)
 }
 
 enum class direction_t {
-	 INPUT, INOUT, OUTPUT, REF, NONE
+	 INPUT, INOUT, OUTPUT, REF, CONST_REF, NONE
 };
 
 struct port_info_t {
@@ -5622,6 +5622,16 @@ function_portdir:
                 {
                     $$ = direction_t::INPUT;
                 }
+
+        |       TK_REF
+                {
+                    $$ = direction_t::REF;
+                }
+
+        |       TK_CONST TK_REF
+                {
+                    $$ = direction_t::CONST_REF;
+                }
         ;
 
 
@@ -5928,6 +5938,11 @@ task_portdir:   TK_INPUT
         |       TK_REF
                 {
                     $$ = direction_t::REF;
+                }
+
+        |       TK_CONST TK_REF
+                {
+                    $$ = direction_t::CONST_REF;
                 }
         ;
 
@@ -6372,6 +6387,8 @@ namespace Veriparse {
                 case direction_t::OUTPUT: return AST::Arg::DirectionEnum::OUTPUT;
                 case direction_t::INOUT:  return AST::Arg::DirectionEnum::INOUT;
                 case direction_t::REF:    return AST::Arg::DirectionEnum::REF;
+                case direction_t::CONST_REF:
+                                          return AST::Arg::DirectionEnum::CONST_REF;
                 default:                  return AST::Arg::DirectionEnum::INPUT;
                 }
             }

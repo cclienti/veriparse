@@ -559,10 +559,26 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
         std::set<std::string> locals = {function->get_name()};
         std::set<std::string> written_locals;
         const auto &args = function->get_args();
+        std::set<std::string> aliases;
         if(args) {
             for(const auto &arg : *args) {
-                if(arg->get_direction() != AST::Arg::DirectionEnum::INPUT &&
-                   arg->get_direction() != AST::Arg::DirectionEnum::NONE) {
+                const auto direction = arg->get_direction();
+                if(direction == AST::Arg::DirectionEnum::REF ||
+                   direction == AST::Arg::DirectionEnum::CONST_REF) {
+                    // A reference formal reads its actual live — purity
+                    // admits the read; a write through it is the side
+                    // effect the model would miss, checked below.
+                    if(function->get_lifetime() != AST::Function::LifetimeEnum::AUTOMATIC) {
+                        LOG_ERROR_N(function) << "function '" << name << "': a ref argument needs "
+                                              << "'function automatic' (IEEE 1800-2017 §13.5.2)";
+                        return 1;
+                    }
+                    aliases.insert(arg->get_name());
+                    locals.insert(arg->get_name());
+                    continue;
+                }
+                if(direction != AST::Arg::DirectionEnum::INPUT &&
+                   direction != AST::Arg::DirectionEnum::NONE) {
                     LOG_ERROR_N(function)
                         << "function '" << name << "' carries a non-input argument: a "
                         << "side effect in expression position the (R_p, s_p) model "
@@ -592,6 +608,14 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
             }
         }
         for(const auto &target : targets) {
+            if(aliases.count(target)) {
+                LOG_ERROR_N(function)
+                    << "function '" << name << "' writes through reference argument '" << target
+                    << "': a side effect in expression position the "
+                    << "(R_p, s_p) model would miss silently — and a 'const ref' may "
+                    << "not be written at all (IEEE 1800-2017 §13.5.2)";
+                return 1;
+            }
             if(!locals.count(target)) {
                 LOG_ERROR_N(function)
                     << "function '" << name << "' writes non-local '" << target
@@ -3220,7 +3244,10 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
             }
+            case AST::Arg::DirectionEnum::CONST_REF:
             case AST::Arg::DirectionEnum::REF: {
+                const bool read_only =
+                    formal->get_direction() == AST::Arg::DirectionEnum::CONST_REF;
                 // §7.4, measured: a ref is a true alias for blocking
                 // writes on an automatic task — pure substitution, no
                 // local, no copy anything. '<=' through it is illegal
@@ -3261,6 +3288,31 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                                       << "1800-2017 §10.4.2, §13.5.2); alias with '=', or capture "
                                       << "with 'input' and commit registers directly";
                     return nullptr;
+                }
+                if(read_only) {
+                    std::set<std::string> ba_targets;
+                    std::function<void(const AST::Node::Ptr &)> scan_ba_ref =
+                        [&](const AST::Node::Ptr &n) {
+                            if(!n) {
+                                return;
+                            }
+                            if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
+                                ba_targets.insert(lvalue_target(
+                                    AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
+                            }
+                            const auto &kids = n->get_children();
+                            if(kids) {
+                                for(const auto &c : *kids) {
+                                    scan_ba_ref(c);
+                                }
+                            }
+                        };
+                    scan_ba_ref(block_node);
+                    if(ba_targets.count(fname)) {
+                        LOG_ERROR_N(call) << "task '" << name << "': write through const "
+                                          << "ref '" << fname << "' (IEEE 1800-2017 §13.5.2)";
+                        return nullptr;
+                    }
                 }
                 subst[fname] = actual;
                 break;
