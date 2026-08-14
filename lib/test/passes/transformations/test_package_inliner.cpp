@@ -219,6 +219,9 @@ TEST(PassesTransformation_PackageInliner, package_inliner_collision) { TEST_ERRO
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_err) { TEST_ERROR_SV; }
 // A package body is a closed scope: a subroutine naming a module net resolves
 // nowhere — module state travels through arguments (IEEE §26.2).
+// The closure admits what the package item itself binds — including the
+// labels of its named blocks, which `disable` references (§9.6.2).
+TEST(PassesTransformation_PackageInliner, package_inliner_disable) { TEST_CORE_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_task_module_net) { TEST_ERROR_SV; }
 TEST(PassesTransformation_PackageInliner, package_inliner_func_module_net) { TEST_ERROR_SV; }
 

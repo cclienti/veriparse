@@ -159,6 +159,39 @@ void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &name
     collect_bound_names_rec(node, visit);
 }
 
+/// Statement labels (`begin : lbl`, `fork : lbl`, `lbl : stmt`) bind names
+/// `disable` may reference (§9.6.2); ScopeTable's binder covers only
+/// declarations, so the closure check collects them separately.
+void collect_scope_labels(const AST::Node::Ptr &node, std::set<std::string> &names)
+{
+    if(!node) {
+        return;
+    }
+    if(node->is_node_type(AST::NodeType::Block)) {
+        const std::string &scope = AST::cast_to<AST::Block>(node)->get_scope();
+        if(!scope.empty()) {
+            names.insert(scope);
+        }
+    } else if(node->is_node_type(AST::NodeType::ParallelBlock)) {
+        const std::string &scope = AST::cast_to<AST::ParallelBlock>(node)->get_scope();
+        if(!scope.empty()) {
+            names.insert(scope);
+        }
+    } else if(node->is_node_type(AST::NodeType::SingleStatement)) {
+        const std::string &scope = AST::cast_to<AST::SingleStatement>(node)->get_scope();
+        if(!scope.empty()) {
+            names.insert(scope);
+        }
+    }
+    const AST::Node::ListPtr children = node->get_children();
+    if(!children) {
+        return;
+    }
+    for(const AST::Node::Ptr &child : *children) {
+        collect_scope_labels(child, names);
+    }
+}
+
 /// A package body is a closed scope (IEEE 1800-2017 §26.2): every name a
 /// package item references must resolve to the package's contents (own
 /// declarations plus pulled-in imports) or to a declaration inside the item.
@@ -542,6 +575,7 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         }
         for(const AST::Node::Ptr &item : *items) {
             collect_bound_names(item, declared);
+            collect_scope_labels(item, declared);
         }
         int closure = 0;
         for(const AST::Node::Ptr &item : *items) {
