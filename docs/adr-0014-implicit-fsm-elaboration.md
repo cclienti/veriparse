@@ -1387,26 +1387,43 @@ directly**, Appendix B's style. In a **cut-point-free** task the same
 formals are ordinary §6 temporaries and `=` is fine — the general scope
 rule decides, not a formal-specific one.
 
-**After inlining and copy-in substitution, the shared `LoopUnrolling`
-runs again on the marked process.** The pipeline unrolled the module
-before the FSM pass, so a bounded loop in a task body whose bound names
-a formal could not unroll at the definition — and without the re-run,
-§8 would refuse a loop that becomes constant-bounded the moment the
-actual substitutes. The re-run keeps §7.2's contract — all bounded
-loops unroll uniformly, wherever the text came from — without giving
-this pass unrolling machinery of its own: it is the same shared pass,
-invoked once more on the one process inlining changed — **after
-hoisting**, so the hoisted registers are module-level declarations the
-loop cloning never duplicates, and per-site names stay one register per
-call site however many copies the re-run makes of the surrounding text.
-The re-run's uniquifier is **seeded with the module-wide declaration
-set** (its stock invocation analyzes only the node it is handed, which
+**The shared `LoopUnrolling` brackets the inlining — once before,
+once after.** The run *before* makes a call inside a constant-bounded
+user loop unroll first, so each clone is its own call site with its own
+ordinal, storage and copy-in. The run *after* serves the bound that
+could not fold until substitution — a task-body loop counting a formal
+— and keeps §7.2's contract (all bounded loops unroll uniformly,
+wherever the text came from) without giving this pass unrolling
+machinery of its own. Both runs come **after hoisting**, so the hoisted
+registers are module-level declarations the loop cloning never
+duplicates, and both are **seeded with the module-wide declaration
+set** (the stock invocation analyzes only the node it is handed, which
 here would let it mint a name colliding with a module-level declaration
-or another process's) while its rewriting stays guarded to the one
-process. A rolled
-`veriparse_no_unroll` repeat needs no such help: §7.2's capture accepts
-a formal's induced register like any non-constant count, and a
-genuinely non-constant bound keeps §8's refusal.
+or another process's) while the rewriting stays guarded to the one
+process. The second run can still clone an already-expanded call — a
+nested call under the formal-bounded loop — and cloning loses the
+pass's pointer identity on the induced commits, so they **re-adopt by
+their generated shapes**: a *pure* capture register has exactly one
+writer, its capture, so any commit to it is a capture; a copy-out names
+its site register on the right. A formal both captured and
+`<=`-written by the body makes its clones ambiguous — capture and body
+write are indistinguishable — and that one combination is refused, with
+`veriparse_no_unroll` as the spelling that keeps the loop rolled. A
+rolled repeat needs no such help: §7.2's capture accepts a formal's
+induced register like any non-constant count, and a genuinely
+non-constant bound keeps §8's refusal.
+
+**Copy-outs carry §13.3's immediate visibility the same way captures
+do:** the induced `actual <= <site>_<formal>` commit forward-substitutes
+within its own segment, so a same-segment reader after the call — the
+caller's next statement, or an enclosing task's own read of the formal a
+nested call copied into — sees the copied-out value exactly as the
+source does, while later segments read the register. A call inside a
+**cut-point-free branch** keeps the same discipline through a
+branch-local environment: the branch's own readers see the copied
+values, and past the branch the committed targets are branch-dependent —
+a read of one in the same cycle is refused with the rewrite in the
+message (read after the next wait, or hoist the call).
 
 **One composition consequence, found by the tests rather than argued:**
 two sequential calls whose bodies commit one register around a
@@ -1426,7 +1443,9 @@ anywhere in the module is dropped** — kept, it would be emitted dead
 code still writing the machine's registers, tripping §9.2.2.4 against
 the very process it was inlined into. One still called from an unmarked
 process (whose calls the inliner never touches) survives verbatim: the
-rule is per task, drop iff call-site count reaches zero.
+rule is per task, drop iff call-site count reaches zero — counted to a
+fixpoint, since dropping a task removes the call sites its own body
+held and can strand its callees in turn.
 
 **Tasks calling tasks inline depth-first; recursion is a cycle in that
 walk and is rejected** naming the cycle — the model has no stack to give
@@ -1629,6 +1648,10 @@ unmarked column has already been misread once.
 | a package item naming a module-scope identifier | a package body is a closed scope — module state travels through subroutine arguments. Refused by `PackageInliner`, where the name would otherwise splice into whatever it lands on in the importing module (§7.4) | ADR-0004, IEEE §26.2 |
 | a net actual on a `ref`/`const ref` formal (task or function call) | "Nets and selects into nets shall not be passed by reference" — an `input logic` port is a net (§23.2.2.3); the conforming clock port is `input var logic clk` (§7.4) | ADR §7.4, IEEE §13.5.2, §23.2.2.3 |
 | a task call omitting an actual whose formal has no default | §13.5.3 fills only declared defaults; anything else is an arity error, not a guess (§7.4) | ADR §7.4, IEEE §13.5.3 |
+| a task local sharing a formal's or another local's name | substitution binds by name across the inlined body (§6.1, §7.4) — honouring the shadow would silently hijack the earlier binding — rename it | ADR §6, §7.4 |
+| an author signal named like a static local's hoist register (`<task>_<local>`) | the hoist would silently alias the author's storage — rename one of them (§7.4) | ADR §7.4 |
+| a read, in the same cycle, of a register a conditional task call assigns | the copied value depends on the branch; §13.3's visibility holds inside the branch, the next wait makes it unconditional (§7.4) | ADR §7.4, IEEE §13.3 |
+| an unrolled clone of a call site whose formal is both captured and `<=`-written | the clones' copy-ins and body writes are indistinguishable — keep the loop rolled with `(* veriparse_no_unroll *)` (§7.4) | ADR §7.4 |
 | a task `return` conditional within its branch, inside a loop or case arm, through a partially-returning named block, or carrying a value | the return jumps to the body's end and lowers structurally — flag state and label renames are not carried, and a task returns no value (§7.4) | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
