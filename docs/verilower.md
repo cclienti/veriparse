@@ -432,6 +432,18 @@ substituted bound is constant, roll under `(* veriparse_no_unroll *)`
 (dynamic counts included), and the inlined-away task definition is
 dropped when nothing else calls it. Recursion is refused.
 
+Two call conveniences follow IEEE §13.5.3 and §13.3:
+
+- **Default argument values** — `task send(input logic [7:0] n = 8'd2);`
+  called as `send();` takes the default, evaluated in the declaring
+  scope (a package task's default resolves against package symbols).
+  Trailing omission only; the blank placeholder `send(, x)` and named
+  binding are not admitted yet.
+- **Early `return`** — `if (abort) return;` jumps to the end of the task
+  body, and an `output`/`inout` copy-out still runs, exactly as
+  simulators behave. The return must be unconditional within its branch;
+  a return inside a loop or case arm, or carrying a value, is refused.
+
 ```systemverilog
 task phase(input logic v, input logic [7:0] hold);
     begin

@@ -1516,9 +1516,38 @@ variable case into a genuine `Var` — so `output logic s` passes by
 `ref` while the implicit-type `output s` is refused as the net it
 defaults to.
 
+**Default argument values fill omitted actuals (§13.5.3, measured).**
+An omitted trailing actual takes its formal's default — vsim and
+Verilator agree, including the blank mid-list placeholder `t(, x)`,
+which the call grammar does not admit yet (§15) — and the default is
+evaluated in the declaring scope, which inlining preserves: a module
+task's default reads module names in place, a package task's resolves
+against package symbols before the splice (ADR-0004 pulls its
+dependencies along). No actual and no default is the §9 arity error.
+Defaults belong to the parenthesized list alone — "the use of defaults
+shall only be allowed with the ANSI style declarations" (§13.5.3), and
+A.2.7's body `tf_port_declaration` has no default slot — enforced at
+parse.
+
+**A task `return` jumps to the body's end, and the copy-out still runs
+(§13.3, measured).** The lowering restructures each return path to fall
+out of the inlined block, where the copy-out tail waits: what follows an
+always-returning statement is unreachable and dropped, the statements
+after an `if` with one always-returning branch become the other
+branch's tail (lowered in turn), and a return escaping an *unnamed*
+block threads the block's continuation inward — every motion is single,
+so no statement duplicates and no flag register appears. What that
+structure cannot express is refused: a return conditional *within* its
+branch (its skip would need exit state the model does not carry), a
+return inside a loop or case arm (same, spelled `break` or a guard), a
+return through a *named* block that does not return on every path
+(threading would rename the §10.1 states), and a return carrying a
+value (illegal in a task — vsim agrees). A process-level `return`
+outside any task keeps the generic §9 refusal.
+
 What stays out: hierarchical task names (the referent is not in the
-module) and tasks whose formals take defaults with no actual — until a
-design asks.
+module), the blank argument placeholder and named argument binding at
+call sites (§15), and `do…while` (unparsed, §15).
 
 ## 8. Decision 7 — `break` and `continue` are CFG edges
 
@@ -1599,6 +1628,8 @@ unmarked column has already been misread once.
 | one formal written with both `=` and `<=` | a formal is one storage — a §6.1 temporary or a hoisted register, not both (§7.4) | ADR §7.4 |
 | a package item naming a module-scope identifier | a package body is a closed scope — module state travels through subroutine arguments. Refused by `PackageInliner`, where the name would otherwise splice into whatever it lands on in the importing module (§7.4) | ADR-0004, IEEE §26.2 |
 | a net actual on a `ref`/`const ref` formal (task or function call) | "Nets and selects into nets shall not be passed by reference" — an `input logic` port is a net (§23.2.2.3); the conforming clock port is `input var logic clk` (§7.4) | ADR §7.4, IEEE §13.5.2, §23.2.2.3 |
+| a task call omitting an actual whose formal has no default | §13.5.3 fills only declared defaults; anything else is an arity error, not a guess (§7.4) | ADR §7.4, IEEE §13.5.3 |
+| a task `return` conditional within its branch, inside a loop or case arm, through a partially-returning named block, or carrying a value | the return jumps to the body's end and lowers structurally — flag state and label renames are not carried, and a task returns no value (§7.4) | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |
@@ -2171,6 +2202,8 @@ Positioning, so that later choices can be argued against something.
 | Mealy outputs | Moore only — for a nonblocking target the equivalence with the source is exact segment by segment, whereas Mealy moves the observable timing inside the cycle | user-written `assign` outside the block today; a v2 rule if that proves insufficient |
 | Three-process emission (state register / next state / output decode) | one `always_ff` with a `case` (§10), plus the §6.2 `always_comb` for decoded outputs — the output-decode third, landed | v2 for the remaining split. The preferred style for synthesis and for reading, but the segment model puts the transition and the registered outputs in the same process, so the split is not the mechanical one it looks like — it needs its own decision; §6.2's stability analysis says where a self-advancing value must land when it comes |
 | `typedef enum` state emission | `localparam` only (§10) — the one form safe in-process, in any front end, and in both output modes | v2 opt-in emission style, SV output only, for the chained workflow: sound because a consumer re-parses and the ADR-0009 machinery re-resolves, and it buys native symbolic state display in any simulator. An in-process integration keeps `localparam` |
+| Call-site argument forms | positional actuals, trailing omission with defaults (§13.5.3) | the blank placeholder `t(, x)` (measured working in vsim and Verilator) and named binding `t(.n(x))` — call-grammar features |
+| `do…while` | — | unparsed; needs its own AST node and the §7 body-first rotation |
 | Counter splitting | one shared countdown per repeat-nesting **depth**, re-initialised on entry: sequential rolled `repeat` timers share their depth's register, nested ones each own their depth's (`cnt`, `cnt2`, ...), and a rolled `for` keeps its own index | further splitting (one per site) is a post-v1 optimisation, if routing says so |
 | Dispatch-idiom machine (§4) carrying two state registers — the control position plus the author's selector | correct by construction, not minimal; nothing merges them | v2 **selector specialization**: a register assigned only constant labels and read only in guards against constants (Yosys `fsm_detect`'s criterion) folds into the control state by reachable-pair splitting — statechart flattening, done reachability-driven to avoid the product blowup. Restructures control, so §11.1's identity no longer holds across it: ships off by default with a §C.6-style path-by-path check under the recorded (position, selector) → flat-state relation |
 | Cross-state expression sharing (CSE over the whole process, `wire` per distinct subexpression) | §6.1's emitter materializes a `wire` only where the language forces it — unprintable selects, width-bearing declarations — and folds a value away when the machinery can; sharing and cosmetic naming are not attempted | v2, behind a process-level `veriparse_share` hint (§3: implementation-only, states are mutually exclusive so nothing contends). Shares *identical* expressions only — naming, not binding; one operator with state-muxed operands is the HLS allocation the row below refuses. Evidence first, per §3: measured cell counts, §5.3-style, before it may ever become a default |

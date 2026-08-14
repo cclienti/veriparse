@@ -383,6 +383,11 @@ if(NOT WIN32)
     # const ref clock, inout accumulator, input count, zero-skip frame.
     add_verilower_sv_cosim(NAME pkg_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §7.4 default arguments and early return: the task's default fills
+    # the omitted actual and `if (abort) return;` jumps to the body's end
+    # (IEEE §13.5.3, §13.3 — both measured).
+    add_verilower_sv_cosim(NAME ret_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
     # marked module instantiated twice with different parameters — the
     # shape a per-module verilower run cannot compile (§15) — each
