@@ -47,6 +47,67 @@ inline bool has_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string
     return false;
 }
 
+/// §7.4 induced-commit markers: the inliner's copy-in captures and
+/// copy-outs travel as pragma-wrapped nonblocking assignments —
+/// `(* veriparse_fsm_capture *)` / `(* veriparse_fsm_copyout *)` — so the
+/// identity survives any cloning (an unrolled clone keeps its pragma where
+/// a pointer would dangle). The walk adopts and unwraps them before path
+/// enumeration; the markers never reach the output.
+constexpr const char *k_capture_marker = "veriparse_fsm_capture";
+constexpr const char *k_copyout_marker = "veriparse_fsm_copyout";
+
+/// 0 = not a marker; 1 = capture; 2 = copy-out. A marker is a Pragmalist
+/// carrying exactly the internal pragma around one nonblocking assignment.
+inline int induced_marker_kind(const AST::Node::Ptr &node)
+{
+    if(!node || !node->is_node_type(AST::NodeType::Pragmalist)) {
+        return 0;
+    }
+    const auto &pragmas = AST::cast_to<AST::Pragmalist>(node)->get_pragmas();
+    if(!pragmas) {
+        return 0;
+    }
+    for(const auto &pragma : *pragmas) {
+        if(!pragma) {
+            continue;
+        }
+        if(pragma->get_name() == k_capture_marker) {
+            return 1;
+        }
+        if(pragma->get_name() == k_copyout_marker) {
+            return 2;
+        }
+    }
+    return 0;
+}
+
+/// The marked nonblocking assignment inside an induced-commit marker.
+inline AST::NonblockingSubstitution::Ptr induced_marker_nba(const AST::Node::Ptr &node)
+{
+    const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
+    if(!stmts || stmts->size() != 1 ||
+       !stmts->front()->is_node_type(AST::NodeType::NonblockingSubstitution)) {
+        return nullptr;
+    }
+    return AST::cast_to<AST::NonblockingSubstitution>(stmts->front());
+}
+
+/// Wrap an induced commit in its marker.
+inline AST::Node::Ptr make_induced_marker(const AST::NonblockingSubstitution::Ptr &nba,
+                                          bool capture, const std::string &fn, int ln)
+{
+    auto pragma = std::make_shared<AST::Pragma>(fn, ln);
+    pragma->set_name(capture ? k_capture_marker : k_copyout_marker);
+    auto pragmas = std::make_shared<AST::Pragma::List>();
+    pragmas->push_back(pragma);
+    auto stmts = std::make_shared<AST::Node::List>();
+    stmts->push_back(AST::to_node(nba));
+    auto wrapper = std::make_shared<AST::Pragmalist>(fn, ln);
+    wrapper->set_pragmas(pragmas);
+    wrapper->set_statements(stmts);
+    return AST::to_node(wrapper);
+}
+
 inline AST::Pragma::Ptr get_pragma(const AST::Pragmalist::Ptr &pragmalist, const std::string &name)
 {
     const auto &pragmas = pragmalist->get_pragmas();

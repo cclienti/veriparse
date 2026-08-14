@@ -575,6 +575,11 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err2) { TEST_ERROR_SV;
 // commits re-adopt after the post-substitution re-run (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop1) { TEST_CORE_SV; }
+// The marker identity survives cloning even for a '<='-written formal:
+// the clone's capture keeps its pragma where the body write has none,
+// so the shape the pointer re-adoption had to refuse is simply
+// supported (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop2) { TEST_CORE_SV; }
 // A capture inside a cut-point-free branch still forward-substitutes:
 // the branch's reader sees the actual, per §13.3 blocking copy-in.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_br0) { TEST_CORE_SV; }

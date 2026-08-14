@@ -207,7 +207,7 @@ private:
     int inline_tasks(const AST::Initial::Ptr &initial);
     int inline_calls_in(const AST::Node::Ptr &node, std::set<std::string> &visiting);
     AST::Node::Ptr expand_call(const AST::Call::Ptr &call, std::set<std::string> &visiting);
-    int readopt_induced(const AST::Node::Ptr &node);
+    void adopt_markers(const AST::Node::Ptr &node);
     bool contains_induced(const AST::Node::Ptr &node) const;
     AST::Node::Ptr emit_verbatim(const AST::Node::Ptr &stmt, Env &env,
                                  std::set<std::string> &committed);
@@ -377,23 +377,19 @@ private:
     };
     ModuleState m_module_state;
 
-    /// One process's §7.4 inlining state.
+    /// One process's §7.4 inlining state. The induced copy-in and
+    /// copy-out commits travel through inlining and unrolling as pragma
+    /// markers — `(* veriparse_fsm_capture *)` / `(* veriparse_fsm_copyout *)`
+    /// — which any cloning copies along; adopt_markers unwraps them once
+    /// the text is final and these pointer indices take over for the walk.
     struct InlineState
     {
         /// The induced copy-in commits the walk substitutes (§6.1, §7.4).
         std::set<const AST::Node *> captures;
-        /// Copy-out commits (`actual <= <site>_<formal>`): induced like the
-        /// captures, carrying §13.3's immediate visibility through the
-        /// environment. The name maps re-identify both kinds when loop
-        /// unrolling clones them (pointers alone would dangle): a pure
-        /// capture register has exactly one writer, its capture; an impure
-        /// one is also '<='-written by the body, so its clones are
-        /// ambiguous and refused.
+        /// Copy-out commits (`actual <= <site>_<formal>`): induced like
+        /// the captures, carrying §13.3's immediate visibility through
+        /// the environment.
         std::set<const AST::Node *> copyouts;
-        std::set<std::string> capture_pure;
-        std::set<std::string> capture_impure;
-        std::map<std::string, std::string> copyout_actual;
-        std::map<std::string, bool> site_impure;
         /// Blocks already produced by expand_call: the caller's locals
         /// visit must not re-rename what a nested expansion owns.
         std::set<const AST::Node *> expanded;
