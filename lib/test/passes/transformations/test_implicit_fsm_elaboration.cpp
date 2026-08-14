@@ -499,6 +499,18 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_CORE_SV; }
 // write refusal §13.5.2 makes it (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task10) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err13) { TEST_ERROR_SV; }
+// The clock and enable arriving through const ref aliases: the task's
+// @(posedge ck iff ce) substitutes to the process's clk/en, and §2's
+// uniformity plus §5.3's single-enable rule judge the result — the
+// golden gets the if(en) gate, the twins get the mixed-clock and
+// mixed-enable refusals through the alias (§2, §5.3, §7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task11) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err14) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err15) { TEST_ERROR_SV; }
+// A wait reading a copied-in formal: the §13.3 copy never toggles
+// again, so the source would hang on it — const ref is the spelling
+// (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err16) { TEST_ERROR_SV; }
 // Reference formals on functions: a const ref reads its actual live and
 // stays pure; a write through any ref is the side effect the model
 // would miss; ref needs function automatic (§7.4, §9, IEEE §13.5.2).

@@ -1451,7 +1451,12 @@ restriction needed. The boundary is also measured: **`<=` through a
 `ref` is illegal IEEE** (no nonblocking assignment to an automatic —
 vsim and iverilog both enforce it), so it is refused here with the
 choice spelled out: alias with `ref` and `=`, or capture with `input`
-and commit registers directly. **`const ref` is the same substitution
+and commit registers directly. A wait can therefore take its clock or
+enable **only through a reference formal**: a non-ref formal is a §13.3
+copy captured at the call, which never toggles again — the source would
+hang on `@(posedge ck)` where a lowered copy-register would advance —
+so a wait reading a copied-in formal is refused with the `const ref`
+spelling in the message. **`const ref` is the same substitution
 with the write refusal §13.5.2 makes it**, on tasks and on functions
 alike — and on a *function*, a reference formal folds into the purity
 model rather than the inliner: the alias read is admitted (the actual

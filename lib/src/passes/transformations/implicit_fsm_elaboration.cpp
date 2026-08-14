@@ -3410,6 +3410,57 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         }
     }
 
+    // §7.4: a clock or enable cannot arrive through copy-in — the §13.3
+    // copy is captured at the call and never toggles again, so the source
+    // would hang on it where a lowered copy-register would advance. The
+    // reference kinds substitute to the live signal and are the spelling.
+    {
+        std::set<std::string> captured;
+        if(formals) {
+            for(const auto &formal : *formals) {
+                if(formal->get_direction() != AST::Arg::DirectionEnum::REF &&
+                   formal->get_direction() != AST::Arg::DirectionEnum::CONST_REF) {
+                    captured.insert(formal->get_name());
+                }
+            }
+        }
+        if(!captured.empty()) {
+            std::function<int(const AST::Node::Ptr &)> scan_waits =
+                [&](const AST::Node::Ptr &n) -> int {
+                if(!n) {
+                    return 0;
+                }
+                if(n->is_node_type(AST::NodeType::EventStatement)) {
+                    std::set<std::string> names;
+                    collect_identifier_names(
+                        AST::to_node(AST::cast_to<AST::EventStatement>(n)->get_senslist()), names);
+                    for(const auto &formal_name : captured) {
+                        if(names.count(formal_name)) {
+                            LOG_ERROR_N(n) << "task '" << name << "': the wait reads formal '"
+                                           << formal_name << "', which is copied in at the call — "
+                                           << "a §13.3 copy never toggles again, so the source "
+                                           << "would hang on it; pass a clock or enable by "
+                                           << "'const ref'";
+                            return 1;
+                        }
+                    }
+                }
+                const auto &kids = n->get_children();
+                if(kids) {
+                    for(const auto &c : *kids) {
+                        if(scan_waits(c)) {
+                            return 1;
+                        }
+                    }
+                }
+                return 0;
+            };
+            if(scan_waits(block_node)) {
+                return nullptr;
+            }
+        }
+    }
+
     // ---- Apply the renames, then splice copy-in/copy-out.
     if(!subst.empty()) {
         rename_into(block_node, subst);
