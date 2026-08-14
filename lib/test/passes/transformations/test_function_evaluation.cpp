@@ -89,6 +89,9 @@ TEST(PassesTransformation_FunctionEvaluation, function3) { TEST_CORE; }
 TEST(PassesTransformation_FunctionEvaluation, function4) { TEST_CORE; }
 // A constant function that returns via `return expr;` (§12.8) — the interpreter
 // treats it as the result and early-exits.
+// A defaulted trailing argument omitted at the call takes its default
+// (IEEE 1800-2017 §13.5.3): f(1) with b = 3 folds to 4.
+TEST(PassesTransformation_FunctionEvaluation, function_dflt0) { TEST_CORE_SV; }
 TEST(PassesTransformation_FunctionEvaluation, function_return0) { TEST_CORE_SV; }
 // Early `return` unwinds: g(-3) takes `return 0;` and must NOT fall through to the
 // later `return x*2;` (which would give -6). Verifies statements after a jump are
