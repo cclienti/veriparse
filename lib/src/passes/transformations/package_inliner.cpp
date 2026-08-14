@@ -159,6 +159,42 @@ void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &name
     collect_bound_names_rec(node, visit);
 }
 
+/// A package body is a closed scope (IEEE 1800-2017 §26.2): every name a
+/// package item references must resolve to the package's contents (own
+/// declarations plus pulled-in imports) or to a declaration inside the item.
+/// Runs after the body is resolved, so a surviving free name is genuinely
+/// unresolvable — typically a module net the author expected a package
+/// subroutine to see. The resolvable base of a hierarchical reference is its
+/// head; the tail names members.
+int check_scope_closure(const AST::Node::Ptr &node, const std::string &pkgname,
+                        const std::set<std::string> &declared)
+{
+    if(!node) {
+        return 0;
+    }
+    if(is_reference(node)) {
+        std::string base = ref_get_name(node);
+        if(node->is_node_category(AST::NodeType::Identifier)) {
+            const AST::HierName::Ptr hier = AST::cast_to<AST::Identifier>(node)->get_hier();
+            if(hier && hier->get_labellist() && !hier->get_labellist()->empty()) {
+                base = hier->get_labellist()->front()->get_name();
+            }
+        }
+        if(!declared.count(base)) {
+            LOG_ERROR_N(node) << "'" << base << "' is not declared in package '" << pkgname
+                              << "': a package cannot reference module-scope names — pass module "
+                              << "state through subroutine arguments (IEEE 1800-2017 §26.2)";
+            return 1;
+        }
+    }
+    const AST::Node::ListPtr children = node->get_children();
+    int rc = 0;
+    for(const AST::Node::Ptr &child : *children) {
+        rc |= check_scope_closure(child, pkgname, declared);
+    }
+    return rc;
+}
+
 /// The compilation-unit definitions list (top-level scope), or null.
 AST::Node::ListPtr top_level_definitions(const AST::Node::Ptr &root)
 {
@@ -495,6 +531,24 @@ int PackageInliner::resolve_packages(const AST::Node::Ptr &source)
         const AST::Node::ListPtr items = pkg->get_items();
         for(auto it = items->begin(); it != items->end();) {
             it = (*it)->is_node_type(AST::NodeType::Export) ? items->erase(it) : std::next(it);
+        }
+
+        // With the body fully resolved, enforce §26.2 closure: contents keys
+        // plus every name declared inside the items are all a package item may
+        // reference. Flat on purpose — the check only needs "declared nowhere".
+        std::set<std::string> declared;
+        for(const auto &kv : pit->second.contents) {
+            declared.insert(kv.first);
+        }
+        for(const AST::Node::Ptr &item : *items) {
+            collect_bound_names(item, declared);
+        }
+        int closure = 0;
+        for(const AST::Node::Ptr &item : *items) {
+            closure |= check_scope_closure(item, pkg->get_name(), declared);
+        }
+        if(closure != 0) {
+            return 1;
         }
     }
     return 0;

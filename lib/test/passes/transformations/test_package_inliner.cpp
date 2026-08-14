@@ -217,6 +217,10 @@ TEST(PassesTransformation_PackageInliner, package_inliner_ambiguous) { TEST_ERRO
 TEST(PassesTransformation_PackageInliner, package_inliner_collision) { TEST_ERROR_SV; }
 // Re-export of a name the package never imported is an error (§26.6).
 TEST(PassesTransformation_PackageInliner, package_inliner_reexport_err) { TEST_ERROR_SV; }
+// A package body is a closed scope: a subroutine naming a module net resolves
+// nowhere — module state travels through arguments (IEEE §26.2).
+TEST(PassesTransformation_PackageInliner, package_inliner_task_module_net) { TEST_ERROR_SV; }
+TEST(PassesTransformation_PackageInliner, package_inliner_func_module_net) { TEST_ERROR_SV; }
 
 // Multi-source: a package defined in one file, referenced from a module in
 // another (the veriflat model — global collect, per-unit resolve). Proves a
