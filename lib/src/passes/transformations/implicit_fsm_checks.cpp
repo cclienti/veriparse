@@ -165,11 +165,8 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
             }
             const std::string &aname = base->get_name();
             if(is_net_signal(module, aname)) {
-                LOG_ERROR_N(call) << "function '" << call->get_name() << "': actual '" << aname
-                                  << "' for ref '" << arg->get_name()
-                                  << "' is a net — nets and selects into nets shall not be "
-                                  << "passed by reference (IEEE 1800-2017 §13.5.2); make it a "
-                                  << "variable ('input var logic " << aname << "')";
+                log_net_actual(AST::to_node(call), "function", call->get_name(), arg->get_name(),
+                               aname);
                 return 1;
             }
         }
