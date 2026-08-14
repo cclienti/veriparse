@@ -488,7 +488,6 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task2) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task3) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task4) { TEST_CORE_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task5) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task6) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_CORE_SV; }
 // A ref formal is pure substitution — measured aliasing: the decoded
@@ -531,6 +530,11 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err9) { TEST_ERROR_SV
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err10) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err11) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err12) { TEST_ERROR_SV; }
+// No nonblocking assignment to automatic storage (IEEE §6.21, measured —
+// vsim enforces it): an automatic task's cut-spanning local and its
+// '<='-committed inout formal are both refused (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err17) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err18) { TEST_ERROR_SV; }
 // A second clock domain beside the marked process: the mark is
 // per-process, the clk2 always_ff passes through verbatim (§2).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_clk2_0) { TEST_CORE_SV; }
