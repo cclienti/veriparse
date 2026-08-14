@@ -550,6 +550,25 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err16) { TEST_ERROR_S
 // logic' form is a variable (§7.4, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err19) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err20) { TEST_ERROR_SV; }
+// Default argument values (IEEE §13.5.3, measured): an omitted trailing
+// actual takes the formal's default, evaluated in the declaring scope —
+// which inlining preserves; a package default resolves against package
+// symbols before the splice. No default and no actual is the error
+// (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_dflt0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_dflt1) { TEST_CORE_PKG_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_dflt_err0) { TEST_ERROR_SV; }
+// A task return jumps to the body's end and the copy-out still runs
+// (IEEE §13.3, measured): the lowering restructures every return path to
+// fall out of the block — early-exit branch, both-branch return with its
+// unreachable tail dropped, a return escaping an unnamed block. A return
+// conditional within its branch, inside a loop, or carrying a value is
+// refused (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret1) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err1) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_ret_err2) { TEST_ERROR_SV; }
 // Reference formals on functions: a const ref reads its actual live and
 // stays pure; a write through any ref is the side effect the model
 // would miss; ref needs function automatic (§7.4, §9, IEEE §13.5.2).

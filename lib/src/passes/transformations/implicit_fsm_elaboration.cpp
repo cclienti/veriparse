@@ -349,6 +349,221 @@ AST::BlockingSubstitution::Ptr make_ba(const std::string &target, const AST::Nod
     return ba;
 }
 
+/// Whether a Return sits anywhere below `node`. A task call's own returns
+/// are its expansion's business, but a Call child holds only actuals, so
+/// the plain walk cannot meet one.
+bool contains_return(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Return)) {
+        return true;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return false;
+    }
+    for(const auto &child : *children) {
+        if(contains_return(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int lower_return_list(const AST::Node::ListPtr &stmts, const std::string &task_name, bool &always);
+
+/// A branch position has no statement list to thread a continuation into,
+/// so a branch holding a return must return on EVERY path through it —
+/// then the jump is the branch's end and the structure stays flag-free. A
+/// partial return here would need exit state the model does not carry.
+int lower_return_branch(AST::Node::Ptr &branch, const std::string &task_name, bool &always)
+{
+    always = false;
+    if(!branch || !contains_return(branch)) {
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::SingleStatement)) {
+        // The grammar's single-statement wrapper: the payload is the shape.
+        AST::Node::Ptr inner = AST::cast_to<AST::SingleStatement>(branch)->get_statement();
+        if(lower_return_branch(inner, task_name, always)) {
+            return 1;
+        }
+        branch = inner;
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::Return)) {
+        if(AST::cast_to<AST::Return>(branch)->get_value()) {
+            LOG_ERROR_N(branch) << "task '" << task_name
+                                << "': a return value is not allowed within a task "
+                                << "(IEEE 1800-2017 §13.3)";
+            return 1;
+        }
+        branch = AST::to_node(std::make_shared<AST::Block>(
+            std::make_shared<AST::Node::List>(), "", branch->get_filename(), branch->get_line()));
+        always = true;
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::Block)) {
+        if(lower_return_list(AST::cast_to<AST::Block>(branch)->get_statements(), task_name,
+                             always)) {
+            return 1;
+        }
+        if(!always) {
+            LOG_ERROR_N(branch)
+                << "task '" << task_name << "': a return conditional within its branch has no "
+                << "structural exit — make the branch return on every path, or restructure";
+            return 1;
+        }
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::IfStatement)) {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(branch);
+        AST::Node::Ptr t = ifs->get_true_statement();
+        AST::Node::Ptr e = ifs->get_false_statement();
+        bool tret = false;
+        bool eret = false;
+        if(lower_return_branch(t, task_name, tret) || lower_return_branch(e, task_name, eret)) {
+            return 1;
+        }
+        ifs->set_true_statement(t);
+        ifs->set_false_statement(e);
+        if(!tret || !eret) {
+            LOG_ERROR_N(branch)
+                << "task '" << task_name << "': a return conditional within its branch has no "
+                << "structural exit — make the branch return on every path, or restructure";
+            return 1;
+        }
+        always = true;
+        return 0;
+    }
+    LOG_ERROR_N(branch) << "task '" << task_name
+                        << "': a return inside a loop or case arm has no structural exit — "
+                        << "restructure with break or a guard";
+    return 1;
+}
+
+/// §13.3, measured: a task return jumps to the end of the body, and the
+/// copy-out still runs — it sits past the body, where every lowered path
+/// falls. The lowering restructures the list so each return path reaches
+/// the list's end: what follows an always-returning statement is
+/// unreachable and dropped, statements after an if with one
+/// always-returning branch move into the other branch, and a return
+/// escaping an unnamed block threads the block's continuation inward. On
+/// exit `always` says no path falls past the list's own end.
+int lower_return_list(const AST::Node::ListPtr &stmts, const std::string &task_name, bool &always)
+{
+    always = false;
+    if(!stmts) {
+        return 0;
+    }
+    for(auto it = stmts->begin(); it != stmts->end(); ++it) {
+        AST::Node::Ptr s = *it;
+        if(!s || !contains_return(s)) {
+            continue;
+        }
+        if(s->is_node_type(AST::NodeType::SingleStatement)) {
+            // The grammar's single-statement wrapper: the payload is the
+            // shape, and the rewrite below replaces the whole statement.
+            s = AST::cast_to<AST::SingleStatement>(s)->get_statement();
+            *it = s;
+        }
+
+        if(s->is_node_type(AST::NodeType::Return)) {
+            if(AST::cast_to<AST::Return>(s)->get_value()) {
+                LOG_ERROR_N(s) << "task '" << task_name
+                               << "': a return value is not allowed within a task "
+                               << "(IEEE 1800-2017 §13.3)";
+                return 1;
+            }
+            stmts->erase(it, stmts->end()); // the return, and its unreachable tail
+            always = true;
+            return 0;
+        }
+
+        if(s->is_node_type(AST::NodeType::IfStatement)) {
+            const auto &ifs = AST::cast_to<AST::IfStatement>(s);
+            AST::Node::Ptr t = ifs->get_true_statement();
+            AST::Node::Ptr e = ifs->get_false_statement();
+            bool tret = false;
+            bool eret = false;
+            if(lower_return_branch(t, task_name, tret) || lower_return_branch(e, task_name, eret)) {
+                return 1;
+            }
+            ifs->set_true_statement(t);
+            ifs->set_false_statement(e);
+            if(tret && eret) {
+                stmts->erase(std::next(it), stmts->end()); // both paths return
+                always = true;
+                return 0;
+            }
+            if(tret || eret) {
+                // One branch jumps to the end; the other and the statements
+                // after the if are the same fall-through — they become that
+                // branch's tail, lowered in turn for any further return.
+                AST::Node::Ptr &open = tret ? e : t;
+                AST::Block::Ptr host;
+                if(open && open->is_node_type(AST::NodeType::Block) &&
+                   AST::cast_to<AST::Block>(open)->get_scope().empty()) {
+                    host = AST::cast_to<AST::Block>(open);
+                } else {
+                    auto inner = std::make_shared<AST::Node::List>();
+                    if(open) {
+                        inner->push_back(open);
+                    }
+                    host =
+                        std::make_shared<AST::Block>(inner, "", s->get_filename(), s->get_line());
+                }
+                for(auto rit = std::next(it); rit != stmts->end(); ++rit) {
+                    host->get_statements()->push_back(*rit);
+                }
+                stmts->erase(std::next(it), stmts->end());
+                open = AST::to_node(host);
+                ifs->set_true_statement(t);
+                ifs->set_false_statement(e);
+                return lower_return_list(host->get_statements(), task_name, always);
+            }
+            continue; // both branches lowered internally, both fall through
+        }
+
+        if(s->is_node_type(AST::NodeType::Block)) {
+            const auto &blk = AST::cast_to<AST::Block>(s);
+            if(blk->get_scope().empty()) {
+                // Unnamed: the continuation threads inward, one motion.
+                for(auto rit = std::next(it); rit != stmts->end(); ++rit) {
+                    blk->get_statements()->push_back(*rit);
+                }
+                stmts->erase(std::next(it), stmts->end());
+                return lower_return_list(blk->get_statements(), task_name, always);
+            }
+            // Named: the §10.1 label scopes its own statements — threading
+            // the continuation in would rename the caller's states — so
+            // only a whole-block return composes.
+            bool bret = false;
+            if(lower_return_list(blk->get_statements(), task_name, bret)) {
+                return 1;
+            }
+            if(!bret) {
+                LOG_ERROR_N(s) << "task '" << task_name
+                               << "': a return conditional within named block '" << blk->get_scope()
+                               << "' has no structural exit — make the block return on "
+                               << "every path, or drop the label";
+                return 1;
+            }
+            stmts->erase(std::next(it), stmts->end());
+            always = true;
+            return 0;
+        }
+
+        LOG_ERROR_N(s) << "task '" << task_name
+                       << "': a return inside a loop or case arm has no structural exit — "
+                       << "restructure with break or a guard";
+        return 1;
+    }
+    return 0;
+}
+
 /// The conjuncts of a guard, flattening the && tree.
 void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conjuncts)
 {
@@ -3300,6 +3515,16 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
     auto block = std::make_shared<AST::Block>(stmts, upper_of(site), fn, ln);
     const auto &block_node = AST::to_node(block);
 
+    // §13.3: a return jumps to the body's end — restructure before anything
+    // else reads the shape, so the copy-out spliced past the body catches
+    // every early path (measured: an early return still copies out).
+    {
+        bool returns_always = false;
+        if(lower_return_list(stmts, name, returns_always)) {
+            return nullptr;
+        }
+    }
+
     // The body's written names by flavor, computed once. '<=' matters to
     // §6.21 — no nonblocking assignment to automatic storage, so an
     // automatic task's formals and locals may not take it (vsim enforces
@@ -3335,17 +3560,36 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
     std::vector<std::string> check_read_first;
     const auto &formals = task->get_args();
     const std::size_t formal_count = formals ? formals->size() : 0;
-    const std::size_t actual_count = call->get_args() ? call->get_args()->size() : 0;
-    if(formal_count != actual_count) {
+    std::vector<AST::Node::Ptr> given;
+    if(call->get_args()) {
+        for(const auto &a : *call->get_args()) {
+            given.push_back(a);
+        }
+    }
+    if(given.size() > formal_count) {
         LOG_ERROR_N(call) << "task '" << name << "' takes " << formal_count << " argument"
-                          << (formal_count == 1 ? "" : "s") << ", called with " << actual_count;
+                          << (formal_count == 1 ? "" : "s") << ", called with " << given.size();
         return nullptr;
     }
     if(formals) {
-        auto actual_it = call->get_args()->begin();
+        std::size_t position = 0;
         for(const auto &formal : *formals) {
-            const AST::Node::Ptr actual = (*actual_it)->clone();
-            ++actual_it;
+            // §13.5.3: an omitted trailing actual takes the formal's default,
+            // evaluated in the declaring scope — which inlining preserves,
+            // the task's names being the module's after the splice. (A blank
+            // mid-list placeholder is call-site grammar, not admitted yet.)
+            AST::Node::Ptr actual;
+            if(position < given.size()) {
+                actual = given[position]->clone();
+            } else if(formal->get_default_value()) {
+                actual = formal->get_default_value()->clone();
+            } else {
+                LOG_ERROR_N(call) << "task '" << name << "': no actual for argument '"
+                                  << formal->get_name() << "' and no default (IEEE 1800-2017 "
+                                  << "§13.5.3)";
+                return nullptr;
+            }
+            ++position;
             const std::string &fname = formal->get_name();
             const std::string rname = site + "_" + fname;
             const bool is_ref = formal->get_direction() == AST::Arg::DirectionEnum::REF ||
