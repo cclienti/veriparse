@@ -246,9 +246,9 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err11) { TEST_ERROR
 // A decoded output taking a conditional value in the init segment: the
 // reset value is unconditional (§5.1, §6.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err12) { TEST_ERROR_SV; }
-// A branch-local temporary shadowing the decoded output it hides from the
-// fork detection: rejected as shadowing, never double-driven (§6, §6.2,
-// §9).
+// A branch-local temporary named after a decoded output: the alpha
+// rename separates them, and what remains is the honest §6.2 refusal —
+// the output is not assigned on every path (§6.2, §9).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_decode_err13) { TEST_ERROR_SV; }
 // §6.2 output encoding: the state bits are the outputs — composed
 // {disambiguation, outputs} values, outputs as slices of the register, no
@@ -380,9 +380,18 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err3) { TEST_ERROR_SV
 // '=' under a branch to a temporary declared outside it: the value would
 // be conditional, which v1 does not if-convert (§6.1, §9, §C.3).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err4) { TEST_ERROR_SV; }
-// A temporary shadowing one of an enclosing scope: substitution binds by
-// name (§6, §9).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err5) { TEST_ERROR_SV; }
+// Shadowed and sibling same-named locals uniquify in FsmAlphaRename —
+// substitution binds by name, and renaming beats refusing legal
+// SystemVerilog (§6.1): a temporary under an enclosing temporary's name
+// (alpha0), under a module declaration's (alpha1), under a rolled for's
+// index (alpha2); a task's sibling cut-spanning statics keeping two
+// storages (alpha3); a task local under a const-ref formal's name, the
+// clock staying the clock (alpha4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_alpha0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_alpha1) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_alpha2) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_alpha3) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_alpha4) { TEST_CORE_SV; }
 // The wrap-around temptation: a temporary declared in a loop body whose
 // wait sits between the end-of-lap '=' and the next lap's read. The
 // declaring scope spans the cut point, so the declaration itself is the
@@ -414,13 +423,6 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp8) { TEST_CORE_SV; }
 // A constant folds inline, truncated to the declared width at
 // substitution time — the one value that never earns a wire (§6.1).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp9) { TEST_CORE_SV; }
-// A temporary named after a module-level declaration: legal SystemVerilog
-// shadowing, but substitution binds by name — rejected, rename it (§6,
-// §9).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err8) { TEST_ERROR_SV; }
-// A temporary named after a rolled for's index register: the induced
-// entries share the environment — rejected (§6, §7.2, §9).
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_temp_err9) { TEST_ERROR_SV; }
 // An unassigned temporary read in a fork condition: the pass's own
 // diagnostic, not a downstream undeclared-identifier surprise (§6.1,
 // §9).
@@ -586,10 +588,10 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_br0) { TEST_CORE_SV; 
 // An author signal colliding with a static local's hoist name is an
 // error, not a silent alias (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err21) { TEST_ERROR_SV; }
-// Substitution binds by name (§6.1): a task local shadowing a formal,
-// or two siblings sharing one cut-spanning name, is refused — rename.
+// The alpha rename separates the task local from the const-ref formal
+// it shadowed; the residue is this testcase's genuine §6 double commit
+// (the clean shape is the fsm_alpha4 golden).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err22) { TEST_ERROR_SV; }
-TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err23) { TEST_ERROR_SV; }
 // A nested call copying out into the caller's formal: the induced
 // commit carries §13.3's immediate visibility to same-segment readers.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_nest0) { TEST_CORE_SV; }

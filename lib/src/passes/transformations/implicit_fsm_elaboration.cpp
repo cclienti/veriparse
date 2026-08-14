@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/fsm_alpha_rename.hpp>
 #include <veriparse/passes/transformations/fsm_loop_lowering.hpp>
 #include <veriparse/passes/transformations/fsm_task_inliner.hpp>
 #include <veriparse/passes/transformations/loop_unrolling.hpp>
@@ -82,6 +83,11 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // pass adopts per process. Running it here keeps every driver and
     // caller working unchanged, and a pipeline that already ran it costs
     // one no-op.
+    // §6.1: the shadowed block locals uniquify first — substitution
+    // binds by name, and renaming beats refusing legal SystemVerilog.
+    if(FsmAlphaRename().run(node)) {
+        return 1;
+    }
     if(FsmTaskInliner().run(node)) {
         return 1;
     }
