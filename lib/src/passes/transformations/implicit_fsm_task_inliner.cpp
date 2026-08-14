@@ -38,10 +38,10 @@ std::string upper_of(const std::string &text)
 int ImplicitFsmElaboration::hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
                                               const std::string &fn, int ln)
 {
-    if(m_module_declared.count(name)) {
+    if(m_module_state.declared.count(name)) {
         // Re-hoist of a static local from a later call site: the single
         // shared register already exists.
-        if(m_static_hoist.count(name)) {
+        if(m_module_state.static_hoist.count(name)) {
             return 0;
         }
         LOG_ERROR << "generated declaration '" << name
@@ -53,16 +53,16 @@ int ImplicitFsmElaboration::hoist_declaration(const std::string &name, const AST
     if(type) {
         reg->set_type(AST::cast_to<AST::DataType>(type->clone()));
     }
-    const auto &items = m_walk_module->get_items();
+    const auto &items = m_proc.module->get_items();
     for(auto it = items->begin(); it != items->end(); ++it) {
-        if(it->get() == static_cast<AST::Node *>(m_walk_pragmalist.get())) {
+        if(it->get() == static_cast<AST::Node *>(m_proc.pragmalist.get())) {
             items->insert(it, AST::to_node(reg));
-            m_module_declared.insert(name);
+            m_module_state.declared.insert(name);
             return 0;
         }
     }
     items->push_back(AST::to_node(reg));
-    m_module_declared.insert(name);
+    m_module_state.declared.insert(name);
     return 0;
 }
 
@@ -70,7 +70,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                                                    std::set<std::string> &visiting)
 {
     const std::string &name = call->get_name();
-    const auto &task = m_tasks.at(name);
+    const auto &task = m_module_state.tasks.at(name);
     const std::string &fn = call->get_filename();
     const int ln = call->get_line();
 
@@ -81,7 +81,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         return nullptr;
     }
 
-    const unsigned int ordinal = m_task_ordinal[name]++;
+    const unsigned int ordinal = m_module_state.task_ordinal[name]++;
     const std::string site = name + "_" + std::to_string(ordinal);
 
     // Clone the body.
@@ -127,7 +127,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
             if(!n) {
                 return;
             }
-            if(m_captures.count(n.get()) || m_copyouts.count(n.get())) {
+            if(m_inline.captures.count(n.get()) || m_inline.copyouts.count(n.get())) {
                 return; // a nested expansion's induced commit, not the body's
             }
             if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
@@ -230,8 +230,9 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 }
                 {
                     const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
-                    m_captures.insert(capture.get());
-                    (body_nba_targets.count(fname) ? m_capture_impure : m_capture_pure)
+                    m_inline.captures.insert(capture.get());
+                    (body_nba_targets.count(fname) ? m_inline.capture_impure
+                                                   : m_inline.capture_pure)
                         .insert(rname);
                     head.push_back(capture);
                 }
@@ -265,8 +266,8 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                         const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
                         const auto &copyout = AST::to_node(
                             make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln));
-                        m_copyouts.insert(copyout.get());
-                        m_copyout_actual[rname] = aname;
+                        m_inline.copyouts.insert(copyout.get());
+                        m_inline.copyout_actual[rname] = aname;
                         tail.push_back(copyout);
                     }
                     subst[fname] = AST::to_node(make_id(rname, fn, ln));
@@ -277,8 +278,9 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 }
                 if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
                     const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
-                    m_captures.insert(capture.get());
-                    (body_nba_targets.count(fname) ? m_capture_impure : m_capture_pure)
+                    m_inline.captures.insert(capture.get());
+                    (body_nba_targets.count(fname) ? m_inline.capture_impure
+                                                   : m_inline.capture_pure)
                         .insert(rname);
                     head.push_back(capture);
                 } else {
@@ -288,8 +290,8 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                     const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
                     const auto &copyout =
                         AST::to_node(make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln));
-                    m_copyouts.insert(copyout.get());
-                    m_copyout_actual[rname] = aname;
+                    m_inline.copyouts.insert(copyout.get());
+                    m_inline.copyout_actual[rname] = aname;
                     tail.push_back(copyout);
                 }
                 subst[fname] = AST::to_node(make_id(rname, fn, ln));
@@ -317,7 +319,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 }
                 {
                     const std::string &aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                    if(is_net_signal(m_walk_module, aname)) {
+                    if(is_net_signal(m_proc.module, aname)) {
                         LOG_ERROR_N(call)
                             << "task '" << name << "': actual '" << aname << "' for ref '" << fname
                             << "' is a net — nets shall not be passed by reference (IEEE "
@@ -365,7 +367,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
             if(!node) {
                 return 0;
             }
-            if(m_expanded.count(node.get())) {
+            if(m_inline.expanded.count(node.get())) {
                 return 0; // a nested expansion owns its renames
             }
             if(node->is_node_type(AST::NodeType::Block)) {
@@ -440,7 +442,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                         if(hoist_declaration(hname, AST::to_node(var->get_type()), fn, ln)) {
                             return 1;
                         }
-                        m_static_hoist[hname] = name;
+                        m_module_state.static_hoist[hname] = name;
                         subst[lname] = AST::to_node(make_id(hname, fn, ln));
                         it = inner->erase(it);
                     }
@@ -519,10 +521,10 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         bool impure = false;
         if(formals) {
             for(const auto &formal : *formals) {
-                impure |= m_capture_impure.count(site + "_" + formal->get_name()) != 0;
+                impure |= m_inline.capture_impure.count(site + "_" + formal->get_name()) != 0;
             }
         }
-        m_site_impure[upper_of(site)] = impure;
+        m_inline.site_impure[upper_of(site)] = impure;
     }
 
     // ---- Apply the renames, then splice copy-in/copy-out.
@@ -549,8 +551,8 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         }
     }
 
-    m_inlined_tasks.insert(name);
-    m_expanded.insert(block_node.get());
+    m_module_state.inlined_tasks.insert(name);
+    m_inline.expanded.insert(block_node.get());
     return block_node;
 }
 
@@ -569,7 +571,7 @@ int ImplicitFsmElaboration::inline_calls_in(const AST::Node::Ptr &node,
                                               child->is_node_type(AST::NodeType::Call));
         if(statement_call) {
             const auto &call = AST::cast_to<AST::Call>(child);
-            if(m_tasks.count(call->get_name())) {
+            if(m_module_state.tasks.count(call->get_name())) {
                 const auto &expansion = expand_call(call, visiting);
                 if(!expansion) {
                     return 1;
@@ -587,7 +589,7 @@ int ImplicitFsmElaboration::inline_calls_in(const AST::Node::Ptr &node,
 
 int ImplicitFsmElaboration::inline_tasks(const AST::Initial::Ptr &initial)
 {
-    if(m_tasks.empty()) {
+    if(m_module_state.tasks.empty()) {
         return 0;
     }
     // §7.4: user loops with constant bounds unroll BEFORE inlining, so a
@@ -596,17 +598,17 @@ int ImplicitFsmElaboration::inline_tasks(const AST::Initial::Ptr &initial)
     // in the second, post-inline run — after hoisting, seeded module-wide
     // both times — and the induced commits that second run's cloning
     // duplicated re-adopt by their generated shapes.
-    if(LoopUnrolling(m_module_declared).run(AST::to_node(initial))) {
+    if(LoopUnrolling(m_module_state.declared).run(AST::to_node(initial))) {
         return 1;
     }
     std::set<std::string> visiting;
     if(inline_calls_in(AST::to_node(initial), visiting)) {
         return 1;
     }
-    if(m_inlined_tasks.empty()) {
+    if(m_module_state.inlined_tasks.empty()) {
         return 0;
     }
-    if(LoopUnrolling(m_module_declared).run(AST::to_node(initial))) {
+    if(LoopUnrolling(m_module_state.declared).run(AST::to_node(initial))) {
         return 1;
     }
     return readopt_induced(AST::to_node(initial));
@@ -639,7 +641,7 @@ int ImplicitFsmElaboration::readopt_induced(const AST::Node::Ptr &node)
         }
     };
     count(node);
-    for(const auto &site : m_site_impure) {
+    for(const auto &site : m_inline.site_impure) {
         if(site.second && labels[site.first] > 1) {
             LOG_ERROR_N(node)
                 << "call site '" << site.first << "' was cloned by loop unrolling, and its "
@@ -653,19 +655,19 @@ int ImplicitFsmElaboration::readopt_induced(const AST::Node::Ptr &node)
         if(!n) {
             return;
         }
-        if(n->is_node_type(AST::NodeType::NonblockingSubstitution) && !m_captures.count(n.get()) &&
-           !m_copyouts.count(n.get())) {
+        if(n->is_node_type(AST::NodeType::NonblockingSubstitution) &&
+           !m_inline.captures.count(n.get()) && !m_inline.copyouts.count(n.get())) {
             const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(n);
             const std::string target = nba_target(nba);
-            if(m_capture_pure.count(target)) {
-                m_captures.insert(n.get());
+            if(m_inline.capture_pure.count(target)) {
+                m_inline.captures.insert(n.get());
             } else if(nba->get_right() && nba->get_right()->get_var() &&
                       nba->get_right()->get_var()->is_node_type(AST::NodeType::Identifier)) {
                 const std::string rhs_name =
                     AST::cast_to<AST::Identifier>(nba->get_right()->get_var())->get_name();
-                const auto &found = m_copyout_actual.find(rhs_name);
-                if(found != m_copyout_actual.end() && found->second == target) {
-                    m_copyouts.insert(n.get());
+                const auto &found = m_inline.copyout_actual.find(rhs_name);
+                if(found != m_inline.copyout_actual.end() && found->second == target) {
+                    m_inline.copyouts.insert(n.get());
                 }
             }
         }
@@ -685,7 +687,7 @@ bool ImplicitFsmElaboration::contains_induced(const AST::Node::Ptr &node) const
     if(!node) {
         return false;
     }
-    if(m_captures.count(node.get()) || m_copyouts.count(node.get())) {
+    if(m_inline.captures.count(node.get()) || m_inline.copyouts.count(node.get())) {
         return true;
     }
     const auto &children = node->get_children();
@@ -713,7 +715,7 @@ AST::Node::Ptr ImplicitFsmElaboration::emit_verbatim(const AST::Node::Ptr &stmt,
     const int ln = stmt->get_line();
 
     if(stmt->is_node_type(AST::NodeType::NonblockingSubstitution) &&
-       (m_captures.count(stmt.get()) || m_copyouts.count(stmt.get()))) {
+       (m_inline.captures.count(stmt.get()) || m_inline.copyouts.count(stmt.get()))) {
         const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(stmt);
         const auto &value = clone_subst(AST::to_node(nba->get_right()->get_var()), env);
         if(check_temp_reads(value, env)) {

@@ -365,7 +365,7 @@ int ImplicitFsmElaboration::find_reset(const AST::Module::Ptr &module,
             LOG_ERROR_N(pragmalist) << "veriparse_reset_kind is \"sync\" or \"async\"";
             return 1;
         }
-        m_async_reset = wanted == "async";
+        m_proc.async_reset = wanted == "async";
     }
     return 0;
 }
