@@ -228,6 +228,15 @@ int FsmLoopLowering::lower_list(const AST::Node::ListPtr &stmts)
             stmts->insert(it, lowered->begin(), lowered->end());
             continue;
         }
+        if(kept_rolled) {
+            // The attribute sits on something else — a while, whose body may
+            // still hold rolled loops: descend like any other pragmalist.
+            if(lower_list(AST::cast_to<AST::Pragmalist>(s)->get_statements())) {
+                return 1;
+            }
+            ++it;
+            continue;
+        }
 
         // Anything else: the loops hide in its statement slots.
         switch(s->get_node_type()) {
@@ -407,6 +416,10 @@ int FsmLoopLowering::lower_repeat(const AST::RepeatStatement::Ptr &loop, bool ke
     // (captured at entry, §12.7.3), test it at the head, decrement first
     // in the lap — so a continue skips nothing it should not, and the
     // entry load coalesces with the first decrement into `count - 1`.
+    // That coalescing is load-bearing for the width: clog2(count) is one
+    // bit short of holding `count` itself, and only `count - 1` is ever
+    // emitted — the load node exists to carry the value through the
+    // walk's environment, never to reach the RTL.
     const unsigned int depth = m_depth;
     if(m_cnt_widths.size() <= depth) {
         m_cnt_widths.resize(depth + 1, 0);

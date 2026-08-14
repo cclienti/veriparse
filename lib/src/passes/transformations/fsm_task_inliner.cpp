@@ -34,6 +34,64 @@ std::string upper_of(const std::string &text)
     return out;
 }
 
+/// Names assigned — with either flavor — on EVERY runtime path through
+/// the statement: must_writes' discipline over both substitution kinds,
+/// which is what an output formal's copy-out demands (the §6 register
+/// analysis keeps its nonblocking-only view).
+void all_paths_writes(const AST::Node::Ptr &node, std::set<std::string> &writes)
+{
+    if(!node) {
+        return;
+    }
+    switch(node->get_node_type()) {
+    case AST::NodeType::Block: {
+        const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
+        if(stmts) {
+            for(const auto &stmt : *stmts) {
+                all_paths_writes(stmt, writes);
+            }
+        }
+        return;
+    }
+    case AST::NodeType::Pragmalist: {
+        const auto &stmts = AST::cast_to<AST::Pragmalist>(node)->get_statements();
+        if(stmts) {
+            for(const auto &stmt : *stmts) {
+                all_paths_writes(stmt, writes);
+            }
+        }
+        return;
+    }
+    case AST::NodeType::SingleStatement:
+        all_paths_writes(AST::cast_to<AST::SingleStatement>(node)->get_statement(), writes);
+        return;
+    case AST::NodeType::NonblockingSubstitution:
+        writes.insert(nba_target(AST::cast_to<AST::NonblockingSubstitution>(node)));
+        return;
+    case AST::NodeType::BlockingSubstitution:
+        writes.insert(lvalue_target(AST::cast_to<AST::BlockingSubstitution>(node)->get_left()));
+        return;
+    case AST::NodeType::IfStatement: {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(node);
+        if(!ifs->get_true_statement() || !ifs->get_false_statement()) {
+            return; // a missing arm guarantees nothing
+        }
+        std::set<std::string> t;
+        std::set<std::string> e;
+        all_paths_writes(ifs->get_true_statement(), t);
+        all_paths_writes(ifs->get_false_statement(), e);
+        for(const auto &name : t) {
+            if(e.count(name)) {
+                writes.insert(name);
+            }
+        }
+        return;
+    }
+    default:
+        return; // loops and cases guarantee nothing here
+    }
+}
+
 } // namespace
 
 int FsmTaskInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent)
@@ -206,13 +264,22 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
     // clock arrives by ref); '=' picks the temporary lowering for a formal.
     std::set<std::string> body_nba_targets;
     std::set<std::string> body_ba_targets;
+    std::set<std::string> body_induced_targets;
     {
         std::function<void(const AST::Node::Ptr &)> scan = [&](const AST::Node::Ptr &n) {
             if(!n) {
                 return;
             }
             if(induced_marker_kind(n)) {
-                return; // a nested expansion's induced commit, not the body's
+                // A nested expansion's induced commit: not the body's own
+                // write — §6.21 and the flavor rules don't see it — but a
+                // copy-out INTO one of this task's formals still makes that
+                // formal storage.
+                const auto &nba = induced_marker_nba(n);
+                if(nba) {
+                    body_induced_targets.insert(nba_target(nba));
+                }
+                return;
             }
             if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
                 body_nba_targets.insert(nba_target(AST::cast_to<AST::NonblockingSubstitution>(n)));
@@ -303,7 +370,7 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                     break;
                 }
                 if(actual->is_node_category(AST::NodeType::Constant) &&
-                   !body_nba_targets.count(fname)) {
+                   !body_nba_targets.count(fname) && !body_induced_targets.count(fname)) {
                     // A written formal is storage, never a substitutable
                     // constant — the capture register below takes it.
                     subst[fname] = actual;
@@ -400,9 +467,10 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                                       << "with 'input' and commit registers directly";
                     return nullptr;
                 }
-                if(read_only && ba_written) {
+                if(read_only && (ba_written || body_induced_targets.count(fname))) {
                     LOG_ERROR_N(call) << "task '" << name << "': write through const "
-                                      << "ref '" << fname << "' (IEEE 1800-2017 §13.5.2)";
+                                      << "ref '" << fname << "' — a nested call's copy-out "
+                                      << "included (IEEE 1800-2017 §13.5.2)";
                     return nullptr;
                 }
                 subst[fname] = actual;
@@ -499,6 +567,28 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                                 << "keep the local within one segment";
                             return 1;
                         }
+                        // The hoist carries the declared type only: an
+                        // array register is not hoisted yet, and would
+                        // otherwise truncate to a scalar in silence.
+                        if(var->get_unpacked_dims() && !var->get_unpacked_dims()->empty()) {
+                            LOG_ERROR_N(var)
+                                << "task local '" << lname << "' carries unpacked dimensions "
+                                << "across a wait: an array register is not hoisted yet — "
+                                << "keep it within one segment, or use a module-level "
+                                << "declaration";
+                            return 1;
+                        }
+                        // A static local initializes once (IEEE 1800-2017
+                        // §6.21); the machine's reset re-runs — the hoist
+                        // would silently drop the initializer either way.
+                        if(var->get_init()) {
+                            LOG_ERROR_N(var)
+                                << "task local '" << lname << "' carries an initializer "
+                                << "across a wait: a static local initializes once, which "
+                                << "the machine's reset cannot express — drop the "
+                                << "initializer and assign it explicitly";
+                            return 1;
+                        }
                         const std::string hname = name + "_" + lname;
                         // Register the shared hoist only once the declaration
                         // lands: registering first would make an author's
@@ -593,8 +683,22 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
     // §7.4: an automatic hoisted local and an output formal must be
     // assigned before read — a register persists where the fresh local
     // (or the not-yet-copied-out formal) holds nothing readable.
+    std::set<std::string> always_written;
+    if(!check_read_first.empty()) {
+        all_paths_writes(block_node, always_written);
+        for(const auto &w : always_written) {
+            LOG_INFO << "APW " << name << ": " << w;
+        }
+        for(const auto &c : check_read_first) {
+            LOG_INFO << "CRF " << name << ": " << c;
+        }
+    }
     for(const auto &checked : check_read_first) {
-        if(Analysis::Statement::first_reference(block_node, checked) < 0) {
+        // The copy-out reads an output formal on every path, so a write
+        // on only some paths leaves the read undefined on the others —
+        // the all-paths set is the property, program order the tiebreak.
+        if(Analysis::Statement::first_reference(block_node, checked) < 0 ||
+           !always_written.count(checked)) {
             LOG_ERROR_N(call)
                 << "'" << checked << "' is read before it is assigned in this activation: "
                 << "a register persists where the task's storage starts fresh — assign it "
