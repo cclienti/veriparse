@@ -334,42 +334,12 @@ private:
                             const std::vector<State> &states, std::size_t entry_next,
                             const std::string &prefix);
 
-    /// Branches whose subtree holds a cut point — the ones that fork the
-    /// path walk — and each wait's state index, both filled per process by
-    /// collect_body.
-    std::set<const AST::Node *> m_forking;
-    std::map<const AST::EventStatement *, std::size_t> m_wait_index;
-
-    /// The loops the CFG keeps, filled per process by collect_body.
-    std::map<const AST::Node *, LoopInfo> m_loops;
-
-    /// The shared countdowns (§15: one per repeat-nesting depth,
-    /// re-initialised on entry): sequential repeats at one depth share a
-    /// register, nested ones each own their depth's, so an inner reload
-    /// leaves the outer count alone. m_cnt_widths[d] is depth d's width —
-    /// zero when nothing at that depth needs one.
-    std::string m_cnt_name;
-    std::vector<unsigned int> m_cnt_widths;
-    unsigned int m_repeat_depth = 0;
-
     /// Depth d's countdown register name: the bare prefix at depth zero,
     /// then cnt2, cnt3, ...
     std::string cnt_name(unsigned int depth) const
     {
-        return depth == 0 ? m_cnt_name : m_cnt_name + std::to_string(depth + 1);
+        return depth == 0 ? m_proc.cnt_name : m_proc.cnt_name + std::to_string(depth + 1);
     }
-
-    /// The induced-register commits this pass created (§7.2): when a later
-    /// induced commit to the same register lands in the same action —
-    /// sequential rolled fors sharing one index — the earlier one coalesces
-    /// away, blocking-style, instead of tripping §6. Author commits never
-    /// do.
-    std::set<const AST::Node *> m_induced;
-
-    /// Whether some path ends the process — set by the walk when it records
-    /// a transition to the hold index. A perpetual machine has none, and
-    /// then no hold state is emitted (§2).
-    bool m_hold_needed = false;
 
     /// §3 hints steering the emission: the state encoding, and the reset
     /// flavour of the generated always_ff.
@@ -380,71 +350,132 @@ private:
         GRAY,
         OUTPUT
     };
-    Encoding m_encoding = Encoding::BINARY;
-    /// §6.2 output encoding: the state bits are the outputs — per-state
-    /// composed values, the register's total width, and each decoded
-    /// output's slice of it as (name, lsb, width).
-    std::vector<unsigned int> m_output_values;
-    unsigned int m_output_width = 0;
-    std::vector<std::tuple<std::string, unsigned int, unsigned int>> m_output_slices;
-    bool m_async_reset = false;
 
-    /// §6 temporaries of the walked segments (name → declaration, for the
-    /// materialized wire's type), and the §6.1 wires the emission owes:
-    /// name, the substituted value, and the temporary supplying the type.
-    std::map<std::string, AST::Var::Ptr> m_temps;
-    /// §6.2 decoded outputs: name -> the module-level declaration (anchor).
-    std::map<std::string, AST::Node::Ptr> m_decoded;
-    /// Targets taking '<=' anywhere in the process: the §6.2 discipline
-    /// check is order-independent through this set.
-    std::set<std::string> m_nba_targets;
-    /// §6.2: the init segment's decode values (comb reset + default arm).
-    std::map<std::string, AST::Node::Ptr> m_init_decode;
-    /// §6.2 per-state arms: name -> (guard, value) chain; a single entry
-    /// with a null guard is unconditional, else the last entry is the else.
-    std::vector<std::map<std::string, std::vector<std::pair<AST::Node::Ptr, AST::Node::Ptr>>>>
-        m_decode_arms;
-    /// The module under compilation, for by-name declaration lookups
-    /// during collection.
-    AST::Module::Ptr m_walk_module;
-    /// The marked process under compilation, excluded from the §6.2
-    /// foreign-driver scan.
-    AST::Pragmalist::Ptr m_walk_pragmalist;
-    /// §7.4 task inlining state: the module's tasks, per-task call
-    /// ordinals (module-wide, so names stay unique across processes),
-    /// the static-hoist registry, which tasks were inlined (disposal),
-    /// the induced copy-in and copy-out commits the walk substitutes,
-    /// and the module's declared names for collision checks.
-    std::map<std::string, AST::Task::Ptr> m_tasks;
-    std::map<std::string, unsigned int> m_task_ordinal;
-    std::map<std::string, std::string> m_static_hoist;
-    std::set<std::string> m_inlined_tasks;
-    std::set<const AST::Node *> m_captures;
-    /// Copy-out commits (`actual <= <site>_<formal>`): induced like the
-    /// captures, carrying §13.3's immediate visibility through the
-    /// environment. The name maps re-identify both kinds when loop
-    /// unrolling clones them (pointers alone would dangle): a pure capture
-    /// register has exactly one writer, its capture; an impure one is also
-    /// '<='-written by the body, so its clones are ambiguous and refused.
-    std::set<const AST::Node *> m_copyouts;
-    std::set<std::string> m_capture_pure;
-    std::set<std::string> m_capture_impure;
-    std::map<std::string, std::string> m_copyout_actual;
-    std::map<std::string, bool> m_site_impure;
-    /// Blocks already produced by expand_call: the caller's locals visit
-    /// must not re-rename what a nested expansion owns.
-    std::set<const AST::Node *> m_expanded;
-    Analysis::UniqueDeclaration::IdentifierSet m_module_declared;
     struct MaterializedWire
     {
         std::string name;
         AST::Node::Ptr value;
         AST::Var::Ptr temp;
     };
-    std::vector<MaterializedWire> m_wires;
 
-    /// The per-process declaration prefix, for the wire names.
-    std::string m_prefix;
+    /// The members are grouped by lifetime, and reconstruction is the
+    /// reset: process() rebuilds the module state per module,
+    /// compile_process() the walk and inlining state per process — a
+    /// member added to a group can never be missed by a clear list.
+
+    /// One module's §7.4 task-inlining registry: the module's tasks,
+    /// per-task call ordinals (module-wide, so names stay unique across
+    /// processes), the static-hoist registry, which tasks were inlined
+    /// (disposal), and the module's declared names for collision checks.
+    struct ModuleState
+    {
+        std::map<std::string, AST::Task::Ptr> tasks;
+        std::map<std::string, unsigned int> task_ordinal;
+        std::map<std::string, std::string> static_hoist;
+        std::set<std::string> inlined_tasks;
+        Analysis::UniqueDeclaration::IdentifierSet declared;
+    };
+    ModuleState m_module_state;
+
+    /// One process's §7.4 inlining state.
+    struct InlineState
+    {
+        /// The induced copy-in commits the walk substitutes (§6.1, §7.4).
+        std::set<const AST::Node *> captures;
+        /// Copy-out commits (`actual <= <site>_<formal>`): induced like the
+        /// captures, carrying §13.3's immediate visibility through the
+        /// environment. The name maps re-identify both kinds when loop
+        /// unrolling clones them (pointers alone would dangle): a pure
+        /// capture register has exactly one writer, its capture; an impure
+        /// one is also '<='-written by the body, so its clones are
+        /// ambiguous and refused.
+        std::set<const AST::Node *> copyouts;
+        std::set<std::string> capture_pure;
+        std::set<std::string> capture_impure;
+        std::map<std::string, std::string> copyout_actual;
+        std::map<std::string, bool> site_impure;
+        /// Blocks already produced by expand_call: the caller's locals
+        /// visit must not re-rename what a nested expansion owns.
+        std::set<const AST::Node *> expanded;
+    };
+    InlineState m_inline;
+
+    /// One process's walk and emission state.
+    struct ProcessState
+    {
+        /// Branches whose subtree holds a cut point — the ones that fork
+        /// the path walk — and each wait's state index, both filled by
+        /// collect_body.
+        std::set<const AST::Node *> forking;
+        std::map<const AST::EventStatement *, std::size_t> wait_index;
+
+        /// The loops the CFG keeps, filled by collect_body.
+        std::map<const AST::Node *, LoopInfo> loops;
+
+        /// The shared countdowns (§15: one per repeat-nesting depth,
+        /// re-initialised on entry): sequential repeats at one depth share
+        /// a register, nested ones each own their depth's, so an inner
+        /// reload leaves the outer count alone. cnt_widths[d] is depth d's
+        /// width — zero when nothing at that depth needs one.
+        std::string cnt_name;
+        std::vector<unsigned int> cnt_widths;
+        unsigned int repeat_depth = 0;
+
+        /// The induced-register commits this pass created (§7.2): when a
+        /// later induced commit to the same register lands in the same
+        /// action — sequential rolled fors sharing one index — the earlier
+        /// one coalesces away, blocking-style, instead of tripping §6.
+        /// Author commits never do.
+        std::set<const AST::Node *> induced;
+
+        /// Whether some path ends the process — set by the walk when it
+        /// records a transition to the hold index. A perpetual machine has
+        /// none, and then no hold state is emitted (§2).
+        bool hold_needed = false;
+
+        Encoding encoding = Encoding::BINARY;
+        bool async_reset = false;
+
+        /// §6.2 output encoding: the state bits are the outputs —
+        /// per-state composed values, the register's total width, and each
+        /// decoded output's slice of it as (name, lsb, width).
+        std::vector<unsigned int> output_values;
+        unsigned int output_width = 0;
+        std::vector<std::tuple<std::string, unsigned int, unsigned int>> output_slices;
+
+        /// §6 temporaries of the walked segments (name → declaration, for
+        /// the materialized wire's type), and the §6.1 wires the emission
+        /// owes: name, the substituted value, and the temporary supplying
+        /// the type.
+        std::map<std::string, AST::Var::Ptr> temps;
+        std::vector<MaterializedWire> wires;
+
+        /// §6.2 decoded outputs: name -> the module-level declaration
+        /// (anchor).
+        std::map<std::string, AST::Node::Ptr> decoded;
+        /// Targets taking '<=' anywhere in the process: the §6.2
+        /// discipline check is order-independent through this set.
+        std::set<std::string> nba_targets;
+        /// §6.2: the init segment's decode values (comb reset + default
+        /// arm).
+        std::map<std::string, AST::Node::Ptr> init_decode;
+        /// §6.2 per-state arms: name -> (guard, value) chain; a single
+        /// entry with a null guard is unconditional, else the last entry
+        /// is the else.
+        std::vector<std::map<std::string, std::vector<std::pair<AST::Node::Ptr, AST::Node::Ptr>>>>
+            decode_arms;
+
+        /// The module under compilation, for by-name declaration lookups
+        /// during collection.
+        AST::Module::Ptr module;
+        /// The marked process under compilation, excluded from the §6.2
+        /// foreign-driver scan.
+        AST::Pragmalist::Ptr pragmalist;
+
+        /// The per-process declaration prefix, for the wire names.
+        std::string prefix;
+    };
+    ProcessState m_proc;
 
     /// §10.2 collection point, null when nobody asked.
     FsmReport *m_report = nullptr;

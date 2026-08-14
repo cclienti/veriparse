@@ -85,13 +85,9 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     // §7.4: the module's tasks and declared names, module-wide so a
     // static hoist is one register and call ordinals never collide
-    // across processes.
-    m_tasks.clear();
-    m_task_ordinal.clear();
-    m_static_hoist.clear();
-    m_inlined_tasks.clear();
-    m_module_declared.clear();
-    if(Analysis::UniqueDeclaration::analyze(node, m_module_declared)) {
+    // across processes. Reconstruction is the reset.
+    m_module_state = ModuleState{};
+    if(Analysis::UniqueDeclaration::analyze(node, m_module_state.declared)) {
         LOG_ERROR_N(node) << "failed to analyze declarations";
         return 1;
     }
@@ -99,7 +95,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
         const auto &task_nodes = Analysis::Module::get_task_nodes(node);
         if(task_nodes) {
             for(const auto &task : *task_nodes) {
-                m_tasks[task->get_name()] = task;
+                m_module_state.tasks[task->get_name()] = task;
             }
         }
     }
@@ -154,7 +150,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // §7.4: a task definition with no remaining call site is dropped —
     // kept, it would be dead code still writing the machine's registers.
     // One still called (an unmarked process) survives verbatim.
-    if(ret == 0 && !m_inlined_tasks.empty()) {
+    if(ret == 0 && !m_module_state.inlined_tasks.empty()) {
         // To a fixpoint: dropping a task removes the call sites its own
         // body held, which can strand its callees in turn. The list is
         // re-fetched each round — compiling a process rebuilds it, so the
@@ -169,7 +165,7 @@ int ImplicitFsmElaboration::process(AST::Node::Ptr node, AST::Node::Ptr parent)
             }
             for(auto it = live->begin(); it != live->end();) {
                 if((*it)->is_node_type(AST::NodeType::Task) &&
-                   m_inlined_tasks.count(AST::cast_to<AST::Task>(*it)->get_name()) &&
+                   m_module_state.inlined_tasks.count(AST::cast_to<AST::Task>(*it)->get_name()) &&
                    !called.count(AST::cast_to<AST::Task>(*it)->get_name())) {
                     it = live->erase(it);
                     removed = true;
@@ -227,7 +223,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                     scope.visible.insert(var->get_name());
                     scope.writable.insert(var->get_name());
                     if(!scope.verbatim) {
-                        m_temps[var->get_name()] = var;
+                        m_proc.temps[var->get_name()] = var;
                     }
                     continue;
                 }
@@ -244,7 +240,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         if(check_wait(event, clock)) {
             return 1;
         }
-        m_wait_index[event.get()] = waits.size();
+        m_proc.wait_index[event.get()] = waits.size();
         waits.push_back(event);
         has_wait = true;
         // `@(posedge clk) stmt;` attaches the statement to the wait: it runs
@@ -263,8 +259,8 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         }
         // §6.2: one signal, one discipline — the set makes the check
         // order-independent against the '=' classification.
-        m_nba_targets.insert(nba_target(nba));
-        if(m_decoded.count(nba_target(nba))) {
+        m_proc.nba_targets.insert(nba_target(nba));
+        if(m_proc.decoded.count(nba_target(nba))) {
             LOG_ERROR_N(node) << "'<=' to '" << nba_target(nba) << "', which already takes "
                               << "'=': a target cannot be a register and a decoded output "
                               << "at once";
@@ -309,7 +305,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             return 1;
         }
         if(arms_wait || contains_jump(node) || contains_outer_blocking(node)) {
-            m_forking.insert(node.get());
+            m_proc.forking.insert(node.get());
         }
         has_wait |= arms_wait;
         return 0;
@@ -373,7 +369,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             return 1;
         }
         if(forking) {
-            m_forking.insert(node.get());
+            m_proc.forking.insert(node.get());
         }
         has_wait |= arms_wait;
         return 0;
@@ -487,7 +483,7 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
             // §6.2: a module-level '=' target is a decoded output.
             bool is_input = false;
             bool is_port = false;
-            const auto &mdecl = find_declaration(m_walk_module, target, &is_input, &is_port);
+            const auto &mdecl = find_declaration(m_proc.module, target, &is_input, &is_port);
             if(mdecl) {
                 if(is_input) {
                     LOG_ERROR_N(node) << "'=' to input port '" << target
@@ -519,13 +515,13 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                         << "for a decoded output to drive";
                     return 1;
                 }
-                if(m_nba_targets.count(target)) {
+                if(m_proc.nba_targets.count(target)) {
                     LOG_ERROR_N(node)
                         << "'=' to '" << target << "', which already takes '<=': a target "
                         << "cannot be a register and a decoded output at once";
                     return 1;
                 }
-                m_decoded[target] = AST::to_node(mdecl);
+                m_proc.decoded[target] = AST::to_node(mdecl);
                 return 0;
             }
         }
@@ -649,13 +645,13 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
     const bool counting_repeat =
         info.kind == LoopInfo::Kind::REPEAT && (!info.count_known || info.count_value >= 2);
     if(counting_repeat) {
-        info.depth = m_repeat_depth;
-        ++m_repeat_depth;
+        info.depth = m_proc.repeat_depth;
+        ++m_proc.repeat_depth;
     }
     bool body_wait = false;
     const int body_rc = collect_body(info.body, waits, clock, body_wait, TempScope{});
     if(counting_repeat) {
-        --m_repeat_depth;
+        --m_proc.repeat_depth;
     }
     if(body_rc) {
         return 1;
@@ -685,7 +681,7 @@ int ImplicitFsmElaboration::collect_loop(const AST::Node::Ptr &node, bool kept_r
         return 1;
     }
 
-    m_loops[node.get()] = info;
+    m_proc.loops[node.get()] = info;
     has_wait = true;
     return 0;
 }
@@ -743,12 +739,12 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 {
     const auto record = [&](std::size_t next) -> int {
         if(next >= states.size()) {
-            m_hold_needed = true;
+            m_proc.hold_needed = true;
         }
         // §6.2 totality: every path assigns every decoded output — a skip
         // is where the source holds and the emitted comb tracks.
         std::map<std::string, AST::Node::Ptr> decode;
-        for(const auto &elt : m_decoded) {
+        for(const auto &elt : m_proc.decoded) {
             const auto &it = env.find(elt.first);
             if(it == env.end()) {
                 LOG_ERROR_N(elt.second)
@@ -853,7 +849,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             // its readers through the environment (process_blocking).
             const auto &blocking = AST::cast_to<AST::BlockingSubstitution>(stmt);
             const auto &target = lvalue_target(blocking->get_left());
-            if(m_decoded.count(target)) {
+            if(m_proc.decoded.count(target)) {
                 // §6.2: a decoded output's segment value — substituted for
                 // later readers like any blocking value; the path's end
                 // snapshots it as the arrival value.
@@ -885,7 +881,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             // forward-substitutes within its own segment (§6.1): a reader
             // before the first cut sees the value, later segments the
             // register.
-            if(m_captures.count(stmt.get()) || m_copyouts.count(stmt.get())) {
+            if(m_inline.captures.count(stmt.get()) || m_inline.copyouts.count(stmt.get())) {
                 const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(stmt);
                 const auto &value = clone_subst(AST::to_node(nba->get_right()->get_var()), env);
                 if(check_temp_reads(value, env)) {
@@ -908,7 +904,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                     nba_target(AST::cast_to<AST::NonblockingSubstitution>(placed));
                 for(auto it = action->begin(); it != action->end();) {
                     const bool induced =
-                        m_induced.count(it->get()) &&
+                        m_proc.induced.count(it->get()) &&
                         (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
                         nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == target;
                     it = induced ? action->erase(it) : std::next(it);
@@ -922,7 +918,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
             // Cut-point-free: a plain conditional inside the action, no
             // state spent on it (§4). One holding an inlined call carries
             // its induced commits through the branch-local environment.
-            if(!m_forking.count(stmt.get())) {
+            if(!m_proc.forking.count(stmt.get())) {
                 if(contains_induced(stmt)) {
                     std::set<std::string> committed;
                     Env env_branch = env;
@@ -981,7 +977,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
         }
 
         case AST::NodeType::CaseStatement: {
-            if(!m_forking.count(stmt.get())) {
+            if(!m_proc.forking.count(stmt.get())) {
                 if(contains_induced(stmt)) {
                     std::set<std::string> committed;
                     Env env_branch = env;
@@ -1097,7 +1093,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
 
         case AST::NodeType::EventStatement: {
             const auto &event = AST::cast_to<AST::EventStatement>(stmt);
-            const std::size_t idx = m_wait_index.at(event.get());
+            const std::size_t idx = m_proc.wait_index.at(event.get());
             // §10.1: the labels in force name the state cut here.
             if(states[idx].stem.empty()) {
                 states[idx].stem = labels_of(frames);
@@ -1187,7 +1183,7 @@ std::string ImplicitFsmElaboration::materialize_temp(const AST::Var::Ptr &decl,
 {
     // §6.1: identical expressions share one wire — naming, not binding —
     // but only under the SAME declared type: the type is the truncation.
-    for(const auto &wire : m_wires) {
+    for(const auto &wire : m_proc.wires) {
         const bool same_type = (!wire.temp->get_type() && !decl->get_type()) ||
                                (wire.temp->get_type() && decl->get_type() &&
                                 wire.temp->get_type()->is_equal(decl->get_type(), false));
@@ -1195,12 +1191,12 @@ std::string ImplicitFsmElaboration::materialize_temp(const AST::Var::Ptr &decl,
             return wire.name;
         }
     }
-    const std::string base = m_prefix + "_t_" + temp;
+    const std::string base = m_proc.prefix + "_t_" + temp;
     std::string name = base;
     std::size_t ordinal = 0;
     for(bool taken = true; taken;) {
         taken = false;
-        for(const auto &wire : m_wires) {
+        for(const auto &wire : m_proc.wires) {
             if(wire.name == name) {
                 name = base + "_" + std::to_string(++ordinal);
                 taken = true;
@@ -1208,13 +1204,13 @@ std::string ImplicitFsmElaboration::materialize_temp(const AST::Var::Ptr &decl,
             }
         }
     }
-    m_wires.push_back(MaterializedWire{name, value, decl});
+    m_proc.wires.push_back(MaterializedWire{name, value, decl});
     return name;
 }
 
 int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const Env &env)
 {
-    if(m_temps.empty() && env.empty()) {
+    if(m_proc.temps.empty() && env.empty()) {
         return 0;
     }
     std::set<std::string> reads;
@@ -1241,7 +1237,7 @@ int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const E
                               << "of the branch";
             return 1;
         }
-        if(m_temps.count(read) && !env.count(read)) {
+        if(m_proc.temps.count(read) && !env.count(read)) {
             LOG_ERROR_N(node) << "temporary '" << read << "' is read before it is "
                               << "assigned in this segment — or outside the scope that "
                               << "declares it";
@@ -1256,13 +1252,13 @@ void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
                                           const std::string &fn, int ln)
 {
     for(auto it = action->begin(); it != action->end();) {
-        const bool induced = m_induced.count(it->get()) &&
+        const bool induced = m_proc.induced.count(it->get()) &&
                              (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
                              nba_target(AST::cast_to<AST::NonblockingSubstitution>(*it)) == target;
         it = induced ? action->erase(it) : std::next(it);
     }
     const auto &commit = AST::to_node(make_nba(target, rhs, fn, ln));
-    m_induced.insert(commit.get());
+    m_proc.induced.insert(commit.get());
     action->push_back(commit);
 }
 
@@ -1272,7 +1268,7 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
                                       const std::set<const AST::Node *> &lapped,
                                       std::vector<State> &states, std::vector<Transition> &entry)
 {
-    const auto &info = m_loops.at(loop);
+    const auto &info = m_proc.loops.at(loop);
     const auto &anchor = info.cond ? info.cond : info.body;
     const std::string &fn = anchor->get_filename();
     const int ln = anchor->get_line();
@@ -1342,7 +1338,7 @@ int ImplicitFsmElaboration::loop_fork(const AST::Node *loop, bool entering, std:
         // slot at its depth; its legs never touch the countdown.
         const std::string depth_cnt = cnt_name(info.depth);
         const unsigned int depth_width =
-            info.depth < m_cnt_widths.size() ? m_cnt_widths[info.depth] : 0;
+            info.depth < m_proc.cnt_widths.size() ? m_proc.cnt_widths[info.depth] : 0;
         const auto cnt_id = [&]() { return AST::to_node(make_id(depth_cnt, fn, ln)); };
         const auto cnt_zero = [&]() {
             return AST::to_node(make_const(0, static_cast<int>(depth_width), fn, ln));
@@ -1453,36 +1449,15 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
                                             const std::string &prefix)
 {
     // One state per wait, in source order (§4, §10.1); each wait is checked
-    // for shape and clock uniformity as it is collected.
-    m_forking.clear();
-    m_wait_index.clear();
-    m_loops.clear();
-    m_induced.clear();
-    m_cnt_name = prefix + "_cnt";
-    m_prefix = prefix;
-    m_cnt_widths.clear();
-    m_temps.clear();
-    m_wires.clear();
-    m_decoded.clear();
-    m_nba_targets.clear();
-    m_init_decode.clear();
-    m_decode_arms.clear();
-    m_walk_module = module;
-    m_walk_pragmalist = pragmalist;
-    m_output_values.clear();
-    m_output_width = 0;
-    m_output_slices.clear();
-    m_captures.clear();
-    m_copyouts.clear();
-    m_capture_pure.clear();
-    m_capture_impure.clear();
-    m_copyout_actual.clear();
-    m_site_impure.clear();
-    m_expanded.clear();
-    m_repeat_depth = 0;
-    m_hold_needed = false;
-    m_encoding = Encoding::BINARY;
-    m_async_reset = false;
+    // for shape and clock uniformity as it is collected. Reconstruction is
+    // the reset: a member added to the per-process state can never be
+    // missed by a clear list.
+    m_proc = ProcessState{};
+    m_inline = InlineState{};
+    m_proc.cnt_name = prefix + "_cnt";
+    m_proc.prefix = prefix;
+    m_proc.module = module;
+    m_proc.pragmalist = pragmalist;
 
     // §3: veriparse_encoding picks the state constants' shape.
     const auto &encoding = get_pragma(pragmalist, "veriparse_encoding");
@@ -1493,13 +1468,13 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             wanted = AST::cast_to<AST::StringConst>(expr)->get_value();
         }
         if(wanted == "binary") {
-            m_encoding = Encoding::BINARY;
+            m_proc.encoding = Encoding::BINARY;
         } else if(wanted == "one_hot") {
-            m_encoding = Encoding::ONE_HOT;
+            m_proc.encoding = Encoding::ONE_HOT;
         } else if(wanted == "gray") {
-            m_encoding = Encoding::GRAY;
+            m_proc.encoding = Encoding::GRAY;
         } else if(wanted == "output") {
-            m_encoding = Encoding::OUTPUT;
+            m_proc.encoding = Encoding::OUTPUT;
         } else {
             LOG_ERROR_N(pragmalist) << "veriparse_encoding is \"binary\", \"one_hot\", "
                                     << "\"gray\" or \"output\"";
@@ -1533,7 +1508,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     // a port, a rolled for's index — is legal SystemVerilog shadowing, but
     // substitution and the by-name checks bind by name. Rejected, with the
     // one-word fix.
-    for(const auto &elt : m_temps) {
+    for(const auto &elt : m_proc.temps) {
         if(find_declaration(module, elt.first)) {
             LOG_ERROR_N(elt.second)
                 << "temporary '" << elt.first << "' shadows a module-level declaration: "
@@ -1548,14 +1523,14 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     {
         std::set<std::string> mine;
         collect_driven(initial->get_statement(), mine);
-        for(const auto &elt : m_loops) {
+        for(const auto &elt : m_proc.loops) {
             if(elt.second.kind == LoopInfo::Kind::FOR) {
                 mine.insert(elt.second.index);
             }
         }
         // §6 temporaries dissolve into values: they are not registers of
         // this process, and a same-named variable elsewhere is unrelated.
-        for(const auto &elt : m_temps) {
+        for(const auto &elt : m_proc.temps) {
             mine.erase(elt.first);
         }
         std::set<std::string> others;
@@ -1577,7 +1552,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     // width otherwise — the capture `cnt <= expr - 1` must hold any value
     // the signal can carry. Rolled for indices are the author's registers:
     // they must exist at module level, with their declared type (§7.2).
-    for(const auto &elt : m_loops) {
+    for(const auto &elt : m_proc.loops) {
         const auto &info = elt.second;
         if(info.kind == LoopInfo::Kind::FOR) {
             bool is_input = false;
@@ -1604,10 +1579,10 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
             continue;
         }
         const auto widen = [this](unsigned int depth, unsigned int width) {
-            if(m_cnt_widths.size() <= depth) {
-                m_cnt_widths.resize(depth + 1, 0);
+            if(m_proc.cnt_widths.size() <= depth) {
+                m_proc.cnt_widths.resize(depth + 1, 0);
             }
-            m_cnt_widths[depth] = std::max(m_cnt_widths[depth], width);
+            m_proc.cnt_widths[depth] = std::max(m_proc.cnt_widths[depth], width);
         };
         if(info.count_known) {
             if(info.count_value >= 2) {
@@ -1669,7 +1644,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
         for(const auto &leg : entry) {
             same_next &= leg.next == entry.front().next;
         }
-        if(same_next && !m_decoded.empty()) {
+        if(same_next && !m_proc.decoded.empty()) {
             LOG_ERROR_N(initial)
                 << "a decoded output takes a conditional value in the init segment: the "
                 << "reset value is unconditional — assign it once before the branch, or "
@@ -1707,9 +1682,9 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                                          const std::vector<Transition> &entry,
                                          std::size_t entry_next)
 {
-    if(m_decoded.empty()) {
-        if(m_encoding == Encoding::OUTPUT) {
-            LOG_ERROR_N(m_walk_pragmalist)
+    if(m_proc.decoded.empty()) {
+        if(m_proc.encoding == Encoding::OUTPUT) {
+            LOG_ERROR_N(m_proc.pragmalist)
                 << "veriparse_encoding = \"output\" with no decoded output: the state "
                 << "bits carry the outputs, and there are none — the hint is inert";
             return 1;
@@ -1720,7 +1695,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     // §6.2: a rolled counting loop's lap is a path with no user statement,
     // so it can re-assert nothing — totality cannot hold across it. §7.3's
     // while idiom is the spelling that re-asserts per lap.
-    for(const auto &elt : m_loops) {
+    for(const auto &elt : m_proc.loops) {
         const auto &info = elt.second;
         const bool counting =
             info.kind == LoopInfo::Kind::FOR ||
@@ -1734,10 +1709,10 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         }
     }
 
-    m_init_decode = entry.front().decode;
+    m_proc.init_decode = entry.front().decode;
 
-    const std::size_t total = states.size() + (m_hold_needed ? 1 : 0);
-    m_decode_arms.assign(total, {});
+    const std::size_t total = states.size() + (m_proc.hold_needed ? 1 : 0);
+    m_proc.decode_arms.assign(total, {});
 
     // Arrivals at each state, transition order kept; the init segment is
     // the arrival into the entry state (§6.2).
@@ -1764,12 +1739,12 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     // process — looking through wires, §6.1's and the author's alike,
     // which substitute down to those leaves.
     std::map<std::string, AST::Node::Ptr> wire_values;
-    for(const auto &wire : m_wires) {
+    for(const auto &wire : m_proc.wires) {
         wire_values[wire.name] = wire.value;
     }
     std::set<std::string> input_names;
-    if(m_walk_module->get_ports()) {
-        for(const auto &port : *m_walk_module->get_ports()) {
+    if(m_proc.module->get_ports()) {
+        for(const auto &port : *m_proc.module->get_ports()) {
             if(port->get_decl() && (port->get_direction() == AST::Port::DirectionEnum::INPUT ||
                                     port->get_direction() == AST::Port::DirectionEnum::INOUT)) {
                 input_names.insert(port->get_decl()->get_name());
@@ -1778,8 +1753,8 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     }
     // The author's continuous assigns and net initializers join the wire
     // map: the look-through reaches their leaves, where the verdict falls.
-    if(m_walk_module->get_items()) {
-        for(const auto &item : *m_walk_module->get_items()) {
+    if(m_proc.module->get_items()) {
+        for(const auto &item : *m_proc.module->get_items()) {
             if(item->is_node_type(AST::NodeType::Assign)) {
                 const auto &assign = AST::cast_to<AST::Assign>(item);
                 const auto &target = lvalue_target(assign->get_left());
@@ -1798,7 +1773,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     // Everything driven outside this process — instance outputs and
     // generate regions included — by the same walk §9.2.2.4 trusts.
     std::set<std::string> foreign;
-    collect_foreign_drivers(m_walk_module, m_walk_pragmalist, m_modules, foreign);
+    collect_foreign_drivers(m_proc.module, m_proc.pragmalist, m_modules, foreign);
     const auto operands_of = [&](const AST::Node::Ptr &node) {
         std::set<std::string> raw;
         collect_identifier_names(node, raw);
@@ -1858,7 +1833,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "the output a register, or commit '" << operand << "' on another path";
                     return 1;
                 }
-                if(m_decoded.count(operand)) {
+                if(m_proc.decoded.count(operand)) {
                     LOG_ERROR_N(expr)
                         << "decoded output '" << name << "': its " << what << " reads decoded "
                         << "output '" << operand << "' from the previous cycle, which the "
@@ -1881,7 +1856,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                 sources.push_back(arrival.source);
             }
         }
-        for(const auto &elt : m_decoded) {
+        for(const auto &elt : m_proc.decoded) {
             const std::string &name = elt.first;
             std::vector<std::pair<AST::Node::Ptr, AST::Node::Ptr>> arm;
             std::string arm_render;
@@ -1991,7 +1966,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                     return 1;
                 }
             }
-            m_decode_arms[state][name] = arm;
+            m_proc.decode_arms[state][name] = arm;
         }
     }
 
@@ -1999,9 +1974,9 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     // when every arm is one constant per state — totality made the value
     // a function of the state, this asks it to be a literal one — with a
     // disambiguation field separating states that share an output vector.
-    if(m_encoding == Encoding::OUTPUT) {
+    if(m_proc.encoding == Encoding::OUTPUT) {
         unsigned int lsb = 0;
-        for(const auto &elt : m_decoded) {
+        for(const auto &elt : m_proc.decoded) {
             const auto &decl = std::dynamic_pointer_cast<AST::Declaration>(elt.second);
             unsigned int width = 0;
             if(!decl || declared_width(decl, width) || width < 1) {
@@ -2010,27 +1985,27 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                     << "': its declaration or packed range is not resolvable";
                 return 1;
             }
-            m_output_slices.push_back({elt.first, lsb, width});
+            m_proc.output_slices.push_back({elt.first, lsb, width});
             lsb += width;
         }
         const unsigned int out_width = lsb;
         // Bignum composition end to end: a shift never exceeds a host
         // integer's width, whatever the platform's long is — the one cap
         // that matters is checked before anything converts.
-        std::vector<mpz_class> vectors(m_decode_arms.size(), mpz_class(0));
-        std::vector<bool> unreachable(m_decode_arms.size(), false);
-        for(std::size_t state = 0; state < m_decode_arms.size(); ++state) {
+        std::vector<mpz_class> vectors(m_proc.decode_arms.size(), mpz_class(0));
+        std::vector<bool> unreachable(m_proc.decode_arms.size(), false);
+        for(std::size_t state = 0; state < m_proc.decode_arms.size(); ++state) {
             // A state no path reaches — a constant-zero repeat's body —
             // has no arrival values: it takes the entry vector below,
             // like the always_comb's default arm would have served it.
-            if(m_decode_arms[state].empty()) {
+            if(m_proc.decode_arms[state].empty()) {
                 unreachable[state] = true;
                 continue;
             }
-            for(const auto &slice : m_output_slices) {
-                const auto &arm = m_decode_arms[state].find(std::get<0>(slice));
-                if(arm == m_decode_arms[state].end()) {
-                    LOG_ERROR_N(m_walk_pragmalist)
+            for(const auto &slice : m_proc.output_slices) {
+                const auto &arm = m_proc.decode_arms[state].find(std::get<0>(slice));
+                if(arm == m_proc.decode_arms[state].end()) {
+                    LOG_ERROR_N(m_proc.pragmalist)
                         << "output encoding: no decode value for '" << std::get<0>(slice)
                         << "' in a state — please report this input";
                     return 1;
@@ -2081,15 +2056,15 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
         }
         const unsigned int d_width = largest > 1 ? clog2(largest) : 0;
         if(out_width + d_width > 32) {
-            LOG_ERROR_N(m_walk_pragmalist)
+            LOG_ERROR_N(m_proc.pragmalist)
                 << "output encoding beyond 32 state bits (" << out_width << " output + " << d_width
                 << " disambiguation): pick binary or gray";
             return 1;
         }
-        m_output_width = out_width + d_width;
+        m_proc.output_width = out_width + d_width;
         for(std::size_t state = 0; state < vectors.size(); ++state) {
             const mpz_class composed = vectors[state] | (mpz_class(disamb[state]) << out_width);
-            m_output_values.push_back(composed.convert_to<unsigned int>());
+            m_proc.output_values.push_back(composed.convert_to<unsigned int>());
         }
     }
     return 0;
@@ -2105,19 +2080,19 @@ AST::Node::Ptr ImplicitFsmElaboration::emit_decode(const std::string &state_reg,
     // has no edge for the reset kind to matter to (§6.2).
     const auto &make_values = [&](const std::map<std::string, AST::Node::Ptr> &values) {
         const auto &stmts = std::make_shared<AST::Node::List>();
-        for(const auto &elt : m_decoded) {
+        for(const auto &elt : m_proc.decoded) {
             stmts->push_back(AST::to_node(make_blocking(elt.first, values.at(elt.first), fn, ln)));
         }
         return AST::to_node(std::make_shared<AST::Block>(stmts, "", fn, ln));
     };
 
     const auto &caselist = std::make_shared<AST::Case::List>();
-    for(std::size_t state = 0; state < m_decode_arms.size(); ++state) {
-        if(m_decode_arms[state].empty()) {
+    for(std::size_t state = 0; state < m_proc.decode_arms.size(); ++state) {
+        if(m_proc.decode_arms[state].empty()) {
             continue;
         }
         const auto &stmts = std::make_shared<AST::Node::List>();
-        for(const auto &elt : m_decode_arms[state]) {
+        for(const auto &elt : m_proc.decode_arms[state]) {
             const auto &chain = elt.second;
             if(chain.size() == 1 && !chain.front().first) {
                 stmts->push_back(
@@ -2147,7 +2122,7 @@ AST::Node::Ptr ImplicitFsmElaboration::emit_decode(const std::string &state_reg,
     }
     {
         auto arm = std::make_shared<AST::Case>(fn, ln);
-        arm->set_statement(make_values(m_init_decode));
+        arm->set_statement(make_values(m_proc.init_decode));
         caselist->push_back(arm);
     }
 
@@ -2161,7 +2136,7 @@ AST::Node::Ptr ImplicitFsmElaboration::emit_decode(const std::string &state_reg,
     }
     auto guard = std::make_shared<AST::IfStatement>(fn, ln);
     guard->set_cond(reset_cond);
-    guard->set_true_statement(make_values(m_init_decode));
+    guard->set_true_statement(make_values(m_proc.init_decode));
     guard->set_false_statement(AST::to_node(case_stmt));
 
     auto comb = std::make_shared<AST::AlwaysComb>(fn, ln);
@@ -2181,30 +2156,30 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     // omitted when no path ends the process, as none does in a perpetual
     // machine: an unreachable state would still cost encoding width. The
     // walk flagged it when recording a transition to the hold index.
-    const bool hold_needed = m_hold_needed;
+    const bool hold_needed = m_proc.hold_needed;
     const std::size_t nstates = states.size() + (hold_needed ? 1 : 0);
 
     // §3: the encoding shapes the constants and the register width —
     // binary and gray pack into clog2 bits, one-hot spends one per state.
-    if(m_encoding == Encoding::ONE_HOT && nstates > 32) {
+    if(m_proc.encoding == Encoding::ONE_HOT && nstates > 32) {
         LOG_ERROR_N(module) << "one_hot encoding beyond 32 states (" << nstates
                             << "): pick binary or gray";
         return nullptr;
     }
     const unsigned int width =
-        m_encoding == Encoding::ONE_HOT
+        m_proc.encoding == Encoding::ONE_HOT
             ? static_cast<unsigned int>(nstates)
-            : (m_encoding == Encoding::OUTPUT ? m_output_width
-                                              : clog2(static_cast<unsigned int>(nstates)));
+            : (m_proc.encoding == Encoding::OUTPUT ? m_proc.output_width
+                                                   : clog2(static_cast<unsigned int>(nstates)));
     const auto encode = [&](std::size_t index) -> unsigned int {
-        switch(m_encoding) {
+        switch(m_proc.encoding) {
         case Encoding::ONE_HOT:
             return 1U << index;
         case Encoding::GRAY:
             return static_cast<unsigned int>(index ^ (index >> 1));
         case Encoding::OUTPUT:
             // §6.2: the composed {disambiguation, outputs} value.
-            return m_output_values[index];
+            return m_proc.output_values[index];
         case Encoding::BINARY:
         default:
             return static_cast<unsigned int>(index);
@@ -2244,13 +2219,13 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         std::set<std::string> unique(state_names.begin(), state_names.end());
         std::size_t expected = state_names.size() + 1;
         unique.insert(prefix + "_state");
-        for(std::size_t depth = 0; depth < m_cnt_widths.size(); ++depth) {
-            if(m_cnt_widths[depth] > 0) {
+        for(std::size_t depth = 0; depth < m_proc.cnt_widths.size(); ++depth) {
+            if(m_proc.cnt_widths[depth] > 0) {
                 unique.insert(cnt_name(static_cast<unsigned int>(depth)));
                 ++expected;
             }
         }
-        for(const auto &wire : m_wires) {
+        for(const auto &wire : m_proc.wires) {
             unique.insert(wire.name);
             ++expected;
         }
@@ -2303,8 +2278,8 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // logic [w-1:0] <prefix>_cnt, _cnt2, ...; — one shared countdown per
     // repeat-nesting depth that induced one (§7.2, §15).
-    for(std::size_t depth = 0; depth < m_cnt_widths.size(); ++depth) {
-        if(m_cnt_widths[depth] == 0) {
+    for(std::size_t depth = 0; depth < m_proc.cnt_widths.size(); ++depth) {
+        if(m_proc.cnt_widths[depth] == 0) {
             continue;
         }
         const auto &name = cnt_name(static_cast<unsigned int>(depth));
@@ -2314,8 +2289,8 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
             return nullptr;
         }
         auto cnt_type = std::make_shared<AST::LogicType>(fn, ln);
-        if(m_cnt_widths[depth] > 1) {
-            cnt_type->set_packed_dims(make_packed_range(m_cnt_widths[depth] - 1, fn, ln));
+        if(m_proc.cnt_widths[depth] > 1) {
+            cnt_type->set_packed_dims(make_packed_range(m_proc.cnt_widths[depth] - 1, fn, ln));
         }
         auto cnt = std::make_shared<AST::Var>(fn, ln);
         cnt->set_name(name);
@@ -2327,7 +2302,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     // typed by the temporary's declaration so the declared width keeps
     // truncating exactly as the source did, driven by one continuous
     // assign, read from the case arms.
-    for(const auto &wire : m_wires) {
+    for(const auto &wire : m_proc.wires) {
         if(Analysis::UniqueDeclaration::identifier_declaration_exists(wire.name, declared)) {
             LOG_ERROR_N(module) << "generated declaration '" << wire.name
                                 << "' collides with an existing one";
@@ -2392,10 +2367,10 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
     // put the reset on a combinational arc to every output for a window
     // the model does not define. The always block (never an assign, which
     // a 1364 reg cannot take) keeps both output modes legal.
-    if(!m_decoded.empty()) {
-        if(m_encoding == Encoding::OUTPUT) {
+    if(!m_proc.decoded.empty()) {
+        if(m_proc.encoding == Encoding::OUTPUT) {
             const auto &slice_block = std::make_shared<AST::Node::List>();
-            for(const auto &slice : m_output_slices) {
+            for(const auto &slice : m_proc.output_slices) {
                 const unsigned int low = std::get<1>(slice);
                 const unsigned int w = std::get<2>(slice);
                 AST::Node::Ptr select;
@@ -2529,7 +2504,7 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
 
     // §3: veriparse_reset_kind = "async" adds the reset's own edge to the
     // sensitivity; the guard structure is the same either way.
-    if(m_async_reset) {
+    if(m_proc.async_reset) {
         auto reset_sens = std::make_shared<AST::Sens>(fn, ln);
         reset_sens->set_type(active_low ? AST::Sens::TypeEnum::NEGEDGE
                                         : AST::Sens::TypeEnum::POSEDGE);
@@ -2550,16 +2525,17 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
         process.module_name = module->get_name();
         process.state_variable = state_reg;
         process.width = width;
-        process.encoding = m_encoding == Encoding::ONE_HOT
-                               ? "one_hot"
-                               : (m_encoding == Encoding::GRAY
-                                      ? "gray"
-                                      : (m_encoding == Encoding::OUTPUT ? "output" : "binary"));
+        process.encoding =
+            m_proc.encoding == Encoding::ONE_HOT
+                ? "one_hot"
+                : (m_proc.encoding == Encoding::GRAY
+                       ? "gray"
+                       : (m_proc.encoding == Encoding::OUTPUT ? "output" : "binary"));
         process.entry = state_names[entry_next];
         process.has_hold = hold_needed;
         process.reset_signal = reset_name;
         process.reset_active_level = active_low ? 0 : 1;
-        process.reset_kind = m_async_reset ? "async" : "sync";
+        process.reset_kind = m_proc.async_reset ? "async" : "sync";
         for(const auto &stmt : *init_stmts) {
             if(stmt->is_node_type(AST::NodeType::NonblockingSubstitution)) {
                 process.reset_registers.push_back(
@@ -2575,12 +2551,12 @@ AST::Node::ListPtr ImplicitFsmElaboration::emit(
             process.states.push_back(entry_state);
         }
         Generators::VerilogGenerator renderer;
-        for(const auto &elt : m_decoded) {
+        for(const auto &elt : m_proc.decoded) {
             FsmReport::Decode decode;
             decode.signal = elt.first;
-            for(std::size_t i = 0; i < m_decode_arms.size(); ++i) {
-                const auto &arm = m_decode_arms[i].find(elt.first);
-                if(arm == m_decode_arms[i].end()) {
+            for(std::size_t i = 0; i < m_proc.decode_arms.size(); ++i) {
+                const auto &arm = m_proc.decode_arms[i].find(elt.first);
+                if(arm == m_proc.decode_arms[i].end()) {
                     continue;
                 }
                 std::string text;
