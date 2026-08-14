@@ -373,6 +373,11 @@ if(NOT WIN32)
     # over a machine whose state bits ARE the outputs.
     add_verilower_sv_cosim(NAME decode_enc VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §7.4 task inlining (§12 phase 11): the Appendix-B byte write with
+    # the LOW/HIGH halves as one task called per half-bit, two
+    # back-to-back frames for §A.3's chaining case.
+    add_verilower_sv_cosim(NAME i2c_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
     # marked module instantiated twice with different parameters — the
     # shape a per-module verilower run cannot compile (§15) — each

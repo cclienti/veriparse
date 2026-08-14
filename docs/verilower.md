@@ -223,6 +223,7 @@ source line and the governing rule — there is no silent approximation
 | `break` / `continue` | CFG edges: exit or re-enter the innermost loop, from any nesting of `if`/`case` |
 | `begin : LABEL … end` | state names: `__fsm_LABEL`, nested labels composed outward-in (`__fsm_BIT_LOW`), ordinals when one label spans several states ([Naming](#naming-the-states)) |
 | calls to **pure** functions | inlined combinational logic; purity is checked (only inputs read, only locals written, no static locals, callees pure) |
+| calls to `task`s | inlined per call site as a labelled block ([Tasks](#tasks--reusable-multi-cycle-sub-sequences)) |
 | pure system functions (`$clog2`, `$bits`, `$size`, `$countones`, `$onehot`, …) | evaluated or passed through as combinational logic |
 | parameters, `localparam`, enum/typedef/struct types | resolved by the preamble passes before lowering, as in `veriflat` |
 
@@ -396,6 +397,36 @@ The rules, each a hard error when violated:
 Self-advancing expression decode (`tx = data[i]` beside `i <= i + 1`)
 cannot be a comb and stays a register — see ADR-0014 §6.2 for the
 analysis. The state map lists each decoded output's per-state value.
+
+## Tasks — reusable multi-cycle sub-sequences
+
+A `task` called from the marked process is **inlined at each call
+site** as a labelled block, so a repeated wait-pattern is written once
+and called per use — states name as `<TASK>_<ordinal>` through the
+usual label composition. Arguments follow measured IEEE §13.3
+semantics: `input` is copy-in captured at the call (constants
+substitute, dynamic actuals cost one register); `output`/`inout`
+written with `<=` get a private register with one copy-out committed at
+return — the actual holds through the task and takes the final value at
+the return edge, exactly as simulators behave; `=` writes crossing a
+wait, and recursion, are refused. A task local that must survive the
+task's own waits hoists to a module-level register — one shared
+register for a (default) `static` task, one per call site for `task
+automatic` with assign-before-read enforced. Bounded loops in task
+bodies unroll when the substituted bound is constant, roll under
+`(* veriparse_no_unroll *)` (dynamic counts included), and the
+inlined-away task definition is dropped when nothing else calls it.
+
+```systemverilog
+task phase(input logic v, input logic [7:0] hold);
+    begin
+        scl <= v;
+        (* veriparse_no_unroll *)
+        repeat (hold) @(posedge clk);
+    end
+endtask
+// called per half-bit: phase(1'b0, T_LOW); phase(1'b1, T_HIGH); ...
+```
 
 ## Naming the states
 
