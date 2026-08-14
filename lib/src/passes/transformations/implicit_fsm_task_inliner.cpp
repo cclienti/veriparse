@@ -14,85 +14,14 @@ using namespace FsmDetail;
 namespace
 {
 
-/// Program-order scan: does the first reference to @p name in the subtree
-/// read it rather than write it? Writes are assignment targets; anything
-/// else is a read (§7.4's assign-before-read checks).
-int first_reference(const AST::Node::Ptr &node, const std::string &name)
-{
-    if(!node) {
-        return 0;
-    }
-    if(node->is_node_type(AST::NodeType::NonblockingSubstitution) ||
-       node->is_node_type(AST::NodeType::BlockingSubstitution)) {
-        const auto &parts = node->get_children();
-        if(!parts || parts->empty()) {
-            return 0;
-        }
-        const AST::Node::Ptr left = parts->front();
-        std::set<std::string> targets;
-        collect_driven(node, targets);
-        if(targets.count(name)) {
-            // Program order within one statement is RHS-then-commit, so
-            // a self-read on the right counts as a read.
-            std::set<std::string> rhs_reads;
-            for(const auto &child : *parts) {
-                if(child != left) {
-                    collect_identifier_names(child, rhs_reads);
-                }
-            }
-            return rhs_reads.count(name) ? -1 : 1;
-        }
-        std::set<std::string> reads;
-        collect_identifier_names(node, reads);
-        return reads.count(name) ? -1 : 0;
-    }
-    if(node->is_node_category(AST::NodeType::Identifier) &&
-       AST::cast_to<AST::Identifier>(node)->get_name() == name) {
-        // Outside an assignment — a condition, an event control, a bound,
-        // an actual — an occurrence can only read.
-        return -1;
-    }
-    const auto &children = node->get_children();
-    if(children) {
-        for(const auto &child : *children) {
-            const int verdict = first_reference(child, name);
-            if(verdict) {
-                return verdict;
-            }
-        }
-    }
-    return 0;
-}
-
-/// Rename identifiers everywhere, assignment targets included —
-/// subst_into deliberately skips Lvalue for §6.1's value substitution,
-/// but an inlined clone renames its writes too (§7.4).
+/// Rename identifiers everywhere, assignment targets included — the
+/// inlined clone renames its writes too (§7.4). The engine is
+/// ASTReplace::replace_identifier, which already skips hierarchical
+/// leaves and shadowing subroutine scopes; the roots here are blocks,
+/// never a bare identifier.
 void rename_into(const AST::Node::Ptr &node, const std::map<std::string, AST::Node::Ptr> &map)
 {
-    if(!node) {
-        return;
-    }
-    const auto &children = node->get_children();
-    if(!children) {
-        return;
-    }
-    for(const auto &child : *children) {
-        if(child && child->is_node_type(AST::NodeType::Identifier)) {
-            const auto &id = AST::cast_to<AST::Identifier>(child);
-            if(id->get_hier() && id->get_hier()->get_labellist() &&
-               !id->get_hier()->get_labellist()->empty()) {
-                // Another scope's name: the leaf match is a coincidence.
-                rename_into(child, map);
-                continue;
-            }
-            const auto &found = map.find(id->get_name());
-            if(found != map.end()) {
-                node->replace(child, found->second->clone());
-            }
-            continue;
-        }
-        rename_into(child, map);
-    }
+    ASTReplace::replace_identifier(node, map);
 }
 
 std::string upper_of(const std::string &text)
@@ -611,7 +540,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
     // assigned before read — a register persists where the fresh local
     // (or the not-yet-copied-out formal) holds nothing readable.
     for(const auto &checked : check_read_first) {
-        if(first_reference(block_node, checked) < 0) {
+        if(Analysis::Statement::first_reference(block_node, checked) < 0) {
             LOG_ERROR_N(call)
                 << "'" << checked << "' is read before it is assigned in this activation: "
                 << "a register persists where the task's storage starts fresh — assign it "

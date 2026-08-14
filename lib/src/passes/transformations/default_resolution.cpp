@@ -4,6 +4,7 @@
 #include <veriparse/passes/transformations/net_defaults.hpp>
 #include <veriparse/passes/analysis/declaration_helpers.hpp>
 #include <veriparse/AST/node_cast.hpp>
+#include <veriparse/passes/analysis/storage_kind.hpp>
 #include <veriparse/logger/logger.hpp>
 
 namespace Veriparse
@@ -177,18 +178,13 @@ int DefaultResolution::resolve_port_kind(const AST::Port::Ptr &port,
 
     const AST::Net::Ptr implicit_net = AST::cast_to<AST::Net>(decl);
     const AST::DataType::Ptr type = implicit_net->get_type();
-    const bool implicit_type = !type || type->is_node_type(AST::NodeType::ImplicitType);
-    const AST::Port::DirectionEnum dir = port->get_direction();
 
-    // §23.2.2.3 kind rules: a ref port is always a variable; an output is
-    // a variable when its data type was written with the explicit
-    // data_type syntax; every other omitted kind is a net of the default
-    // net type.
-    const bool variable = (dir == AST::Port::DirectionEnum::REF) ||
-                          (dir == AST::Port::DirectionEnum::CONST_REF) ||
-                          (dir == AST::Port::DirectionEnum::OUTPUT && !implicit_type);
-
-    if(variable) {
+    // §23.2.2.3 kind rules, shared with every other consumer that must
+    // tell a variable from a net (Analysis::StorageKind): a ref port is
+    // always a variable, an output is one when its data type was written
+    // with the explicit data_type syntax, every other omitted kind is a
+    // net of the default net type.
+    if(Analysis::StorageKind::port_is_variable(port)) {
         auto var = std::make_shared<AST::Var>(decl->get_filename(), decl->get_line());
         var->set_name(implicit_net->get_name());
         var->set_type(type);
