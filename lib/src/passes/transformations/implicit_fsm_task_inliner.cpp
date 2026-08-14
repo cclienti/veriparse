@@ -127,7 +127,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
             if(!n) {
                 return;
             }
-            if(m_inline.captures.count(n.get()) || m_inline.copyouts.count(n.get())) {
+            if(induced_marker_kind(n)) {
                 return; // a nested expansion's induced commit, not the body's
             }
             if(n->is_node_type(AST::NodeType::NonblockingSubstitution)) {
@@ -228,14 +228,7 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                 if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
                     return nullptr;
                 }
-                {
-                    const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
-                    m_inline.captures.insert(capture.get());
-                    (body_nba_targets.count(fname) ? m_inline.capture_impure
-                                                   : m_inline.capture_pure)
-                        .insert(rname);
-                    head.push_back(capture);
-                }
+                head.push_back(make_induced_marker(make_nba(rname, actual, fn, ln), true, fn, ln));
                 subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
             case AST::Arg::DirectionEnum::OUTPUT:
@@ -264,11 +257,9 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                     }
                     {
                         const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                        const auto &copyout = AST::to_node(
-                            make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln));
-                        m_inline.copyouts.insert(copyout.get());
-                        m_inline.copyout_actual[rname] = aname;
-                        tail.push_back(copyout);
+                        tail.push_back(make_induced_marker(
+                            make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln), false,
+                            fn, ln));
                     }
                     subst[fname] = AST::to_node(make_id(rname, fn, ln));
                     break;
@@ -277,22 +268,16 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
                     return nullptr;
                 }
                 if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
-                    const auto &capture = AST::to_node(make_nba(rname, actual, fn, ln));
-                    m_inline.captures.insert(capture.get());
-                    (body_nba_targets.count(fname) ? m_inline.capture_impure
-                                                   : m_inline.capture_pure)
-                        .insert(rname);
-                    head.push_back(capture);
+                    head.push_back(
+                        make_induced_marker(make_nba(rname, actual, fn, ln), true, fn, ln));
                 } else {
                     check_read_first.push_back(rname);
                 }
                 {
                     const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                    const auto &copyout =
-                        AST::to_node(make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln));
-                    m_inline.copyouts.insert(copyout.get());
-                    m_inline.copyout_actual[rname] = aname;
-                    tail.push_back(copyout);
+                    tail.push_back(make_induced_marker(
+                        make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln), false, fn,
+                        ln));
                 }
                 subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
@@ -514,19 +499,6 @@ AST::Node::Ptr ImplicitFsmElaboration::expand_call(const AST::Call::Ptr &call,
         }
     }
 
-    // A cloned call site is repairable only when its capture registers
-    // have their captures as sole writers; a body-written formal makes
-    // the clones ambiguous (readopt_induced refuses the combination).
-    {
-        bool impure = false;
-        if(formals) {
-            for(const auto &formal : *formals) {
-                impure |= m_inline.capture_impure.count(site + "_" + formal->get_name()) != 0;
-            }
-        }
-        m_inline.site_impure[upper_of(site)] = impure;
-    }
-
     // ---- Apply the renames, then splice copy-in/copy-out.
     if(!subst.empty()) {
         rename_into(block_node, subst);
@@ -611,75 +583,40 @@ int ImplicitFsmElaboration::inline_tasks(const AST::Initial::Ptr &initial)
     if(LoopUnrolling(m_module_state.declared).run(AST::to_node(initial))) {
         return 1;
     }
-    return readopt_induced(AST::to_node(initial));
+    adopt_markers(AST::to_node(initial));
+    return 0;
 }
 
-/// After the post-inline re-run, an unrolled loop's clones of induced
-/// commits carry the originals' shapes but not their pointers. A pure
-/// capture register has exactly one writer — its capture — so any commit
-/// to it is a capture; a copy-out names its site register on the right.
-/// A body-written (impure) capture register makes a cloned site
-/// ambiguous: capture and body write are indistinguishable, refused.
-int ImplicitFsmElaboration::readopt_induced(const AST::Node::Ptr &node)
+/// The induced commits travelled as pragma markers, which any cloning
+/// copies along; with the process's text final, each marker unwraps to
+/// its nonblocking assignment and the walk's induced index takes the
+/// pointer — stable from here, nothing clones again.
+void ImplicitFsmElaboration::adopt_markers(const AST::Node::Ptr &node)
 {
-    std::map<std::string, int> labels;
-    std::function<void(const AST::Node::Ptr &)> count = [&](const AST::Node::Ptr &n) {
-        if(!n) {
-            return;
+    if(!node) {
+        return;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return;
+    }
+    for(const auto &child : *children) {
+        const int kind = induced_marker_kind(child);
+        if(kind == 0) {
+            adopt_markers(child);
+            continue;
         }
-        if(n->is_node_type(AST::NodeType::Block)) {
-            const std::string &scope = AST::cast_to<AST::Block>(n)->get_scope();
-            if(!scope.empty()) {
-                ++labels[scope];
-            }
+        const auto &nba = induced_marker_nba(child);
+        if(!nba) {
+            continue;
         }
-        const auto &children = n->get_children();
-        if(children) {
-            for(const auto &child : *children) {
-                count(child);
-            }
-        }
-    };
-    count(node);
-    for(const auto &site : m_inline.site_impure) {
-        if(site.second && labels[site.first] > 1) {
-            LOG_ERROR_N(node)
-                << "call site '" << site.first << "' was cloned by loop unrolling, and its "
-                << "'<='-written formal entangles the clones' copy-ins — keep the surrounding "
-                << "loop rolled with (* veriparse_no_unroll *)";
-            return 1;
+        node->replace(child, AST::to_node(nba));
+        if(kind == 1) {
+            m_inline.captures.insert(nba.get());
+        } else {
+            m_inline.copyouts.insert(nba.get());
         }
     }
-
-    std::function<void(const AST::Node::Ptr &)> adopt = [&](const AST::Node::Ptr &n) {
-        if(!n) {
-            return;
-        }
-        if(n->is_node_type(AST::NodeType::NonblockingSubstitution) &&
-           !m_inline.captures.count(n.get()) && !m_inline.copyouts.count(n.get())) {
-            const auto &nba = AST::cast_to<AST::NonblockingSubstitution>(n);
-            const std::string target = nba_target(nba);
-            if(m_inline.capture_pure.count(target)) {
-                m_inline.captures.insert(n.get());
-            } else if(nba->get_right() && nba->get_right()->get_var() &&
-                      nba->get_right()->get_var()->is_node_type(AST::NodeType::Identifier)) {
-                const std::string rhs_name =
-                    AST::cast_to<AST::Identifier>(nba->get_right()->get_var())->get_name();
-                const auto &found = m_inline.copyout_actual.find(rhs_name);
-                if(found != m_inline.copyout_actual.end() && found->second == target) {
-                    m_inline.copyouts.insert(n.get());
-                }
-            }
-        }
-        const auto &children = n->get_children();
-        if(children) {
-            for(const auto &child : *children) {
-                adopt(child);
-            }
-        }
-    };
-    adopt(node);
-    return 0;
 }
 
 bool ImplicitFsmElaboration::contains_induced(const AST::Node::Ptr &node) const

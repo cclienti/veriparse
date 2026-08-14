@@ -1401,17 +1401,18 @@ set** (the stock invocation analyzes only the node it is handed, which
 here would let it mint a name colliding with a module-level declaration
 or another process's) while the rewriting stays guarded to the one
 process. The second run can still clone an already-expanded call — a
-nested call under the formal-bounded loop — and cloning loses the
-pass's pointer identity on the induced commits, so they **re-adopt by
-their generated shapes**: a *pure* capture register has exactly one
-writer, its capture, so any commit to it is a capture; a copy-out names
-its site register on the right. A formal both captured and
-`<=`-written by the body makes its clones ambiguous — capture and body
-write are indistinguishable — and that one combination is refused, with
-`veriparse_no_unroll` as the spelling that keeps the loop rolled. A
-rolled repeat needs no such help: §7.2's capture accepts a formal's
-induced register like any non-constant count, and a genuinely
-non-constant bound keeps §8's refusal.
+nested call under the formal-bounded loop — so the induced commits
+travel as **pragma markers**, `(* veriparse_fsm_capture *)` and
+`(* veriparse_fsm_copyout *)` around their nonblocking assignments:
+any cloning copies the pragma along, where a pointer identity would
+dangle. Once the text is final the markers unwrap and the walk's
+induced index takes stable pointers. The marking is total — a cloned
+capture keeps its marker while a cloned body write has none — so even
+a `<=`-written formal's clones stay unambiguous, and the internal
+pragmas never reach the output: the walk rebuilds every induced
+commit it emits. A rolled repeat needs none of this: §7.2's capture
+accepts a formal's induced register like any non-constant count, and
+a genuinely non-constant bound keeps §8's refusal.
 
 **Copy-outs carry §13.3's immediate visibility the same way captures
 do:** the induced `actual <= <site>_<formal>` commit forward-substitutes
@@ -1651,7 +1652,6 @@ unmarked column has already been misread once.
 | a task local sharing a formal's or another local's name | substitution binds by name across the inlined body (§6.1, §7.4) — honouring the shadow would silently hijack the earlier binding — rename it | ADR §6, §7.4 |
 | an author signal named like a static local's hoist register (`<task>_<local>`) | the hoist would silently alias the author's storage — rename one of them (§7.4) | ADR §7.4 |
 | a read, in the same cycle, of a register a conditional task call assigns | the copied value depends on the branch; §13.3's visibility holds inside the branch, the next wait makes it unconditional (§7.4) | ADR §7.4, IEEE §13.3 |
-| an unrolled clone of a call site whose formal is both captured and `<=`-written | the clones' copy-ins and body writes are indistinguishable — keep the loop rolled with `(* veriparse_no_unroll *)` (§7.4) | ADR §7.4 |
 | a task `return` conditional within its branch, inside a loop or case arm, through a partially-returning named block, or carrying a value | the return jumps to the body's end and lowers structurally — flag state and label renames are not carried, and a task returns no value (§7.4) | ADR §7.4, IEEE §13.3 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
