@@ -198,6 +198,7 @@ struct port_info_t {
 	 bool has_data_type = false; // true when the port type is a data_type below
 	 data_type_t data_type{};    // bit/atom/non-integer/struct/union/enum port type
 	 bool is_var = false;        // `var` port kind (A.1.3 variable_port_header)
+	 AST::Node::Ptr default_value; // tf default argument (A.2.7 [ = expression ])
 };
 
 typedef struct {
@@ -5676,6 +5677,38 @@ function_portinfo:
                     $$.direction = $1;
                     $$.is_var = true;
                 }
+
+        |       function_ioport TK_EQUALS expression
+                {
+                    // A.2.7 tf_port_item [ = expression ] — the default
+                    // actual, legal in the parenthesized list only.
+                    $$ = $1;
+                    $$.direction = direction_t::NONE;
+                    $$.default_value = $3;
+                }
+
+        |       function_portdir function_ioport TK_EQUALS expression
+                {
+                    $$ = $2;
+                    $$.direction = $1;
+                    $$.default_value = $4;
+                }
+
+        |       TK_VAR function_ioport TK_EQUALS expression
+                {
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                    $$.default_value = $4;
+                }
+
+        |       function_portdir TK_VAR function_ioport TK_EQUALS expression
+                {
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
+                    $$.default_value = $5;
+                }
         ;
 
 
@@ -5795,6 +5828,12 @@ function_ioports_decl:
                     // on the first name only, so the rest ride the fully-bare
                     // inherit-all path (one declaration, one shared type —
                     // IEEE 1800-2017 13.3 / 1364-2005 10.2).
+                    for(const auto &pinfo : $2) {
+                        if(pinfo.default_value) {
+                            error(pinfo.loc, "a default argument value requires the "
+                                             "parenthesized argument list (IEEE 1800-2017 A.2.7)");
+                        }
+                    }
                     if(!$2.empty()) $2.front().direction = $1;
                     auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
                                                                     false, loc, error_message);
@@ -5995,6 +6034,39 @@ task_portinfo:
                     $$.direction = $1;
                     $$.is_var = true;
                 }
+
+        |       task_ioport TK_EQUALS expression
+                {
+                    // A.2.7 tf_port_item [ = expression ] — the default
+                    // actual, legal in the parenthesized list only (the body
+                    // tf_port_declaration form has no default slot).
+                    $$ = $1;
+                    $$.direction = direction_t::NONE;
+                    $$.default_value = $3;
+                }
+
+        |       task_portdir task_ioport TK_EQUALS expression
+                {
+                    $$ = $2;
+                    $$.direction = $1;
+                    $$.default_value = $4;
+                }
+
+        |       TK_VAR task_ioport TK_EQUALS expression
+                {
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                    $$.default_value = $4;
+                }
+
+        |       task_portdir TK_VAR task_ioport TK_EQUALS expression
+                {
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
+                    $$.default_value = $5;
+                }
         ;
 
 
@@ -6123,6 +6195,12 @@ task_ioports_decl:
                     // on the first name only, so the rest ride the fully-bare
                     // inherit-all path (one declaration, one shared type —
                     // IEEE 1800-2017 13.3 / 1364-2005 10.2).
+                    for(const auto &pinfo : $2) {
+                        if(pinfo.default_value) {
+                            error(pinfo.loc, "a default argument value requires the "
+                                             "parenthesized argument list (IEEE 1800-2017 A.2.7)");
+                        }
+                    }
                     if(!$2.empty()) $2.front().direction = $1;
                     auto _ports = ParserHelpers::create_ports_decls($2, scanner.get_filename(),
                                                                     false, loc, error_message);
@@ -6952,6 +7030,9 @@ namespace Veriparse {
                         type = std::make_shared<AST::ImplicitType>(filename, line);
                     }
                     arg->set_type(type);
+                    if(pinfo.default_value) {
+                        arg->set_default_value(pinfo.default_value);
+                    }
                     list->push_back(arg);
                     last_dir = dir;
                     last_type = type;
