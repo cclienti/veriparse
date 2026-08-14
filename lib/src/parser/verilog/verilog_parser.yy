@@ -1373,6 +1373,30 @@ portinfo:       portname
                     $$ = $1;
                 }
 
+        |       TK_VAR portname
+                {
+                    // directionless variable port, HEADER only (A.1.3 makes
+                    // the direction optional in an ansi_port_declaration; a
+                    // body port_declaration always leads with one, and there
+                    // `var x;` is a data declaration): first-port `var x`
+                    // awaits the §23.2.2.3 seed, a later one inherits the
+                    // direction but takes its own kind — and its own default
+                    // data type (logic), never the previous port's.
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                }
+
+        |       TK_VAR port_typed_name
+                {
+                    if($2.net_type != net_type_t::NONE) {
+                        error(@1, "'var' contradicts a net type on the same port (§23.2.2.3)");
+                    }
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                }
+
         |       port_typed_name
                 {
                     $$ = $1;
@@ -1656,6 +1680,7 @@ ioport:         portdir portname
                     $$.direction = $1;
                     $$.is_var = true;
                 }
+
 
         |       portdir TK_VAR port_typed_name
                 {
@@ -5635,6 +5660,22 @@ function_portinfo:
                     $$ = $2;
                     $$.direction = $1;
                 }
+
+        |       TK_VAR function_ioport
+                {
+                    // A.2.7: [ tf_port_direction ] [ var ] — the explicit
+                    // variable kind, direction inherited.
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                }
+
+        |       function_portdir TK_VAR function_ioport
+                {
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
+                }
         ;
 
 
@@ -5937,6 +5978,22 @@ task_portinfo:
                 {
                     $$ = $2;
                     $$.direction = $1;
+                }
+
+        |       TK_VAR task_ioport
+                {
+                    // A.2.7: [ tf_port_direction ] [ var ] — the explicit
+                    // variable kind, direction inherited.
+                    $$ = $2;
+                    $$.direction = direction_t::NONE;
+                    $$.is_var = true;
+                }
+
+        |       task_portdir TK_VAR task_ioport
+                {
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
                 }
         ;
 
@@ -6860,9 +6917,18 @@ namespace Veriparse {
                                                     "on task/function arguments");
                         return nullptr;
                     }
+                    if(pinfo.is_var && pinfo.net_type != net_type_t::NONE) {
+                        loc = pinfo.loc;
+                        error_message =
+                            std::string("'var' contradicts a net type on the same argument");
+                        return nullptr;
+                    }
                     auto arg = std::make_shared<AST::Arg>(filename, line);
                     arg->set_name(pinfo.name);
                     arg->set_direction(to_arg_dir(dir));
+                    if(pinfo.is_var) {
+                        arg->set_is_var(true);
+                    }
 
                     // Formal argument data type (IEEE 1800-2017 13.3): its
                     // own when written; otherwise INHERITED from the previous
@@ -6921,6 +6987,7 @@ namespace Veriparse {
                 const port_info_t &first = port_list.front();
                 const bool first_bare =
                     first.direction == direction_t::NONE && first.type_name.empty() &&
+                    !first.is_var &&
                     (!ansi_relax ||
                      (first.net_type == net_type_t::NONE && first.signing == signing_t::NONE &&
                       !first.widths && !first.has_data_type));
@@ -6930,7 +6997,7 @@ namespace Veriparse {
                     for(const port_info_t &pinfo: port_list) {
                         if ((pinfo.direction != direction_t::NONE) || (pinfo.net_type != net_type_t::NONE) ||
                             (pinfo.signing != signing_t::NONE) || (pinfo.widths) || (!pinfo.type_name.empty()) ||
-                            (pinfo.has_data_type)) {
+                            (pinfo.has_data_type) || (pinfo.is_var)) {
                             loc = pinfo.loc;
                             error_message = std::string("missing port direction qualifier");
                             return nullptr;
@@ -7005,7 +7072,7 @@ namespace Veriparse {
                         }
                         else if (pinfo.direction == direction_t::NONE) {
                             if ((pinfo.net_type != net_type_t::NONE) || (pinfo.signing != signing_t::NONE) ||
-                                (pinfo.widths) || (pinfo.has_data_type)) {
+                                (pinfo.widths) || (pinfo.has_data_type) || (pinfo.is_var)) {
                                 if (!ansi_relax) {
                                     loc = pinfo.loc;
                                     error_message = std::string("missing port direction qualifier");
@@ -7074,6 +7141,25 @@ namespace Veriparse {
                                 loc = pinfo.loc;
                                 error_message =
                                     std::string("'var' contradicts a net type on the same port");
+                                return nullptr;
+                            }
+                            // "an inout port shall not be [of a variable type]"
+                            // (IEEE 1800-2017 A.1.3 note 1) — and a leading
+                            // directionless port defaults to inout, the
+                            // standard's own mh4 error case (§23.2.2.3).
+                            if (dir == direction_t::INOUT) {
+                                loc = pinfo.loc;
+                                error_message = std::string(
+                                    "an inout port shall not be of a variable type "
+                                    "(IEEE 1800-2017 §23.2.2.3)");
+                                return nullptr;
+                            }
+                            if (dir == direction_t::NONE) {
+                                loc = pinfo.loc;
+                                error_message = std::string(
+                                    "a leading 'var' port takes the default inout direction, "
+                                    "which cannot be a variable (IEEE 1800-2017 §23.2.2.3) — "
+                                    "write the direction");
                                 return nullptr;
                             }
                             AST::DataType::Ptr vtype;

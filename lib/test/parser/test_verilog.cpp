@@ -424,3 +424,4 @@ TEST(VerilogParserTest, sv_size_cast0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_type_op0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_user_types0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_jump0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_var_port0) { TEST_CORE_SV; }

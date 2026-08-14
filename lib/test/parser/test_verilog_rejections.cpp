@@ -138,6 +138,31 @@ TEST(VerilogParserRejection, tf_list_typed_directionless_name)
     EXPECT_PARSE_FATAL(parse_verilog(src), "direction");
 }
 
+// The var port kind (§23.2.2.3): a leading directionless 'var' port takes
+// the default inout direction, and "an inout port shall not be [of a
+// variable type]" (A.1.3 note 1) — the standard's own mh4 error case.
+TEST(VerilogParserRejection, sv_var_port_leading_directionless)
+{
+    const std::string src = "module m(var x);\n"
+                            "endmodule\n";
+    EXPECT_PARSE_FATAL(parse_sv(src), "inout");
+}
+
+TEST(VerilogParserRejection, sv_var_port_inout)
+{
+    const std::string src = "module m(inout var logic x);\n"
+                            "endmodule\n";
+    EXPECT_PARSE_FATAL(parse_sv(src), "variable type");
+}
+
+// 'var' names a variable kind; a net type on the same port contradicts it.
+TEST(VerilogParserRejection, sv_var_port_net_kind)
+{
+    const std::string src = "module m(input var wire x);\n"
+                            "endmodule\n";
+    EXPECT_PARSE_FATAL(parse_sv(src), "net type");
+}
+
 // The legal shared-list form stays accepted, the bare names inheriting the
 // declaration's type (§13.3 — the width fix pinned by the parser goldens).
 TEST(VerilogParserRejection, tf_list_shared_type_accepted)
