@@ -582,6 +582,9 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop1) { TEST_CORE_SV
 // so the shape the pointer re-adoption had to refuse is simply
 // supported (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_loop2) { TEST_CORE_SV; }
+// (* veriparse_no_unroll *) on a while: pointless but legal, and the
+// loops inside its body still lower (§7.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_repeat10) { TEST_CORE_SV; }
 // A capture inside a cut-point-free branch still forward-substitutes:
 // the branch's reader sees the actual, per §13.3 blocking copy-in.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_br0) { TEST_CORE_SV; }
@@ -595,6 +598,24 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err22) { TEST_ERROR_S
 // A nested call copying out into the caller's formal: the induced
 // commit carries §13.3's immediate visibility to same-segment readers.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_nest0) { TEST_CORE_SV; }
+// A nested copy-out into the caller's formal makes the formal storage
+// even when the actual is a constant — never a substituted literal
+// lvalue (§7.4, §13.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_nest1) { TEST_CORE_SV; }
+// A nested task's copy-out writing through the caller's const ref is
+// the §13.5.2 write refusal, arriving indirectly.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err26) { TEST_ERROR_SV; }
+// A cut-spanning array local: an array register is not hoisted yet —
+// refused, never silently truncated to a scalar (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err27) { TEST_ERROR_SV; }
+// A cut-spanning static local with an initializer: a static local
+// initializes once, which the machine's reset re-runs — refused, never
+// silently dropped (§6.21, §7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err28) { TEST_ERROR_SV; }
+// An output formal assigned on only some paths: the copy-out reads it
+// on every path, so the assign-before-read check demands the all-paths
+// write (§7.4, §9).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err29) { TEST_ERROR_SV; }
 // The assign-before-read check sees reads everywhere — an if condition
 // is a read as much as an rvalue is (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err24) { TEST_ERROR_SV; }
