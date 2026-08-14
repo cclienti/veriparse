@@ -1451,7 +1451,13 @@ restriction needed. The boundary is also measured: **`<=` through a
 `ref` is illegal IEEE** (no nonblocking assignment to an automatic —
 vsim and iverilog both enforce it), so it is refused here with the
 choice spelled out: alias with `ref` and `=`, or capture with `input`
-and commit registers directly.
+and commit registers directly. **`const ref` is the same substitution
+with the write refusal §13.5.2 makes it**, on tasks and on functions
+alike — and on a *function*, a reference formal folds into the purity
+model rather than the inliner: the alias read is admitted (the actual
+is visible to the §6.2 stability checks at the call site), a write
+through any reference formal is the side effect the (R_p, s_p) model
+would miss, and `ref` ties to `function automatic` as everywhere.
 
 What stays out: hierarchical task names (the referent is not in the
 module) and tasks whose formals take defaults with no actual — until a

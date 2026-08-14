@@ -495,6 +495,16 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task7) { TEST_CORE_SV; }
 // strobe is driven through the ref with per-lap re-assertion (§7.4).
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task8) { TEST_CORE_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task9) { TEST_CORE_SV; }
+// A const ref task formal: the same substitution as ref, plus the
+// write refusal §13.5.2 makes it (§7.4).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task10) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err13) { TEST_ERROR_SV; }
+// Reference formals on functions: a const ref reads its actual live and
+// stays pure; a write through any ref is the side effect the model
+// would miss; ref needs function automatic (§7.4, §9, IEEE §13.5.2).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_funcref0) { TEST_CORE_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_funcref_err0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_funcref_err1) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err1) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err2) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err3) { TEST_ERROR_SV; }
