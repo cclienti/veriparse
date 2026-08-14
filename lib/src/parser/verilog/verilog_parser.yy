@@ -197,6 +197,7 @@ struct port_info_t {
 	 location loc;
 	 bool has_data_type = false; // true when the port type is a data_type below
 	 data_type_t data_type{};    // bit/atom/non-integer/struct/union/enum port type
+	 bool is_var = false;        // `var` port kind (A.1.3 variable_port_header)
 };
 
 typedef struct {
@@ -1645,6 +1646,26 @@ ioport:         portdir portname
                     // `input reg [3:0] r`, `input wire [3:0] w`, `input [3:0] x`
                     $$ = $2;
                     $$.direction = $1;
+                }
+
+        |       portdir TK_VAR portname
+                {
+                    // variable port kind (A.1.3 variable_port_header, §23.2.2.3):
+                    // `input var x` (implicit type), `input var my_t x`
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
+                }
+
+        |       portdir TK_VAR port_typed_name
+                {
+                    // `input var logic [7:0] x`, `input var int d`
+                    if($3.net_type != net_type_t::NONE) {
+                        error(@2, "'var' contradicts a net type on the same port (§23.2.2.3)");
+                    }
+                    $$ = $3;
+                    $$.direction = $1;
+                    $$.is_var = true;
                 }
 
 
@@ -6781,6 +6802,26 @@ namespace Veriparse {
                 return port;
             }
 
+            // `var` port (A.1.3 variable_port_header): the declaration is a
+            // variable, not a net — §23.2.2.3's explicit port kind. The type
+            // node carries the data type when one was written, or an
+            // ImplicitType (signing/packed dims) for `input var [3:0] x`.
+            AST::Port::Ptr create_var_port(direction_t direction, const AST::DataType::Ptr &type,
+                                           const std::string &name,
+                                           const AST::Dimension::ListPtr &lengths,
+                                           const std::string &filename, uint32_t line) {
+                auto port = std::make_shared<AST::Port>(filename, line);
+                port->set_name(name);
+                port->set_direction(to_port_dir(direction));
+                auto var = std::make_shared<AST::Var>(filename, line);
+                var->set_name(name);
+                var->set_is_var(true);
+                var->set_type(type);
+                if(lengths) var->set_unpacked_dims(AST::Dimension::clone_list(lengths));
+                port->set_decl(var);
+                return port;
+            }
+
             AST::Port::Ptr create_net_data_type_port(direction_t direction, net_type_t net_type,
                                                      const data_type_t &dt, const std::string &name,
                                                      const AST::Dimension::ListPtr &lengths,
@@ -6864,6 +6905,7 @@ namespace Veriparse {
                 std::string last_modport;
                 bool last_has_data_type = false;
                 data_type_t last_data_type{};
+                bool last_is_var = false;
 
                 AST::Port::ListPtr node_list = std::make_shared<AST::Port::List>();
 
@@ -6920,6 +6962,7 @@ namespace Veriparse {
                         std::string modport;
                         bool has_data_type;
                         data_type_t data_type;
+                        bool is_var;
 
                         if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty() &&
                             (!pinfo.modport.empty() || last_dir == direction_t::NONE)) {
@@ -6940,6 +6983,7 @@ namespace Veriparse {
                             modport = pinfo.modport;
                             has_data_type = false;
                             data_type = data_type_t{};
+                            is_var = false;
                         }
                         else if (pinfo.direction == direction_t::NONE && !pinfo.type_name.empty()) {
                             // Bare named-type port after a directional port: the
@@ -6957,6 +7001,7 @@ namespace Veriparse {
                             modport.clear();
                             has_data_type = false;
                             data_type = data_type_t{};
+                            is_var = pinfo.is_var;
                         }
                         else if (pinfo.direction == direction_t::NONE) {
                             if ((pinfo.net_type != net_type_t::NONE) || (pinfo.signing != signing_t::NONE) ||
@@ -6980,6 +7025,7 @@ namespace Veriparse {
                                 modport.clear();
                                 has_data_type = pinfo.has_data_type;
                                 data_type = pinfo.data_type;
+                                is_var = pinfo.is_var;
                             } else {
                                 dir = last_dir;
                                 net_type = last_net;
@@ -6990,6 +7036,7 @@ namespace Veriparse {
                                 modport = last_modport;
                                 has_data_type = last_has_data_type;
                                 data_type = last_data_type;
+                                is_var = last_is_var;
                             }
                         }
                         else {
@@ -7002,6 +7049,7 @@ namespace Veriparse {
                             modport = pinfo.modport;
                             has_data_type = pinfo.has_data_type;
                             data_type = pinfo.data_type;
+                            is_var = pinfo.is_var;
                         }
 
                         if (widths) widths = AST::Dimension::clone_list(widths);
@@ -7020,6 +7068,29 @@ namespace Veriparse {
                             error_message = std::string("unpacked dimensions are only supported "
                                                         "on interface ports");
                             return nullptr;
+                        }
+                        else if (is_var) {
+                            if (net_type != net_type_t::NONE) {
+                                loc = pinfo.loc;
+                                error_message =
+                                    std::string("'var' contradicts a net type on the same port");
+                                return nullptr;
+                            }
+                            AST::DataType::Ptr vtype;
+                            if (has_data_type) {
+                                vtype = make_data_type(data_type, filename, pinfo.loc.begin.line);
+                            } else if (!type_name.empty()) {
+                                vtype = make_named_type(type_name, type_package, filename,
+                                                        pinfo.loc.begin.line);
+                            } else {
+                                auto itype = std::make_shared<AST::ImplicitType>(
+                                    filename, pinfo.loc.begin.line);
+                                if (signing != signing_t::NONE) itype->set_signing(to_signing(signing));
+                                if (widths) itype->set_packed_dims(AST::Dimension::clone_list(widths));
+                                vtype = itype;
+                            }
+                            iop = create_var_port(dir, vtype, pinfo.name, pinfo.lengths, filename,
+                                                  pinfo.loc.begin.line);
                         }
                         else if (has_data_type && net_type != net_type_t::NONE) {
                             iop = create_net_data_type_port(dir, net_type, data_type, pinfo.name,
@@ -7050,6 +7121,7 @@ namespace Veriparse {
                         last_modport = modport;
                         last_has_data_type = has_data_type;
                         last_data_type = data_type;
+                        last_is_var = is_var;
                     }
                 }
 
