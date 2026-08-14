@@ -203,13 +203,15 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
         std::string name;
         AST::DataType::Ptr type;
         AST::Dimension::ListPtr unpacked;
+        AST::Node::Ptr default_value;
     };
     std::vector<ParamInfo> params;
 
     const auto &args = function_decl->get_args();
     if(args && !args->empty()) {
         for(const auto &arg : *args) {
-            params.push_back({arg->get_name(), arg->get_type(), arg->get_unpacked_dims()});
+            params.push_back({arg->get_name(), arg->get_type(), arg->get_unpacked_dims(),
+                              arg->get_default_value()});
         }
     } else {
         const auto &stmts = function_decl->get_statements();
@@ -246,34 +248,48 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                     unpacked = port->get_decl()->get_unpacked_dims();
                 }
 
-                params.push_back({name, type, unpacked});
+                params.push_back({name, type, unpacked, nullptr});
             }
         }
     }
 
-    auto it_param = params.begin();
-    auto it_args = call_args->begin();
-    for(; it_param != params.end() && it_args != call_args->end(); ++it_param, ++it_args) {
-        // A function parameter behaves as a local (reg) variable initialized to
-        // the call argument.
+    // A function parameter behaves as a local (reg) variable initialized to
+    // the call argument — or, for an omitted trailing actual, to the
+    // formal's default (IEEE 1800-2017 §13.5.3).
+    const auto make_param_var = [&function_call](const ParamInfo &param,
+                                                 const AST::Node::Ptr &value) {
         const auto &var =
             std::make_shared<AST::Var>(function_call->get_filename(), function_call->get_line());
-        var->set_name(it_param->name);
-        if(it_param->type) {
-            var->set_type(AST::cast_to<AST::DataType>(it_param->type->clone()));
+        var->set_name(param.name);
+        if(param.type) {
+            var->set_type(AST::cast_to<AST::DataType>(param.type->clone()));
         }
-        if(it_param->unpacked) {
-            var->set_unpacked_dims(AST::Dimension::clone_list(it_param->unpacked));
+        if(param.unpacked) {
+            var->set_unpacked_dims(AST::Dimension::clone_list(param.unpacked));
         }
-
-        const auto &arg = (*it_args)->clone();
+        const auto &arg = value->clone();
         const auto &rvalue =
             std::make_shared<AST::Rvalue>(arg, arg->get_filename(), arg->get_line());
         var->set_init(rvalue);
-        decls->push_back(var);
+        return var;
+    };
+
+    auto it_param = params.begin();
+    auto it_args = call_args->begin();
+    for(; it_param != params.end() && it_args != call_args->end(); ++it_param, ++it_args) {
+        decls->push_back(make_param_var(*it_param, *it_args));
+    }
+    for(; it_param != params.end(); ++it_param) {
+        if(!it_param->default_value) {
+            LOG_ERROR_N(function_call)
+                << "missing actual for argument '" << it_param->name << "' in call to "
+                << function_call->get_name() << ", and no default (IEEE 1800-2017 §13.5.3)";
+            return nullptr;
+        }
+        decls->push_back(make_param_var(*it_param, it_param->default_value));
     }
 
-    if(it_param != params.end() || it_args != call_args->end()) {
+    if(it_args != call_args->end()) {
         LOG_ERROR_N(function_call) << "too many arguments in call to " << function_call->get_name();
         return nullptr;
     }
