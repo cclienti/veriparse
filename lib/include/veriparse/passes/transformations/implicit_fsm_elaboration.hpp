@@ -26,8 +26,10 @@ namespace Transformations
  * The process body is cut at every EventStatement: the statements before the
  * first wait become the reset branch (§5.1), each segment between waits
  * becomes one state of a generated `always_ff`, and a one-shot process parks
- * in an appended hold state (§2). The reset signal is taken from the
- * `veriparse_reset` hint or inferred from the module inputs (§5).
+ * in an appended hold state — a perpetual `initial forever` machine has none
+ * (§2). The reset signal is taken from the `veriparse_reset` hint or
+ * inferred from the module inputs (§5), the chip enable from a uniform
+ * `iff` on the waits (§5.3).
  *
  * Actions hold nonblocking assignments to plain registers and the branches
  * that fork or ride along the path cover (§4, §C.3): an if or case whose
@@ -38,8 +40,24 @@ namespace Transformations
  * storage (§7.2): the shared countdown for a repeat, the author's index
  * register for a for, with the blocking init/step substituted forward
  * within their own segment (§6.1). break and continue are edges over those
- * loops (§8). The perpetual `forever` form and free blocking temporaries
- * are rejected with a diagnostic rather than mis-lowered (§9).
+ * loops (§8).
+ *
+ * Blocking writes take the two §6 disciplines: a block-scoped temporary
+ * substitutes forward within its segment (§6.1), and a module-level `=`
+ * target becomes a decoded output driven by a generated always_comb over
+ * the state register — or, under veriparse_encoding="output", a slice of
+ * the state register itself (§6.2). Task calls inline at each call site
+ * before the walk (§7.4): formals follow measured IEEE §13.3 copy
+ * semantics, reference formals substitute to their (variable, §13.5.2)
+ * actuals, defaults fill omitted actuals (§13.5.3), and a return jumps to
+ * the body's end. What the model cannot express is rejected with a §9
+ * diagnostic rather than mis-lowered.
+ *
+ * One class over four files: the walk and emission
+ * (implicit_fsm_elaboration.cpp), the §2/§5/§9 checks
+ * (implicit_fsm_checks.cpp), the §7.4 task inliner
+ * (implicit_fsm_task_inliner.cpp), and their shared helpers
+ * (implicit_fsm_detail.hpp, internal to the library).
  */
 class ImplicitFsmElaboration : public TransformationBase
 {
@@ -395,8 +413,8 @@ private:
     /// §7.4 task inlining state: the module's tasks, per-task call
     /// ordinals (module-wide, so names stay unique across processes),
     /// the static-hoist registry, which tasks were inlined (disposal),
-    /// the copy-in commits the walk both induces and substitutes, and
-    /// the module's declared names for collision checks.
+    /// the induced copy-in and copy-out commits the walk substitutes,
+    /// and the module's declared names for collision checks.
     std::map<std::string, AST::Task::Ptr> m_tasks;
     std::map<std::string, unsigned int> m_task_ordinal;
     std::map<std::string, std::string> m_static_hoist;
