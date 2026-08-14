@@ -1333,25 +1333,24 @@ exactly one new general mechanism and one lifetime rule:
   declarations per copy where IEEE gives a static block local one
   storage across iterations. Generalizing to author blocks is banked in
   §15 with those two questions attached.
-- **Lifetime picks the hoist's granularity.** A `static` task's locals
-  (the module default) are one IEEE storage shared across calls, so they
-  hoist **per task** — one register, all call sites sharing, a later
-  call legitimately reading what the previous one left. An `automatic`
-  task's locals are fresh per activation, so they hoist **per call
-  site** — and since a register persists where a fresh local starts
-  uninitialized, an automatic hoisted local must be **assigned before
-  read on every activation** (the must-write analysis), refusing the one
-  shape where register and fresh local part ways. Formals hoist per call
-  site under either lifetime — `input` and `inout` because copy-in
-  overwrites at entry before any read could tell the difference, and
-  `output`, which has no copy-in, because it takes the
-  **assign-before-read check under both lifetimes**: an output formal
-  read before its first write would expose per-site storage against a
-  static task's one shared storage, so that read is refused rather than
-  silently resolved either way. The granularity is legible in the
-  emitted names: a static local hoists as `<task>_<local>` — one
-  register however many call sites — an automatic one as
-  `<task>_<ordinal>_<local>`, the per-site shape formals always take.
+- **Lifetime gates the hoist (measured).** IEEE §6.21 bars nonblocking
+  assignment to automatic storage — vsim enforces it — so only a
+  `static` task's locals (the module default) can be `<=`-written
+  registers, and they hoist **per task** as `<task>_<local>`: one IEEE
+  storage shared across calls, a later call legitimately reading what
+  the previous one left. An `automatic` task's cut-spanning local is
+  **refused outright**: written with `<=` it is the §6.21 illegality,
+  and unwritten it would read garbage — an automatic task keeps its
+  locals within one segment (§6.1 temporaries) or takes none. (An
+  earlier draft hoisted automatic locals per call site; the vsim
+  measurement retired it — the shape it lowered does not compile in a
+  conforming simulator.) Formals follow the same law: `<=` through an
+  `input`/`output`/`inout` formal needs a **static task**, and those
+  hoist per call site as `<task>_<ordinal>_<formal>` — copy-in
+  overwrites at entry before any read could tell the difference — with
+  `output` taking the **assign-before-read check**: an output formal
+  read before its first write would expose storage the source never
+  defined.
 - **Copy-in and copy-out are ordinary statements of the block.** An
   `input` or `inout` formal takes its actual at entry — a constant
   actual substitutes outright, a dynamic one is a capture commit through
@@ -1366,7 +1365,16 @@ exactly one new general mechanism and one lifetime rule:
   actual holds through the task and takes the final value from the
   return edge exactly as both simulators show. The actual must be a
   plain register lvalue; §6's one-commit-per-path covers collisions
-  between the copy-out and the caller's own writes.
+  between the copy-out and the caller's own writes. **A `=`-written
+  formal is a §6.1 temporary instead**: declared in the task's block —
+  so §6's existing rule refuses it where a cut spans the scope, the
+  storage question `=` cannot answer — seeded from the actual for
+  `input`/`inout`, and copied out with the same induced `<=` at
+  return: the no-wait helper shape, its result landing with the
+  segment's commits (and the §6.1 environment carries the pending
+  value to same-segment readers, matching the blocking copy-out both
+  simulators show). One formal written with both `=` and `<=` is
+  refused — one storage, one flavor.
 
 **The measurement behind the `=` refusal on cut-spanning formals**
 (Verilator 5.050 `--timing` and iverilog agree exactly): §13.3 makes a
@@ -1464,6 +1472,39 @@ is visible to the §6.2 stability checks at the call site), a write
 through any reference formal is the side effect the (R_p, s_p) model
 would miss, and `ref` ties to `function automatic` as everywhere.
 
+**Package tasks — §26.2 does the isolation.** A task declared in a
+`package` reaches the marked process by import (`import pkg::*;` or the
+explicit form) or by a scoped `pkg::the_task(...)` call, and
+`PackageInliner` resolves both before this pass runs — in the tools'
+`run_units` pipeline the task arrives spliced into the module, its
+lifetime already stamped from its package (§13.3.1) — so the inliner
+sees a module task and nothing here is new mechanism. What the standard
+adds is the isolation: a package body is a **closed scope** (§26.2) —
+it cannot name module nets — so a package task's only channel to the
+machine is its formals, and `PackageInliner` now enforces the closure
+(measured: Verilator, iverilog and vsim all reject a package task
+naming a module net; the pass used to splice it silently into whatever
+the name landed on in the importing module). The legal shapes follow
+from the rules above: a package task that **waits** is automatic — its
+clock arrives by `const ref`, §13.5.2's automatic tie — and per §6.21
+owns no `<=` storage, so it is a hold (`repeat (n) @(posedge ck);`) or
+a decoded-output driver (`ref` and `=`); one that **commits registers**
+through `output`/`inout` `<=` is static and cannot wait — no clock can
+reach it: a copied-in formal never toggles, and the closure bars the
+module's own. Per-cycle registered pin-wiggling stays module-task
+territory, where direct visibility does it — Appendix B's style.
+
+**One §13.5.2 boundary is measured but not yet enforced:** "Nets and
+selects into nets shall not be passed by reference" (§13.5.2, verbatim),
+and an ANSI `input logic clk` port is a **net** (§23.2.2.3: input and
+inout ports default to a net of the default net type; an output port
+with an explicit data type defaults to a variable, which is why a `ref`
+on an `output logic` actual conforms) — vsim rejects `step(clk, en)`
+outright where Verilator 5.050 accepts it. The conforming spelling is
+`input var logic clk`, which the grammar does not parse yet (the
+var-port gap, §15); until it does, the pass accepts net actuals as
+Verilator does, and the portability caveat rides here.
+
 What stays out: hierarchical task names (the referent is not in the
 module) and tasks whose formals take defaults with no actual — until a
 design asks.
@@ -1543,6 +1584,9 @@ unmarked column has already been misread once.
 | a recursive task call (direct or through a cycle) reaching a marked process | inlining is the model — there is no stack to give recursion meaning (§7.4) | ADR §7.4, IEEE §13.3 |
 | a formal (or any block local) written with `=` in a scope a cut point spans | the general §6 scope rule after the block-model reduction (§7.4): blocking intermediate values crossing a cut are the §15 forward-substitution machinery; `<=`-written locals hoist, and pin-wiggling aliases with `ref` or writes module-level registers directly | ADR §6, §7.4, IEEE §13.3 |
 | `<=` through a `ref` formal, or `ref` on a non-`automatic` task | no nonblocking assignment to an automatic (measured: vsim and iverilog enforce it), and §13.5.2 ties `ref` to automatic lifetime — alias with `=`, or capture with `input` and commit registers directly (§7.4) | ADR §7.4, IEEE §13.5.2 |
+| `<=` to a formal or cut-spanning local of an `automatic` task | no nonblocking assignment to automatic storage (measured: vsim enforces it) — a task that commits through its formals or holds state in its locals must be static (§7.4) | ADR §7.4, IEEE §6.21 |
+| one formal written with both `=` and `<=` | a formal is one storage — a §6.1 temporary or a hoisted register, not both (§7.4) | ADR §7.4 |
+| a package item naming a module-scope identifier | a package body is a closed scope — module state travels through subroutine arguments. Refused by `PackageInliner`, where the name would otherwise splice into whatever it lands on in the importing module (§7.4) | ADR-0004, IEEE §26.2 |
 | a register of the process read before assignment out of reset, with no init value | source and RTL disagree where it is hardest to debug, and the reset branch cannot supply the value | ADR §5.1, §6 |
 | the preamble reads a register of the process | a read of the empty entry store: nothing is assigned at reset entry — the preamble's own `<=` commits only at the clock edge — so the reset value would be undefined | ADR §5.1, §6 |
 | a branch in the preamble, cut point inside it or not | the reset branch loads reset values once; a fork there would make the state out of reset input-dependent, and even a cut-point-free branch emitted under the reset arm is re-evaluated on every reset cycle where the source evaluates it exactly once — and an arm that skips a register leaves it with no reset value | ADR §5.1 |

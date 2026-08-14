@@ -378,6 +378,11 @@ if(NOT WIN32)
     # back-to-back frames for §A.3's chaining case.
     add_verilower_sv_cosim(NAME i2c_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # §7.4 package tasks: the sub-sequence lives in a package, so the
+    # machine's signals travel through its formals only (IEEE §26.2) —
+    # const ref clock, inout accumulator, input count, zero-skip frame.
+    add_verilower_sv_cosim(NAME pkg_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # The in-flattener slot (ADR-0014 §10.3): veriflat --fsm compiles one
     # marked module instantiated twice with different parameters — the
     # shape a per-module verilower run cannot compile (§15) — each

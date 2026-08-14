@@ -404,18 +404,33 @@ A `task` called from the marked process is **inlined at each call
 site** as a labelled block, so a repeated wait-pattern is written once
 and called per use — states name as `<TASK>_<ordinal>` through the
 usual label composition. Arguments follow measured IEEE §13.3
-semantics: `input` is copy-in captured at the call (constants
-substitute, dynamic actuals cost one register); `output`/`inout`
-written with `<=` get a private register with one copy-out committed at
-return — the actual holds through the task and takes the final value at
-the return edge, exactly as simulators behave; `=` writes crossing a
-wait, and recursion, are refused. A task local that must survive the
-task's own waits hoists to a module-level register — one shared
-register for a (default) `static` task, one per call site for `task
-automatic` with assign-before-read enforced. Bounded loops in task
-bodies unroll when the substituted bound is constant, roll under
-`(* veriparse_no_unroll *)` (dynamic counts included), and the
-inlined-away task definition is dropped when nothing else calls it.
+semantics:
+
+- `input` is copy-in captured at the call — constants substitute,
+  dynamic actuals cost one register.
+- `output`/`inout` written with `<=` get a private register with one
+  copy-out committed at return — the actual holds through the task and
+  takes the final value at the return edge, exactly as simulators
+  behave. This needs a (default) **`static` task**: IEEE §6.21 bars
+  `<=` to automatic storage, and the pass refuses it as vsim does.
+- `output`/`inout` written with `=` are ordinary blocking temporaries,
+  copied out at return — the no-wait helper shape, whose result lands
+  the same cycle. `=` writes crossing a wait stay refused, and one
+  formal cannot mix `=` and `<=`.
+- `ref` and `const ref` (SystemVerilog, `task automatic` only per IEEE
+  §13.5.2) substitute to the actual — a true alias, no copy, no
+  register. Writes through a `ref` follow the decoded-output `=`
+  discipline; `const ref` refuses writes. **A clock or enable can cross
+  the task boundary only this way**: a copied-in formal never toggles
+  again, so `@(posedge ck)` on one is refused with the `const ref`
+  spelling in the message.
+
+A task local that must survive the task's own waits hoists to one
+module-level register shared by all call sites — `static` tasks only,
+for the same §6.21 reason. Bounded loops in task bodies unroll when the
+substituted bound is constant, roll under `(* veriparse_no_unroll *)`
+(dynamic counts included), and the inlined-away task definition is
+dropped when nothing else calls it. Recursion is refused.
 
 ```systemverilog
 task phase(input logic v, input logic [7:0] hold);
@@ -427,6 +442,36 @@ task phase(input logic v, input logic [7:0] hold);
 endtask
 // called per half-bit: phase(1'b0, T_LOW); phase(1'b1, T_HIGH); ...
 ```
+
+### Package tasks
+
+Tasks declared in a `package` work through both call forms — an import
+(`import seqlib::*;`) or a scoped call (`seqlib::hold_n(clk, n);`) —
+resolved by the package inliner before the machine is built. A package
+body is a **closed scope** (IEEE §26.2): it cannot name module nets —
+naming one is refused — so a package task reaches the machine only
+through its formals. That pins the legal shapes: a package task that
+*waits* takes its clock by `const ref` (making it automatic, so it owns
+no `<=` storage); one that *commits* through `output`/`inout` `<=` is
+static and cannot wait. Per-cycle pin-wiggling through registers stays
+in module tasks, where direct visibility does it.
+
+```systemverilog
+package seqlib;
+    task automatic hold_n(const ref logic ck, input logic [7:0] n);
+        begin
+            (* veriparse_no_unroll *)
+            repeat (n) @(posedge ck);
+        end
+    endtask
+endpackage
+```
+
+One portability note: IEEE §13.5.2 wants a *variable* actual for
+`ref`/`const ref`, and an ANSI `input logic clk` port is a net — vsim
+rejects passing it where Verilator accepts it. The conforming spelling
+is `input var logic clk`, which the parser does not accept yet;
+verilower follows Verilator meanwhile.
 
 ## Naming the states
 
