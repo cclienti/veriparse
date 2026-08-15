@@ -39,7 +39,11 @@ jobs:
           {
             echo 'matrix<<EOF'
             echo '{"include":['
-            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","linker":"-fuse-ld=mold","apt":"mold"}'
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","linker":"-fuse-ld=mold","apt":"mold"},'
+            # clang leg: AppleClang failures are almost always plain clang
+            # diagnostics (-Wall differs from gcc), so this catches them on
+            # PRs without paying for macOS runners.
+            echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64 clang","linker":"-fuse-ld=mold","apt":"mold clang","cmake_flags":"-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
               echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","linker":"","apt":""},'
@@ -99,7 +103,7 @@ jobs:
         run: make ast-check
 
       - name: Configure
-        run: make dev-cmake DEV_LINKER_FLAGS="${{ matrix.linker }}"
+        run: make dev-cmake DEV_LINKER_FLAGS="${{ matrix.linker }}" DEV_CMAKE_FLAGS="${{ matrix.cmake_flags }}"
 
       - name: Build
         run: make dev-build
