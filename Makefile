@@ -89,7 +89,8 @@ dev-cmake:
 	      -DCMAKE_EXE_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
 	      -DCMAKE_SHARED_LINKER_FLAGS="$(DEV_LINKER_FLAGS)" \
 	      -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-	      -DCMAKE_INSTALL_PREFIX=$(HOME)/veriparse
+	      -DCMAKE_INSTALL_PREFIX=$(HOME)/veriparse \
+	      $(DEV_CMAKE_FLAGS)
 
 # Ninja saturates available cores by default — no --parallel needed.
 dev-build:
