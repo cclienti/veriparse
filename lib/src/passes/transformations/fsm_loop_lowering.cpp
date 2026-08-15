@@ -399,7 +399,7 @@ int FsmLoopLowering::lower_repeat(const AST::RepeatStatement::Ptr &loop, bool ke
         if(lower_slot(body)) {
             return 1;
         }
-        rewrite_continues(body, [&fn, &ln](const AST::Node::Ptr &jump) {
+        rewrite_continues(body, [](const AST::Node::Ptr &jump) {
             return AST::to_node(
                 std::make_shared<AST::Break>(jump->get_filename(), jump->get_line()));
         });
