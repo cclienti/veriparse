@@ -182,6 +182,94 @@ int check_called_functions(const AST::Module::Ptr &module, const AST::Initial::P
 
 using namespace FsmDetail;
 
+namespace
+{
+
+// Helpers of this unit alone, moved out of the shared header.
+
+/// Registers assigned on EVERY runtime path through the statement run: a
+/// sequence unions, a branch keeps only what all its arms agree on — an
+/// `if` with no `else`, or a `case` with no `default`, guarantees nothing.
+void must_writes(const AST::Node::Ptr &node, std::set<std::string> &writes);
+void must_writes_list(const AST::Node::ListPtr &stmts, std::set<std::string> &writes)
+{
+    for(const auto &stmt : *stmts) {
+        must_writes(stmt, writes);
+    }
+}
+void must_writes(const AST::Node::Ptr &node, std::set<std::string> &writes)
+{
+    if(!node) {
+        return;
+    }
+    switch(node->get_node_type()) {
+    case AST::NodeType::Block: {
+        const auto &stmts = AST::cast_to<AST::Block>(node)->get_statements();
+        if(stmts) {
+            for(const auto &stmt : *stmts) {
+                must_writes(stmt, writes);
+            }
+        }
+        break;
+    }
+    case AST::NodeType::NonblockingSubstitution:
+        writes.insert(nba_target(AST::cast_to<AST::NonblockingSubstitution>(node)));
+        break;
+    case AST::NodeType::IfStatement: {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(node);
+        if(!ifs->get_false_statement()) {
+            break;
+        }
+        std::set<std::string> true_writes, false_writes;
+        must_writes(ifs->get_true_statement(), true_writes);
+        must_writes(ifs->get_false_statement(), false_writes);
+        for(const auto &name : true_writes) {
+            if(false_writes.count(name)) {
+                writes.insert(name);
+            }
+        }
+        break;
+    }
+    case AST::NodeType::CaseStatement: {
+        const auto &caselist = AST::cast_to<AST::CaseStatement>(node)->get_caselist();
+        if(!caselist || caselist->empty()) {
+            break;
+        }
+        bool has_default = false;
+        bool first = true;
+        std::set<std::string> agreed;
+        for(const auto &arm : *caselist) {
+            const auto &conds = arm->get_cond();
+            if(!conds || conds->empty()) {
+                has_default = true;
+            }
+            std::set<std::string> arm_writes;
+            must_writes(arm->get_statement(), arm_writes);
+            if(first) {
+                agreed = arm_writes;
+                first = false;
+            } else {
+                std::set<std::string> kept;
+                for(const auto &name : agreed) {
+                    if(arm_writes.count(name)) {
+                        kept.insert(name);
+                    }
+                }
+                agreed = kept;
+            }
+        }
+        if(has_default) {
+            writes.insert(agreed.begin(), agreed.end());
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+} // namespace
+
 int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AST::Sens::Ptr &clock)
 {
     const auto &senslist = event->get_senslist();

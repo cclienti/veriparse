@@ -59,6 +59,32 @@ private:
 
     int inline_calls_in(const AST::Node::Ptr &node, std::set<std::string> &visiting);
     AST::Node::Ptr expand_call(const AST::Call::Ptr &call, std::set<std::string> &visiting);
+
+    /// One formal's lowering context inside expand_call: the call site,
+    /// the formal and its (possibly defaulted) actual, the generated
+    /// per-site register name, the body's write flavors for this formal,
+    /// and the splice lists the direction-specific lowering contributes
+    /// to.
+    struct FormalContext
+    {
+        AST::Call::Ptr call;
+        std::string task_name;
+        AST::Arg::Ptr formal;
+        AST::Node::Ptr actual;
+        std::string fname;
+        std::string rname;
+        bool task_automatic = false;
+        bool ba_written = false;
+        bool nba_written = false;
+        bool induced_written = false;
+        std::map<std::string, AST::Node::Ptr> *subst = nullptr;
+        std::vector<AST::Node::Ptr> *head = nullptr;
+        std::vector<AST::Node::Ptr> *tail = nullptr;
+        std::vector<std::string> *check_read_first = nullptr;
+    };
+    int lower_input_formal(FormalContext &ctx);
+    int lower_copyout_formal(FormalContext &ctx);
+    int lower_ref_formal(FormalContext &ctx);
     int hoist_declaration(const std::string &name, const AST::Node::Ptr &type,
                           const std::string &fn, int ln);
 
