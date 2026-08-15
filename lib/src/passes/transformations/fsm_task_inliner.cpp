@@ -92,6 +92,230 @@ void all_paths_writes(const AST::Node::Ptr &node, std::set<std::string> &writes)
     }
 }
 
+AST::BlockingSubstitution::Ptr make_ba(const std::string &target, const AST::Node::Ptr &rhs,
+                                       const std::string &fn, int ln)
+{
+    auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+    lvalue->set_var(AST::to_node(make_id(target, fn, ln)));
+    auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+    rvalue->set_var(rhs);
+    auto ba = std::make_shared<AST::BlockingSubstitution>(fn, ln);
+    ba->set_left(lvalue);
+    ba->set_right(rvalue);
+    return ba;
+}
+/// Whether a Return sits anywhere below `node`. A task call's own returns
+/// are its expansion's business, but a Call child holds only actuals, so
+/// the plain walk cannot meet one.
+bool contains_return(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Return)) {
+        return true;
+    }
+    const auto &children = node->get_children();
+    if(!children) {
+        return false;
+    }
+    for(const auto &child : *children) {
+        if(contains_return(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+int lower_return_list(const AST::Node::ListPtr &stmts, const std::string &task_name, bool &always);
+/// A branch position has no statement list to thread a continuation into,
+/// so a branch holding a return must return on EVERY path through it —
+/// then the jump is the branch's end and the structure stays flag-free. A
+/// partial return here would need exit state the model does not carry.
+int lower_return_branch(AST::Node::Ptr &branch, const std::string &task_name, bool &always)
+{
+    always = false;
+    if(!branch || !contains_return(branch)) {
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::SingleStatement)) {
+        // The grammar's single-statement wrapper: the payload is the shape.
+        AST::Node::Ptr inner = AST::cast_to<AST::SingleStatement>(branch)->get_statement();
+        if(lower_return_branch(inner, task_name, always)) {
+            return 1;
+        }
+        branch = inner;
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::Return)) {
+        if(AST::cast_to<AST::Return>(branch)->get_value()) {
+            LOG_ERROR_N(branch) << "task '" << task_name
+                                << "': a return value is not allowed within a task "
+                                << "(IEEE 1800-2017 §13.3)";
+            return 1;
+        }
+        branch = AST::to_node(std::make_shared<AST::Block>(
+            std::make_shared<AST::Node::List>(), "", branch->get_filename(), branch->get_line()));
+        always = true;
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::Block)) {
+        if(lower_return_list(AST::cast_to<AST::Block>(branch)->get_statements(), task_name,
+                             always)) {
+            return 1;
+        }
+        if(!always) {
+            LOG_ERROR_N(branch)
+                << "task '" << task_name << "': a return conditional within its branch has no "
+                << "structural exit — make the branch return on every path, or restructure";
+            return 1;
+        }
+        return 0;
+    }
+    if(branch->is_node_type(AST::NodeType::IfStatement)) {
+        const auto &ifs = AST::cast_to<AST::IfStatement>(branch);
+        AST::Node::Ptr t = ifs->get_true_statement();
+        AST::Node::Ptr e = ifs->get_false_statement();
+        bool tret = false;
+        bool eret = false;
+        if(lower_return_branch(t, task_name, tret) || lower_return_branch(e, task_name, eret)) {
+            return 1;
+        }
+        ifs->set_true_statement(t);
+        ifs->set_false_statement(e);
+        if(!tret || !eret) {
+            LOG_ERROR_N(branch)
+                << "task '" << task_name << "': a return conditional within its branch has no "
+                << "structural exit — make the branch return on every path, or restructure";
+            return 1;
+        }
+        always = true;
+        return 0;
+    }
+    LOG_ERROR_N(branch) << "task '" << task_name
+                        << "': a return inside a loop or case arm has no structural exit — "
+                        << "restructure with break or a guard";
+    return 1;
+}
+/// §13.3, measured: a task return jumps to the end of the body, and the
+/// copy-out still runs — it sits past the body, where every lowered path
+/// falls. The lowering restructures the list so each return path reaches
+/// the list's end: what follows an always-returning statement is
+/// unreachable and dropped, statements after an if with one
+/// always-returning branch move into the other branch, and a return
+/// escaping an unnamed block threads the block's continuation inward. On
+/// exit `always` says no path falls past the list's own end.
+int lower_return_list(const AST::Node::ListPtr &stmts, const std::string &task_name, bool &always)
+{
+    always = false;
+    if(!stmts) {
+        return 0;
+    }
+    for(auto it = stmts->begin(); it != stmts->end(); ++it) {
+        AST::Node::Ptr s = *it;
+        if(!s || !contains_return(s)) {
+            continue;
+        }
+        if(s->is_node_type(AST::NodeType::SingleStatement)) {
+            // The grammar's single-statement wrapper: the payload is the
+            // shape, and the rewrite below replaces the whole statement.
+            s = AST::cast_to<AST::SingleStatement>(s)->get_statement();
+            *it = s;
+        }
+
+        if(s->is_node_type(AST::NodeType::Return)) {
+            if(AST::cast_to<AST::Return>(s)->get_value()) {
+                LOG_ERROR_N(s) << "task '" << task_name
+                               << "': a return value is not allowed within a task "
+                               << "(IEEE 1800-2017 §13.3)";
+                return 1;
+            }
+            stmts->erase(it, stmts->end()); // the return, and its unreachable tail
+            always = true;
+            return 0;
+        }
+
+        if(s->is_node_type(AST::NodeType::IfStatement)) {
+            const auto &ifs = AST::cast_to<AST::IfStatement>(s);
+            AST::Node::Ptr t = ifs->get_true_statement();
+            AST::Node::Ptr e = ifs->get_false_statement();
+            bool tret = false;
+            bool eret = false;
+            if(lower_return_branch(t, task_name, tret) || lower_return_branch(e, task_name, eret)) {
+                return 1;
+            }
+            ifs->set_true_statement(t);
+            ifs->set_false_statement(e);
+            if(tret && eret) {
+                stmts->erase(std::next(it), stmts->end()); // both paths return
+                always = true;
+                return 0;
+            }
+            if(tret || eret) {
+                // One branch jumps to the end; the other and the statements
+                // after the if are the same fall-through — they become that
+                // branch's tail, lowered in turn for any further return.
+                AST::Node::Ptr &open = tret ? e : t;
+                AST::Block::Ptr host;
+                if(open && open->is_node_type(AST::NodeType::Block) &&
+                   AST::cast_to<AST::Block>(open)->get_scope().empty()) {
+                    host = AST::cast_to<AST::Block>(open);
+                } else {
+                    auto inner = std::make_shared<AST::Node::List>();
+                    if(open) {
+                        inner->push_back(open);
+                    }
+                    host =
+                        std::make_shared<AST::Block>(inner, "", s->get_filename(), s->get_line());
+                }
+                for(auto rit = std::next(it); rit != stmts->end(); ++rit) {
+                    host->get_statements()->push_back(*rit);
+                }
+                stmts->erase(std::next(it), stmts->end());
+                open = AST::to_node(host);
+                ifs->set_true_statement(t);
+                ifs->set_false_statement(e);
+                return lower_return_list(host->get_statements(), task_name, always);
+            }
+            continue; // both branches lowered internally, both fall through
+        }
+
+        if(s->is_node_type(AST::NodeType::Block)) {
+            const auto &blk = AST::cast_to<AST::Block>(s);
+            if(blk->get_scope().empty()) {
+                // Unnamed: the continuation threads inward, one motion.
+                for(auto rit = std::next(it); rit != stmts->end(); ++rit) {
+                    blk->get_statements()->push_back(*rit);
+                }
+                stmts->erase(std::next(it), stmts->end());
+                return lower_return_list(blk->get_statements(), task_name, always);
+            }
+            // Named: the §10.1 label scopes its own statements — threading
+            // the continuation in would rename the caller's states — so
+            // only a whole-block return composes.
+            bool bret = false;
+            if(lower_return_list(blk->get_statements(), task_name, bret)) {
+                return 1;
+            }
+            if(!bret) {
+                LOG_ERROR_N(s) << "task '" << task_name
+                               << "': a return conditional within named block '" << blk->get_scope()
+                               << "' has no structural exit — make the block return on "
+                               << "every path, or drop the label";
+                return 1;
+            }
+            stmts->erase(std::next(it), stmts->end());
+            always = true;
+            return 0;
+        }
+
+        LOG_ERROR_N(s) << "task '" << task_name
+                       << "': a return inside a loop or case arm has no structural exit — "
+                       << "restructure with break or a guard";
+        return 1;
+    }
+    return 0;
+}
+
 } // namespace
 
 int FsmTaskInliner::process(AST::Node::Ptr node, AST::Node::Ptr parent)
@@ -205,6 +429,136 @@ int FsmTaskInliner::hoist_declaration(const std::string &name, const AST::Node::
     }
     items->push_back(AST::to_node(reg));
     m_declared.insert(name);
+    return 0;
+}
+
+/// An input formal (§13.3 copy-in): a '='-written one is a §6.1
+/// temporary seeded from the actual; a constant actual substitutes
+/// unless anything — the body or a nested copy-out — writes the formal,
+/// which then takes the capture register like any other.
+int FsmTaskInliner::lower_input_formal(FormalContext &ctx)
+{
+    const std::string &fn = ctx.call->get_filename();
+    const int ln = ctx.call->get_line();
+    if(ctx.ba_written) {
+        // The local-copy idiom: a '='-written formal is a §6.1 temporary
+        // declared in the task block — legal only where no cut spans,
+        // which §6 checks on the declaration — seeded from the actual.
+        auto tmp = std::make_shared<AST::Var>(fn, ln);
+        tmp->set_name(ctx.rname);
+        if(ctx.formal->get_type()) {
+            tmp->set_type(AST::cast_to<AST::DataType>(ctx.formal->get_type()->clone()));
+        }
+        ctx.head->push_back(AST::to_node(tmp));
+        ctx.head->push_back(AST::to_node(make_ba(ctx.rname, ctx.actual, fn, ln)));
+        (*ctx.subst)[ctx.fname] = AST::to_node(make_id(ctx.rname, fn, ln));
+        return 0;
+    }
+    if(ctx.actual->is_node_category(AST::NodeType::Constant) && !ctx.nba_written &&
+       !ctx.induced_written) {
+        // A written formal is storage, never a substitutable constant —
+        // the capture register below takes it.
+        (*ctx.subst)[ctx.fname] = ctx.actual;
+        return 0;
+    }
+    if(hoist_declaration(ctx.rname, AST::to_node(ctx.formal->get_type()), fn, ln)) {
+        return 1;
+    }
+    ctx.head->push_back(make_induced_marker(make_nba(ctx.rname, ctx.actual, fn, ln), true, fn, ln));
+    (*ctx.subst)[ctx.fname] = AST::to_node(make_id(ctx.rname, fn, ln));
+    return 0;
+}
+
+/// An output or inout formal: private storage with one copy-out
+/// committed at the return (§13.3, measured) — a register when the body
+/// writes '<=', a §6.1 temporary when it writes '='; inout adds the
+/// copy-in, output the assign-before-read obligation.
+int FsmTaskInliner::lower_copyout_formal(FormalContext &ctx)
+{
+    const std::string &fn = ctx.call->get_filename();
+    const int ln = ctx.call->get_line();
+    const bool is_inout = ctx.formal->get_direction() == AST::Arg::DirectionEnum::INOUT;
+    if(!ctx.actual->is_node_type(AST::NodeType::Identifier)) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': the actual for " << "'"
+                              << ctx.fname
+                              << "' must be a plain register of the process — copy-out has "
+                              << "one storage to write";
+        return 1;
+    }
+    const std::string aname = AST::cast_to<AST::Identifier>(ctx.actual)->get_name();
+    if(ctx.ba_written) {
+        // A '='-written output/inout formal is the same §6.1 temporary,
+        // copied out to the actual at return — the no-wait helper shape a
+        // package task takes when its result must land the same cycle.
+        auto tmp = std::make_shared<AST::Var>(fn, ln);
+        tmp->set_name(ctx.rname);
+        if(ctx.formal->get_type()) {
+            tmp->set_type(AST::cast_to<AST::DataType>(ctx.formal->get_type()->clone()));
+        }
+        ctx.head->push_back(AST::to_node(tmp));
+        if(is_inout) {
+            ctx.head->push_back(AST::to_node(make_ba(ctx.rname, ctx.actual, fn, ln)));
+        } else {
+            ctx.check_read_first->push_back(ctx.rname);
+        }
+    } else {
+        if(hoist_declaration(ctx.rname, AST::to_node(ctx.formal->get_type()), fn, ln)) {
+            return 1;
+        }
+        if(is_inout) {
+            ctx.head->push_back(
+                make_induced_marker(make_nba(ctx.rname, ctx.actual, fn, ln), true, fn, ln));
+        } else {
+            ctx.check_read_first->push_back(ctx.rname);
+        }
+    }
+    ctx.tail->push_back(make_induced_marker(
+        make_nba(aname, AST::to_node(make_id(ctx.rname, fn, ln)), fn, ln), false, fn, ln));
+    (*ctx.subst)[ctx.fname] = AST::to_node(make_id(ctx.rname, fn, ln));
+    return 0;
+}
+
+/// A ref or const ref formal: pure substitution to a variable actual
+/// (§13.5.2, measured aliasing) — no local, no copy anything — with the
+/// refusals that boundary carries: automatic lifetime only, no '<='
+/// through the alias, no write of any kind through const ref.
+int FsmTaskInliner::lower_ref_formal(FormalContext &ctx)
+{
+    const bool read_only = ctx.formal->get_direction() == AST::Arg::DirectionEnum::CONST_REF;
+    // §7.4, measured: a ref is a true alias for blocking writes on an
+    // automatic task — '<=' through it is illegal IEEE (no nonblocking
+    // assignment to an automatic), and §13.5.2 ties ref to automatic
+    // lifetime.
+    if(!ctx.task_automatic) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name
+                              << "': a ref argument needs 'task automatic' "
+                              << "(IEEE 1800-2017 §13.5.2)";
+        return 1;
+    }
+    if(!ctx.actual->is_node_type(AST::NodeType::Identifier)) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': the actual for ref '" << ctx.fname
+                              << "' must be a plain signal of the process";
+        return 1;
+    }
+    const std::string &aname = AST::cast_to<AST::Identifier>(ctx.actual)->get_name();
+    if(is_net_signal(m_module, aname)) {
+        log_net_actual(AST::to_node(ctx.call), "task", ctx.task_name, ctx.fname, aname);
+        return 1;
+    }
+    if(ctx.nba_written) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': '<=' through ref '" << ctx.fname
+                              << "' — no nonblocking assignment to an automatic (IEEE "
+                              << "1800-2017 §10.4.2, §13.5.2); alias with '=', or capture "
+                              << "with 'input' and commit registers directly";
+        return 1;
+    }
+    if(read_only && (ctx.ba_written || ctx.induced_written)) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': write through const "
+                              << "ref '" << ctx.fname << "' — a nested call's copy-out "
+                              << "included (IEEE 1800-2017 §13.5.2)";
+        return 1;
+    }
+    (*ctx.subst)[ctx.fname] = ctx.actual;
     return 0;
 }
 
@@ -352,130 +706,39 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                                   << "storage, pick one flavor";
                 return nullptr;
             }
+            FormalContext ctx;
+            ctx.call = call;
+            ctx.task_name = name;
+            ctx.formal = formal;
+            ctx.actual = actual;
+            ctx.fname = fname;
+            ctx.rname = rname;
+            ctx.task_automatic = task_automatic;
+            ctx.ba_written = ba_written;
+            ctx.nba_written = body_nba_targets.count(fname) != 0;
+            ctx.induced_written = body_induced_targets.count(fname) != 0;
+            ctx.subst = &subst;
+            ctx.head = &head;
+            ctx.tail = &tail;
+            ctx.check_read_first = &check_read_first;
             switch(formal->get_direction()) {
             case AST::Arg::DirectionEnum::INPUT:
-                if(ba_written) {
-                    // The local-copy idiom: a '='-written formal is a §6.1
-                    // temporary declared in the task block — legal only where
-                    // no cut spans, which §6 checks on the declaration —
-                    // seeded from the actual.
-                    auto tmp = std::make_shared<AST::Var>(fn, ln);
-                    tmp->set_name(rname);
-                    if(formal->get_type()) {
-                        tmp->set_type(AST::cast_to<AST::DataType>(formal->get_type()->clone()));
-                    }
-                    head.push_back(AST::to_node(tmp));
-                    head.push_back(AST::to_node(make_ba(rname, actual, fn, ln)));
-                    subst[fname] = AST::to_node(make_id(rname, fn, ln));
-                    break;
-                }
-                if(actual->is_node_category(AST::NodeType::Constant) &&
-                   !body_nba_targets.count(fname) && !body_induced_targets.count(fname)) {
-                    // A written formal is storage, never a substitutable
-                    // constant — the capture register below takes it.
-                    subst[fname] = actual;
-                    break;
-                }
-                if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
+                if(lower_input_formal(ctx)) {
                     return nullptr;
                 }
-                head.push_back(make_induced_marker(make_nba(rname, actual, fn, ln), true, fn, ln));
-                subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
             case AST::Arg::DirectionEnum::OUTPUT:
-            case AST::Arg::DirectionEnum::INOUT: {
-                if(!actual->is_node_type(AST::NodeType::Identifier)) {
-                    LOG_ERROR_N(call) << "task '" << name << "': the actual for " << "'" << fname
-                                      << "' must be a plain register of the process — copy-out has "
-                                      << "one storage to write";
+            case AST::Arg::DirectionEnum::INOUT:
+                if(lower_copyout_formal(ctx)) {
                     return nullptr;
                 }
-                if(ba_written) {
-                    // A '='-written output/inout formal is the same §6.1
-                    // temporary, copied out to the actual at return — the
-                    // no-wait helper shape a package task takes when its
-                    // result must land the same cycle.
-                    auto tmp = std::make_shared<AST::Var>(fn, ln);
-                    tmp->set_name(rname);
-                    if(formal->get_type()) {
-                        tmp->set_type(AST::cast_to<AST::DataType>(formal->get_type()->clone()));
-                    }
-                    head.push_back(AST::to_node(tmp));
-                    if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
-                        head.push_back(AST::to_node(make_ba(rname, actual, fn, ln)));
-                    } else {
-                        check_read_first.push_back(rname);
-                    }
-                    {
-                        const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                        tail.push_back(make_induced_marker(
-                            make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln), false,
-                            fn, ln));
-                    }
-                    subst[fname] = AST::to_node(make_id(rname, fn, ln));
-                    break;
-                }
-                if(hoist_declaration(rname, AST::to_node(formal->get_type()), fn, ln)) {
-                    return nullptr;
-                }
-                if(formal->get_direction() == AST::Arg::DirectionEnum::INOUT) {
-                    head.push_back(
-                        make_induced_marker(make_nba(rname, actual, fn, ln), true, fn, ln));
-                } else {
-                    check_read_first.push_back(rname);
-                }
-                {
-                    const std::string aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                    tail.push_back(make_induced_marker(
-                        make_nba(aname, AST::to_node(make_id(rname, fn, ln)), fn, ln), false, fn,
-                        ln));
-                }
-                subst[fname] = AST::to_node(make_id(rname, fn, ln));
                 break;
-            }
             case AST::Arg::DirectionEnum::CONST_REF:
-            case AST::Arg::DirectionEnum::REF: {
-                const bool read_only =
-                    formal->get_direction() == AST::Arg::DirectionEnum::CONST_REF;
-                // §7.4, measured: a ref is a true alias for blocking
-                // writes on an automatic task — pure substitution, no
-                // local, no copy anything. '<=' through it is illegal
-                // IEEE (no nonblocking assignment to an automatic), and
-                // §13.5.2 ties ref to automatic lifetime.
-                if(task->get_lifetime() != AST::Task::LifetimeEnum::AUTOMATIC) {
-                    LOG_ERROR_N(call)
-                        << "task '" << name << "': a ref argument needs 'task automatic' "
-                        << "(IEEE 1800-2017 §13.5.2)";
+            case AST::Arg::DirectionEnum::REF:
+                if(lower_ref_formal(ctx)) {
                     return nullptr;
                 }
-                if(!actual->is_node_type(AST::NodeType::Identifier)) {
-                    LOG_ERROR_N(call) << "task '" << name << "': the actual for ref '" << fname
-                                      << "' must be a plain signal of the process";
-                    return nullptr;
-                }
-                {
-                    const std::string &aname = AST::cast_to<AST::Identifier>(actual)->get_name();
-                    if(is_net_signal(m_module, aname)) {
-                        log_net_actual(AST::to_node(call), "task", name, fname, aname);
-                        return nullptr;
-                    }
-                }
-                if(body_nba_targets.count(fname)) {
-                    LOG_ERROR_N(call) << "task '" << name << "': '<=' through ref '" << fname
-                                      << "' — no nonblocking assignment to an automatic (IEEE "
-                                      << "1800-2017 §10.4.2, §13.5.2); alias with '=', or capture "
-                                      << "with 'input' and commit registers directly";
-                    return nullptr;
-                }
-                if(read_only && (ba_written || body_induced_targets.count(fname))) {
-                    LOG_ERROR_N(call) << "task '" << name << "': write through const "
-                                      << "ref '" << fname << "' — a nested call's copy-out "
-                                      << "included (IEEE 1800-2017 §13.5.2)";
-                    return nullptr;
-                }
-                subst[fname] = actual;
                 break;
-            }
             default:
                 LOG_ERROR_N(call) << "task '" << name << "': argument '" << fname
                                   << "' has a direction the inliner does not carry";
@@ -507,6 +770,28 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                 const auto &inner = AST::cast_to<AST::Block>(node)->get_statements();
                 if(inner) {
                     const bool spans = contains_event_statement(node);
+                    // The '='-written names of a spanning block, once per
+                    // block: every cut-spanning local checks against it.
+                    std::set<std::string> blocking;
+                    if(spans) {
+                        std::function<void(const AST::Node::Ptr &)> scan_ba =
+                            [&](const AST::Node::Ptr &n) {
+                                if(!n) {
+                                    return;
+                                }
+                                if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
+                                    blocking.insert(lvalue_target(
+                                        AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
+                                }
+                                const auto &kids = n->get_children();
+                                if(kids) {
+                                    for(const auto &c : *kids) {
+                                        scan_ba(c);
+                                    }
+                                }
+                            };
+                        scan_ba(node);
+                    }
                     for(auto it = inner->begin(); it != inner->end();) {
                         if(!(*it)->is_node_type(AST::NodeType::Var)) {
                             ++it;
@@ -529,24 +814,6 @@ AST::Node::Ptr FsmTaskInliner::expand_call(const AST::Call::Ptr &call,
                             ++it;
                             continue;
                         }
-                        std::set<std::string> blocking;
-                        std::function<void(const AST::Node::Ptr &)> scan_ba =
-                            [&](const AST::Node::Ptr &n) {
-                                if(!n) {
-                                    return;
-                                }
-                                if(n->is_node_type(AST::NodeType::BlockingSubstitution)) {
-                                    blocking.insert(lvalue_target(
-                                        AST::cast_to<AST::BlockingSubstitution>(n)->get_left()));
-                                }
-                                const auto &kids = n->get_children();
-                                if(kids) {
-                                    for(const auto &c : *kids) {
-                                        scan_ba(c);
-                                    }
-                                }
-                            };
-                        scan_ba(node);
                         if(blocking.count(lname)) {
                             LOG_ERROR_N(var)
                                 << "task local '" << lname << "' is written with '=' in a "
