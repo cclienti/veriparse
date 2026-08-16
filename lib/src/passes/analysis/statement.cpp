@@ -10,13 +10,35 @@ namespace Passes
 namespace Analysis
 {
 
+std::string Statement::identifier_key(const AST::Identifier::Ptr &id)
+{
+    std::string key;
+    const auto &hier = id->get_hier();
+    if(hier && hier->get_labellist()) {
+        for(const auto &label : *hier->get_labellist()) {
+            key += label->get_name();
+            if(label->get_loop()) {
+                if(label->get_loop()->is_node_type(AST::NodeType::IntConstN)) {
+                    key += "[" +
+                           AST::cast_to<AST::IntConstN>(label->get_loop())->get_value().str() + "]";
+                } else {
+                    key += "[?]";
+                }
+            }
+            key += ".";
+        }
+    }
+    key += id->get_name();
+    return key;
+}
+
 void Statement::collect_identifier_names(const AST::Node::Ptr &node, std::set<std::string> &names)
 {
     if(!node) {
         return;
     }
     if(node->is_node_type(AST::NodeType::Identifier)) {
-        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
+        names.insert(identifier_key(AST::cast_to<AST::Identifier>(node)));
         return;
     }
     const auto &children = node->get_children();
@@ -33,7 +55,7 @@ std::string Statement::lvalue_target(const AST::Lvalue::Ptr &lvalue)
     if(!lvalue->get_var()->is_node_type(AST::NodeType::Identifier)) {
         return "";
     }
-    return AST::cast_to<AST::Identifier>(lvalue->get_var())->get_name();
+    return identifier_key(AST::cast_to<AST::Identifier>(lvalue->get_var()));
 }
 
 std::string Statement::nba_target(const AST::NonblockingSubstitution::Ptr &nba)
@@ -62,12 +84,9 @@ void Statement::collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::s
     }
     switch(node->get_node_type()) {
     case AST::NodeType::Identifier:
-        // A hierarchical write (u.q, genblk.q) targets another scope, not
-        // this module's register of the same leaf name.
-        if(AST::cast_to<AST::Identifier>(node)->get_hier()) {
-            return;
-        }
-        names.insert(AST::cast_to<AST::Identifier>(node)->get_name());
+        // A hierarchical write (bus.ack, u.q) keys by its full path: it
+        // never aliases this module's register of the same leaf name.
+        names.insert(identifier_key(AST::cast_to<AST::Identifier>(node)));
         return;
     case AST::NodeType::Lvalue:
         collect_lvalue_bases(AST::cast_to<AST::Lvalue>(node)->get_var(), names);
@@ -212,7 +231,7 @@ int Statement::first_reference(const AST::Node::Ptr &node, const std::string &na
         return reads.count(name) ? -1 : 0;
     }
     if(node->is_node_category(AST::NodeType::Identifier) &&
-       AST::cast_to<AST::Identifier>(node)->get_name() == name) {
+       identifier_key(AST::cast_to<AST::Identifier>(node)) == name) {
         // Outside an assignment — a condition, an event control, a bound,
         // an actual — an occurrence can only read.
         return -1;

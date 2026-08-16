@@ -270,6 +270,19 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
                               << "with no hardware meaning";
             return 1;
         }
+        // A hierarchical target is a member of one of this module's
+        // interface ports, or it writes another scope — no machine of
+        // this module can own that register.
+        if(nba->get_left() && nba->get_left()->get_var() &&
+           nba->get_left()->get_var()->is_node_type(AST::NodeType::Identifier)) {
+            const auto &id = AST::cast_to<AST::Identifier>(nba->get_left()->get_var());
+            if(id->get_hier() && !hier_is_iface_member(id, m_proc.iface_ports)) {
+                LOG_ERROR_N(node) << "'<=' to '" << nba_target(nba) << "': a hierarchical "
+                                  << "target must be a member of an interface port of this "
+                                  << "module";
+                return 1;
+            }
+        }
         // §6.2: one signal, one discipline — the set makes the check
         // order-independent against the '=' classification.
         m_proc.nba_targets.insert(nba_target(nba));
@@ -469,6 +482,20 @@ int ImplicitFsmElaboration::collect_body(const AST::Node::Ptr &node,
         // scope no cut point spans, written where it is declared.
         const auto &blocking = AST::cast_to<AST::BlockingSubstitution>(node);
         const auto &target = lvalue_target(blocking->get_left());
+        if(blocking->get_left() && blocking->get_left()->get_var() &&
+           blocking->get_left()->get_var()->is_node_type(AST::NodeType::Identifier) &&
+           AST::cast_to<AST::Identifier>(blocking->get_left()->get_var())->get_hier()) {
+            const auto &id = AST::cast_to<AST::Identifier>(blocking->get_left()->get_var());
+            if(hier_is_iface_member(id, m_proc.iface_ports)) {
+                LOG_ERROR_N(node) << "'=' to interface member '" << target << "': a member "
+                                  << "of an interface port is a signal of the machine — "
+                                  << "commit it with '<='";
+            } else {
+                LOG_ERROR_N(node) << "'=' to '" << target << "': a hierarchical target "
+                                  << "must be a member of an interface port of this module";
+            }
+            return 1;
+        }
         if(blocking->get_ldelay() || blocking->get_rdelay()) {
             LOG_ERROR_N(node) << "'#' delay in a marked process: simulation timing "
                               << "with no hardware meaning";
@@ -823,7 +850,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 if(check_temp_reads(value, env)) {
                     return 1;
                 }
-                push_induced(action, nba_target(nba), value, fn, ln);
+                push_induced(action, nba_target(nba), nba->get_left()->get_var(), value, fn, ln);
                 env[nba_target(nba)] = value;
                 break;
             }
@@ -1184,8 +1211,9 @@ int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const E
 }
 
 void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
-                                          const std::string &target, const AST::Node::Ptr &rhs,
-                                          const std::string &fn, int ln)
+                                          const std::string &target,
+                                          const AST::Node::Ptr &target_node,
+                                          const AST::Node::Ptr &rhs, const std::string &fn, int ln)
 {
     for(auto it = action->begin(); it != action->end();) {
         const bool induced = m_proc.induced.count(it->get()) &&
@@ -1210,7 +1238,10 @@ void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
                 make_const(masked.convert_to<unsigned int>(), static_cast<int>(width), fn, ln));
         }
     }
-    const auto &commit = AST::to_node(make_nba(target, value, fn, ln));
+    // The commit keeps the source lvalue node: a hierarchical interface
+    // member rebuilt from its key string would be one escaped identifier,
+    // not a path.
+    const auto &commit = AST::to_node(make_nba_to(target_node->clone(), value, fn, ln));
     m_proc.induced.insert(commit.get());
     action->push_back(commit);
 }
@@ -1465,6 +1496,7 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_proc.prefix = prefix;
     m_proc.module = module;
     m_proc.pragmalist = pragmalist;
+    m_proc.iface_ports = collect_iface_ports(module);
 
     // §3: veriparse_encoding picks the state constants' shape.
     const auto &encoding = get_pragma(pragmalist, "veriparse_encoding");

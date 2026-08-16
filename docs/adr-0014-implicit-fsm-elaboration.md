@@ -1104,6 +1104,40 @@ always_comb
 The §10.2 state map lists each decoded output with its per-state value,
 the same way transitions carry their actions.
 
+### 6.3 Interface ports — kept as they stand, their members ordinary signals
+
+**Rule.** A module port of interface type is **passed through**: nothing
+inlines it, flattens it, or rewrites its type, and the emitted module keeps
+the port exactly as written (`bus_if.dev bus`). Its members are signals of
+the machine like any other — read in guards and actions, committed with
+`<=`, passed as task actuals — reached by their whole path (`bus.ack`),
+which is what IEEE §25.3 makes them: variables of the interface instance,
+visible to the module through the port.
+
+Two consequences follow, and both are checks rather than conventions:
+
+- **A hierarchical name keys by its path, never by its leaf.** `bus.ack`
+  and a local `ack` are different signals and must never share an entry in
+  a driven set, an environment, or a register list — including in the
+  §10.2 state map, where the path is what a consumer needs. A temporary
+  named `data` beside a member `bus.data` is the same case (`fsm_iface2`).
+- **A hierarchical target must be a member of an interface port of this
+  module.** Any other path — `u.q` into an instance, a generate scope —
+  reaches storage no machine here owns, and is refused (§9). Reads are not
+  restricted: a machine may read what it can see.
+
+`=` to an interface member is refused for the reason §6 gives for every
+other register: a member is storage, so it takes `<=`. The message says so
+directly rather than reporting the generic scoping failure.
+
+Because the port survives, the emitted module drops into the same testbench
+as the source: `iface_line` is the differential cosim of a machine whose
+entire boundary is an interface, with a member read in a guard, committed
+from a task body, and carried as a task input actual.
+
+Virtual interfaces, tasks declared *inside* an interface (§25.5), and
+modport direction enforcement are not part of this: see §15.
+
 ## 7. Decision 6 — loops
 
 ### 7.1 Loops with no cut point
@@ -1654,6 +1688,9 @@ unmarked column has already been misread once.
 | `WaitStatement` / level-sensitive control | not an edge; no boundary to cut at | IEEE §9.4.3 |
 | `fork`/`join` | concurrent control flow the state model cannot express: one control position per machine. Write cooperating marked processes instead; §15 records the v2 decomposition that would write them for you | IEEE §9.3.2, ADR §15 |
 | `disable` | abortive control flow the state model cannot express | IEEE §9.6.2 |
+| `<=` or `=` through a hierarchical path that is **not** a member of an interface port of this module (`u.q`, a generate scope) | it names storage no machine of this module owns; keying it by its leaf name would silently alias a local register of that name (ADR §6.3) | IEEE §23.10, ADR §6.3 |
+| `=` to a member of an interface port | a member is a variable of the interface instance — storage, so `<=`, like every other register (ADR §6, §6.3) | IEEE §25.3, ADR §6 |
+| a task actual, `ref` or copy-out, that is a hierarchical name outside this module's interface ports | substitution would alias another scope's storage; the copy-out would commit to it (ADR §6.3, §7.4) | IEEE §13.5.2, ADR §7.4 |
 | a `function` called in a marked process that writes non-local state | expression position is no place for a side effect: the `(R_p, s_p)` model would miss the write silently. **Pure functions are accepted** and pass through to the output as the ordinary combinational calls they are | IEEE §13.4 |
 | loop with no cut point and no static exit | zero-delay infinite loop — deadlock, and no hardware | IEEE §9.2.2.1 |
 | a path through a kept loop's body that reaches the head again without crossing a cut point | the same zero-delay lap, hidden in one arm of a branch: the loop has cut points, that path has none | IEEE §9.2.2.1 |
@@ -2262,6 +2299,7 @@ Positioning, so that later choices can be argued against something.
 | Multiple clocks or mixed edges | hard error (§9) | needs a CDC model, own ADR |
 | `casex`/`casez` holding cut points, and x/z case items in a forking `case` | hard error (§9) — the fork guards are exact `==` | v2, if a design asks: wildcard-match guard expressions (`casez` semantics per item), the same if-conversion with a different comparison |
 | Temporary **shadowing** | **implemented** — `FsmAlphaRename`, the first structural pre-lowering stage: shadowed and sibling same-named block locals uniquify (`x` → `x_0`) in the marked processes and the tasks they reach, order-aware within their lexical scope, and only on conflict. The shadowed forms — module-declaration, enclosing-temporary, for-index, decoded-output, task-formal shadows, and sibling cut-spanning statics keeping two storages — compile as written (the `fsm_alpha0`–`fsm_alpha4` goldens) | — |
+| Virtual interfaces, interface-declared tasks (§25.5), and modport **direction** enforcement | interface **ports** are supported and passed through (§6.3): members read, committed, and carried through task formals, the port kept as written. A `virtual` interface port and a call to a task declared inside an interface (`bus.ping()`) are both refused by the **parser** — neither shape reaches this pass. Writing a member a modport declares `input` is passed through, and the consumer refuses it with its own message (measured: Verilator, *Attempt to drive input-only modport*) | direction enforcement is a §9 row the day the modport is resolved here — it needs the interface definition in hand, which is `InterfaceElaboration`'s (ADR-0008) knowledge, not this pass's. Virtual interfaces need a dynamic-binding model and belong with that ADR |
 | `fork`/`join` — concurrent control flow inside one marked process | hard error (§9): the model rests on **one control position** — a single state register over one sequential CFG — and `fork` creates several at once. The supported spelling today is the decomposition the language already has: **two marked processes in one module**, each its own machine, rendezvousing through registers (`while (!other_done) @(posedge clk);`), the §9.2.2.4 check keeping their write sets disjoint | **parked** (2026-08-14): the cooperating-processes spelling covers the known designs, and the mechanized decomposition — one sub-machine per branch, generated done flags, the `join` as the rendezvous wait — earned no convincing motivating design. Revisit when one appears; the pre-lowering pipeline (`FsmAlphaRename` → `FsmTaskInliner` → `FsmLoopLowering`) is where it would slot |
 | Resource sharing, scheduling, pipelining, datapath generation | none — the author's edges *are* the schedule; the shared-wire CSE above is the structural subset that needs no allocation | out of scope by construction; this pass is not a prefix of full HLS |
 | Memory inference policy (BRAM vs registers) | none | orthogonal |
