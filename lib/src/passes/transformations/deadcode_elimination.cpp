@@ -207,6 +207,29 @@ DeadcodeElimination::DSet DeadcodeElimination::remove_deadcode_step(AST::Node::P
     return removedset;
 }
 
+namespace
+{
+
+bool contains_hier_identifier(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return false;
+    }
+    if(node->is_node_type(AST::NodeType::Identifier) &&
+       AST::cast_to<AST::Identifier>(node)->get_hier()) {
+        return true;
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        if(contains_hier_identifier(child)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+} // namespace
+
 int DeadcodeElimination::remove_deadstmt(const DeadcodeElimination::DSet &deadset,
                                          DeadcodeElimination::DSet &removedset, AST::Node::Ptr node,
                                          AST::Node::Ptr parent)
@@ -228,6 +251,13 @@ int DeadcodeElimination::remove_deadstmt(const DeadcodeElimination::DSet &deadse
 
     else if(node->is_node_category(AST::NodeType::Assign)) {
         auto assign = AST::cast_to<AST::Assign>(node);
+        // A write through a hierarchical path (an interface-port member, a
+        // generate scope) escapes this module's liveness: its leaf name says
+        // nothing about the local signal of the same name, so it is never
+        // dead here.
+        if(contains_hier_identifier(AST::to_node(assign->get_left()))) {
+            return 0;
+        }
         // Looking for lvalues for the current assignment
         DSet lvalue_set = to_set(Analysis::Lvalue::get_lvalue_names(assign->get_left()));
 

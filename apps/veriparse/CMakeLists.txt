@@ -382,6 +382,7 @@ if(NOT WIN32)
     # machine's signals travel through its formals only (IEEE §26.2) —
     # const ref clock, inout accumulator, input count, zero-skip frame.
     add_verilower_sv_cosim(NAME pkg_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+    add_verilower_sv_cosim(NAME iface_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
     # §7.4 default arguments and early return: the task's default fills
     # the omitted actual and `if (abort) return;` jumps to the body's end

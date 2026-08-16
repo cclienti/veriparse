@@ -280,7 +280,8 @@ private:
     /// carried by the environment. Author commits are never touched and §6
     /// still flags them.
     void push_induced(const AST::Node::ListPtr &action, const std::string &target,
-                      const AST::Node::Ptr &rhs, const std::string &fn, int ln);
+                      const AST::Node::Ptr &target_node, const AST::Node::Ptr &rhs,
+                      const std::string &fn, int ln);
 
     /// Fork at a loop head — on entry or on the back-edge: the enter leg
     /// pushes the body frame under the loop's guard, the exit leg continues
@@ -424,6 +425,8 @@ private:
         AST::Pragmalist::Ptr pragmalist;
 
         /// The per-process declaration prefix, for the wire names.
+        /// Ports of interface type: their members are signals of the machine.
+        std::set<std::string> iface_ports;
         std::string prefix;
     };
     ProcessState m_proc;

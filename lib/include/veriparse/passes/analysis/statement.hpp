@@ -43,6 +43,12 @@ struct Statement
     /// Every declaration name bound anywhere in the tree.
     static void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string> &names);
 
+    /// The canonical key of an identifier: its hierarchical labels dotted
+    /// before the name (`bus.ack`), a constant label select rendered by
+    /// value and a non-constant one as `[?]` — so distinct paths never
+    /// share a key with each other or with a plain name.
+    static std::string identifier_key(const AST::Identifier::Ptr &id);
+
     /// The plain-identifier target of an assignment's left-hand side, or
     /// empty when the shape is outside the subset.
     static std::string lvalue_target(const AST::Lvalue::Ptr &lvalue);

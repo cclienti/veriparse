@@ -338,6 +338,7 @@ int FsmTaskInliner::inline_module(const AST::Module::Ptr &module)
     m_declared.clear();
     m_expanded.clear();
     m_module = module;
+    m_iface_ports = collect_iface_ports(module);
     m_pragmalist = nullptr;
 
     {
@@ -485,7 +486,14 @@ int FsmTaskInliner::lower_copyout_formal(FormalContext &ctx)
                               << "one storage to write";
         return 1;
     }
-    const std::string aname = AST::cast_to<AST::Identifier>(ctx.actual)->get_name();
+    const auto &actual_id = AST::cast_to<AST::Identifier>(ctx.actual);
+    if(actual_id->get_hier() && !hier_is_iface_member(actual_id, m_iface_ports)) {
+        LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': the actual for '" << ctx.fname
+                              << "' is '" << Analysis::Statement::identifier_key(actual_id)
+                              << "' — a hierarchical actual must be a member of an interface "
+                              << "port of this module";
+        return 1;
+    }
     if(ctx.ba_written) {
         // A '='-written output/inout formal is the same §6.1 temporary,
         // copied out to the actual at return — the no-wait helper shape a
@@ -513,7 +521,8 @@ int FsmTaskInliner::lower_copyout_formal(FormalContext &ctx)
         }
     }
     ctx.tail->push_back(make_induced_marker(
-        make_nba(aname, AST::to_node(make_id(ctx.rname, fn, ln)), fn, ln), false, fn, ln));
+        make_nba_to(ctx.actual->clone(), AST::to_node(make_id(ctx.rname, fn, ln)), fn, ln), false,
+        fn, ln));
     (*ctx.subst)[ctx.fname] = AST::to_node(make_id(ctx.rname, fn, ln));
     return 0;
 }
@@ -540,8 +549,19 @@ int FsmTaskInliner::lower_ref_formal(FormalContext &ctx)
                               << "' must be a plain signal of the process";
         return 1;
     }
-    const std::string &aname = AST::cast_to<AST::Identifier>(ctx.actual)->get_name();
-    if(is_net_signal(m_module, aname)) {
+    const auto &actual_id = AST::cast_to<AST::Identifier>(ctx.actual);
+    const std::string aname = Analysis::Statement::identifier_key(actual_id);
+    if(actual_id->get_hier()) {
+        // An interface member is a variable (§25.3) — the net refusal
+        // below cannot apply, and any other scope is unreachable.
+        if(!hier_is_iface_member(actual_id, m_iface_ports)) {
+            LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': the actual for ref '"
+                                  << ctx.fname << "' is '" << aname << "' — a hierarchical "
+                                  << "actual must be a member of an interface port of this "
+                                  << "module";
+            return 1;
+        }
+    } else if(is_net_signal(m_module, aname)) {
         log_net_actual(AST::to_node(ctx.call), "task", ctx.task_name, ctx.fname, aname);
         return 1;
     }

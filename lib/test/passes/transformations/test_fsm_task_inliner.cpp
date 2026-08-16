@@ -58,3 +58,9 @@ TEST(PassesTransformation_FsmTaskInliner, fsm_task_nest0) { TEST_CORE_SV; }
 TEST(PassesTransformation_FsmTaskInliner, fsm_dflt0) { TEST_CORE_SV; }
 // Early return restructures to the block's end before splicing (§13.3).
 TEST(PassesTransformation_FsmTaskInliner, fsm_ret0) { TEST_CORE_SV; }
+// Interface members as actuals, at the pass level: the copy-out keeps the
+// whole path rather than the member's leaf name (IEEE 1800-2017 §25.3).
+TEST(PassesTransformation_FsmTaskInliner, fsm_iface1) { TEST_CORE_SV; }
+// A ref formal aliasing an interface member: a member is a variable, so the
+// §13.5.2 net refusal cannot apply to it.
+TEST(PassesTransformation_FsmTaskInliner, fsm_iface2) { TEST_CORE_SV; }
