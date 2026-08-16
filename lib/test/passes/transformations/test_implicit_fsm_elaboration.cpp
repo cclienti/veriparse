@@ -661,6 +661,22 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_task_err18) { TEST_ERROR_S
 // and the inliner takes over unchanged (§7.4). The legal shapes: a static
 // task commits through output/inout and cannot wait; an automatic task
 // waits through a const ref clock and drives decoded outputs by ref.
+// An interface port is kept as it stands: its members are signals of the
+// machine, reachable by their whole path, and no pass inlines the interface
+// away (ADR-0014 §6, IEEE 1800-2017 §25.3).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface0) { TEST_CORE_SV; }
+// Interface members as task actuals: copy-in of one, copy-out to another.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface1) { TEST_CORE_SV; }
+// A ref formal aliasing an interface member, beside a temporary carrying the
+// member's leaf name: the two never alias.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface2) { TEST_CORE_SV; }
+// '=' to an interface member: a member takes '<=' like any other register.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err0) { TEST_ERROR_SV; }
+// '<=' through a path that is not an interface port of this module.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err1) { TEST_ERROR_SV; }
+// A ref actual reaching into another scope, not an interface member.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err2) { TEST_ERROR_SV; }
+
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg0) { TEST_CORE_PKG_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg1) { TEST_CORE_PKG_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg2) { TEST_CORE_PKG_SV; }

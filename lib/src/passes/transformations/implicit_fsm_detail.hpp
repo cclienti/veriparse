@@ -415,6 +415,60 @@ make_nba(const std::string &target, const AST::Node::Ptr &rhs, const std::string
     return nba;
 }
 
+/// A nonblocking assignment whose target is a ready-made lvalue
+/// expression — a hierarchical interface member the string form of
+/// make_nba could not name.
+inline AST::NonblockingSubstitution::Ptr
+make_nba_to(const AST::Node::Ptr &target, const AST::Node::Ptr &rhs, const std::string &fn, int ln)
+{
+    auto lvalue = std::make_shared<AST::Lvalue>(fn, ln);
+    lvalue->set_var(target);
+    auto rvalue = std::make_shared<AST::Rvalue>(fn, ln);
+    rvalue->set_var(rhs);
+    auto nba = std::make_shared<AST::NonblockingSubstitution>(fn, ln);
+    nba->set_left(lvalue);
+    nba->set_right(rvalue);
+    return nba;
+}
+
+/// Names of this module's interface ports (`bus_if.dev bus` — non-virtual):
+/// their members are signals of the machine, every other hierarchical name
+/// belongs to another scope.
+inline std::set<std::string> collect_iface_ports(const AST::Module::Ptr &module)
+{
+    std::set<std::string> names;
+    const auto &ports = module->get_ports();
+    if(!ports) {
+        return names;
+    }
+    for(const auto &port_node : *ports) {
+        if(!port_node->is_node_type(AST::NodeType::Port)) {
+            continue;
+        }
+        const auto &decl = AST::cast_to<AST::Port>(port_node)->get_decl();
+        if(decl && decl->is_node_type(AST::NodeType::Arg)) {
+            const auto &arg = AST::cast_to<AST::Arg>(decl);
+            if(arg->get_type() && arg->get_type()->is_node_type(AST::NodeType::InterfaceType) &&
+               !AST::cast_to<AST::InterfaceType>(arg->get_type())->get_is_virtual()) {
+                names.insert(arg->get_name());
+            }
+        }
+    }
+    return names;
+}
+
+/// Whether a hierarchical identifier reaches into one of this module's
+/// interface ports: its outermost label names one.
+inline bool hier_is_iface_member(const AST::Identifier::Ptr &id,
+                                 const std::set<std::string> &iface_ports)
+{
+    const auto &hier = id->get_hier();
+    if(!hier || !hier->get_labellist() || hier->get_labellist()->empty()) {
+        return false;
+    }
+    return iface_ports.count(hier->get_labellist()->front()->get_name()) != 0;
+}
+
 /// The conjuncts of a guard, flattening the && tree.
 inline void flatten_land(const AST::Node::Ptr &node, std::vector<AST::Node::Ptr> &conjuncts)
 {

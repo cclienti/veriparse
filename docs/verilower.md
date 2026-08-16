@@ -226,6 +226,7 @@ source line and the governing rule — there is no silent approximation
 | calls to `task`s | inlined per call site as a labelled block ([Tasks](#tasks--reusable-multi-cycle-sub-sequences)) |
 | pure system functions (`$clog2`, `$bits`, `$size`, `$countones`, `$onehot`, …) | evaluated or passed through as combinational logic |
 | parameters, `localparam`, enum/typedef/struct types | resolved by the preamble passes before lowering, as in `veriflat` |
+| ports of **interface** type (`bus_if.dev bus`) | kept as written — never inlined: the members are signals of the machine, read in guards, committed with `<=`, and usable as task actuals, each by its whole path (`bus.ack`) |
 
 Everything outside this table is a **hard error with a cited rule**, never a
 silent mis-lowering — see [What is rejected](#what-is-rejected).
@@ -638,6 +639,9 @@ lowers exactly, and everything else names its rule. The categories
 - **§6 violations**: `=` to a module-level signal, a register committed twice
   on one path, a temporary read before assignment or crossing a wait,
   shadowing;
+- **hierarchical names that leave the module**: `<=`, `=`, or a task actual
+  through a path that is not a member of one of this module's interface
+  ports (`u.q` into an instance) — it names storage no machine here owns;
 - **structural hazards**: zero-delay loops, a bounded loop whose bound
   stopped folding without `(* veriparse_no_unroll *)`, a register also
   driven by another process / `assign` / instance output (multi-driver,

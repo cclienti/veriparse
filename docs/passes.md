@@ -368,6 +368,9 @@ explicit synthesizable FSM (ADR-0014). The user-facing reference is
   `forever`/`while` form real back-edges.
 - Blocking temporaries (`=` on in-process declarations) materialize as typed
   wires substituted at their uses.
+- Interface ports pass through untouched: their members are signals of the
+  machine, keyed by their whole path (`bus.ack`), never by the leaf name a
+  local signal may share (ADR-0014 §6.3).
 - State names derive from block labels; encodings: binary, one-hot, gray.
 - Everything outside the supported subset is a hard error citing the
   governing rule (ADR-0014 §9): impure calls, multi-driver registers,

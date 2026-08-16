@@ -99,6 +99,8 @@ private:
     std::set<std::string> m_inlined;
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
     std::set<const AST::Node *> m_expanded;
+    /// Ports of interface type: their members are admissible actuals.
+    std::set<std::string> m_iface_ports;
     AST::Module::Ptr m_module;
     AST::Pragmalist::Ptr m_pragmalist;
 };

@@ -303,8 +303,10 @@ int ImplicitFsmElaboration::check_wait(const AST::EventStatement::Ptr &event, AS
         return 0;
     }
 
-    const auto &clock_name = AST::cast_to<AST::Identifier>(clock->get_sig())->get_name();
-    const auto &sens_name = AST::cast_to<AST::Identifier>(sens->get_sig())->get_name();
+    const auto &clock_name =
+        Analysis::Statement::identifier_key(AST::cast_to<AST::Identifier>(clock->get_sig()));
+    const auto &sens_name =
+        Analysis::Statement::identifier_key(AST::cast_to<AST::Identifier>(sens->get_sig()));
     if(clock_name != sens_name || clock->get_type() != sens->get_type()) {
         LOG_ERROR_N(event) << "cut point over '" << sens_name
                            << "' disagrees with the process clock '" << clock_name
