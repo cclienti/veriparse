@@ -1,6 +1,9 @@
 # ADR-0015 — Hierarchical subroutine calls (`HierCallResolution`)
 
-- **Status**: Draft (this branch). Unparks the TODO entry of 2026-08-17
+- **Status**: Implemented (2026-08-17, this branch: grammar,
+  `HierCallResolution` in `ResolveModule`, verilower/veriflat wiring,
+  goldens and the `iface_call` differential cosim; §8 stays parked).
+  Unparks the TODO entry of 2026-08-17
   ("No hierarchical subroutine call") as a targeted exception to the
   ADR-0014 feature freeze, motivated by `verilower`: a handshake helper
   living with the bus it drives — a task declared in an interface, called
