@@ -25,7 +25,8 @@ public:
     ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
                   const Analysis::Module::ModulesMap &modules_map, bool deadcode_elimination = true,
                   bool fsm_elaboration = false,
-                  ImplicitFsmElaboration::FsmReport *fsm_report = nullptr);
+                  ImplicitFsmElaboration::FsmReport *fsm_report = nullptr,
+                  const Analysis::Module::InterfacesMap &interfaces_map = {});
 
 private:
     /**
@@ -36,6 +37,11 @@ private:
 private:
     AST::ParamArg::ListPtr m_paramlist_inst;
     Analysis::Module::ModulesMap m_modules_map;
+
+    /// Interface definitions, for resolving hierarchical subroutine calls
+    /// through interface ports (ADR-0015 §3).
+    Analysis::Module::InterfacesMap m_interfaces_map;
+
     const bool m_deadcode_elimination;
 
     /// ADR-0014 §10.3: the FSM lowering is a per-tool opt-in — verilower

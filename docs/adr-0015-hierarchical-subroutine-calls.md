@@ -12,11 +12,12 @@
      building the neutral `AST::Call` (statement position) or
      `AST::FunctionCall` (expression position) with the path in the
      `hier` field that `AST::Call` has carried unused since ADR-0001.
-  2. **Resolve** the calls whose root names an interface this module can
-     see — an interface **port** or a local interface **instance** — by
-     splicing the subroutine into the calling module, the same shape
-     `PackageInliner` gives `pkg::t()`. Every other hierarchical call
-     (`u.t()` into a module instance) is refused loudly, and parked (§8).
+  2. **Resolve** the calls whose root names a non-virtual interface
+     **port** of the module by splicing the subroutine into the calling
+     module, the same shape `PackageInliner` gives `pkg::t()`. Every
+     other hierarchical call — `u.t()` into a module instance, and a
+     subroutine of a **locally instantiated** interface — is refused
+     loudly, and parked (§8).
 - **Normative reference** — IEEE 1800-2017, verified against
   `docs/1800-2017.pdf`; IEEE 1364-2005 against
   `docs/verilog-std-1364-2005.pdf`:
@@ -123,21 +124,29 @@ runs **unconditionally** between `GenerateRemoval` and
 - before `ImplicitFsmElaboration`, so the FSM pass sees only shapes it
   already supports.
 
-### 3.2 What resolves: a single, index-free root naming an interface
+### 3.2 What resolves: a single, index-free root naming an interface port
 
 A call's `hier` must be **one label, not indexed**, and that root must
-name, in this module:
-
-- an **interface port** (`bus_if.dev bus` — the ADR-0014 §6.3 set), or
-- a **local interface instance** (`bus_if bus();`).
+name a **non-virtual interface port** of this module (`bus_if.dev bus` —
+the ADR-0014 §6.3 set; `NameResolution` has already promoted the port's
+type to `InterfaceType`, ADR-0003 §4.4).
 
 The named subroutine must be a `Task` or `Function` declared in that
 interface's body. Everything else is a hard error (§6): a multi-label
 path, an indexed root (`bus[i].t()` — no static identity, the ADR-0014
-§6.3 argument verbatim), a root naming a module instance (`u.t()`), or a
-root naming nothing. The module-instance form stays parked (§8): it is
-simulation-only Verilog with no synthesis story, and no pipeline of ours
-has a consumer for it.
+§6.3 argument verbatim), a root naming a module instance (`u.t()`), a
+root naming a **local interface instance**, or a root naming nothing.
+The module-instance form stays parked (§8): it is simulation-only
+Verilog with no synthesis story, and no pipeline of ours has a consumer
+for it. The local-instance form is parked for a measured reason: in the
+flattener, the instance-prefix rename of the interface's own subroutine
+(`bus_ping` from instance `bus` of an interface declaring `ping`) and
+this pass's spliced name land on **the same identifier**, a silent
+duplicate definition. The port form has no such overlap — the child's
+splice and the parent's interface splice prefix through different
+instances. Resolving the local form means binding the call to the copy
+the instance splice itself produces, which is the flattener extension §8
+records.
 
 ### 3.3 The splice — `PackageInliner`'s shape on the `.` axis
 
@@ -217,9 +226,17 @@ them are member commits, and a spliced *function* is exactly a
 module-level function, taking whatever rules those already have. The
 ADR-0014 §6.3 rule "a hierarchical target must be a member of an
 interface port" is untouched — the spliced body satisfies it by
-construction for ports. For a **local instance** root the FSM pass's
-existing checks decide, as they would for hand-written `bus.req`
-references; the splice neither widens nor narrows that rule.
+construction.
+
+One composition rule follows from identities and is worth writing down
+(measured on the first smoke design): an interface task that spans
+waits necessarily waits on the interface's **own clock member**, which
+the splice renders as `bus.clk` — so the calling process must clock on
+that same member, `@(posedge bus.clk)`, for ADR-0014 §9's
+one-clock-per-process check to hold. A process clocked on a same-named
+module port is a *different identity* and is refused by that existing
+check, message unchanged — the machine cannot know two nets are tied
+outside. The bus bringing its clock is the §25.7 idiom anyway.
 
 ### 5.2 veriflat
 
@@ -235,6 +252,16 @@ member check, which would have rejected `bus.ping` as "no member",
 is never consulted for a call — and stays as-is for genuine mistakes
 that reach it (§6). No change to `InterfaceElaboration`.
 
+One sharpness follows and is accepted: through a **modport-qualified**
+port, the spliced body's member references face the flattener's §25.5
+visibility and direction checks as if the *caller* had written them —
+where IEEE gives a subroutine body interface-internal access. A task
+writing a member its modport declares `input` is therefore refused
+loudly where a simulator would run it. Conservative, never mis-lowered;
+the accepted spelling is an unqualified port or a modport listing what
+the body touches. Lifted the day modports are resolved with `import`
+knowledge (§4).
+
 ### 5.3 veriobf
 
 Out of scope: the obfuscator is not taught hierarchical calls. A source
@@ -248,7 +275,7 @@ IEEE citations allowed. The rows:
 
 | Shape | Message names |
 |---|---|
-| root is a module instance or unknown | the root, and that only an interface port or local interface instance may carry a subroutine call |
+| root is a module instance, a local interface instance, or unknown | the root, and that only a non-virtual interface port may carry a subroutine call |
 | multi-label path `a.b.t()` | the path; one level is the supported form |
 | indexed root `bus[i].t()` | the static-identity requirement (same wording family as the FSM §6.3 refusal) |
 | callee not declared in the interface | interface name and subroutine name |
@@ -263,8 +290,8 @@ IEEE citations allowed. The rows:
   enable, indexed/multi-label paths (parse-only — they must build the
   `hier` faithfully).
 - **Pass goldens** (`HierCallResolution` alone): splice through a port;
-  through a local instance; two call sites → one splice; formal
-  shadowing a member; each §6 error row.
+  two call sites → one splice; formal shadowing a member; each §6 error
+  row.
 - **verilower**: FSM golden of a handshake task with a wait, called
   twice through the port (stems `X_0`/`X_1`), and a **differential
   cosim** in the `iface_line` mold — the Verilator reference compiles
@@ -279,6 +306,7 @@ IEEE citations allowed. The rows:
 | Feature | Why parked |
 |---|---|
 | `u.t()` — subroutine call into a module instance | parses now (the grammar is general); refused at resolution. Simulation-only Verilog: flattening could splice it, but no consumer asked, and the FSM pass must keep refusing storage it does not own (ADR-0014 §6.3) |
+| subroutine of a **locally instantiated** interface (`bus_if bus(); … bus.ping();`) | refused at resolution: the splice's `<root>_<name>` and the flattener's instance-prefix rename of the same subroutine collide on one identifier (§3.2). The clean landing is the flattener binding the call to the copy its instance splice already makes — an `InterfaceElaboration` extension, taken when a design asks |
 | interface parameters / typedefs / enum items / localparams in a called body | needs the instance's parameter overrides or a declaration-closure carry; the generic-module-with-port case has no instance in hand. Splice the closure when a design asks |
 | sibling-subroutine calls inside a called body | dependency closure, `PackageInliner::copy_symbol`'s recursion on the `.` axis — mechanical once wanted |
 | modport `import`/`export`, `extern` prototypes, `extern forkjoin` (§25.7) | not in the parsed subset (ADR-0002 §7); visibility enforcement lands with modport resolution (§4) |

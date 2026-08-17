@@ -14,6 +14,7 @@
 #include <veriparse/passes/transformations/scope_elevator.hpp>
 #include <veriparse/passes/transformations/branch_selection.hpp>
 #include <veriparse/passes/transformations/generate_removal.hpp>
+#include <veriparse/passes/transformations/hier_call_resolution.hpp>
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
 #include <veriparse/passes/transformations/variable_folding.hpp>
 #include <veriparse/passes/transformations/deadcode_elimination.hpp>
@@ -41,10 +42,11 @@ ResolveModule::ResolveModule(bool deadcode_elimination, bool fsm_elaboration,
 ResolveModule::ResolveModule(const AST::ParamArg::ListPtr &paramlist_inst,
                              const Analysis::Module::ModulesMap &modules_map,
                              bool deadcode_elimination, bool fsm_elaboration,
-                             ImplicitFsmElaboration::FsmReport *fsm_report)
+                             ImplicitFsmElaboration::FsmReport *fsm_report,
+                             const Analysis::Module::InterfacesMap &interfaces_map)
     : m_paramlist_inst(paramlist_inst), m_modules_map(modules_map),
-      m_deadcode_elimination(deadcode_elimination), m_fsm_elaboration(fsm_elaboration),
-      m_fsm_report(fsm_report)
+      m_interfaces_map(interfaces_map), m_deadcode_elimination(deadcode_elimination),
+      m_fsm_elaboration(fsm_elaboration), m_fsm_report(fsm_report)
 {
 }
 
@@ -119,6 +121,16 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 
     if(GenerateRemoval().run(node)) {
         LOG_ERROR_N(node) << "Failed to select branches";
+        return 1;
+    }
+
+    // Hierarchical subroutine calls resolve after the branch and generate
+    // pruning (a call in discarded text must not error) and after the loop
+    // unrolling (every cloned site resolves to the one spliced definition),
+    // and before the FSM lowering, which then sees only local calls
+    // (ADR-0015 §3.1).
+    if(HierCallResolution(m_interfaces_map).run(node)) {
+        LOG_ERROR_N(node) << "Failed to resolve hierarchical subroutine calls";
         return 1;
     }
 

@@ -58,6 +58,7 @@ private:
     ModuleFlattener(const AST::ParamArg::ListPtr &paramlist_inst,
                     const Analysis::Module::ModulesMap &modules_map,
                     std::shared_ptr<const InterfaceElaboration::Design> iface_design,
+                    const Analysis::Module::InterfacesMap &interfaces_map,
                     bool deadcode_elimination, bool fsm_elaboration,
                     ImplicitFsmElaboration::FsmReport *fsm_report);
 
