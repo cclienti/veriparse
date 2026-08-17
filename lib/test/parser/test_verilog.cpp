@@ -204,6 +204,7 @@ TEST(VerilogParserTest, task2) { TEST_CORE; }
 TEST(VerilogParserTest, empty_subprogram0) { TEST_CORE; }
 TEST(VerilogParserTest, taskcall0) { TEST_CORE; }
 TEST(VerilogParserTest, taskcall1) { TEST_CORE; }
+TEST(VerilogParserTest, hier_call0) { TEST_CORE; }
 TEST(VerilogParserTest, systemcall0) { TEST_CORE; }
 TEST(VerilogParserTest, instance0) { TEST_CORE; }
 TEST(VerilogParserTest, instance1) { TEST_CORE; }
@@ -416,6 +417,10 @@ TEST(VerilogParserTest, sv_tf_typedef0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_type_param0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_call0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_scoped_taskcall0) { TEST_CORE_SV; }
+// Hierarchical subroutine calls (ADR-0015): tf_call via a dot path
+// (IEEE 1800-2017 §A.8.2), statement and expression positions.
+TEST(VerilogParserTest, sv_hier_taskcall0) { TEST_CORE_SV; }
+TEST(VerilogParserTest, sv_hier_funccall0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_typed_port0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_port_signing0) { TEST_CORE_SV; }
 TEST(VerilogParserTest, sv_func_void0) { TEST_CORE_SV; }

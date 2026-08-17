@@ -5933,6 +5933,21 @@ function_call:  TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
                     $$->set_name($2);
                     $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
                 }
+
+        |       scope TK_IDENTIFIER TK_LPARENTHESIS function_args TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_hier($1);
+                    $$->set_args($4);
+                }
+
+        |       scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::FunctionCall>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_hier($1);
+                }
         ;
 
 
@@ -6316,6 +6331,28 @@ task_call:      TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
                     $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
                     $$->set_name($2);
                     $$->set_scope(ParserHelpers::pkg_scope($1, scanner.get_filename(), @1.begin.line));
+                }
+
+        |       scope TK_IDENTIFIER TK_LPARENTHESIS task_args TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_hier($1);
+                    $$->set_args($4);
+                }
+
+        |       scope TK_IDENTIFIER TK_LPARENTHESIS TK_RPARENTHESIS
+                {
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_hier($1);
+                }
+
+        |       scope TK_IDENTIFIER
+                {
+                    $$ = std::make_shared<AST::Call>(scanner.get_filename(), @1.begin.line);
+                    $$->set_name($2);
+                    $$->set_hier($1);
                 }
         ;
 

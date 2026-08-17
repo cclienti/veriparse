@@ -1,0 +1,449 @@
+Source:
+  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+          line: 1
+          name: sv_hier_funccall0_bus
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 2
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 2
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Function:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 4
+              name: gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 5
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 5
+                      value:
+                        Identifier:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 5
+                          name: data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - Function:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 8
+              name: add
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 8
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 8
+                      left:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 8
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              args:
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 8
+                  is_var: false
+                  direction: INPUT
+                  name: a
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 8
+                  is_var: false
+                  direction: INPUT
+                  name: b
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 8
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 8
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 8
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 9
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 9
+                      value:
+                        Plus:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 9
+                          left:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 9
+                              name: a
+                              hier:
+                                HierName: null
+                          right:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 9
+                              name: b
+                              hier:
+                                HierName: null
+                  delay:
+                    DelayStatement: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+          line: 13
+          name: sv_hier_funccall0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 13
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 13
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 13
+                      name: sv_hier_funccall0_bus
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 13
+              name: y
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 13
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 13
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 13
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 13
+              name: z
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 13
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 13
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 13
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 13
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Assign:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 15
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 15
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 15
+                      name: y
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 15
+                  var:
+                    Plus:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 15
+                      left:
+                        FunctionCall:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 15
+                          name: gv
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 15
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                                  line: 15
+                                  name: bus
+                                  loop: null
+                      right:
+                        IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 15
+                          base: 10
+                          size: 8
+                          sign: false
+                          value: 1
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+              line: 16
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 16
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 16
+                      name: z
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                  line: 16
+                  var:
+                    FunctionCall:
+                      filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                      line: 16
+                      name: add
+                      args:
+                      - Identifier:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 16
+                          name: data
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 16
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                                  line: 16
+                                  name: bus
+                                  loop: null
+                      - IntConstN:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 16
+                          base: 10
+                          size: 8
+                          sign: false
+                          value: 2
+                      hier:
+                        HierName:
+                          filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                          line: 16
+                          labellist:
+                          - HierLabel:
+                              filename: ../../test/parser/testcases/sv_hier_funccall0.sv
+                              line: 16
+                              name: bus
+                              loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
