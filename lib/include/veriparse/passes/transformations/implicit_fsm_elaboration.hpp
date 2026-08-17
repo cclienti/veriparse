@@ -279,8 +279,8 @@ private:
     /// decrement past a break or a superseded init, and its reads were
     /// carried by the environment. Author commits are never touched and §6
     /// still flags them.
-    void push_induced(const AST::Node::ListPtr &action, const std::string &target,
-                      const AST::Node::Ptr &target_node, const AST::Node::Ptr &rhs,
+    void push_induced(const AST::Node::ListPtr &action,
+                      const AST::NonblockingSubstitution::Ptr &src, const AST::Node::Ptr &rhs,
                       const std::string &fn, int ln);
 
     /// Fork at a loop head — on entry or on the back-edge: the enter leg
@@ -424,9 +424,10 @@ private:
         /// foreign-driver scan.
         AST::Pragmalist::Ptr pragmalist;
 
-        /// The per-process declaration prefix, for the wire names.
         /// Ports of interface type: their members are signals of the machine.
         std::set<std::string> iface_ports;
+
+        /// The per-process declaration prefix, for the wire names.
         std::string prefix;
     };
     ProcessState m_proc;

@@ -676,6 +676,20 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err0) { TEST_ERROR_S
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err1) { TEST_ERROR_SV; }
 // A ref actual reaching into another scope, not an interface member.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err2) { TEST_ERROR_SV; }
+// A copy-out under a cut-point-free branch: the commit is emitted verbatim
+// and must carry the member's whole path.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface3) { TEST_CORE_SV; }
+// §13.3 copy-out visibility is immediate for a member too: the read after
+// the call sees the value the call left.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface4) { TEST_CORE_SV; }
+// Elements of an interface-port array are distinct signals when the index
+// is constant.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface5) { TEST_CORE_SV; }
+// A decoded output reading a member this process does not drive: it can
+// change on the arrival edge like the input it is.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err3) { TEST_ERROR_SV; }
+// A hierarchical name indexed by a variable has no static identity.
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err4) { TEST_ERROR_SV; }
 
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg0) { TEST_CORE_PKG_SV; }
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_pkg1) { TEST_CORE_PKG_SV; }

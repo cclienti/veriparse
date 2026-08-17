@@ -18,12 +18,11 @@ std::string Statement::identifier_key(const AST::Identifier::Ptr &id)
         for(const auto &label : *hier->get_labellist()) {
             key += label->get_name();
             if(label->get_loop()) {
-                if(label->get_loop()->is_node_type(AST::NodeType::IntConstN)) {
-                    key += "[" +
-                           AST::cast_to<AST::IntConstN>(label->get_loop())->get_value().str() + "]";
-                } else {
-                    key += "[?]";
+                if(!label->get_loop()->is_node_type(AST::NodeType::IntConstN)) {
+                    return ""; // indexed by a variable: no static identity
                 }
+                key +=
+                    "[" + AST::cast_to<AST::IntConstN>(label->get_loop())->get_value().str() + "]";
             }
             key += ".";
         }
@@ -38,7 +37,10 @@ void Statement::collect_identifier_names(const AST::Node::Ptr &node, std::set<st
         return;
     }
     if(node->is_node_type(AST::NodeType::Identifier)) {
-        names.insert(identifier_key(AST::cast_to<AST::Identifier>(node)));
+        const std::string key = identifier_key(AST::cast_to<AST::Identifier>(node));
+        if(!key.empty()) {
+            names.insert(key);
+        }
         return;
     }
     const auto &children = node->get_children();
@@ -83,11 +85,17 @@ void Statement::collect_lvalue_bases(const AST::Node::Ptr &node, std::set<std::s
         return;
     }
     switch(node->get_node_type()) {
-    case AST::NodeType::Identifier:
+    case AST::NodeType::Identifier: {
         // A hierarchical write (bus.ack, u.q) keys by its full path: it
-        // never aliases this module's register of the same leaf name.
-        names.insert(identifier_key(AST::cast_to<AST::Identifier>(node)));
+        // never aliases this module's register of the same leaf name. One
+        // with no static identity names no single storage, so it drives
+        // nothing this set can speak for.
+        const std::string key = identifier_key(AST::cast_to<AST::Identifier>(node));
+        if(!key.empty()) {
+            names.insert(key);
+        }
         return;
+    }
     case AST::NodeType::Lvalue:
         collect_lvalue_bases(AST::cast_to<AST::Lvalue>(node)->get_var(), names);
         return;

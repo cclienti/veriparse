@@ -64,3 +64,5 @@ TEST(PassesTransformation_FsmTaskInliner, fsm_iface1) { TEST_CORE_SV; }
 // A ref formal aliasing an interface member: a member is a variable, so the
 // §13.5.2 net refusal cannot apply to it.
 TEST(PassesTransformation_FsmTaskInliner, fsm_iface2) { TEST_CORE_SV; }
+// The copy-out of a branch-local call keeps the member's whole path.
+TEST(PassesTransformation_FsmTaskInliner, fsm_iface3) { TEST_CORE_SV; }

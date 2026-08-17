@@ -552,8 +552,10 @@ int FsmTaskInliner::lower_ref_formal(FormalContext &ctx)
     const auto &actual_id = AST::cast_to<AST::Identifier>(ctx.actual);
     const std::string aname = Analysis::Statement::identifier_key(actual_id);
     if(actual_id->get_hier()) {
-        // An interface member is a variable (§25.3) — the net refusal
-        // below cannot apply, and any other scope is unreachable.
+        // An interface may declare either kind (§25.3) and its definition is
+        // not in hand here, so §13.5.2's net refusal below cannot be decided
+        // for a member: a net one reaches the output as a procedural
+        // assignment to a net, which the consumer refuses (ADR §15).
         if(!hier_is_iface_member(actual_id, m_iface_ports)) {
             LOG_ERROR_N(ctx.call) << "task '" << ctx.task_name << "': the actual for ref '"
                                   << ctx.fname << "' is '" << aname << "' — a hierarchical "
@@ -1031,6 +1033,9 @@ int FsmTaskInliner::inline_calls_in(const AST::Node::Ptr &node, std::set<std::st
 
 int FsmTaskInliner::inline_process(const AST::Initial::Ptr &initial)
 {
+    if(check_static_hier(AST::to_node(initial))) {
+        return 1;
+    }
     if(m_tasks.empty()) {
         return 0;
     }

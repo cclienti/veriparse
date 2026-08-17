@@ -382,6 +382,11 @@ if(NOT WIN32)
     # machine's signals travel through its formals only (IEEE §26.2) —
     # const ref clock, inout accumulator, input count, zero-skip frame.
     add_verilower_sv_cosim(NAME pkg_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
+    # §6.3 interface ports: the machine's whole boundary is an interface,
+    # kept as it stands — a member read in a guard, one committed from a
+    # task body, one carried as an input actual, one copied out under a
+    # cut-point-free branch.
     add_verilower_sv_cosim(NAME iface_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
     # §7.4 default arguments and early return: the task's default fills

@@ -642,6 +642,9 @@ lowers exactly, and everything else names its rule. The categories
 - **hierarchical names that leave the module**: `<=`, `=`, or a task actual
   through a path that is not a member of one of this module's interface
   ports (`u.q` into an instance) — it names storage no machine here owns;
+- **hierarchical names indexed by a variable** (`bus[i].d`): no static
+  identity, so the machine cannot tell two of them apart — index with a
+  constant, or select outside the process;
 - **structural hazards**: zero-delay loops, a bounded loop whose bound
   stopped folding without `(* veriparse_no_unroll *)`, a register also
   driven by another process / `assign` / instance output (multi-driver,

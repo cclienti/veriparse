@@ -43,10 +43,17 @@ struct Statement
     /// Every declaration name bound anywhere in the tree.
     static void collect_declaration_names(const AST::Node::Ptr &node, std::set<std::string> &names);
 
-    /// The canonical key of an identifier: its hierarchical labels dotted
-    /// before the name (`bus.ack`), a constant label select rendered by
-    /// value and a non-constant one as `[?]` — so distinct paths never
-    /// share a key with each other or with a plain name.
+    /// The canonical key of an identifier — the identity of the storage it
+    /// names, never a piece of syntax: hierarchical labels dotted before the
+    /// name (`bus.ack`), a constant label select rendered by value
+    /// (`bus[1].d`), so distinct paths never share a key with each other or
+    /// with a plain name. A key identifies; it cannot rebuild the node, and
+    /// nothing may parse one back into syntax.
+    ///
+    /// **Empty when the reference has no static identity** — a label indexed
+    /// by a variable (`bus[i].d`) names a different storage per evaluation,
+    /// and two such references cannot be told apart. A caller whose analysis
+    /// rests on identity must refuse an empty key rather than key on it.
     static std::string identifier_key(const AST::Identifier::Ptr &id);
 
     /// The plain-identifier target of an assignment's left-hand side, or

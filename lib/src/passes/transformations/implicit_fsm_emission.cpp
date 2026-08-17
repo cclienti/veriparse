@@ -90,6 +90,14 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
     // generate regions included — by the same walk §9.2.2.4 trusts.
     std::set<std::string> foreign;
     collect_foreign_drivers(m_proc.module, m_proc.pragmalist, m_modules, foreign);
+    // A member of an interface port is driven across that boundary unless
+    // this process commits it: the interface definition is not in hand, so
+    // a member this machine holds no register for is read as arriving from
+    // outside — the conservative half of the same verdict (§6.3).
+    const auto foreign_iface_member = [&](const std::string &operand) {
+        return key_is_iface_member(operand, m_proc.iface_ports) &&
+               !m_proc.nba_targets.count(operand);
+    };
     const auto operands_of = [&](const AST::Node::Ptr &node) {
         std::set<std::string> raw;
         collect_identifier_names(node, raw);
@@ -133,7 +141,7 @@ int ImplicitFsmElaboration::build_decode(const std::vector<State> &states,
                         << "it after; register the input first, in this process";
                     return 1;
                 }
-                if(foreign.count(operand)) {
+                if(foreign.count(operand) || foreign_iface_member(operand)) {
                     LOG_ERROR_N(expr)
                         << "decoded output '" << name << "': its " << what << " reads '" << operand
                         << "', which is driven outside this process and can "
