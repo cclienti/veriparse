@@ -3,6 +3,8 @@
 #include "../../helpers/helpers.hpp"
 
 #include <veriparse/passes/transformations/implicit_fsm_elaboration.hpp>
+#include <veriparse/passes/transformations/hier_call_resolution.hpp>
+#include <veriparse/passes/transformations/name_resolution.hpp>
 #include <veriparse/passes/transformations/package_inliner.hpp>
 #include <veriparse/passes/analysis/module.hpp>
 #include <veriparse/importers/yaml_importer.hpp>
@@ -54,6 +56,42 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
     ASSERT_TRUE(source != nullptr);                                                                \
                                                                                                    \
     ASSERT_EQ(0, Passes::Transformations::PackageInliner().run(source));                           \
+                                                                                                   \
+    Passes::Analysis::Module::ModulesMap modules_map;                                              \
+    Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
+    ASSERT_TRUE(modules_map.count(test_name) == 1);                                                \
+    const auto &module = modules_map[test_name];                                                   \
+                                                                                                   \
+    test_helpers.render_node_to_verilog_file(module, test_string + "_before.v");                   \
+    ASSERT_EQ(0, Passes::Transformations::ImplicitFsmElaboration().run(module));                   \
+    ASSERT_AST_IS_TREE(module); /* pass output must stay a proper tree */                          \
+    test_helpers.render_node_to_verilog_file(module, test_string + ".v");                          \
+    test_helpers.render_node_to_yaml_file(module, test_string + ".yaml");                          \
+                                                                                                   \
+    std::string test_ref_suffix = "refs/implicit_fsm_";                                            \
+    const std::string ref_filename = test_ref_suffix + test_name;                                  \
+    AST::Node::Ptr module_ref =                                                                    \
+        Importers::YAMLImporter().import(test_helpers.get_yaml_filename(ref_filename).c_str());    \
+    ASSERT_TRUE(module_ref != nullptr);                                                            \
+                                                                                                   \
+    ASSERT_TRUE(module_ref->is_equal(*module, false))
+
+// Same as TEST_CORE_SV, but the source holds an interface beside the module
+// and NameResolution + HierCallResolution run first — how the tools feed the
+// pass a call through an interface port (ADR-0015 §3.1, §5.1).
+#define TEST_CORE_IFACE_SV                                                                         \
+    ENABLE_LOGGER;                                                                                 \
+                                                                                                   \
+    Parser::Verilog verilog;                                                                       \
+    verilog.set_sv_mode(true);                                                                     \
+    verilog.parse(test_helpers.get_sv_filename(test_name));                                        \
+    AST::Node::Ptr source = verilog.get_source();                                                  \
+    ASSERT_TRUE(source != nullptr);                                                                \
+                                                                                                   \
+    ASSERT_EQ(0, Passes::Transformations::NameResolution().run(source));                           \
+    Passes::Analysis::Module::InterfacesMap interfaces_map;                                        \
+    ASSERT_EQ(0, Passes::Analysis::Module::get_interface_dictionary(source, interfaces_map));      \
+    ASSERT_EQ(0, Passes::Transformations::HierCallResolution(interfaces_map).run(source));         \
                                                                                                    \
     Passes::Analysis::Module::ModulesMap modules_map;                                              \
     Passes::Analysis::Module::get_module_dictionary(source, modules_map);                          \
@@ -685,6 +723,11 @@ TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface4) { TEST_CORE_SV; }
 // Elements of an interface-port array are distinct signals when the index
 // is constant.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface5) { TEST_CORE_SV; }
+// A task called through the interface port, twice: HierCallResolution
+// splices it first, the inlining stems BUS_PING_0/BUS_PING_1 name the
+// per-site states, and the spliced waits clock on the port's own clock
+// member (ADR-0015 §5.1).
+TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface6) { TEST_CORE_IFACE_SV; }
 // A decoded output reading a member this process does not drive: it can
 // change on the arrival edge like the input it is.
 TEST(PassesTransformation_ImplicitFsmElaboration, fsm_iface_err3) { TEST_ERROR_SV; }
