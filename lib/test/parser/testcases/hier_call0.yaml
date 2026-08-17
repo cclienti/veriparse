@@ -1,0 +1,257 @@
+Source:
+  filename: ../../test/parser/testcases/hier_call0.v
+  line: 4
+  description:
+    Description:
+      filename: ../../test/parser/testcases/hier_call0.v
+      line: 4
+      definitions:
+      - Module:
+          filename: ../../test/parser/testcases/hier_call0.v
+          line: 4
+          name: hier_call0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/hier_call0.v
+              line: 4
+              name: a
+              direction: INPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/hier_call0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: a
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../../test/parser/testcases/hier_call0.v
+              line: 4
+              name: w
+              direction: OUTPUT
+              decl:
+                WireNet:
+                  filename: ../../test/parser/testcases/hier_call0.v
+                  line: 4
+                  is_vectored: false
+                  is_scalared: false
+                  name: w
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    ImplicitType:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 4
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 4
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 4
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Assign:
+              filename: ../../test/parser/testcases/hier_call0.v
+              line: 6
+              left:
+                Lvalue:
+                  filename: ../../test/parser/testcases/hier_call0.v
+                  line: 6
+                  var:
+                    Identifier:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 6
+                      name: w
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../../test/parser/testcases/hier_call0.v
+                  line: 6
+                  var:
+                    FunctionCall:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 6
+                      name: f
+                      args:
+                      - Identifier:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 6
+                          name: a
+                          hier:
+                            HierName: null
+                      hier:
+                        HierName:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 6
+                          labellist:
+                          - HierLabel:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 6
+                              name: u
+                              loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Initial:
+              filename: ../../test/parser/testcases/hier_call0.v
+              line: 8
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/hier_call0.v
+                  line: 8
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 9
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 9
+                          name: t
+                          args:
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 9
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 9
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/hier_call0.v
+                                  line: 9
+                                  name: u
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 10
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 10
+                          name: t
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 10
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/hier_call0.v
+                                  line: 10
+                                  name: top
+                                  loop: null
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/hier_call0.v
+                                  line: 10
+                                  name: u
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/hier_call0.v
+                      line: 11
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/hier_call0.v
+                          line: 11
+                          name: t
+                          args:
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/hier_call0.v
+                              line: 11
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/hier_call0.v
+                                  line: 11
+                                  name: blk
+                                  loop:
+                                    IntConstN:
+                                      filename: ../../test/parser/testcases/hier_call0.v
+                                      line: 11
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/hier_call0.v
+                                  line: 11
+                                  name: u
+                                  loop: null
+                      delay:
+                        DelayStatement: null

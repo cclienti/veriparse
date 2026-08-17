@@ -1,0 +1,310 @@
+Source:
+  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+          line: 1
+          name: sv_hier_taskcall0_bus
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: req
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ack
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 3
+                  signing: NONE
+          - Task:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 5
+              name: ping
+              lifetime: NONE
+              args:
+              - Arg:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 5
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 5
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 5
+                          left:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 5
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 6
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 7
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 7
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 7
+                              name: req
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 7
+                          var:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 7
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 11
+              name: reset
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 12
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 13
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 13
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 13
+                              name: req
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 13
+                          var:
+                            IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 13
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 0
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 17
+              name: tick
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 18
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 19
+                      left:
+                        Lvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 19
+                          var:
+                            Identifier:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 19
+                              name: req
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 19
+                          var:
+                            Unot:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 19
+                              right:
+                                Identifier:
+                                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                                  line: 19
+                                  name: req
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+      - Module:
+          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+          line: 24
+          name: sv_hier_taskcall0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 24
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 24
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    NamedType:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 24
+                      name: sv_hier_taskcall0_bus
+                      signing: NONE
+              expr: null
+          items:
+          - Initial:
+              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+              line: 26
+              statement:
+                Block:
+                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                  line: 26
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 27
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 27
+                          name: ping
+                          args:
+                          - IntConstN:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 27
+                              base: 10
+                              size: 8
+                              sign: false
+                              value: 1
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 27
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                                  line: 27
+                                  name: bus
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 28
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 28
+                          name: reset
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 28
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                                  line: 28
+                                  name: bus
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                      line: 29
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                          line: 29
+                          name: tick
+                          hier:
+                            HierName:
+                              filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                              line: 29
+                              labellist:
+                              - HierLabel:
+                                  filename: ../../test/parser/testcases/sv_hier_taskcall0.sv
+                                  line: 29
+                                  name: bus
+                                  loop: null
+                      delay:
+                        DelayStatement: null
