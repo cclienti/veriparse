@@ -431,6 +431,61 @@ make_nba_to(const AST::Node::Ptr &target, const AST::Node::Ptr &rhs, const std::
     return nba;
 }
 
+/// The commit an induced assignment becomes: the source lvalue is kept as
+/// it stands, never rebuilt from its key — a key identifies storage and
+/// cannot name it again (a hierarchical path would come back as one
+/// escaped identifier, and every consumer would read it as a local).
+inline AST::NonblockingSubstitution::Ptr commit_like(const AST::NonblockingSubstitution::Ptr &src,
+                                                     const AST::Node::Ptr &value,
+                                                     const std::string &fn, int ln)
+{
+    return make_nba_to(src->get_left()->get_var()->clone(), value, fn, ln);
+}
+
+/// Whether a key names a member of one of @p iface_ports: its root label,
+/// index dropped, is one of them.
+inline bool key_is_iface_member(const std::string &key, const std::set<std::string> &iface_ports)
+{
+    const std::size_t dot = key.find('.');
+    if(dot == std::string::npos) {
+        return false;
+    }
+    std::string root = key.substr(0, dot);
+    const std::size_t bracket = root.find('[');
+    if(bracket != std::string::npos) {
+        root = root.substr(0, bracket);
+    }
+    return iface_ports.count(root) != 0;
+}
+
+/// Refuse a reference whose hierarchical label is indexed by a variable:
+/// it names a different storage per evaluation, so the analyses that rest
+/// on identity — definedness, commit ordering, forwarding — would all
+/// decide on a name two references share.
+inline int check_static_hier(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return 0;
+    }
+    if(node->is_node_type(AST::NodeType::Identifier)) {
+        const auto &id = AST::cast_to<AST::Identifier>(node);
+        if(id->get_hier() && Analysis::Statement::identifier_key(id).empty()) {
+            LOG_ERROR_N(node) << "hierarchical name indexed by a variable: it names a "
+                              << "different signal per evaluation, which the state model "
+                              << "cannot tell apart — index it with a constant, or select "
+                              << "outside the process";
+            return 1;
+        }
+    }
+    const auto &children = node->get_children();
+    for(const auto &child : *children) {
+        if(check_static_hier(child)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 /// Names of this module's interface ports (`bus_if.dev bus` — non-virtual):
 /// their members are signals of the machine, every other hierarchical name
 /// belongs to another scope.

@@ -4,6 +4,7 @@
 
 #include <veriparse/passes/transformations/ast_replace.hpp>
 #include <veriparse/passes/analysis/function.hpp>
+#include <veriparse/passes/analysis/statement.hpp>
 #include <veriparse/passes/analysis/task.hpp>
 #include <veriparse/logger/logger.hpp>
 
@@ -142,8 +143,14 @@ int ASTReplace::substitute_values(AST::Node::Ptr node, const ReplaceMap &replace
 
         case AST::NodeType::Identifier: {
             const auto &identifier = AST::cast_to<AST::Identifier>(node);
-            if(!identifier->get_hier()) {
-                ReplaceMap::const_iterator it = replace_map.find(identifier->get_name());
+            // Substitution binds by storage identity, not by spelling: a
+            // hierarchical reference matches on its whole path, so a value
+            // held for `bus.ack` reaches it and never reaches a local `ack`.
+            // (Renaming is the other rule — lexical, leaf only — and lives
+            // in replace_identifier.)
+            const std::string key = Analysis::Statement::identifier_key(identifier);
+            if(!key.empty()) {
+                ReplaceMap::const_iterator it = replace_map.find(key);
                 if(it != replace_map.cend()) {
                     // A null value marks a name deliberately left in place.
                     if(it->second) {

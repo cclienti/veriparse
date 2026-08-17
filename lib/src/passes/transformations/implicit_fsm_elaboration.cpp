@@ -850,7 +850,7 @@ int ImplicitFsmElaboration::walk_paths(std::size_t from, const AST::Node::Ptr &g
                 if(check_temp_reads(value, env)) {
                     return 1;
                 }
-                push_induced(action, nba_target(nba), nba->get_left()->get_var(), value, fn, ln);
+                push_induced(action, nba, value, fn, ln);
                 env[nba_target(nba)] = value;
                 break;
             }
@@ -1211,10 +1211,10 @@ int ImplicitFsmElaboration::check_temp_reads(const AST::Node::Ptr &node, const E
 }
 
 void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
-                                          const std::string &target,
-                                          const AST::Node::Ptr &target_node,
+                                          const AST::NonblockingSubstitution::Ptr &src,
                                           const AST::Node::Ptr &rhs, const std::string &fn, int ln)
 {
+    const std::string target = nba_target(src);
     for(auto it = action->begin(); it != action->end();) {
         const bool induced = m_proc.induced.count(it->get()) &&
                              (*it)->is_node_type(AST::NodeType::NonblockingSubstitution) &&
@@ -1238,10 +1238,7 @@ void ImplicitFsmElaboration::push_induced(const AST::Node::ListPtr &action,
                 make_const(masked.convert_to<unsigned int>(), static_cast<int>(width), fn, ln));
         }
     }
-    // The commit keeps the source lvalue node: a hierarchical interface
-    // member rebuilt from its key string would be one escaped identifier,
-    // not a path.
-    const auto &commit = AST::to_node(make_nba_to(target_node->clone(), value, fn, ln));
+    const auto &commit = AST::to_node(commit_like(src, value, fn, ln));
     m_proc.induced.insert(commit.get());
     action->push_back(commit);
 }
@@ -1395,7 +1392,7 @@ AST::Node::Ptr ImplicitFsmElaboration::emit_verbatim(const AST::Node::Ptr &stmt,
         }
         env[nba_target(nba)] = value;
         committed.insert(nba_target(nba));
-        return AST::to_node(make_nba(nba_target(nba), value, fn, ln));
+        return AST::to_node(commit_like(nba, value, fn, ln));
     }
 
     if(stmt->is_node_type(AST::NodeType::Block)) {
@@ -1497,6 +1494,9 @@ int ImplicitFsmElaboration::compile_process(const AST::Module::Ptr &module,
     m_proc.module = module;
     m_proc.pragmalist = pragmalist;
     m_proc.iface_ports = collect_iface_ports(module);
+    if(check_static_hier(AST::to_node(initial))) {
+        return 1;
+    }
 
     // §3: veriparse_encoding picks the state constants' shape.
     const auto &encoding = get_pragma(pragmalist, "veriparse_encoding");
