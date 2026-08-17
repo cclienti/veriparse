@@ -1,0 +1,1630 @@
+Module:
+  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+  line: 25
+  name: fsm_iface6
+  lifetime: NONE
+  default_nettype: WIRE
+  ports:
+  - Port:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      name: rst_n
+      direction: INPUT
+      decl:
+        ImplicitNet:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          is_vectored: false
+          is_scalared: false
+          name: rst_n
+          cont_assign:
+            Rvalue: null
+          strength:
+            Strength: null
+          ldelay:
+            DelayStatement: null
+          rdelay:
+            DelayStatement: null
+          type:
+            LogicType:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              signing: NONE
+      expr: null
+  - Port:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      name: bus
+      direction: NONE
+      decl:
+        Arg:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          is_var: false
+          direction: NONE
+          name: bus
+          default_value: null
+          type:
+            InterfaceType:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              name: fsm_iface6_bus
+              modport: ''
+              is_virtual: false
+              signing: NONE
+      expr: null
+  - Port:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      name: phase
+      direction: OUTPUT
+      decl:
+        ImplicitNet:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          is_vectored: false
+          is_scalared: false
+          name: phase
+          cont_assign:
+            Rvalue: null
+          strength:
+            Strength: null
+          ldelay:
+            DelayStatement: null
+          rdelay:
+            DelayStatement: null
+          type:
+            LogicType:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              signing: NONE
+              packed_dims:
+              - RangeDim:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  left:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 1
+                  right:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      base: 10
+                      size: -1
+                      sign: false
+                      value: 0
+      expr: null
+  items:
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_state_0
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 0
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_0_0
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 1
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_0_1
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 2
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_0_2
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 3
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_1_0
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 4
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_1_1
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 5
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_BUS_PING_1_2
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 6
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Param:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_local: true
+      name: __fsm_state_7
+      value:
+        IntConstN:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          base: 10
+          size: 3
+          sign: false
+          value: 7
+      type:
+        ImplicitType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - Var:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      is_var: false
+      is_const: false
+      lifetime: NONE
+      name: __fsm_state
+      init:
+        Rvalue: null
+      type:
+        LogicType:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          signing: NONE
+          packed_dims:
+          - RangeDim:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              left:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 2
+              right:
+                IntConstN:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  base: 10
+                  size: -1
+                  sign: false
+                  value: 0
+  - AlwaysFF:
+      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+      line: 25
+      senslist:
+        Senslist:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          list:
+          - Sens:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              type: POSEDGE
+              sig:
+                Identifier:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 30
+                  name: clk
+                  hier:
+                    HierName:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 30
+                      labellist:
+                      - HierLabel:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 30
+                          name: bus
+                          loop: null
+              condition: null
+      statement:
+        IfStatement:
+          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+          line: 25
+          cond:
+            Ulnot:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              right:
+                Identifier:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  name: rst_n
+                  hier:
+                    HierName: null
+          true_statement:
+            Block:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              scope: ''
+              statements:
+              - NonblockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 28
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 28
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 28
+                          name: req
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 28
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 28
+                                  name: bus
+                                  loop: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 28
+                      var:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 28
+                          base: 2
+                          size: 1
+                          sign: false
+                          value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+              - NonblockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 29
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 29
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 29
+                          name: phase
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 29
+                      var:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 29
+                          base: 10
+                          size: 2
+                          sign: false
+                          value: 0
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+              - NonblockingSubstitution:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  left:
+                    Lvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          name: __fsm_state
+                          hier:
+                            HierName: null
+                  right:
+                    Rvalue:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          name: __fsm_state_0
+                          hier:
+                            HierName: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+          false_statement:
+            CaseStatement:
+              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+              line: 25
+              comp:
+                Identifier:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  name: __fsm_state
+                  hier:
+                    HierName: null
+              caselist:
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_state_0
+                      hier:
+                        HierName: null
+                  statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      scope: ''
+                      statements:
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 10
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 10
+                                  name: data
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 10
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 10
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 32
+                                  base: 16
+                                  size: 8
+                                  sign: false
+                                  value: 65
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 11
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  name: req
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 11
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 11
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_state
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_BUS_PING_0_0
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_0_0
+                      hier:
+                        HierName: null
+                  statement:
+                    IfStatement:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      cond:
+                        Ulnot:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 13
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 13
+                              name: ack
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 13
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 13
+                                      name: bus
+                                      loop: null
+                      true_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_0_1
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 14
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      name: req
+                                      hier:
+                                        HierName:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 14
+                                          labellist:
+                                          - HierLabel:
+                                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                              line: 14
+                                              name: bus
+                                              loop: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      base: 2
+                                      size: 1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_0_2
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_0_1
+                      hier:
+                        HierName: null
+                  statement:
+                    IfStatement:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      cond:
+                        Ulnot:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 13
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 13
+                              name: ack
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 13
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 13
+                                      name: bus
+                                      loop: null
+                      true_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_0_1
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 14
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      name: req
+                                      hier:
+                                        HierName:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 14
+                                          labellist:
+                                          - HierLabel:
+                                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                              line: 14
+                                              name: bus
+                                              loop: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      base: 2
+                                      size: 1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_0_2
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_0_2
+                      hier:
+                        HierName: null
+                  statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      scope: ''
+                      statements:
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 33
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 33
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 33
+                                  name: phase
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 33
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 33
+                                  base: 10
+                                  size: 2
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 10
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 10
+                                  name: data
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 10
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 10
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 34
+                                  base: 16
+                                  size: 8
+                                  sign: false
+                                  value: 66
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 11
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  name: req
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 11
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 11
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_state
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_BUS_PING_1_0
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_1_0
+                      hier:
+                        HierName: null
+                  statement:
+                    IfStatement:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      cond:
+                        Ulnot:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 13
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 13
+                              name: ack
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 13
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 13
+                                      name: bus
+                                      loop: null
+                      true_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_1_1
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 14
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      name: req
+                                      hier:
+                                        HierName:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 14
+                                          labellist:
+                                          - HierLabel:
+                                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                              line: 14
+                                              name: bus
+                                              loop: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      base: 2
+                                      size: 1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_1_2
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_1_1
+                      hier:
+                        HierName: null
+                  statement:
+                    IfStatement:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      cond:
+                        Ulnot:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 13
+                          right:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 13
+                              name: ack
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 13
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 13
+                                      name: bus
+                                      loop: null
+                      true_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_1_1
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                      false_statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 14
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      name: req
+                                      hier:
+                                        HierName:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 14
+                                          labellist:
+                                          - HierLabel:
+                                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                              line: 14
+                                              name: bus
+                                              loop: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 14
+                                  var:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 14
+                                      base: 2
+                                      size: 1
+                                      sign: false
+                                      value: 0
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_state
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 25
+                                      name: __fsm_BUS_PING_1_2
+                                      hier:
+                                        HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_BUS_PING_1_2
+                      hier:
+                        HierName: null
+                  statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      scope: ''
+                      statements:
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 35
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 35
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 35
+                                  name: phase
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 35
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 35
+                                  base: 10
+                                  size: 2
+                                  sign: false
+                                  value: 2
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_state
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_state_7
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+              - Case:
+                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                  line: 25
+                  cond:
+                  - Identifier:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      name: __fsm_state_7
+                      hier:
+                        HierName: null
+                  statement:
+                    Block:
+                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                      line: 25
+                      scope: ''
+                      statements:
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 10
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 10
+                                  name: data
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 10
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 10
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 10
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 32
+                                  base: 16
+                                  size: 8
+                                  sign: false
+                                  value: 65
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 11
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  name: req
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                      line: 11
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                          line: 11
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 11
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 11
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                          line: 25
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_state
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                              line: 25
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/fsm_iface6.sv
+                                  line: 25
+                                  name: __fsm_BUS_PING_0_0
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null

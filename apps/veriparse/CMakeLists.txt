@@ -389,6 +389,11 @@ if(NOT WIN32)
     # cut-point-free branch.
     add_verilower_sv_cosim(NAME iface_line VERILATOR_ARGS -Wno-CASEINCOMPLETE)
 
+    # ADR-0015 §5.1 interface subroutine calls: the handshake helper lives
+    # in the interface and the machine calls it through the port, twice —
+    # spliced, inlined per site, the waits clocking on the bus's own clock.
+    add_verilower_sv_cosim(NAME iface_call VERILATOR_ARGS -Wno-CASEINCOMPLETE)
+
     # §7.4 default arguments and early return: the task's default fills
     # the omitted actual and `if (abort) return;` jumps to the body's end
     # (IEEE §13.5.3, §13.3 — both measured).

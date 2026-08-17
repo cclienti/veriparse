@@ -425,6 +425,10 @@ TEST(PassesTransformation_ModuleFlattener, iface_modport1) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_modport_dirs0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_chain0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_out0) { TEST_CORE_SV; }
+// Subroutine calls through the children's interface ports (ADR-0015 §5.2):
+// each child clone splices before its port dissolves, two instances of the
+// same child yield two prefixed task copies with retargeted members.
+TEST(PassesTransformation_ModuleFlattener, iface_call0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_conn_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_modport_mismatch0) { TEST_ERROR_SV; }

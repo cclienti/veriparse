@@ -20,21 +20,15 @@ Mechanics
 Functional
 ----------
 
-#. 2026-08-17: [parser] No hierarchical subroutine call. ``task_call``/``function_call``
-   (lib/src/parser/verilog/verilog_parser.yy:6280, :5909) start from a bare
-   ``TK_IDENTIFIER``, so ``bus.ping()`` through an interface port and ``u.t()`` on a
-   module instance both fail to parse; only the scope form ``pkg::t()`` is accepted,
-   which is why package tasks can feed an FSM (ADR-0014 §7.4) and interface ones
-   cannot. Declaring a task or function *inside* an interface already parses and
-   survives — only the call is missing. ``AST::Call`` already carries a ``HierName``
-   field that nothing constructs. Two independent pieces: (a) the grammar production,
-   which overlaps an indexed hierarchical identifier in expression position, so it
-   wants ``bison -Wcounterexamples``; (b) reaching the body for FSM inlining, which
-   needs the interface definition in hand — the same knowledge modport direction
-   and member net-ness need (ADR-0008), so the natural shape is the splice
-   ``PackageInliner`` already does for packages. Parked 2026-08-17 under the
-   ADR-0014 feature freeze; worth revisiting, a handshake helper living with the
-   bus it drives is the firmware idiom verilower targets.
+#. 2026-08-17: [passes] Hierarchical subroutine calls — the interface-port form
+   landed (ADR-0015): the grammar parses the general hierarchical ``tf_call``
+   (measured conflict-free) and ``HierCallResolution`` splices ``bus.ping()``
+   through a non-virtual interface port into the caller for verilower and
+   veriflat alike. Still parked, with the analysis in ADR-0015 §8: ``u.t()``
+   into a module instance, subroutines of a *locally instantiated* interface
+   (splice/prefix name collision, §3.2), bodies reaching interface
+   parameters/types/sibling subroutines (closure), and modport
+   ``import``/``export`` prototypes.
 
 #. 2020-05-01: In variable folding, the state map should store not only the node value but also the
    dimension of the variable to properly slice results.

@@ -1,0 +1,1908 @@
+Source:
+  filename: ../test/passes/transformations/testcases/iface_call0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/iface_call0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/iface_call0.sv
+          line: 1
+          name: iface_call0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: en
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: acc
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 6
+              name: bump
+              lifetime: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              name: acc
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: acc
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              name: en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 13
+              name: gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 14
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 14
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 14
+                          name: data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call0.sv
+          line: 22
+          name: iface_call0_child
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              name: p
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  is_var: false
+                  direction: NONE
+                  name: p
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      name: iface_call0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              name: k
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  is_vectored: false
+                  is_scalared: false
+                  name: k
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              name: snap
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  is_vectored: false
+                  is_scalared: false
+                  name: snap
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 22
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 24
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      name: snap
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Plus:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      left:
+                        FunctionCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: gv
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 24
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 24
+                                  name: p
+                                  loop: null
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: k
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 26
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 26
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 27
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 27
+                          name: bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 27
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 17
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 27
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 27
+                                  name: p
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 28
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 28
+                          name: bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 28
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 34
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 28
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 28
+                                  name: p
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call0.sv
+          line: 33
+          name: iface_call0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 33
+              name: k
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 33
+                  is_vectored: false
+                  is_scalared: false
+                  name: k
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 33
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 33
+              name: s0
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 33
+                  is_vectored: false
+                  is_scalared: false
+                  name: s0
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 33
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 33
+              name: s1
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 33
+                  is_vectored: false
+                  is_scalared: false
+                  name: s1
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 33
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 33
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 33
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus0_en
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus0_data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus0_acc
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 6
+              name: bus0_bump
+              lifetime: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              name: bus0_acc
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: bus0_acc
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              name: bus0_en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 13
+              name: bus0_gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 14
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 14
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 14
+                          name: bus0_data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus1_en
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus1_data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 4
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus1_acc
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 6
+              name: bus1_bump
+              lifetime: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              name: bus1_acc
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: bus1_acc
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              name: bus1_en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 13
+              name: bus1_gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 14
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 14
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 14
+                          name: bus1_data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              is_vectored: false
+              is_scalared: false
+              name: u0_k
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              is_vectored: false
+              is_scalared: false
+              name: u0_snap
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_k
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 38
+                      name: k
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 38
+                      name: s0
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u0_snap
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 6
+              name: u0_p_bump
+              lifetime: STATIC
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              name: bus0_acc
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: bus0_acc
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              name: bus0_en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 13
+              name: u0_p_gv
+              lifetime: STATIC
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 14
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 14
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 14
+                          name: bus0_data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 24
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      name: u0_snap
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Plus:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      left:
+                        FunctionCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: u0_p_gv
+                          hier:
+                            HierName: null
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: u0_k
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 26
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 27
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 27
+                          name: u0_p_bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 27
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 17
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 28
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 28
+                          name: u0_p_bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 28
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 34
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              is_vectored: false
+              is_scalared: false
+              name: u1_k
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 22
+              is_vectored: false
+              is_scalared: false
+              name: u1_snap
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 22
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 22
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 22
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_k
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 39
+                      name: k
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 39
+                      name: s1
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: u1_snap
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 6
+              name: u1_p_bump
+              lifetime: STATIC
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 6
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 6
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 6
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 6
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              name: bus1_acc
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 8
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 8
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: bus1_acc
+                                  hier:
+                                    HierName: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                                  line: 8
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              name: bus1_en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Function:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 13
+              name: u1_p_gv
+              lifetime: STATIC
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 13
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 13
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 13
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 14
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 14
+                      value:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 14
+                          name: bus1_data
+                          hier:
+                            HierName: null
+                  delay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 24
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      name: u1_snap
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/iface_call0.sv
+                  line: 24
+                  var:
+                    Plus:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 24
+                      left:
+                        FunctionCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: u1_p_gv
+                          hier:
+                            HierName: null
+                      right:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 24
+                          name: u1_k
+                          hier:
+                            HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call0.sv
+              line: 26
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 27
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 27
+                          name: u1_p_bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 27
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 17
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call0.sv
+                      line: 28
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call0.sv
+                          line: 28
+                          name: u1_p_bump
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call0.sv
+                              line: 28
+                              base: 16
+                              size: 8
+                              sign: false
+                              value: 34
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
