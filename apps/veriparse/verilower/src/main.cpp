@@ -208,6 +208,17 @@ static int verilower(int argc, char *argv[])
         }
     }
 
+    // Interface definitions: kept as ports in the output (ADR-0014 §6.3),
+    // but their subroutines are callable through those ports and resolve by
+    // splicing (ADR-0015 §5.1) — so the definitions ride along.
+    Veriparse::Passes::Analysis::Module::InterfacesMap interfaces_map;
+    for(const auto &source : sources) {
+        if(Veriparse::Passes::Analysis::Module::get_interface_dictionary(source, interfaces_map) !=
+           0) {
+            return 1;
+        }
+    }
+
     if(modules_map.count(config.top_module) == 0) {
         LOG_ERROR << "module " << config.top_module << " not found";
         return 1;
@@ -262,7 +273,7 @@ static int verilower(int argc, char *argv[])
 
     Veriparse::Passes::Transformations::ImplicitFsmElaboration::FsmReport fsm_report;
     Veriparse::Passes::Transformations::ResolveModule resolver(param_args, modules_map, true, true,
-                                                               &fsm_report);
+                                                               &fsm_report, interfaces_map);
     if(resolver.run(module) != 0) {
         LOG_ERROR << "FSM elaboration failed";
         return 1;
