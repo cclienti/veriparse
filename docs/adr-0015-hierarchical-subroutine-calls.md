@@ -129,6 +129,19 @@ runs **unconditionally** between `GenerateRemoval` and
 - before `ImplicitFsmElaboration`, so the FSM pass sees only shapes it
   already supports.
 
+**A spliced clone is new text landing after the declaration-normalizing
+passes already ran** — found the hard way: an inline enum in a body
+reached the output un-elaborated where the identical module-local text
+lowered. So when the pass spliced anything, `ResolveModule` runs the
+normalizers again over the module — `EnumElaboration`, `EnumInliner`,
+`TypedefInliner`, `StructLowering`, `ScopeElevator`, `LoopUnrolling`,
+all idempotent on the text they already processed — and **rebuilds the
+function dictionary**, so a spliced constant function folds exactly
+like a local one instead of logging a spurious not-found error on a
+successful run. Same-text parity with local code is the test:
+`resolve_hier_enum0`/`resolve_hier_fold0` hold a spliced body against
+what its module-local twin produces.
+
 ### 3.2 What resolves: a single, index-free root naming an interface port
 
 A call's `hier` must be **one label, not indexed**, and that root must
@@ -137,7 +150,10 @@ the ADR-0014 §6.3 set; `NameResolution` has already promoted the port's
 type to `InterfaceType`, ADR-0003 §4.4).
 
 The named subroutine must be a `Task` or `Function` declared in that
-interface's body. Everything else is a hard error (§6): a multi-label
+interface's body — including inside a **bare generate region**, which
+§27.3 makes semantically transparent (a named or conditional generate
+block opens its own scope and is not searched). Everything else is a
+hard error (§6): a multi-label
 path, an indexed root (`bus[i].t()` — no static identity, the ADR-0014
 §6.3 argument verbatim), a root naming a module instance (`u.t()`), a
 root naming a **local interface instance**, or a root naming nothing.
@@ -163,9 +179,16 @@ including sites `LoopUnrolling` cloned — the pass:
    `PackageInliner` applies when a package item leaves home (a spliced
    item must not inherit the module's default lifetime);
 2. **rewrites the body's free references to interface members** — the
-   var/net-category names bound in the interface body — into
-   hierarchical references rooted at the call's root: `req` becomes
-   `bus.req`. Formals and block locals shadow members, as in any scope;
+   member set from the same enumeration the flattener uses
+   (`InterfaceElaboration::for_each_binding`), so the two passes cannot
+   disagree on what an interface declares — into hierarchical
+   references rooted at the call's root: `req` becomes `bus.req`.
+   Shadowing is **per scope**: a formal or a block-local hides a member
+   inside its own scope only (a flat name set was measured mis-lowering
+   the free references outside the block, silently). Block **labels**
+   are never shadow material and `disable` targets are never rewritten:
+   both live in the block namespace (§3.13, §9.6.2), so a label may
+   share a member's spelling and `disable req` still names the block;
 3. **names** the clone `<root>_<name>` (`bus_ping`), uniquified against
    the module's declaration set on collision;
 4. **inserts** it at the front of the module's items, and
@@ -274,9 +297,13 @@ day modports are resolved with `import` knowledge (§4).
 
 ### 5.3 veriobf
 
-Out of scope: the obfuscator is not taught hierarchical calls. A source
-that parses only by this ADR's grammar is not a supported veriobf input
-until the day that tool runs the resolution pass too (§8).
+Out of scope — and **enforced**: a hierarchical call's leaf names a
+declaration of another scope, so renaming it against the module's
+declarations would corrupt the reference silently (measured before the
+guard existed). `ModuleObfuscator` refuses a module containing one, the
+tool stops on the refusal, and `rename_locals` additionally never
+renames a hier-carrying call leaf. Supported the day that tool runs the
+resolution pass too (§8).
 
 ## 6. Errors — rejected loudly, never silently mis-lowered
 
@@ -291,7 +318,9 @@ IEEE citations allowed. The rows:
 | callee not declared in the interface | interface name and subroutine name |
 | callee is a task, call in expression position | §13.5: a task returns no value |
 | nonvoid function as a statement | warning, value discarded (§13.4.1) — same as the bare-call path |
-| body name outside the v1 closure (parameter, typedef, enum item, localparam, sibling subroutine) | the identifier and its kind; unsupported through a hierarchical call |
+| body name outside the v1 closure (parameter, type parameter, typedef, enum item, localparam, sibling subroutine) | the identifier and its kind; unsupported through a hierarchical call |
+| `disable` of a hierarchical target inside the body | the splice cannot carry it; plain labels and the task's own name pass through untouched (§3.3) |
+| hierarchical call in a module fed to veriobf | the call and that its target is declared outside the module (§5.3) |
 
 ## 7. Validation
 
