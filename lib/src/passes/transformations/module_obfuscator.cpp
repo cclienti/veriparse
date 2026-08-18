@@ -42,10 +42,49 @@ std::uint64_t portable_hash(const std::string &s)
 
 } // namespace
 
+namespace
+{
+
+// A hierarchical call's leaf names a declaration of another scope: renaming
+// it against this module's declarations would corrupt the reference, and
+// the target's scope is not obfuscated coherently. Refused, never renamed.
+const AST::Call::Ptr find_hier_call(const AST::Node::Ptr &node)
+{
+    if(!node) {
+        return nullptr;
+    }
+    if(node->is_node_category(AST::NodeType::Call)) {
+        const auto &call = AST::cast_to<AST::Call>(node);
+        if(call->get_hier()) {
+            return call;
+        }
+    }
+    const auto &children = node->get_children();
+    if(children) {
+        for(const auto &child : *children) {
+            const auto &found = find_hier_call(child);
+            if(found) {
+                return found;
+            }
+        }
+    }
+    return nullptr;
+}
+
+} // namespace
+
 int ModuleObfuscator::process(AST::Node::Ptr node, AST::Node::Ptr parent)
 {
     if(!node) {
         return 0;
+    }
+
+    const auto &hier_call = find_hier_call(node);
+    if(hier_call) {
+        LOG_ERROR_N(hier_call) << "hierarchical subroutine call to '" << hier_call->get_name()
+                               << "' cannot be obfuscated: its target is declared outside "
+                               << "this module";
+        return 1;
     }
 
     auto decls = AST::to_node_list(Analysis::Module::get_variable_nodes_within_module(node));
@@ -158,9 +197,12 @@ int ModuleObfuscator::rename_locals(const AST::Node::Ptr &node)
             decl->set_name(value->get_name());
         }
     } else if(node->is_node_category(AST::NodeType::Call)) {
-        // Neutral Call, FunctionCall and TaskCall all derive from Call.
+        // Neutral Call, FunctionCall and TaskCall all derive from Call. A
+        // hierarchical call's leaf belongs to another scope and must never
+        // take a local rename (such modules are refused up front; the guard
+        // keeps the rule local).
         const auto &call = AST::cast_to<AST::Call>(node);
-        auto it = m_replace_map.find(call->get_name());
+        auto it = call->get_hier() ? m_replace_map.end() : m_replace_map.find(call->get_name());
         if(it != m_replace_map.end()) {
             auto value = AST::cast_to<AST::Identifier>(it->second);
             LOG_DEBUG_N(node) << "AST::NodeType::Call: Renaming " << call->get_name() << " with "

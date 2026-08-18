@@ -168,7 +168,10 @@ static int veriobf(int argc, char *argv[])
     for(const auto &module : modules_map) {
         Veriparse::Passes::Transformations::ModuleObfuscator obfuscator(config.identifier_length,
                                                                         config.hash);
-        obfuscator.run(module.second);
+        if(obfuscator.run(module.second) != 0) {
+            LOG_ERROR << "failed to obfuscate module '" << module.first << "'";
+            return 1;
+        }
     }
 
     //---------------------------------------------------------

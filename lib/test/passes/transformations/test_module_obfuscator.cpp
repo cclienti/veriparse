@@ -79,3 +79,20 @@ TEST(PassesTransformation_ModuleObfuscator, module1) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, localparam0) { TEST_CORE(true); }
 TEST(PassesTransformation_ModuleObfuscator, function0) { TEST_CORE(false); }
 TEST(PassesTransformation_ModuleObfuscator, task0) { TEST_CORE(true); }
+
+// A hierarchical call names a declaration of another scope: renaming its
+// leaf against this module's declarations would silently corrupt the
+// reference, so the pass refuses the module (ADR-0015 §5.3 — hierarchical
+// calls are not a supported veriobf input).
+TEST(PassesTransformation_ModuleObfuscator, obf_hier_call0)
+{
+    ENABLE_LOGGER;
+
+    Parser::Verilog verilog;
+    verilog.set_sv_mode(true);
+    verilog.parse(test_helpers.get_sv_filename(test_name));
+    AST::Node::Ptr source = verilog.get_source();
+    ASSERT_TRUE(source != nullptr);
+
+    ASSERT_NE(Passes::Transformations::ModuleObfuscator(16, false).run(source), 0);
+}
