@@ -1,0 +1,423 @@
+Source:
+  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+          line: 1
+          name: hier_call_shadow_scope0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: req
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ack
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 3
+                  signing: NONE
+          - Task:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 8
+              name: ping
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 9
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 10
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 10
+                              name: req
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 10
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 10
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - Block:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 11
+                      scope: b
+                      statements:
+                      - Var:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 12
+                          is_var: false
+                          is_const: false
+                          lifetime: NONE
+                          name: req
+                          init:
+                            Rvalue: null
+                          type:
+                            LogicType:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 12
+                              signing: NONE
+                      - BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 13
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 13
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 13
+                                  name: req
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 13
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 13
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 14
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 14
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 14
+                                  name: ack
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 14
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 14
+                                  name: req
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 16
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 16
+                              name: ack
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 16
+                              name: req
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+          line: 21
+          name: hier_call_shadow_scope0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 21
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 21
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 21
+                      name: hier_call_shadow_scope0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 8
+              name: bus_ping
+              lifetime: STATIC
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 9
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 10
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 10
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 10
+                              name: req
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 10
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                      line: 10
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 10
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 10
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - Block:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 11
+                      scope: b
+                      statements:
+                      - Var:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 12
+                          is_var: false
+                          is_const: false
+                          lifetime: NONE
+                          name: req
+                          init:
+                            Rvalue: null
+                          type:
+                            LogicType:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 12
+                              signing: NONE
+                      - BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 13
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 13
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 13
+                                  name: req
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 13
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 13
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 14
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 14
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 14
+                                  name: ack
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                      line: 14
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                          line: 14
+                                          name: bus
+                                          loop: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 14
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 14
+                                  name: req
+                                  hier:
+                                    HierName: null
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 16
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 16
+                              name: ack
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 16
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                      line: 16
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 16
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                              line: 16
+                              name: req
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                  line: 16
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                                      line: 16
+                                      name: bus
+                                      loop: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+              line: 23
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                  line: 23
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                      line: 24
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/hier_call_shadow_scope0.sv
+                          line: 24
+                          name: bus_ping
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

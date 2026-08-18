@@ -1,0 +1,175 @@
+Source:
+  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+          line: 1
+          name: hier_call_generate0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: tick
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                  line: 2
+                  signing: NONE
+          - GenerateStatement:
+              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+              line: 6
+              items:
+              - Task:
+                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                  line: 7
+                  name: bump
+                  lifetime: NONE
+                  statements:
+                  - Block:
+                      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                      line: 8
+                      scope: ''
+                      statements:
+                      - NonblockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                          line: 9
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                              line: 9
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                                  line: 9
+                                  name: tick
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                              line: 9
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                                  line: 9
+                                  base: 2
+                                  size: 1
+                                  sign: false
+                                  value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+          line: 15
+          name: hier_call_generate0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+              line: 15
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                  line: 15
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                      line: 15
+                      name: hier_call_generate0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+              line: 7
+              name: bus_bump
+              lifetime: STATIC
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                  line: 8
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                              line: 9
+                              name: tick
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                                  line: 9
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                                      line: 9
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+              line: 17
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                      line: 18
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/hier_call_generate0.sv
+                          line: 18
+                          name: bus_bump
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

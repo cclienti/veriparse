@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Copyright (C) 2013-2026 Christophe Clienti
 #include <veriparse/passes/transformations/hier_call_resolution.hpp>
+#include <veriparse/passes/transformations/interface_elaboration.hpp>
+#include <veriparse/passes/transformations/name_resolution.hpp>
 #include <veriparse/passes/transformations/scope_table.hpp>
+#include <veriparse/passes/transformations/splice_utils.hpp>
 #include <veriparse/logger/logger.hpp>
 
 namespace Veriparse
@@ -14,10 +17,12 @@ namespace Transformations
 namespace
 {
 
-/// The subroutine declared under `name` in the interface body, null if none.
-AST::Node::Ptr find_subroutine(const AST::Interface::Ptr &iface, const std::string &name)
+/// The subroutine declared under `name` among `items`, descending into bare
+/// generate regions — semantically transparent (IEEE 1800-2017 §27.3), so a
+/// task they hold belongs to the interface itself. Named or conditional
+/// generate blocks open their own scope and are deliberately not searched.
+AST::Node::Ptr find_subroutine_in(const AST::Node::ListPtr &items, const std::string &name)
 {
-    const auto &items = iface->get_items();
     if(!items) {
         return nullptr;
     }
@@ -30,37 +35,25 @@ AST::Node::Ptr find_subroutine(const AST::Interface::Ptr &iface, const std::stri
            AST::cast_to<AST::Function>(item)->get_name() == name) {
             return item;
         }
+        if(item->is_node_type(AST::NodeType::GenerateStatement)) {
+            const auto &found =
+                find_subroutine_in(AST::cast_to<AST::GenerateStatement>(item)->get_items(), name);
+            if(found) {
+                return found;
+            }
+        }
     }
     return nullptr;
 }
 
-/// A subroutine leaving its interface must keep the lifetime the interface
-/// gave it: spliced into a module it would inherit that module's default
-/// instead (IEEE 1800-2017 13.3.1, 13.4.2) — the same freeze PackageInliner
-/// applies to package items.
-void stamp_subroutine_lifetime(const AST::Node::Ptr &item,
-                               AST::Interface::LifetimeEnum iface_lifetime)
+AST::Node::Ptr find_subroutine(const AST::Interface::Ptr &iface, const std::string &name)
 {
-    const bool automatic = iface_lifetime == AST::Interface::LifetimeEnum::AUTOMATIC;
-
-    if(item->is_node_type(AST::NodeType::Function)) {
-        const auto &function = AST::cast_to<AST::Function>(item);
-        if(function->get_lifetime() == AST::Function::LifetimeEnum::NONE) {
-            function->set_lifetime(automatic ? AST::Function::LifetimeEnum::AUTOMATIC
-                                             : AST::Function::LifetimeEnum::STATIC);
-        }
-        return;
-    }
-    if(item->is_node_type(AST::NodeType::Task)) {
-        const auto &task = AST::cast_to<AST::Task>(item);
-        if(task->get_lifetime() == AST::Task::LifetimeEnum::NONE) {
-            task->set_lifetime(automatic ? AST::Task::LifetimeEnum::AUTOMATIC
-                                         : AST::Task::LifetimeEnum::STATIC);
-        }
-    }
+    return find_subroutine_in(iface->get_items(), name);
 }
 
 /// What kind of name a declaration binds, for the closure error messages.
+/// ScopeTable::classify is deliberately not reused: its VALUE bucket blends
+/// members with parameters, the very distinction these messages exist for.
 std::string describe_kind(const AST::Node::Ptr &denoted)
 {
     if(!denoted) {
@@ -72,7 +65,8 @@ std::string describe_kind(const AST::Node::Ptr &denoted)
     if(denoted->is_node_type(AST::NodeType::Param)) {
         return AST::cast_to<AST::Param>(denoted)->get_is_local() ? "a localparam" : "a parameter";
     }
-    if(denoted->is_node_type(AST::NodeType::Typedef)) {
+    if(denoted->is_node_type(AST::NodeType::Typedef) ||
+       denoted->is_node_type(AST::NodeType::TypeParam)) {
         return "a type name";
     }
     if(denoted->is_node_type(AST::NodeType::Task) ||
@@ -82,62 +76,52 @@ std::string describe_kind(const AST::Node::Ptr &denoted)
     return "a declaration";
 }
 
-/// Member and non-member names one interface binds: header ports plus body
-/// nets and variables are members (IEEE 1800-2017 25.10 objects, the set a
-/// subroutine body may reference and a splice rewrites); every other bound
-/// name goes to `kinds` so a reference to it fails with its kind named.
+/// Member and non-member names one interface binds, from the shared
+/// enumeration (`InterfaceElaboration::for_each_binding`): members are the
+/// §25.10 objects a subroutine body may reference and a splice rewrites;
+/// every other bound name goes to `kinds` so a reference to it fails with
+/// its kind named.
 void collect_interface_names(const AST::Interface::Ptr &iface, std::set<std::string> &members,
                              std::map<std::string, std::string> &kinds)
 {
-    const auto visit = [&members, &kinds](const std::string &name, const AST::Node::Ptr &denoted) {
-        if(!denoted) {
-            return;
-        }
-        if(denoted->is_node_type(AST::NodeType::Var) ||
-           denoted->is_node_category(AST::NodeType::Net) ||
-           denoted->is_node_type(AST::NodeType::Arg)) {
-            members.insert(name);
-        } else {
-            kinds.emplace(name, describe_kind(denoted));
-        }
-    };
-
-    const auto &ports = iface->get_ports();
-    if(ports) {
-        for(const AST::Port::Ptr &port : *ports) {
-            if(port->get_decl()) {
-                ScopeTable::for_each_bound_name(port->get_decl(), visit);
+    InterfaceElaboration::for_each_binding(
+        iface, [&members, &kinds](const std::string &name, const AST::Node::Ptr &denoted) {
+            if(!denoted) {
+                return;
             }
-        }
-    }
-
-    const auto &items = iface->get_items();
-    if(items) {
-        for(const AST::Node::Ptr &item : *items) {
-            ScopeTable::for_each_bound_name(item, visit);
-        }
-    }
+            if(InterfaceElaboration::is_member_decl(denoted)) {
+                members.insert(name);
+            } else {
+                kinds.emplace(name, describe_kind(denoted));
+            }
+        });
 }
 
-/// Every name the cloned subroutine binds itself — its own name, its
-/// formals, and any declaration in its body. A flat set: shadowing is
-/// per-name, not per-scope, matching PackageInliner's free-name analysis.
-void collect_bound_names(const AST::Node::Ptr &node, std::set<std::string> &bound)
+/// Names the immediate items of one scope declare. Non-recursive: a nested
+/// block owns its own names, which is what makes shadowing per-scope.
+std::set<std::string> scope_names(const AST::Node::ListPtr &items)
 {
-    if(!node) {
-        return;
-    }
-    ScopeTable::for_each_bound_name(node,
-                                    [&bound](const std::string &name) { bound.insert(name); });
-    const auto &children = node->get_children();
-    if(children) {
-        for(const AST::Node::Ptr &child : *children) {
-            collect_bound_names(child, bound);
+    std::set<std::string> names;
+    if(items) {
+        for(const AST::Node::Ptr &item : *items) {
+            ScopeTable::for_each_bound_name(
+                item, [&names](const std::string &name) { names.insert(name); });
         }
     }
+    return names;
 }
 
 } // namespace
+
+bool HierCallResolution::RewriteScope::is_bound(const std::string &name) const
+{
+    for(const auto &scope : scopes) {
+        if(scope.count(name) != 0) {
+            return true;
+        }
+    }
+    return false;
+}
 
 HierCallResolution::HierCallResolution(const Analysis::Module::InterfacesMap &interfaces_map)
     : m_interfaces_map(interfaces_map)
@@ -200,7 +184,6 @@ int HierCallResolution::collect_roots(const AST::Module::Ptr &module)
             }
         }
     }
-
     return 0;
 }
 
@@ -284,20 +267,18 @@ int HierCallResolution::resolve_call(const AST::Module::Ptr &module, const AST::
         return 1;
     }
 
+    const std::string display = root + "." + call->get_name();
+
     if(decl->is_node_type(AST::NodeType::Task)) {
         if(call->is_node_type(AST::NodeType::FunctionCall)) {
-            LOG_ERROR_N(call) << "task '" << root << "." << call->get_name()
+            LOG_ERROR_N(call) << "task '" << display
                               << "' called in expression position: a task returns no value "
                               << "(IEEE 1800-2017 13.5)";
             return 1;
         }
         const auto &spliced_name = AST::cast_to<AST::Task>(decl)->get_name();
-        auto taskcall = std::make_shared<AST::TaskCall>(call->get_filename(), call->get_line());
-        taskcall->set_name(spliced_name);
-        taskcall->set_args(call->get_args());
-        if(!parent || !parent->replace(call, taskcall)) {
-            LOG_ERROR_N(call) << "failed to rewrite the call to '" << root << "."
-                              << call->get_name() << "'";
+        if(!NameResolution::retag_statement_call(call, parent, decl, spliced_name, display)) {
+            LOG_ERROR_N(call) << "failed to rewrite the call to '" << display << "'";
             return 1;
         }
         return 0;
@@ -310,19 +291,8 @@ int HierCallResolution::resolve_call(const AST::Module::Ptr &module, const AST::
         return 0;
     }
 
-    // Statement position (§13.4.1): legal, value discarded — warn only when
-    // there is a value to discard.
-    const AST::DataType::Ptr return_type = function->get_return_type();
-    if(!return_type || !return_type->is_node_type(AST::NodeType::VoidType)) {
-        LOG_WARNING_N(call) << "function '" << root << "." << call->get_name()
-                            << "' called as a statement; its return value is discarded";
-    }
-    auto functioncall = std::make_shared<AST::FunctionCall>(call->get_filename(), call->get_line());
-    functioncall->set_name(function->get_name());
-    functioncall->set_args(call->get_args());
-    if(!parent || !parent->replace(call, functioncall)) {
-        LOG_ERROR_N(call) << "failed to rewrite the call to '" << root << "." << call->get_name()
-                          << "'";
+    if(!NameResolution::retag_statement_call(call, parent, decl, function->get_name(), display)) {
+        LOG_ERROR_N(call) << "failed to rewrite the call to '" << display << "'";
         return 1;
     }
     return 0;
@@ -332,9 +302,9 @@ int HierCallResolution::splice(const AST::Module::Ptr &module, const std::string
                                const AST::Interface::Ptr &iface, const AST::Node::Ptr &subroutine,
                                AST::Node::Ptr &decl)
 {
-    const std::string sub_name = subroutine->is_node_type(AST::NodeType::Task)
-                                     ? AST::cast_to<AST::Task>(subroutine)->get_name()
-                                     : AST::cast_to<AST::Function>(subroutine)->get_name();
+    const bool is_task = subroutine->is_node_type(AST::NodeType::Task);
+    const std::string sub_name = is_task ? AST::cast_to<AST::Task>(subroutine)->get_name()
+                                         : AST::cast_to<AST::Function>(subroutine)->get_name();
 
     const std::string key = root + "." + sub_name;
     const auto memo = m_splices.find(key);
@@ -344,16 +314,40 @@ int HierCallResolution::splice(const AST::Module::Ptr &module, const std::string
     }
 
     AST::Node::Ptr clone = subroutine->clone();
-    stamp_subroutine_lifetime(clone, iface->get_lifetime());
+    SpliceUtils::stamp_subroutine_lifetime(clone, iface->get_lifetime() ==
+                                                      AST::Interface::LifetimeEnum::AUTOMATIC);
 
     std::set<std::string> members;
     std::map<std::string, std::string> kinds;
     collect_interface_names(iface, members, kinds);
 
-    std::set<std::string> bound;
-    collect_bound_names(clone, bound);
+    RewriteScope ctx;
+    ctx.root = root;
+    ctx.iface_name = iface->get_name();
+    ctx.sub_name = sub_name;
+    ctx.members = &members;
+    ctx.kinds = &kinds;
 
-    if(rewrite_body(clone, root, iface->get_name(), sub_name, members, bound, kinds)) {
+    // The subroutine's own scope: its name (a function's return variable),
+    // its formals, and its body-level declarations. Block-scoped names join
+    // and leave the stack as rewrite_body enters and leaves each block.
+    std::set<std::string> own;
+    own.insert(sub_name);
+    const AST::Arg::ListPtr args = is_task ? AST::cast_to<AST::Task>(clone)->get_args()
+                                           : AST::cast_to<AST::Function>(clone)->get_args();
+    if(args) {
+        for(const AST::Arg::Ptr &arg : *args) {
+            own.insert(arg->get_name());
+        }
+    }
+    const AST::Node::ListPtr statements =
+        is_task ? AST::cast_to<AST::Task>(clone)->get_statements()
+                : AST::cast_to<AST::Function>(clone)->get_statements();
+    const auto body_names = scope_names(statements);
+    own.insert(body_names.begin(), body_names.end());
+    ctx.scopes.push_back(own);
+
+    if(rewrite_body(clone, ctx)) {
         return 1;
     }
 
@@ -364,7 +358,7 @@ int HierCallResolution::splice(const AST::Module::Ptr &module, const std::string
         m_declared.insert(spliced_name);
     }
 
-    if(clone->is_node_type(AST::NodeType::Task)) {
+    if(is_task) {
         AST::cast_to<AST::Task>(clone)->set_name(spliced_name);
     } else {
         AST::cast_to<AST::Function>(clone)->set_name(spliced_name);
@@ -378,15 +372,12 @@ int HierCallResolution::splice(const AST::Module::Ptr &module, const std::string
     items->push_front(clone);
 
     m_splices.emplace(key, clone);
+    m_spliced = true;
     decl = clone;
     return 0;
 }
 
-int HierCallResolution::rewrite_body(const AST::Node::Ptr &node, const std::string &root,
-                                     const std::string &iface_name, const std::string &sub_name,
-                                     const std::set<std::string> &members,
-                                     const std::set<std::string> &bound,
-                                     const std::map<std::string, std::string> &kinds)
+int HierCallResolution::rewrite_body(const AST::Node::Ptr &node, RewriteScope &ctx)
 {
     if(!node) {
         return 0;
@@ -397,7 +388,7 @@ int HierCallResolution::rewrite_body(const AST::Node::Ptr &node, const std::stri
             // Call, TaskCall or FunctionCall: nothing a nested call could
             // legally reach is carried by the splice (v1 closure).
             const auto &nested = AST::cast_to<AST::Call>(node);
-            LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name << "' calls '"
+            LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name << "' calls '"
                               << nested->get_name() << "': a call inside an interface "
                               << "subroutine is not supported through a hierarchical call";
             return 1;
@@ -405,25 +396,25 @@ int HierCallResolution::rewrite_body(const AST::Node::Ptr &node, const std::stri
 
         const auto &id = AST::cast_to<AST::Identifier>(node);
         if(id->get_hier()) {
-            LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name
+            LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name
                               << "' holds a hierarchical reference to '" << id->get_name()
                               << "', which a spliced subroutine cannot carry";
             return 1;
         }
         if(id->get_scope() && !id->get_scope()->empty()) {
-            LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name
+            LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name
                               << "' holds an unresolved scoped reference to '" << id->get_name()
                               << "'";
             return 1;
         }
 
         const std::string &name = id->get_name();
-        if(bound.count(name) != 0) {
+        if(ctx.is_bound(name)) {
             return 0;
         }
-        if(members.count(name) != 0) {
+        if(ctx.members->count(name) != 0) {
             auto label = std::make_shared<AST::HierLabel>(id->get_filename(), id->get_line());
-            label->set_name(root);
+            label->set_name(ctx.root);
             auto labels = std::make_shared<AST::HierLabel::List>();
             labels->push_back(label);
             auto hier = std::make_shared<AST::HierName>(id->get_filename(), id->get_line());
@@ -431,31 +422,65 @@ int HierCallResolution::rewrite_body(const AST::Node::Ptr &node, const std::stri
             id->set_hier(hier);
             return 0;
         }
-        const auto kind = kinds.find(name);
-        if(kind != kinds.end()) {
-            LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name << "' references '" << name
-                              << "', " << kind->second << " of the interface: only members "
-                              << "(nets and variables) are supported through a hierarchical "
-                              << "call";
+        const auto kind = ctx.kinds->find(name);
+        if(kind != ctx.kinds->end()) {
+            LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name << "' references '"
+                              << name << "', " << kind->second << " of the interface: only "
+                              << "members (nets and variables) are supported through a "
+                              << "hierarchical call";
             return 1;
         }
-        LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name << "' references '" << name
-                          << "', which interface '" << iface_name << "' does not declare";
+        LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name << "' references '"
+                          << name << "', which interface '" << ctx.iface_name
+                          << "' does not declare";
         return 1;
     }
 
     if(node->is_node_type(AST::NodeType::NamedType)) {
-        LOG_ERROR_N(node) << "'" << iface_name << "." << sub_name << "' uses the type name '"
+        LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name
+                          << "' uses the type name '"
                           << AST::cast_to<AST::NamedType>(node)->get_name()
                           << "': interface-local types are not supported through a "
                           << "hierarchical call";
         return 1;
     }
 
+    // A `disable` target names a block or task (IEEE 1800-2017 §9.6.2) —
+    // the block namespace, never a member, even when a label shares a
+    // member's spelling. After the splice both live in the clone, so the
+    // name stands as written.
+    if(node->is_node_type(AST::NodeType::Disable)) {
+        const auto &dest = AST::cast_to<AST::Disable>(node)->get_dest();
+        if(dest && dest->is_node_category(AST::NodeType::Identifier) &&
+           AST::cast_to<AST::Identifier>(dest)->get_hier()) {
+            LOG_ERROR_N(node) << "'" << ctx.iface_name << "." << ctx.sub_name
+                              << "' disables a hierarchical target, which a spliced "
+                              << "subroutine cannot carry";
+            return 1;
+        }
+        return 0;
+    }
+
+    if(node->is_node_type(AST::NodeType::Block)) {
+        ctx.scopes.push_back(scope_names(AST::cast_to<AST::Block>(node)->get_statements()));
+        int ret = 0;
+        const auto &children = node->get_children();
+        if(children) {
+            for(const AST::Node::Ptr &child : *children) {
+                if(rewrite_body(child, ctx)) {
+                    ret = 1;
+                    break;
+                }
+            }
+        }
+        ctx.scopes.pop_back();
+        return ret;
+    }
+
     const auto &children = node->get_children();
     if(children) {
         for(const AST::Node::Ptr &child : *children) {
-            if(rewrite_body(child, root, iface_name, sub_name, members, bound, kinds)) {
+            if(rewrite_body(child, ctx)) {
                 return 1;
             }
         }

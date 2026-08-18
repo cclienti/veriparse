@@ -60,6 +60,16 @@ static TestHelpers test_helpers("lib/test/passes/transformations/testcases/");
 // The splice through a port: two ping() sites resolve to one spliced task, a
 // function call in expression and the formal-shadows-member case.
 TEST(PassesTransformation_HierCallResolution, hier_call_port0) { TEST_CORE_SV; }
+// A block-local shadows a member inside its own block ONLY: the free
+// references before and after keep their member identity (a flat bound set
+// would silently suppress the rewrite everywhere).
+TEST(PassesTransformation_HierCallResolution, hier_call_shadow_scope0) { TEST_CORE_SV; }
+// `disable` targets live in the block namespace (IEEE 1800-2017 §9.6.2):
+// never rewritten, even when a label shares a member's name.
+TEST(PassesTransformation_HierCallResolution, hier_call_disable0) { TEST_CORE_SV; }
+// A task in a bare generate region is a subroutine of the interface
+// (IEEE 1800-2017 §27.3 — the region is transparent).
+TEST(PassesTransformation_HierCallResolution, hier_call_generate0) { TEST_CORE_SV; }
 
 // The root names a module instance.
 TEST(PassesTransformation_HierCallResolution, hier_call_err_root0) { TEST_ERROR_SV; }
@@ -73,6 +83,9 @@ TEST(PassesTransformation_HierCallResolution, hier_call_err_missing0) { TEST_ERR
 TEST(PassesTransformation_HierCallResolution, hier_call_err_exprtask0) { TEST_ERROR_SV; }
 // The body references an interface localparam (v1 closure).
 TEST(PassesTransformation_HierCallResolution, hier_call_err_param0) { TEST_ERROR_SV; }
+// The body references an interface type parameter (v1 closure, named as a
+// type name in the message).
+TEST(PassesTransformation_HierCallResolution, hier_call_err_typeparam0) { TEST_ERROR_SV; }
 // The body calls a sibling interface subroutine (v1 closure).
 TEST(PassesTransformation_HierCallResolution, hier_call_err_nested0) { TEST_ERROR_SV; }
 // An indexed root has no static identity.
