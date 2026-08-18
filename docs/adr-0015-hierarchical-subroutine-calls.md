@@ -57,9 +57,11 @@
     machinery take over. §3 transplants that shape to the `.` axis.
   - **ADR-0008** (`InterfaceElaboration`) deliberately excluded
     subroutines from the member set ("not externally accessible", §8).
-    This ADR supersedes that row — but by resolving calls *before* the
-    flattener dissolves ports, so `InterfaceElaboration` itself is
-    untouched (§5.2).
+    This ADR supersedes that row — but not at the row's anticipated
+    home (a call-label rewrite in `bind_interface_ports`): resolving
+    calls *before* the flattener dissolves ports serves verilower —
+    which never flattens — with the same implementation, and leaves
+    `InterfaceElaboration` untouched (§5.2).
   - **ADR-0014 §6.3/§7.4/§15** — interface ports pass through the FSM
     pass, members are identities, tasks inline per call site. §5.1 shows
     the splice reduces `bus.ping()` to exactly those supported shapes;
@@ -204,16 +206,18 @@ skip, because the call now has a resolver downstream.
 ## 4. Decision 3 — modport visibility is not enforced (documented)
 
 §25.7 makes a modport grant subroutine access with `import` declarations;
-ADR-0002 §7 keeps modport `import`/`export` (and `extern` prototypes)
-out of the parsed subset, so a source spelling the legal grant cannot be
-written. Refusing every call through a modport-qualified port would
-refuse the idiom entirely; therefore v1 resolves subroutine calls
-through any interface port **without a visibility check**, exactly as
-ADR-0008 §15 already defers modport *direction* enforcement on members.
-Both belong to the same future row: the day modports are resolved with
-the definition in hand, `import` lists are the check to add. Member
-visibility through modports (`InterfaceElaboration`'s existing §25.5
-check) is unaffected.
+ADR-0002 §7 keeps modport `import`/`export` methods out of the parsed
+subset, so a source spelling the legal grant cannot be written. Refusing
+every call through a modport-qualified port would refuse the idiom
+entirely; therefore v1 resolves subroutine calls through any interface
+port **without a visibility check** — the same posture ADR-0014 §15
+takes for modport *direction* on the verilower path, where the port
+passes through unenforced. The day modports are resolved with the
+definition in hand, `import` lists are the check to add. Everything the
+flattener already enforces is unaffected: member visibility through
+modports (ADR-0008 §4's §25.5 check) and member *direction* on
+assignment lvalues (ADR-0008 §4.1 — implemented, not deferred; §5.2
+shows how a spliced body meets both).
 
 ## 5. Decision 4 — tool integration
 
@@ -312,7 +316,7 @@ IEEE citations allowed. The rows:
 | subroutine of a **locally instantiated** interface (`bus_if bus(); … bus.ping();`) | refused at resolution: the splice's `<root>_<name>` and the flattener's instance-prefix rename of the same subroutine collide on one identifier (§3.2). The clean landing is the flattener binding the call to the copy its instance splice already makes — an `InterfaceElaboration` extension, taken when a design asks |
 | interface parameters / typedefs / enum items / localparams in a called body | needs the instance's parameter overrides or a declaration-closure carry; the generic-module-with-port case has no instance in hand. Splice the closure when a design asks |
 | sibling-subroutine calls inside a called body | dependency closure, `PackageInliner::copy_symbol`'s recursion on the `.` axis — mechanical once wanted |
-| modport `import`/`export`, `extern` prototypes, `extern forkjoin` (§25.7) | not in the parsed subset (ADR-0002 §7); visibility enforcement lands with modport resolution (§4) |
+| modport `import`/`export` (ADR-0002 §7), and `extern` prototypes / `extern forkjoin`, which no grammar rule of ours has ever had (§25.7) | not in the parsed subset; visibility enforcement lands with modport resolution (§4) |
 | virtual interfaces | dynamic binding; with ADR-0008's row |
 | named/default arguments on hierarchical calls | same call-grammar row as ADR-0014 §15 |
 | veriobf over hierarchical calls | the obfuscator does not run the resolution pass (§5.3) |
