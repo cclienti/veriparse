@@ -1,0 +1,141 @@
+Source:
+  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+  line: 3
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+      line: 3
+      definitions:
+      - Module:
+          filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+          line: 3
+          name: resolve_zeroarg0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+              line: 3
+              name: y
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                  line: 3
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                      line: 3
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                          line: 3
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                              line: 3
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+              line: 5
+              name: gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                  line: 5
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                      line: 5
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                          line: 5
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                  line: 6
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                      line: 6
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                          line: 6
+                          base: 16
+                          size: 8
+                          sign: false
+                          value: 42
+                  delay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+              line: 9
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                  line: 9
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                      line: 9
+                      name: y
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                  line: 9
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/resolve_zeroarg0.sv
+                      line: 6
+                      base: 16
+                      size: 8
+                      sign: false
+                      value: 42
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null

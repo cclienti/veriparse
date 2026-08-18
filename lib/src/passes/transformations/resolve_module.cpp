@@ -129,9 +129,46 @@ int ResolveModule::process(AST::Node::Ptr node, AST::Node::Ptr parent)
     // unrolling (every cloned site resolves to the one spliced definition),
     // and before the FSM lowering, which then sees only local calls
     // (ADR-0015 §3.1).
-    if(HierCallResolution(m_interfaces_map).run(node)) {
+    HierCallResolution hier_calls(m_interfaces_map);
+    if(hier_calls.run(node)) {
         LOG_ERROR_N(node) << "Failed to resolve hierarchical subroutine calls";
         return 1;
+    }
+
+    // A spliced clone is new text landing after the declaration-normalizing
+    // passes already ran: run them again so an inline enum, a packed
+    // aggregate, a nested scope or a bounded loop in the clone lowers
+    // exactly as local text did, and rebuild the function dictionary so a
+    // spliced function folds like a local one.
+    if(hier_calls.spliced()) {
+        if(EnumElaboration().run(node)) {
+            LOG_ERROR_N(node) << "Failed to elaborate enums";
+            return 1;
+        }
+        if(EnumInliner().run(node)) {
+            LOG_ERROR_N(node) << "Failed to inline enums";
+            return 1;
+        }
+        if(TypedefInliner().run(node)) {
+            LOG_ERROR_N(node) << "Failed to inline typedefs";
+            return 1;
+        }
+        if(StructLowering().run(node)) {
+            LOG_ERROR_N(node) << "Failed to lower packed aggregates";
+            return 1;
+        }
+        if(ScopeElevator().run(node)) {
+            LOG_ERROR_N(node) << "Failed to remove nested blocks";
+            return 1;
+        }
+        if(LoopUnrolling().run(node)) {
+            LOG_ERROR_N(node) << "Failed to unroll loops";
+            return 1;
+        }
+        function_map.clear();
+        if(Analysis::Module::get_function_dictionary(node, function_map)) {
+            return 1;
+        }
     }
 
     // ADR-0014 §10.3: the FSM lowering sits after the passes that normalise

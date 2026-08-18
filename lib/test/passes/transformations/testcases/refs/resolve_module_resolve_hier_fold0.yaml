@@ -1,0 +1,253 @@
+Source:
+  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+          line: 1
+          name: resolve_hier_fold0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: data
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 2
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 2
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 2
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Function:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 4
+              name: gv
+              lifetime: NONE
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 5
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 5
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 5
+                          base: 16
+                          size: 8
+                          sign: false
+                          value: 42
+                  delay:
+                    DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+          line: 11
+          name: resolve_hier_fold0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 11
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 11
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 11
+                      name: resolve_hier_fold0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 11
+              name: y
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 11
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 11
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 11
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                              line: 11
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              expr: null
+          items:
+          - Function:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 4
+              name: bus_gv
+              lifetime: STATIC
+              return_type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 4
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 4
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 4
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+              statements:
+              - SingleStatement:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 5
+                  scope: ''
+                  statement:
+                    Return:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 5
+                      value:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                          line: 5
+                          base: 16
+                          size: 8
+                          sign: false
+                          value: 42
+                  delay:
+                    DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+              line: 13
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 13
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 13
+                      name: y
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                  line: 13
+                  var:
+                    IntConstN:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_fold0.sv
+                      line: 5
+                      base: 16
+                      size: 8
+                      sign: false
+                      value: 42
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
