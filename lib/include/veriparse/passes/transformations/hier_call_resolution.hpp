@@ -13,6 +13,7 @@
 #include <set>
 #include <string>
 #include <utility>
+#include <vector>
 
 namespace Veriparse
 {
@@ -39,7 +40,28 @@ class HierCallResolution : public TransformationBase
 public:
     explicit HierCallResolution(const Analysis::Module::InterfacesMap &interfaces_map);
 
+    /// Whether any run of this pass spliced a subroutine into a module. The
+    /// spliced clone is new text landing after the declaration-normalizing
+    /// passes already ran, so the caller must run them again over it.
+    bool spliced() const { return m_spliced; }
+
 private:
+    /// One body rewrite: the splice identity plus the VALUE scope stack —
+    /// innermost last, each entry the names its scope declares. Block
+    /// labels are never entered: they live in the block namespace
+    /// (IEEE 1800-2017 §3.13) and cannot shadow a value.
+    struct RewriteScope
+    {
+        std::string root;
+        std::string iface_name;
+        std::string sub_name;
+        const std::set<std::string> *members = nullptr;
+        const std::map<std::string, std::string> *kinds = nullptr;
+        std::vector<std::set<std::string>> scopes;
+
+        bool is_bound(const std::string &name) const;
+    };
+
     /**
      * @return zero on success
      */
@@ -67,13 +89,11 @@ private:
                const AST::Interface::Ptr &iface, const AST::Node::Ptr &subroutine,
                AST::Node::Ptr &decl);
 
-    /// Rewrite the cloned body: free member references gain the root prefix;
-    /// anything outside the v1 closure (parameters, typedefs, enum items,
-    /// nested calls) is a hard error.
-    int rewrite_body(const AST::Node::Ptr &node, const std::string &root,
-                     const std::string &iface_name, const std::string &sub_name,
-                     const std::set<std::string> &members, const std::set<std::string> &bound,
-                     const std::map<std::string, std::string> &kinds);
+    /// Rewrite the cloned body: free member references gain the root prefix,
+    /// shadowed per scope; `disable` targets are block-namespace names and
+    /// stay; anything outside the v1 closure (parameters, typedefs, enum
+    /// items, nested calls) is a hard error.
+    int rewrite_body(const AST::Node::Ptr &node, RewriteScope &ctx);
 
 private:
     const Analysis::Module::InterfacesMap &m_interfaces_map;
@@ -87,6 +107,8 @@ private:
     /// Declared identifiers of the module being processed, for uniquifying
     /// spliced names.
     Analysis::UniqueDeclaration::IdentifierSet m_declared;
+
+    bool m_spliced = false;
 };
 
 } // namespace Transformations
