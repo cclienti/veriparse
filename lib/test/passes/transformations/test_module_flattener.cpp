@@ -437,6 +437,9 @@ TEST(PassesTransformation_ModuleFlattener, iface_call_modport0) { TEST_CORE_SV; 
 // IEEE's interface-internal method access, conservative and loud.
 TEST(PassesTransformation_ModuleFlattener, iface_call_err_modport_dir0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_call_err_modport_vis0) { TEST_ERROR_SV; }
+// A spliced body reading the interface's own header port: `p.clk` rides the
+// same member path as a body net and retargets through the connection.
+TEST(PassesTransformation_ModuleFlattener, iface_call_hdrport0) { TEST_CORE_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_conn_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_modport_mismatch0) { TEST_ERROR_SV; }

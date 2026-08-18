@@ -80,6 +80,20 @@ private:
     /// (ADR-0006 §4.1). Never fails; unresolvable calls stay neutral.
     void retag_call(const AST::Call::Ptr &call, const AST::Node::Ptr &parent);
 
+public:
+    /// The one re-tag rule (ADR-0006 §4.1), shared by the lexical path
+    /// (this pass) and the hierarchical path (HierCallResolution): replace
+    /// the statement-position neutral `call` in `parent` by a TaskCall or
+    /// FunctionCall named `name`, from the declared kind of `callee` (a
+    /// Task or Function node), warning on a discarded nonvoid value
+    /// (IEEE 1800-2017 §13.4.1). `display_name` is the spelling diagnostics
+    /// use ("bus.ping" for a resolved hierarchical call); empty means
+    /// `name`. Returns false when the replacement could not be performed.
+    static bool retag_statement_call(const AST::Call::Ptr &call, const AST::Node::Ptr &parent,
+                                     const AST::Node::Ptr &callee, const std::string &name,
+                                     const std::string &display_name = "");
+
+private:
     /// Design-index entry for a name, or nullptr. The lexical stack is
     /// consulted first (ADR-0006 §4.2): a local binding shadows a design-level
     /// name, so a shadowed name never reaches the index. `self` is the

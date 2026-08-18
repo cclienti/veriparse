@@ -21,45 +21,29 @@ namespace Transformations
 namespace
 {
 
-/// Member names of one interface: header ports plus the nets and variables
-/// its body binds (§25.10 objects), collected into `members`. Enumerators go
-/// into `enumerators` instead: they are constants, not aliasable signals, so
-/// a reference through a port must be rejected, not rewritten to a net.
-/// Parameters, typedefs and subroutines are deliberately excluded: parameters
-/// inline away during the pseudo-module resolution and subroutines are not
-/// externally accessible (ADR-0008 §8) — a reference through the port to such
-/// a name fails the member check loudly instead of dangling.
+/// Member names of one interface: the §25.10 objects, collected into
+/// `members`. Enumerators go into `enumerators` instead: they are constants,
+/// not aliasable signals, so a reference through a port must be rejected,
+/// not rewritten to a net. Parameters, typedefs and subroutines are
+/// deliberately excluded: parameters inline away during the pseudo-module
+/// resolution and a subroutine is reached by resolution (ADR-0015), never
+/// aliased — a member-check reference to one fails loudly instead of
+/// dangling.
 void collect_members(const AST::Interface::Ptr &interface, std::set<std::string> &members,
                      std::set<std::string> &enumerators)
 {
-    const auto visit = [&members, &enumerators](const std::string &name,
-                                                const AST::Node::Ptr &denoted) {
-        if(!denoted) {
-            return;
-        }
-        if(denoted->is_node_type(AST::NodeType::EnumItem)) {
-            enumerators.insert(name);
-        } else if(denoted->is_node_type(AST::NodeType::Var) ||
-                  denoted->is_node_category(AST::NodeType::Net)) {
-            members.insert(name);
-        }
-    };
-
-    const auto &ports = interface->get_ports();
-    if(ports) {
-        for(const AST::Port::Ptr &port : *ports) {
-            if(port->get_decl()) {
-                ScopeTable::for_each_bound_name(port->get_decl(), visit);
+    InterfaceElaboration::for_each_binding(
+        interface,
+        [&members, &enumerators](const std::string &name, const AST::Node::Ptr &denoted) {
+            if(!denoted) {
+                return;
             }
-        }
-    }
-
-    const auto &items = interface->get_items();
-    if(items) {
-        for(const AST::Node::Ptr &item : *items) {
-            ScopeTable::for_each_bound_name(item, visit);
-        }
-    }
+            if(denoted->is_node_type(AST::NodeType::EnumItem)) {
+                enumerators.insert(name);
+            } else if(InterfaceElaboration::is_member_decl(denoted)) {
+                members.insert(name);
+            }
+        });
 }
 
 /// Validate one modport (§25.5: every listed name shall be declared by the
@@ -127,6 +111,34 @@ int check_nested_acyclic(const std::string &name,
 }
 
 } // namespace
+
+void InterfaceElaboration::for_each_binding(
+    const AST::Interface::Ptr &iface,
+    const std::function<void(const std::string &, const AST::Node::Ptr &)> &visit)
+{
+    const auto &ports = iface->get_ports();
+    if(ports) {
+        for(const AST::Port::Ptr &port : *ports) {
+            if(port->get_decl()) {
+                ScopeTable::for_each_bound_name(port->get_decl(), visit);
+            }
+        }
+    }
+
+    const auto &items = iface->get_items();
+    if(items) {
+        for(const AST::Node::Ptr &item : *items) {
+            ScopeTable::for_each_bound_name(item, visit);
+        }
+    }
+}
+
+bool InterfaceElaboration::is_member_decl(const AST::Node::Ptr &denoted)
+{
+    return denoted && (denoted->is_node_type(AST::NodeType::Var) ||
+                       denoted->is_node_category(AST::NodeType::Net) ||
+                       denoted->is_node_type(AST::NodeType::Arg));
+}
 
 int InterfaceElaboration::prepare(const Analysis::Module::InterfacesMap &interfaces, Design &design)
 {
