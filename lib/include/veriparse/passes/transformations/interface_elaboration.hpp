@@ -3,6 +3,7 @@
 #ifndef VERIPARSE_PASSES_TRANSFORMATIONS_INTERFACE_ELABORATION
 #define VERIPARSE_PASSES_TRANSFORMATIONS_INTERFACE_ELABORATION
 
+#include <functional>
 #include <map>
 #include <set>
 #include <string>
@@ -113,6 +114,24 @@ public:
      *
      * @return zero on success
      */
+    /**
+     * @brief Visit every name one interface binds — header ports first,
+     * then body items — with the declaration that binds it. The one
+     * enumeration the flattener's member sets and HierCallResolution's
+     * splice closure are both derived from, so the two passes cannot
+     * disagree on what an interface declares.
+     */
+    static void
+    for_each_binding(const AST::Interface::Ptr &iface,
+                     const std::function<void(const std::string &, const AST::Node::Ptr &)> &visit);
+
+    /**
+     * @brief Whether a bound declaration is an aliasable member (an
+     * IEEE 1800-2017 §25.10 object): a variable, a net, or a header-port
+     * Arg. Enumerators, parameters, types and subroutines are not.
+     */
+    static bool is_member_decl(const AST::Node::Ptr &denoted);
+
     static int prepare(const Analysis::Module::InterfacesMap &interfaces, Design &design);
 
     /**

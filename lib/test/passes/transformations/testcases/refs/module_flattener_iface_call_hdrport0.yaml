@@ -1,0 +1,354 @@
+Source:
+  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+          line: 1
+          name: iface_call_hdrport0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 1
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 1
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 1
+                      signing: NONE
+              expr: null
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: q
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 2
+                  signing: NONE
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 6
+              name: sample
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: q
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: clk
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+          line: 13
+          name: iface_call_hdrport0_child
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 13
+              name: p
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 13
+                  is_var: false
+                  direction: NONE
+                  name: p
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 13
+                      name: iface_call_hdrport0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          items:
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 15
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 15
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 16
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 16
+                          name: sample
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 16
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                                  line: 16
+                                  name: p
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+          line: 21
+          name: iface_call_hdrport0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 21
+              name: clk
+              direction: INPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 21
+                  is_vectored: false
+                  is_scalared: false
+                  name: clk
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 21
+                      signing: NONE
+              expr: null
+          items:
+          - ImplicitNet:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 1
+              is_vectored: false
+              is_scalared: false
+              name: bus_clk
+              cont_assign:
+                Rvalue: null
+              strength:
+                Strength: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 1
+                  signing: NONE
+          - Assign:
+              filename: ''
+              line: 0
+              left:
+                Lvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ''
+                      line: 0
+                      name: bus_clk
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ''
+                  line: 0
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 23
+                      name: clk
+                      hier:
+                        HierName: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_q
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 2
+                  signing: NONE
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 6
+              name: bus_sample
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: bus_q
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: bus_clk
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 6
+              name: u_p_sample
+              lifetime: STATIC
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                  line: 7
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 8
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: bus_q
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 8
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                              line: 8
+                              name: bus_clk
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+              line: 15
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                      line: 16
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call_hdrport0.sv
+                          line: 16
+                          name: u_p_sample
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

@@ -576,36 +576,50 @@ void NameResolution::retag_call(const AST::Call::Ptr &call, const AST::Node::Ptr
     }
 
     switch(binding->kind) {
-    case ScopeTable::SymbolKind::TASK: {
-        auto taskcall = std::make_shared<AST::TaskCall>(call->get_filename(), call->get_line());
-        taskcall->set_name(call->get_name());
-        taskcall->set_args(call->get_args());
-        parent->replace(call, taskcall);
+    case ScopeTable::SymbolKind::TASK:
+    case ScopeTable::SymbolKind::FUNCTION:
+        retag_statement_call(call, parent, binding->decl, call->get_name());
         return;
-    }
-
-    case ScopeTable::SymbolKind::FUNCTION: {
-        // Legal as a statement; the §13.4.1 discarded-value warning applies
-        // only when there IS a value — a void function has none.
-        const auto &function = AST::cast_to<AST::Function>(binding->decl);
-        const AST::DataType::Ptr return_type = function->get_return_type();
-        if(!return_type || !return_type->is_node_type(AST::NodeType::VoidType)) {
-            LOG_WARNING_N(call) << "function '" << call->get_name()
-                                << "' called as a statement; its return value is discarded";
-        }
-        auto functioncall =
-            std::make_shared<AST::FunctionCall>(call->get_filename(), call->get_line());
-        functioncall->set_name(call->get_name());
-        functioncall->set_args(call->get_args());
-        parent->replace(call, functioncall);
-        return;
-    }
 
     default:
         LOG_WARNING_N(call) << "'" << call->get_name()
                             << "' is not a task or function; statement call left unresolved";
         return;
     }
+}
+
+bool NameResolution::retag_statement_call(const AST::Call::Ptr &call, const AST::Node::Ptr &parent,
+                                          const AST::Node::Ptr &callee, const std::string &name,
+                                          const std::string &display_name)
+{
+    if(!parent || !callee) {
+        return false;
+    }
+    const std::string &shown = display_name.empty() ? name : display_name;
+
+    if(callee->is_node_type(AST::NodeType::Task)) {
+        auto taskcall = std::make_shared<AST::TaskCall>(call->get_filename(), call->get_line());
+        taskcall->set_name(name);
+        taskcall->set_args(call->get_args());
+        return parent->replace(call, taskcall);
+    }
+
+    if(!callee->is_node_type(AST::NodeType::Function)) {
+        return false;
+    }
+
+    // Legal as a statement; the §13.4.1 discarded-value warning applies
+    // only when there IS a value — a void function has none.
+    const auto &function = AST::cast_to<AST::Function>(callee);
+    const AST::DataType::Ptr return_type = function->get_return_type();
+    if(!return_type || !return_type->is_node_type(AST::NodeType::VoidType)) {
+        LOG_WARNING_N(call) << "function '" << shown
+                            << "' called as a statement; its return value is discarded";
+    }
+    auto functioncall = std::make_shared<AST::FunctionCall>(call->get_filename(), call->get_line());
+    functioncall->set_name(name);
+    functioncall->set_args(call->get_args());
+    return parent->replace(call, functioncall);
 }
 
 } // namespace Transformations
