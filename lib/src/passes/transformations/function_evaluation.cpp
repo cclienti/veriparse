@@ -192,7 +192,9 @@ FunctionEvaluation::get_input_declarations(const AST::Function::Ptr &function_de
                                            const AST::FunctionCall::Ptr &function_call)
 {
     const auto &decls = std::make_shared<AST::Node::List>();
-    const auto &call_args = function_call->get_args();
+    // A zero-argument call `f()` carries no args list at all.
+    const auto &call_args =
+        function_call->get_args() ? function_call->get_args() : std::make_shared<AST::Node::List>();
 
     // Gather the formal parameters in order, each as (name, data type, unpacked
     // dims). They are either ANSI args (Function::args) or, for the non-ANSI

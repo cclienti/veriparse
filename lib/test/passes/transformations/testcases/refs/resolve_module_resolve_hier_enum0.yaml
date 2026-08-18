@@ -1,0 +1,864 @@
+Source:
+  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+          line: 1
+          name: resolve_hier_enum0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: en
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: acc
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 3
+                  signing: NONE
+                  packed_dims:
+                  - RangeDim:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 3
+                      left:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 7
+                      right:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 3
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+          - Task:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 8
+              name: kick
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 9
+                  scope: ''
+                  statements:
+                  - Var:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 10
+                      is_var: false
+                      is_const: false
+                      lifetime: NONE
+                      name: st
+                      init:
+                        Rvalue: null
+                      type:
+                        EnumType:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 10
+                          signing: NONE
+                          base:
+                            LogicType:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 10
+                              signing: NONE
+                              packed_dims:
+                              - RangeDim:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 10
+                                  left:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 10
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 10
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 0
+                          items:
+                          - EnumItem:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 10
+                              name: IDLE
+                              value: null
+                              range:
+                                Dimension: null
+                          - EnumItem:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 10
+                              name: GO
+                              value: null
+                              range:
+                                Dimension: null
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 11
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 11
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 11
+                              name: st
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 11
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 11
+                              name: GO
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 12
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 12
+                              name: en
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 12
+                              name: st
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 16
+              name: add2
+              lifetime: NONE
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 16
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 16
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 16
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - Var:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 18
+                      is_var: false
+                      is_const: false
+                      lifetime: NONE
+                      name: i
+                      init:
+                        Rvalue: null
+                      type:
+                        IntegerType:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 18
+                          signing: NONE
+                  - ForStatement:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 19
+                      pre:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 19
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 19
+                                  name: i
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              var:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 19
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      cond:
+                        LessThan:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 19
+                          left:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              name: i
+                              hier:
+                                HierName: null
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 2
+                      post:
+                        BlockingSubstitution:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 19
+                          left:
+                            Lvalue:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              var:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 19
+                                  name: i
+                                  hier:
+                                    HierName: null
+                          right:
+                            Rvalue:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 19
+                              var:
+                                Plus:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 19
+                                  left:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 19
+                                      name: i
+                                      hier:
+                                        HierName: null
+                                  right:
+                                    IntConstN:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 19
+                                      base: 10
+                                      size: -1
+                                      sign: false
+                                      value: 1
+                          ldelay:
+                            DelayStatement: null
+                          rdelay:
+                            DelayStatement: null
+                      statement:
+                        Block:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 19
+                          scope: ''
+                          statements:
+                          - NonblockingSubstitution:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 20
+                              left:
+                                Lvalue:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  var:
+                                    Identifier:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      name: acc
+                                      hier:
+                                        HierName: null
+                              right:
+                                Rvalue:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  var:
+                                    Plus:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      left:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                          line: 20
+                                          name: acc
+                                          hier:
+                                            HierName: null
+                                      right:
+                                        Identifier:
+                                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                          line: 20
+                                          name: n
+                                          hier:
+                                            HierName: null
+                              ldelay:
+                                DelayStatement: null
+                              rdelay:
+                                DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+          line: 26
+          name: resolve_hier_enum0
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 26
+              name: bus
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 26
+                  is_var: false
+                  direction: NONE
+                  name: bus
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 26
+                      name: resolve_hier_enum0_if
+                      modport: ''
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 26
+              name: y
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 26
+                  is_vectored: false
+                  is_scalared: false
+                  name: y
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 26
+                      signing: NONE
+              expr: null
+          - Port:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 26
+              name: z
+              direction: OUTPUT
+              decl:
+                ImplicitNet:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 26
+                  is_vectored: false
+                  is_scalared: false
+                  name: z
+                  cont_assign:
+                    Rvalue: null
+                  strength:
+                    Strength: null
+                  ldelay:
+                    DelayStatement: null
+                  rdelay:
+                    DelayStatement: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 26
+                      signing: NONE
+              expr: null
+          items:
+          - Task:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 16
+              name: bus_add2
+              lifetime: STATIC
+              args:
+              - Arg:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 16
+                  is_var: false
+                  direction: INPUT
+                  name: n
+                  default_value: null
+                  type:
+                    LogicType:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 16
+                      signing: NONE
+                      packed_dims:
+                      - RangeDim:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 16
+                          left:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 7
+                          right:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 16
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 0
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 20
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 20
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 20
+                              name: acc
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 20
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 20
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  name: acc
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                          line: 20
+                                          name: bus
+                                          loop: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 20
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 20
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 20
+                              name: acc
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 20
+                          var:
+                            Plus:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 20
+                              left:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  name: acc
+                                  hier:
+                                    HierName:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 20
+                                      labellist:
+                                      - HierLabel:
+                                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                          line: 20
+                                          name: bus
+                                          loop: null
+                              right:
+                                Identifier:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 20
+                                  name: n
+                                  hier:
+                                    HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 8
+              name: bus_kick
+              lifetime: STATIC
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 9
+                  scope: ''
+                  statements:
+                  - Var:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 10
+                      is_var: false
+                      is_const: false
+                      lifetime: NONE
+                      name: st
+                      init:
+                        Rvalue: null
+                      type:
+                        LogicType:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 10
+                          signing: NONE
+                          packed_dims:
+                          - RangeDim:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 10
+                              left:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 10
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                              right:
+                                IntConstN:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 10
+                                  base: 10
+                                  size: -1
+                                  sign: false
+                                  value: 0
+                  - BlockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 11
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 11
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 11
+                              name: st
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 11
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 10
+                              base: 10
+                              size: -1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 12
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 12
+                              name: en
+                              hier:
+                                HierName:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 12
+                                  labellist:
+                                  - HierLabel:
+                                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                      line: 12
+                                      name: bus
+                                      loop: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 12
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 12
+                              name: st
+                              hier:
+                                HierName: null
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 28
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 28
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 28
+                      name: y
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 28
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 28
+                      name: en
+                      hier:
+                        HierName:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 28
+                          labellist:
+                          - HierLabel:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 28
+                              name: bus
+                              loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Assign:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 29
+              left:
+                Lvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 29
+                  var:
+                    Identifier:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 29
+                      name: z
+                      hier:
+                        HierName: null
+              right:
+                Rvalue:
+                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                  line: 29
+                  var:
+                    Pointer:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 29
+                      ptr:
+                        IntConstN:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 29
+                          base: 10
+                          size: -1
+                          sign: false
+                          value: 0
+                      var:
+                        Identifier:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 29
+                          name: acc
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 29
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                                  line: 29
+                                  name: bus
+                                  loop: null
+              ldelay:
+                DelayStatement: null
+              rdelay:
+                DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+              line: 31
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 32
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 32
+                          name: bus_kick
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                      line: 33
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                          line: 33
+                          name: bus_add2
+                          args:
+                          - IntConstN:
+                              filename: ../test/passes/transformations/testcases/resolve_hier_enum0.sv
+                              line: 33
+                              base: 10
+                              size: 8
+                              sign: false
+                              value: 2
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null
