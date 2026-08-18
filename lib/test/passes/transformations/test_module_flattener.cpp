@@ -429,6 +429,14 @@ TEST(PassesTransformation_ModuleFlattener, iface_out0) { TEST_CORE_SV; }
 // each child clone splices before its port dissolves, two instances of the
 // same child yield two prefixed task copies with retargeted members.
 TEST(PassesTransformation_ModuleFlattener, iface_call0) { TEST_CORE_SV; }
+// The ADR-0015 §5.2 sharpness, both directions pinned: a call through a
+// modport-qualified port works when the spliced body respects the modport…
+TEST(PassesTransformation_ModuleFlattener, iface_call_modport0) { TEST_CORE_SV; }
+// …and a body writing an input-declared member, or touching an unlisted
+// one, is refused by the caller-side §25.5/§25.10 checks — stricter than
+// IEEE's interface-internal method access, conservative and loud.
+TEST(PassesTransformation_ModuleFlattener, iface_call_err_modport_dir0) { TEST_ERROR_SV; }
+TEST(PassesTransformation_ModuleFlattener, iface_call_err_modport_vis0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_hdr_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_conn_modport0) { TEST_ERROR_SV; }
 TEST(PassesTransformation_ModuleFlattener, iface_err_modport_mismatch0) { TEST_ERROR_SV; }
