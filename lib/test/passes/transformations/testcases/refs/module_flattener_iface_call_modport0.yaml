@@ -1,0 +1,298 @@
+Source:
+  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+  line: 1
+  description:
+    Description:
+      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+      line: 1
+      definitions:
+      - Interface:
+          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+          line: 1
+          name: iface_call_modport0_if
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: go
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: ack
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 3
+                  signing: NONE
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 7
+              name: reply
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 8
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              name: ack
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Modport:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 13
+              name: dev
+              ports:
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 13
+                  name: go
+                  direction: INPUT
+              - ModportPort:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 13
+                  name: ack
+                  direction: OUTPUT
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+          line: 16
+          name: iface_call_modport0_child
+          lifetime: NONE
+          default_nettype: WIRE
+          ports:
+          - Port:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 16
+              name: p
+              direction: NONE
+              decl:
+                Arg:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 16
+                  is_var: false
+                  direction: NONE
+                  name: p
+                  default_value: null
+                  type:
+                    InterfaceType:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 16
+                      name: iface_call_modport0_if
+                      modport: dev
+                      is_virtual: false
+                      signing: NONE
+              expr: null
+          items:
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 17
+              statement:
+                Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 17
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 18
+                      scope: ''
+                      statement:
+                        Call:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 18
+                          name: reply
+                          hier:
+                            HierName:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 18
+                              labellist:
+                              - HierLabel:
+                                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                                  line: 18
+                                  name: p
+                                  loop: null
+                      delay:
+                        DelayStatement: null
+      - Module:
+          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+          line: 22
+          name: iface_call_modport0
+          lifetime: NONE
+          default_nettype: WIRE
+          items:
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 2
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_go
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 2
+                  signing: NONE
+          - Var:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 3
+              is_var: false
+              is_const: false
+              lifetime: NONE
+              name: bus_ack
+              init:
+                Rvalue: null
+              type:
+                LogicType:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 3
+                  signing: NONE
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 7
+              name: bus_reply
+              lifetime: NONE
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 8
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              name: bus_ack
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Task:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 7
+              name: u_p_reply
+              lifetime: STATIC
+              statements:
+              - Block:
+                  filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                  line: 8
+                  scope: ''
+                  statements:
+                  - NonblockingSubstitution:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 9
+                      left:
+                        Lvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            Identifier:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              name: bus_ack
+                              hier:
+                                HierName: null
+                      right:
+                        Rvalue:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 9
+                          var:
+                            IntConstN:
+                              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                              line: 9
+                              base: 2
+                              size: 1
+                              sign: false
+                              value: 1
+                      ldelay:
+                        DelayStatement: null
+                      rdelay:
+                        DelayStatement: null
+          - Initial:
+              filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+              line: 17
+              statement:
+                Block:
+                  filename: ''
+                  line: 0
+                  scope: ''
+                  statements:
+                  - SingleStatement:
+                      filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                      line: 18
+                      scope: ''
+                      statement:
+                        TaskCall:
+                          filename: ../test/passes/transformations/testcases/iface_call_modport0.sv
+                          line: 18
+                          name: u_p_reply
+                          hier:
+                            HierName: null
+                      delay:
+                        DelayStatement: null

@@ -259,15 +259,18 @@ member check, which would have rejected `bus.ping` as "no member",
 is never consulted for a call — and stays as-is for genuine mistakes
 that reach it (§6). No change to `InterfaceElaboration`.
 
-One sharpness follows and is accepted: through a **modport-qualified**
-port, the spliced body's member references face the flattener's §25.5
-visibility and direction checks as if the *caller* had written them —
-where IEEE gives a subroutine body interface-internal access. A task
-writing a member its modport declares `input` is therefore refused
-loudly where a simulator would run it. Conservative, never mis-lowered;
-the accepted spelling is an unqualified port or a modport listing what
-the body touches. Lifted the day modports are resolved with `import`
-knowledge (§4).
+One sharpness follows and is accepted — **measured**, and pinned by the
+`iface_call_modport0` / `iface_call_err_modport_*` flattener tests:
+through a **modport-qualified** port, the spliced body's member
+references face the flattener's §25.5 visibility and direction checks
+as if the *caller* had written them — where IEEE gives a subroutine
+body interface-internal access. A body writing a member its modport
+declares `input` is refused at the body's own source line (*"cannot be
+driven through port"*), an unlisted member likewise (*"not visible
+through modport"*), and a body respecting the modport flattens clean.
+Conservative, never mis-lowered; the accepted spelling is an
+unqualified port or a modport listing what the body touches. Lifted the
+day modports are resolved with `import` knowledge (§4).
 
 ### 5.3 veriobf
 
