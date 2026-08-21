@@ -237,8 +237,13 @@ Statically unrolls `for` loops whose bounds and step are constant, and
   using either in a shape the lowering does not cover, is **not** unrolled —
   the pass warns and leaves the loop intact (the mixed/nested forms deferred
   by ADR-0005 §3.2.1).
+- A loop marked `(* veriparse_no_unroll *)` is left rolled deliberately: the
+  attribute hands it to a downstream behavioural lowering (ADR-0014 §7.2).
 - Renames loop-body variables with a unique suffix per iteration to avoid
   collisions; an unnamed body gets a generated unique scope for the renaming.
+  A caller may seed the renamer with a pre-collected declaration set
+  (`FsmTaskInliner` passes the module-wide one, so per-copy names cannot
+  collide with declarations outside the node being unrolled).
 - Tracks scope renaming via `ScopeMap` and fixes scoped identifiers after unrolling.
 - Accepts an optional `FunctionMap`.
 
@@ -353,7 +358,10 @@ Symbol-aware resolution of the parser deferrals (ADR-0006): design index +
 lexical scope stack; re-tags `Call → Function/TaskCall`,
 `Instance → InterfaceInstance`, bare interface ports → `InterfaceType`,
 `TypeCast → SizeCast`, `TypeOpExpr → TypeOpType`; validates modport placement
-(§25.5) and interface-as-data-type (§25.9). Entry: `run_design(sources)`.
+(§25.5) and interface-as-data-type (§25.9). A `hier`-carrying call is left
+neutral: `retag_statement_call` (the one re-tag rule, §13.4.1 warning
+included) is also what `HierCallResolution` applies once the callee is in
+hand (ADR-0015 §3.4). Entry: `run_design(sources)`.
 
 ---
 
@@ -380,8 +388,35 @@ body logic once per instance, per-instance parameterization (§25.8). A child's
 interface port dissolves by hier-label aliasing: `port.member` references
 retarget onto the connected instance's flattened signals (never copies,
 §25.3.2) with modport-visibility checks (§25.10); interface arrays connect
-element-wise (§23.3.3.5). Invoked from `ModuleFlattener`; not a standalone
-pass.
+element-wise (§23.3.3.5). `for_each_binding`/`is_member_decl` are the shared
+interface-binding enumeration `HierCallResolution` also classifies against.
+Invoked from `ModuleFlattener`; not a standalone pass.
+
+---
+
+### `HierCallResolution`
+Resolves hierarchical subroutine calls (ADR-0015): a call whose root names a
+non-virtual interface port (`bus.ping()`) splices the interface's subroutine
+into the module — `PackageInliner`'s shape on the `.` axis.
+
+- The clone's free member references become `bus.member` hierarchical
+  references (shadowed per scope by formals and block locals; `disable`
+  targets are block-namespace names and never rewrite); its lifetime is
+  frozen from the interface's (`SpliceUtils`), its name is
+  `<port>_<name>` uniquified, and the call re-tags to
+  `TaskCall`/`FunctionCall` via `NameResolution::retag_statement_call` —
+  the kind is resolution knowledge here, not lexical.
+- Member/kind classification comes from
+  `InterfaceElaboration::for_each_binding`, the same enumeration the
+  flattener uses. Subroutine lookup descends bare generate regions
+  (§27.3).
+- Everything else is a hard error: module-instance roots, local interface
+  instances, indexed or multi-level paths, and bodies reaching interface
+  parameters, types, enum items or sibling subroutines (the ADR-0015 §8
+  closure).
+- Runs inside `ResolveModule` between the generate pruning and the FSM
+  slot; memoized per (root, subroutine), so unrolled call-site clones
+  share one splice.
 
 ---
 
@@ -395,6 +430,11 @@ explicit synthesizable FSM (ADR-0014). The user-facing reference is
   with infeasible paths pruned structurally.
 - Init segment → reset branch (signal/level/kind inferred or hinted);
   uniform `iff` conditions → a single chip enable.
+- A structural pre-lowering runs per marked process before the walk, each
+  stage its own runnable pass: `FsmAlphaRename` (shadowed/sibling block
+  locals uniquify), `FsmTaskInliner` (a task call expands to one labelled
+  block per call site, formals lowered per kind, cut-spanning static locals
+  hoisted — ADR-0014 §7.4), `FsmLoopLowering` (rolled-loop countdowns).
 - Bounded loops arrive unrolled (`LoopUnrolling`); `(* veriparse_no_unroll *)`
   loops get an induced countdown or drive the author's index register, one
   counter per nesting depth. `break`/`continue` are CFG edges;
@@ -452,6 +492,11 @@ ScopeElevator
 LoopUnrolling
 BranchSelection
 GenerateRemoval
+HierCallResolution    ← interface subroutine calls splice in (ADR-0015)
+  └─ when it spliced: EnumElaboration → EnumInliner → TypedefInliner →
+     StructLowering → ScopeElevator → LoopUnrolling run again over the new
+     text, and the function dictionary is rebuilt — spliced bodies lower
+     exactly as local text did
 ImplicitFsmElaboration ← optional, opt-in (ADR-0014); on in verilower and veriflat --fsm
 ConstantFolding       ← second pass after branch/generate removal
 VariableFolding
@@ -492,6 +537,9 @@ Renames all local identifiers (variables, instances, named blocks, tasks, functi
 - Configurable identifier length.
 - Optionally uses a hash-based naming scheme instead of random.
 - Preserves port names (I/O) unchanged.
+- Refuses a module holding a hierarchical subroutine call (`bus.ping()`):
+  its leaf names a declaration of another scope, which a local rename map
+  would corrupt (ADR-0015 §5.3).
 
 ---
 
