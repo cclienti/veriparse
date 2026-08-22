@@ -178,7 +178,7 @@ DeadcodeElimination::DSet DeadcodeElimination::remove_deadcode_step(AST::Node::P
     const auto &lvalue_nodes = Analysis::Module::get_lvalue_nodes(node);
     DSet lvalue_set;
     for(AST::Lvalue::Ptr lvalue_node : *lvalue_nodes) {
-        collect_identifier(lvalue_set, node);
+        collect_identifier(lvalue_set, lvalue_node);
     }
 
     DSet identifiers;
