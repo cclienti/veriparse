@@ -78,6 +78,18 @@ bison_target (Veriparse_VerilogNumberParser
               COMPILE_FLAGS "-v")
 add_flex_bison_dependency (Veriparse_VerilogNumberScanner Veriparse_VerilogNumberParser)
 
+if(WIN32)
+  # win_flex writes fixed-name scratch files (~flex_out_*) into the shared
+  # %TEMP%, and MSBuild runs a project's custom build rules in parallel: two
+  # concurrent invocations corrupt each other's scratch and fail ("end of
+  # file in argument list"), timing-dependent. Chain the three scanner
+  # generations so only one win_flex runs at a time.
+  add_custom_command(OUTPUT ${FLEX_PREPROCESSOR_DIR}/pp_scanner.cpp APPEND
+                     DEPENDS ${FLEX_BISON_VERILOG_DIR}/verilog_scanner.cpp)
+  add_custom_command(OUTPUT ${FLEX_BISON_VERILOG_NUMBER_DIR}/verilog_number_scanner.cpp APPEND
+                     DEPENDS ${FLEX_PREPROCESSOR_DIR}/pp_scanner.cpp)
+endif()
+
 
 # Build library
 file(GLOB_RECURSE source_files src/*.cpp)
