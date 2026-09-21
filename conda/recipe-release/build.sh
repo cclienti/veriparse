@@ -9,14 +9,6 @@ cd build
 # Use a bash array so flags containing spaces survive expansion intact.
 EXTRA_CMAKE_OPTS=()
 
-# mold linker is only supported on Linux
-if [[ "${target_platform}" == linux-* ]]; then
-  EXTRA_CMAKE_OPTS+=(
-    -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=mold
-    -DCMAKE_SHARED_LINKER_FLAGS=-fuse-ld=mold
-  )
-fi
-
 # clang complains about some of conda's injected toolchain flags
 # (e.g. -fdebug-prefix-map) being unused for C++; with -Werror that's fatal.
 if [[ "${target_platform}" == osx-* ]]; then
