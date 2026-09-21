@@ -18,8 +18,6 @@ add_subdirectory(veripp)
 # Installation
 #----------------------------------------
 
-install(DIRECTORY test/common/Makefiles
-        DESTINATION share/veriparse/examples/common)
 install(DIRECTORY test/dclkfifolut
         DESTINATION share/veriparse/examples)
 install(DIRECTORY test/tiny_aes_128
