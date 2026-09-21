@@ -28,7 +28,6 @@ requirements:
     - cmake
     - ninja            # [not win]
     - make             # [not win]
-    - mold             # [linux]
     - flex=2.6.4       # [not win]
     - bison=3.8.2      # [not win]
     - winflexbison     # [win]
