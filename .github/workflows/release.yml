@@ -33,7 +33,7 @@ jobs:
             echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64","shell":"bash -el {0}","init_shell":"bash"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
-              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}","init_shell":"bash"},'
+              echo '{"os":"macos-15-intel","platform":"osx-64","name":"macOS x86_64","shell":"bash -el {0}","init_shell":"bash"},'
               echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","shell":"bash -el {0}","init_shell":"bash"}'
             fi
             if [[ "$INCLUDE_WINDOWS" == "true" ]]; then

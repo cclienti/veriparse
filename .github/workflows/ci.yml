@@ -46,7 +46,7 @@ jobs:
             echo '{"os":"ubuntu-latest","platform":"linux-64","name":"Linux Ubuntu x86_64 clang","linker":"-fuse-ld=mold","apt":"mold clang","cmake_flags":"-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"}'
             if [[ "$INCLUDE_MACOS" == "true" ]]; then
               echo ','
-              echo '{"os":"macos-latest","platform":"osx-64","name":"macOS x86_64","linker":"","apt":""},'
+              echo '{"os":"macos-15-intel","platform":"osx-64","name":"macOS x86_64","linker":"","apt":""},'
               echo '{"os":"macos-14","platform":"osx-arm64","name":"macOS arm64","linker":"","apt":""}'
             fi
             echo ']}'
