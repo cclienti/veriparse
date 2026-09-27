@@ -104,10 +104,25 @@ jobs:
           path: ${{ steps.pkg.outputs.path }}
           if-no-files-found: error
 
+      # conda keeps the platform in the channel subdir, not the filename, so
+      # osx-64 and osx-arm64 build to the same name and would overwrite each
+      # other on the flat release asset list. Append the platform to the
+      # build string (underscores only, so the name still parses as
+      # <name>-<version>-<build>).
+      - name: Name release asset
+        id: asset
+        if: github.event_name == 'release'
+        run: |
+          src='${{ steps.pkg.outputs.path }}'
+          platform='${{ matrix.platform }}'
+          dst="$(dirname "$src")/$(basename "$src" .conda)_${platform//-/_}.conda"
+          cp "$src" "$dst"
+          echo "path=$dst" >> "$GITHUB_OUTPUT"
+
       - name: Upload to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v3
         with:
-          files: ${{ steps.pkg.outputs.path }}
+          files: ${{ steps.asset.outputs.path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
