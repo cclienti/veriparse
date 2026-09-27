@@ -48,6 +48,8 @@ about:
 
 test:
   commands:
-    - veriparse -h
     - veriflat -h
+    - verilower -h
     - veriobf -h
+    - veridump -h
+    - veripp -h
