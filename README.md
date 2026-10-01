@@ -175,6 +175,56 @@ veriparse/
 
 ---
 
+## Installing a Release
+
+Each [GitHub release](https://github.com/cclienti/veriparse/releases) ships
+one conda package per platform, named after the platform it was built for:
+
+| Platform | Release asset | Channel directory |
+|----------|---------------|-------------------|
+| Linux x86_64 | `veriparse-vX.Y.Z-linux_64_0.conda` | `linux-64` |
+| macOS Intel | `veriparse-vX.Y.Z-osx_64_0.conda` | `osx-64` |
+| macOS Apple Silicon | `veriparse-vX.Y.Z-osx_arm64_0.conda` | `osx-arm64` |
+| Windows x86_64 | `veriparse-vX.Y.Z-win_64_0.conda` | `win-64` |
+
+Install it through a small local channel, so conda resolves its runtime
+dependencies (Boost, yaml-cpp) from `conda-forge`. Installing the `.conda`
+file directly skips those dependencies and the tools fail to start. Keep
+the downloaded file's name unchanged: conda rejects a renamed package. The
+commands use [micromamba](#1-install-micromamba); `conda` and `mamba`
+accept the same arguments.
+
+**Linux / macOS** (example for `linux-64`; substitute your row of the table):
+
+    # 1. Download the package for your platform into the channel directory
+    mkdir -p veriparse-channel/linux-64
+    gh release download vX.Y.Z -R cclienti/veriparse -p '*-linux_64_*.conda' -D veriparse-channel/linux-64
+    #    (or download it from the release page into that directory)
+
+    # 2. Index the channel (installs conda-index once, in its own env)
+    micromamba create -n conda-index -c conda-forge conda-index
+    micromamba run -n conda-index python -m conda_index veriparse-channel
+
+    # 3. Install veriparse and its dependencies
+    micromamba create -n veriparse -c "file://$PWD/veriparse-channel" -c conda-forge veriparse
+    micromamba activate veriparse
+    veriflat --version
+
+**Windows** (PowerShell):
+
+    New-Item -ItemType Directory -Force veriparse-channel\win-64 | Out-Null
+    gh release download vX.Y.Z -R cclienti/veriparse -p '*-win_64_*.conda' -D veriparse-channel\win-64
+    micromamba create -n conda-index -c conda-forge conda-index
+    micromamba run -n conda-index python -m conda_index veriparse-channel
+    $channel = "file:///" + ((Resolve-Path veriparse-channel).Path -replace '\\', '/')
+    micromamba create -n veriparse -c $channel -c conda-forge veriparse
+
+To upgrade later, download the new release's package into the same
+channel directory (step 1), re-index (step 2), then run
+`micromamba update -n veriparse -c <channel> -c conda-forge veriparse`.
+
+---
+
 ## Building
 
 Veriparse uses a **Conda-based development environment** managed via the `Makefile`.
