@@ -88,6 +88,11 @@ if(WIN32)
                      DEPENDS ${FLEX_BISON_VERILOG_DIR}/verilog_scanner.cpp)
   add_custom_command(OUTPUT ${FLEX_BISON_VERILOG_NUMBER_DIR}/verilog_number_scanner.cpp APPEND
                      DEPENDS ${FLEX_PREPROCESSOR_DIR}/pp_scanner.cpp)
+  # win_bison (winflexbison <= 2.5.25) has the same flaw with its m4 scratch
+  # files (~m4_in_* / ~m4_out_*): a clobbered run still exits 0 but leaves
+  # its parser header unwritten. Chain the two parser generations as well.
+  add_custom_command(OUTPUT ${FLEX_BISON_VERILOG_NUMBER_DIR}/verilog_number_parser.cpp APPEND
+                     DEPENDS ${FLEX_BISON_VERILOG_DIR}/verilog_parser.cpp)
 endif()
 
 
