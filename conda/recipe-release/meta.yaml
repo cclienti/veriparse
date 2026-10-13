@@ -7,6 +7,11 @@ source:
 
 build:
   number: 0
+  # conda filenames do not otherwise name the platform, so the packages of
+  # one release are indistinguishable on the GitHub release page. The
+  # recipe builds a single variant per platform, so no variant hash is
+  # needed to keep the name unique.
+  string: {{ target_platform | replace('-', '_') }}_{{ PKG_BUILDNUM }}
   ignore_run_exports:
     - gtest
 
